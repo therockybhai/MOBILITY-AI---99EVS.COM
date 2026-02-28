@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com">
+<title>99EVS — Mobility Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:       #080A0C;
+    --surface:     #0D1117;
+    --surface-2:   #131920;
+    --surface-3:   #1A2332;
+    --border:      #1E2D3D;
+    --border-2:    #263545;
+    --amber:       #F5A623;
+    --amber-dim:   #C47D0E;
+    --amber-glow:  rgba(245,166,35,0.12);
+    --amber-glow2: rgba(245,166,35,0.06);
+    --green:       #00C48C;
+    --green-dim:   rgba(0,196,140,0.15);
+    --red:         #FF4C4C;
+    --red-dim:     rgba(255,76,76,0.12);
+    --text-1:      #E8EDF2;
+    --text-2:      #8B9BB0;
+    --text-3:      #4A5A6B;
+    --font-display: 'Syne', sans-serif;
+    --font-body:    'Instrument Sans', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+    --radius:       6px;
+    --radius-lg:    12px;
+    --transition:   all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text-1);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: flex; flex-direction: column; animation: pageIn 0.4s ease; }
+
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ═══ NAV ═══ */
+  .home-nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,10,12,0.8);
+    backdrop-filter: blur(20px);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--amber);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--black);
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-1);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text span { color: var(--amber); }
+
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+
+  /* ═══ BUTTONS ═══ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: var(--transition);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--border-2);
+    color: var(--text-2);
+  }
+  .btn-ghost:hover { border-color: var(--amber-dim); color: var(--amber); background: var(--amber-glow2); }
+
+  .btn-primary {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--black);
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: #FFBA40; border-color: #FFBA40; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(245,166,35,0.3); }
+
+  .btn-outline {
+    background: transparent;
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+  .btn-outline:hover { background: var(--amber-glow); transform: translateY(-1px); }
+
+  .btn-surface {
+    background: var(--surface-2);
+    border-color: var(--border);
+    color: var(--text-1);
+  }
+  .btn-surface:hover { border-color: var(--border-2); background: var(--surface-3); }
+
+  .btn-lg { padding: 14px 28px; font-size: 15px; }
+  .btn-full { width: 100%; justify-content: center; }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border-2);
+    background: var(--surface-2);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--amber);
+    letter-spacing: 0.05em;
+    margin-bottom: 32px;
+    animation: fadeSlideUp 0.6s ease both;
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -2px;
+    color: var(--text-1);
+    max-width: 800px;
+    margin-bottom: 20px;
+    animation: fadeSlideUp 0.6s 0.1s ease both;
+  }
+
+  .hero-title .accent { color: var(--amber); }
+  .hero-title .line-2 { display: block; color: var(--text-2); font-weight: 600; }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-2);
+    max-width: 520px;
+    line-height: 1.65;
+    margin-bottom: 40px;
+    animation: fadeSlideUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeSlideUp 0.6s 0.3s ease both;
+  }
+
+  .hero-divider {
+    width: 100%;
+    max-width: 800px;
+    margin: 60px auto 0;
+    border: none;
+    border-top: 1px solid var(--border);
+    animation: fadeSlideUp 0.6s 0.4s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 32px 24px 0;
+    animation: fadeSlideUp 0.6s 0.5s ease both;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--amber);
+    letter-spacing: -1px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ═══ FEATURE STRIP ═══ */
+  .feature-strip {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 28px;
+    border-right: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-2);
+  }
+  .feature-item:last-child { border-right: none; }
+
+  .feature-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--amber-glow);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ═══ PREVIEW SECTION ═══ */
+  .preview-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    margin-bottom: 40px;
+    color: var(--text-1);
+  }
+
+  .chat-preview {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,166,35,0.05);
+  }
+
+  .chat-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+
+  .chat-preview-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-1);
+  }
+
+  .ai-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--green);
+  }
+
+  .chat-preview-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+  .preview-message { display: flex; gap: 12px; animation: fadeSlideUp 0.5s ease both; }
+  .preview-message.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: var(--font-display);
+  }
+
+  .msg-avatar.ai { background: var(--amber-glow); border: 1px solid rgba(245,166,35,0.2); color: var(--amber); }
+  .msg-avatar.user-av { background: var(--surface-3); border: 1px solid var(--border-2); color: var(--text-2); }
+
+  .msg-bubble {
+    max-width: 480px;
+    padding: 12px 16px;
+    border-radius: var(--radius-lg);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .msg-bubble.ai { background: var(--surface-2); border: 1px solid var(--border); color: var(--text-1); border-top-left-radius: 2px; }
+  .msg-bubble.user { background: var(--amber-glow); border: 1px solid rgba(245,166,35,0.2); color: var(--text-1); border-top-right-radius: 2px; }
+
+  .msg-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); margin-bottom: 4px; letter-spacing: 0.05em; }
+
+  /* ═══ FOOTER ═══ */
+  .home-footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--surface);
+  }
+
+  .footer-text { font-size: 13px; color: var(--text-3); font-family: var(--font-mono); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-link { font-size: 12px; color: var(--text-3); text-decoration: none; transition: color 0.2s; }
+  .footer-link:hover { color: var(--amber); }
+
+  /* ═══ AUTH PAGES ═══ */
+  .auth-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 768px) {
+    .auth-page { grid-template-columns: 1fr; }
+    .auth-panel { display: none; }
+  }
+
+  .auth-panel {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .auth-panel::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .auth-panel-content { margin-top: 60px; }
+
+  .auth-panel-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .auth-panel-title {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    color: var(--text-1);
+    margin-bottom: 16px;
+  }
+  .auth-panel-title span { color: var(--amber); }
+
+  .auth-panel-sub { color: var(--text-2); font-size: 15px; line-height: 1.6; max-width: 340px; }
+
+  .auth-panel-features { display: flex; flex-direction: column; gap: 14px; margin-top: 48px; }
+
+  .auth-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .auth-feature-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--amber-glow);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .auth-feature-title { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 2px; }
+  .auth-feature-desc { font-size: 12px; color: var(--text-3); }
+
+  .auth-panel-quote {
+    padding: 20px;
+    border-left: 2px solid var(--amber);
+    background: var(--amber-glow2);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  .auth-panel-quote p { font-size: 13px; color: var(--text-2); font-style: italic; line-height: 1.6; }
+  .auth-panel-quote cite { display: block; font-style: normal; font-size: 11px; color: var(--amber); font-family: var(--font-mono); margin-top: 8px; letter-spacing: 0.05em; }
+
+  .auth-form-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 24px;
+    background: var(--black);
+    position: relative;
+  }
+
+  .auth-form-side::before {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(245,166,35,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .auth-form-container { width: 100%; max-width: 400px; position: relative; z-index: 1; }
+
+  .auth-logo-top { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; cursor: pointer; }
+
+  .auth-form-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    color: var(--text-1);
+    margin-bottom: 6px;
+  }
+
+  .auth-form-sub { font-size: 14px; color: var(--text-2); margin-bottom: 32px; line-height: 1.5; }
+
+  /* ═══ FORM ═══ */
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-2);
+    margin-bottom: 8px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.03em;
+  }
+
+  .form-label-right { color: var(--amber); cursor: pointer; font-size: 11px; }
+  .form-label-right:hover { text-decoration: underline; }
+
+  .input-wrap { position: relative; display: flex; align-items: center; }
+
+  .input-icon { position: absolute; left: 14px; color: var(--text-3); font-size: 15px; pointer-events: none; z-index: 1; }
+
+  .input-toggle {
+    position: absolute;
+    right: 14px;
+    color: var(--text-3);
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 1;
+    background: none;
+    border: none;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .input-toggle:hover { color: var(--amber); }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px 14px 12px 42px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius);
+    color: var(--text-1);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: var(--transition);
+    caret-color: var(--amber);
+  }
+
+  input:focus { border-color: var(--amber-dim); background: var(--surface-3); box-shadow: 0 0 0 3px rgba(245,166,35,0.08); }
+  input.error { border-color: var(--red); background: var(--red-dim); }
+  input::placeholder { color: var(--text-3); }
+
+  .field-error { display: none; font-size: 11px; color: var(--red); margin-top: 6px; font-family: var(--font-mono); }
+  .field-error.visible { display: block; }
+
+  /* ═══ PASSWORD STRENGTH ═══ */
+  .password-strength { margin-top: 8px; display: none; }
+  .password-strength.visible { display: block; }
+
+  .strength-bars { display: flex; gap: 4px; margin-bottom: 4px; }
+
+  .strength-bar { height: 3px; flex: 1; background: var(--border-2); border-radius: 2px; transition: background 0.3s; }
+  .strength-bar.weak { background: var(--red); }
+  .strength-bar.medium { background: var(--amber); }
+  .strength-bar.strong { background: var(--green); }
+
+  .strength-text { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); }
+
+  .security-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 20px 0;
+    font-size: 12px;
+    color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  .security-icon { color: var(--green); flex-shrink: 0; margin-top: 1px; }
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    color: var(--text-3);
+    font-size: 12px;
+    font-family: var(--font-mono);
+  }
+
+  .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .auth-switch { text-align: center; font-size: 13px; color: var(--text-3); margin-top: 20px; }
+  .auth-link { color: var(--amber); cursor: pointer; font-weight: 500; text-decoration: none; }
+  .auth-link:hover { text-decoration: underline; }
+
+  .alert {
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: none;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .alert.visible { display: flex; }
+  .alert.success { background: var(--green-dim); border: 1px solid rgba(0,196,140,0.25); color: #00C48C; }
+  .alert.error { background: var(--red-dim); border: 1px solid rgba(255,76,76,0.25); color: #FF7070; }
+
+  .rate-notice { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); text-align: center; margin-top: 12px; }
+
+  /* ═══ CHAT PAGE ═══ */
+  .chat-page {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 260px 1fr;
+    grid-template-areas:
+      "sidebar topbar"
+      "sidebar chat";
+    overflow: hidden;
+  }
+
+  .sidebar {
+    grid-area: sidebar;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text-1); }
+
+  .new-chat-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius);
+    background: var(--amber-glow);
+    border: 1px solid rgba(245,166,35,0.2);
+    color: var(--amber);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: var(--transition);
+  }
+  .new-chat-btn:hover { background: var(--amber); color: var(--black); }
+
+  .sidebar-body { flex: 1; overflow-y: auto; padding: 8px; }
+  .sidebar-body::-webkit-scrollbar { width: 4px; }
+  .sidebar-body::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-body::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+
+  .session-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 8px 4px;
+    margin-top: 4px;
+  }
+
+  .session-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-2);
+    font-size: 13px;
+    border: 1px solid transparent;
+  }
+
+  .session-item:hover { background: var(--surface-2); border-color: var(--border); color: var(--text-1); }
+  .session-item.active { background: var(--surface-3); border-color: var(--border-2); color: var(--text-1); }
+
+  .session-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; }
+  .session-item.active .session-dot { background: var(--amber); }
+  .session-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+
+  .sidebar-footer { padding: 12px; border-top: 1px solid var(--border); }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid transparent;
+  }
+  .user-info:hover { background: var(--surface-2); border-color: var(--border); }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius);
+    background: var(--amber-glow);
+    border: 1px solid rgba(245,166,35,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+
+  .user-details { flex: 1; min-width: 0; }
+  .user-name { font-size: 13px; font-weight: 600; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-role { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); }
+
+  .user-logout { background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 14px; padding: 4px; border-radius: var(--radius); transition: color 0.2s; }
+  .user-logout:hover { color: var(--red); }
+
+  /* ═══ TOPBAR ═══ */
+  .topbar {
+    grid-area: topbar;
+    padding: 0 24px;
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8,10,12,0.6);
+    backdrop-filter: blur(20px);
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+
+  .ai-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--green);
+  }
+
+  .topbar-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-1); }
+  .topbar-actions { display: flex; gap: 8px; }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius);
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: var(--transition);
+  }
+  .icon-btn:hover { border-color: var(--amber-dim); color: var(--amber); background: var(--amber-glow2); }
+
+  /* ═══ CHAT AREA ═══ */
+  .chat-area { grid-area: chat; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+  .messages-container { flex: 1; overflow-y: auto; padding: 24px; scroll-behavior: smooth; }
+  .messages-container::-webkit-scrollbar { width: 4px; }
+  .messages-container::-webkit-scrollbar-track { background: transparent; }
+  .messages-container::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+
+  /* ═══ WELCOME STATE ═══ */
+  .welcome-state {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    animation: fadeSlideUp 0.5s ease;
+  }
+
+  .welcome-mark {
+    width: 64px;
+    height: 64px;
+    background: var(--amber-glow);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px;
+  }
+
+  .welcome-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: var(--text-1); margin-bottom: 8px; }
+  .welcome-sub { color: var(--text-2); font-size: 14px; max-width: 380px; line-height: 1.6; margin-bottom: 32px; }
+
+  .prompt-suggestions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 560px; width: 100%; }
+
+  .suggestion-card {
+    padding: 14px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .suggestion-card:hover { border-color: var(--amber-dim); background: var(--amber-glow2); transform: translateY(-2px); }
+
+  .suggestion-icon { font-size: 18px; margin-bottom: 6px; }
+  .suggestion-title { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 3px; }
+  .suggestion-desc { font-size: 12px; color: var(--text-3); line-height: 1.4; }
+
+  /* ═══ MESSAGES ═══ */
+  .message-row { display: flex; gap: 14px; margin-bottom: 24px; animation: fadeSlideUp 0.3s ease; }
+  .message-row.user { flex-direction: row-reverse; }
+
+  .msg-av {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    margin-top: 2px;
+  }
+
+  .msg-av.ai { background: var(--amber-glow); border: 1px solid rgba(245,166,35,0.2); color: var(--amber); }
+  .msg-av.user { background: var(--surface-3); border: 1px solid var(--border-2); color: var(--text-2); }
+
+  .msg-content { max-width: 680px; flex: 1; }
+
+  .msg-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11px; color: var(--text-3); font-family: var(--font-mono); }
+  .message-row.user .msg-meta { flex-direction: row-reverse; }
+  .msg-name { color: var(--text-2); font-weight: 500; }
+
+  .msg-body { padding: 14px 18px; border-radius: var(--radius-lg); font-size: 14px; line-height: 1.7; }
+
+  .message-row.ai .msg-body { background: var(--surface); border: 1px solid var(--border); color: var(--text-1); border-top-left-radius: 2px; }
+  .message-row.user .msg-body { background: var(--surface-3); border: 1px solid var(--border-2); color: var(--text-1); border-top-right-radius: 2px; }
+
+  .msg-body strong { color: var(--amber); font-weight: 600; }
+  .msg-body code { font-family: var(--font-mono); font-size: 12px; background: var(--surface-3); padding: 2px 6px; border-radius: 3px; color: var(--green); }
+
+  /* ═══ TYPING ═══ */
+  .typing-row { display: flex; gap: 14px; margin-bottom: 24px; }
+
+  .typing-bubble {
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    border-top-left-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .typing-dot { width: 6px; height: 6px; background: var(--amber-dim); border-radius: 50%; animation: typingDot 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typingDot {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* ═══ INPUT AREA ═══ */
+  .input-area {
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--border);
+    background: rgba(8,10,12,0.4);
+    backdrop-filter: blur(10px);
+  }
+
+  .input-bar {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius-lg);
+    padding: 12px 12px 12px 16px;
+    transition: var(--transition);
+  }
+
+  .input-bar:focus-within { border-color: var(--amber-dim); box-shadow: 0 0 0 3px rgba(245,166,35,0.06); }
+
+  .chat-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-1);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    resize: none;
+    min-height: 24px;
+    max-height: 120px;
+    overflow-y: auto;
+    padding: 0;
+    caret-color: var(--amber);
+  }
+
+  .chat-input::placeholder { color: var(--text-3); }
+  .chat-input::-webkit-scrollbar { width: 3px; }
+  .chat-input::-webkit-scrollbar-thumb { background: var(--border-2); }
+
+  .send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    background: var(--amber);
+    border: none;
+    color: var(--black);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: var(--transition);
+    flex-shrink: 0;
+  }
+
+  .send-btn:hover { background: #FFBA40; transform: translateY(-1px); }
+  .send-btn:disabled { background: var(--surface-3); color: var(--text-3); cursor: not-allowed; transform: none; }
+
+  .input-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 0 4px;
+  }
+
+  .input-hint { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); }
+  .char-count { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); }
+
+  /* ═══ MOBILE ═══ */
+  .mobile-menu-btn {
+    display: none;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius);
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  /* ═══ ANIMATIONS ═══ */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(245,166,35,0.2);
+    border-top-color: var(--amber);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+  }
+
+  /* ═══ TOAST ═══ */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 18px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius);
+    font-size: 13px;
+    color: var(--text-1);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    animation: toastIn 0.3s ease;
+    max-width: 320px;
+  }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ═══ MODAL ═══ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.visible { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    max-width: 400px;
+    width: 100%;
+    animation: fadeSlideUp 0.3s ease;
+    position: relative;
+  }
+
+  .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 18px; padding: 4px; transition: color 0.2s; }
+  .modal-close:hover { color: var(--text-1); }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 900px) {
+    .chat-page {
+      grid-template-columns: 1fr;
+      grid-template-areas: "topbar" "chat";
+    }
+    .sidebar { position: fixed; left: -260px; top: 0; bottom: 0; z-index: 100; transition: left 0.3s ease; box-shadow: 4px 0 20px rgba(0,0,0,0.4); }
+    .sidebar.open { left: 0; }
+    .mobile-menu-btn { display: flex; }
+    .prompt-suggestions { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .home-nav { padding: 16px 20px; }
+    .hero { padding: 48px 20px; }
+    .hero-stats { gap: 28px; }
+    .feature-strip { display: none; }
+    .home-footer { padding: 20px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 1 — HOMEPAGE
+═══════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <nav class="home-nav">
+    <div class="logo" onclick="goHome()">
+      <div class="logo-mark">99</div>
+      <div class="logo-text">EVS<span>.com</span></div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" onclick="showPage('page-login')">Sign In</button>
+      <button class="btn btn-primary" onclick="showPage('page-register')">Get Started</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      MobilityAI — Now Live
+    </div>
+    <h1 class="hero-title">
+      Mobility Intelligence
+      <span class="line-2">For Every Vehicle. Every Decision.</span>
+    </h1>
+    <p class="hero-sub">
+      Ask MobilityAI anything about your vehicle, fleet, or mobility business. Get structured, engineering-grade answers — instantly. Built on safety. Powered by precision.
+    </p>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" onclick="showPage('page-register')">
+        ⚡ Start for Free
+      </button>
+      <button class="btn btn-ghost btn-lg" onclick="showPage('page-login')">
+        Sign In
+      </button>
+    </div>
+    <hr class="hero-divider">
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">AI</div>
+        <div class="stat-label">Powered Intelligence</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">99%</div>
+        <div class="stat-label">Safety Focused</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">EV+</div>
+        <div class="stat-label">All Vehicle Types</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Questions Answered</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="feature-strip">
+    <div class="feature-item"><div class="feature-icon">🔒</div> End-to-End Encrypted</div>
+    <div class="feature-item"><div class="feature-icon">⚡</div> EV + ICE + CNG Coverage</div>
+    <div class="feature-item"><div class="feature-icon">🛡️</div> Privacy First Platform</div>
+    <div class="feature-item"><div class="feature-icon">🌐</div> Global Mobility Standards</div>
+    <div class="feature-item"><div class="feature-icon">📊</div> Engineering-Grade Answers</div>
+  </div>
+
+  <section class="preview-section">
+    <div class="section-label">// Platform Preview</div>
+    <div class="section-title">MobilityAI in Action</div>
+    <div class="chat-preview">
+      <div class="chat-preview-header">
+        <div class="chat-preview-title"><span>⚡</span> MobilityAI — Intelligence Engine</div>
+        <div class="ai-indicator"><span class="badge-dot"></span> Active</div>
+      </div>
+      <div class="chat-preview-body">
+        <div class="preview-message user">
+          <div class="msg-avatar user-av">U</div>
+          <div>
+            <div class="msg-label" style="text-align:right;">You</div>
+            <div class="msg-bubble user">My EV battery drops 30% faster than last month. What could be wrong?</div>
+          </div>
+        </div>
+        <div class="preview-message" style="animation-delay:0.2s">
+          <div class="msg-avatar ai">M</div>
+          <div>
+            <div class="msg-label">MobilityAI</div>
+            <div class="msg-bubble ai">
+              <strong>Diagnostic Overview:</strong> Accelerated battery degradation has several probable causes. Based on your symptom profile, here is the structured analysis.<br><br>
+              <strong>Likely Causes:</strong> Cell imbalance within the battery pack, thermal stress from recent charging patterns, BMS calibration drift, or increased auxiliary load consumption.<br><br>
+              <strong>Recommended Action:</strong> Run a full charge cycle to 100% and monitor cell voltage variance. Check for cooling system faults and review recent fast-charge frequency.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="home-footer">
+    <div class="footer-text">© 2025 99EVS.com — Every interaction strengthens the intelligence network.</div>
+    <div class="footer-links">
+      <a class="footer-link" href="#">Privacy Policy</a>
+      <a class="footer-link" href="#">Terms of Use</a>
+      <a class="footer-link" href="#">Security</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 2 — REGISTER
+═══════════════════════════════════════ -->
+<div class="page" id="page-register">
+  <div class="auth-page">
+    <div class="auth-panel">
+      <div class="logo" onclick="goHome()">
+        <div class="logo-mark">99</div>
+        <div class="logo-text">EVS<span>.com</span></div>
+      </div>
+      <div class="auth-panel-content">
+        <div class="auth-panel-label">// Join the Intelligence Network</div>
+        <div class="auth-panel-title">Move with<br><span>Confidence.</span></div>
+        <p class="auth-panel-sub">Create your free account and access MobilityAI — engineering-grade intelligence for every vehicle, fleet, and mobility decision.</p>
+        <div class="auth-panel-features">
+          <div class="auth-feature">
+            <div class="auth-feature-icon">⚡</div>
+            <div>
+              <div class="auth-feature-title">Instant MobilityAI Access</div>
+              <div class="auth-feature-desc">Ask anything about your vehicle or fleet immediately after registration.</div>
+            </div>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">🔒</div>
+            <div>
+              <div class="auth-feature-title">Privacy Protected</div>
+              <div class="auth-feature-desc">Your data is encrypted, never sold, and fully under your control.</div>
+            </div>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">🌐</div>
+            <div>
+              <div class="auth-feature-title">Global Mobility Standards</div>
+              <div class="auth-feature-desc">Intelligence built on engineering principles that apply worldwide.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth-panel-quote">
+        <p>"Every interaction strengthens the intelligence network that powers 99EVS."</p>
+        <cite>— 99EVS Mission</cite>
+      </div>
+    </div>
+
+    <div class="auth-form-side">
+      <div class="auth-form-container">
+        <div class="auth-logo-top" onclick="goHome()">
+          <div class="logo-mark">99</div>
+          <div class="logo-text">EVS<span style="color:var(--amber)">.com</span></div>
+        </div>
+        <div class="auth-form-title">Create Account</div>
+        <div class="auth-form-sub">Join the 99EVS intelligence network. Free to start.</div>
+        <div class="alert" id="reg-alert"></div>
+
+        <div class="form-group">
+          <label class="form-label">FULL NAME</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" id="reg-name" placeholder="Your full name" autocomplete="name" maxlength="80" oninput="sanitizeInput(this)">
+          </div>
+          <div class="field-error" id="err-name">Please enter your full name.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">EMAIL ADDRESS</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="reg-email" placeholder="your@email.com" autocomplete="email" maxlength="120" oninput="sanitizeInput(this)">
+          </div>
+          <div class="field-error" id="err-reg-email">Please enter a valid email address.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">PASSWORD <span style="font-size:10px;color:var(--text-3)">Min 8 chars</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="reg-password" placeholder="Create a strong password" autocomplete="new-password" maxlength="128" oninput="checkPasswordStrength(this.value)">
+            <button class="input-toggle" onclick="togglePassword('reg-password', this)" type="button">👁</button>
+          </div>
+          <div class="password-strength" id="pwd-strength">
+            <div class="strength-bars">
+              <div class="strength-bar" id="bar-1"></div>
+              <div class="strength-bar" id="bar-2"></div>
+              <div class="strength-bar" id="bar-3"></div>
+              <div class="strength-bar" id="bar-4"></div>
+            </div>
+            <div class="strength-text" id="strength-text">Enter a password</div>
+          </div>
+          <div class="field-error" id="err-password">Password must be at least 8 characters.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">CONFIRM PASSWORD</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="reg-confirm" placeholder="Repeat your password" autocomplete="new-password" maxlength="128">
+            <button class="input-toggle" onclick="togglePassword('reg-confirm', this)" type="button">👁</button>
+          </div>
+          <div class="field-error" id="err-confirm">Passwords do not match.</div>
+        </div>
+
+        <div class="security-notice">
+          <span class="security-icon">🛡️</span>
+          <span>Your password is hashed and never stored in plain text. All data is encrypted in transit and at rest. We never sell your information.</span>
+        </div>
+
+        <button class="btn btn-primary btn-full btn-lg" onclick="handleRegister()" id="reg-btn">Create Secure Account</button>
+        <div class="auth-divider">already have an account</div>
+        <button class="btn btn-surface btn-full" onclick="showPage('page-login')">Sign In</button>
+        <p class="auth-switch">By registering you agree to our <a class="auth-link" href="#">Terms of Use</a> and <a class="auth-link" href="#">Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 3 — LOGIN
+═══════════════════════════════════════ -->
+<div class="page" id="page-login">
+  <div class="auth-page">
+    <div class="auth-panel">
+      <div class="logo" onclick="goHome()">
+        <div class="logo-mark">99</div>
+        <div class="logo-text">EVS<span>.com</span></div>
+      </div>
+      <div class="auth-panel-content">
+        <div class="auth-panel-label">// Secure Access</div>
+        <div class="auth-panel-title">Welcome<br>Back to <span>99EVS.</span></div>
+        <p class="auth-panel-sub">Sign in to access MobilityAI and continue your mobility intelligence journey.</p>
+        <div class="auth-panel-features">
+          <div class="auth-feature">
+            <div class="auth-feature-icon">🔐</div>
+            <div>
+              <div class="auth-feature-title">Encrypted Session</div>
+              <div class="auth-feature-desc">Every session is secured with JWT token encryption.</div>
+            </div>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">💡</div>
+            <div>
+              <div class="auth-feature-title">Context Remembered</div>
+              <div class="auth-feature-desc">MobilityAI learns your preferences and vehicle context over time.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth-panel-quote">
+        <p>"Mobility intelligence built for safety, durability, and transparency."</p>
+        <cite>— 99EVS Mission Statement</cite>
+      </div>
+    </div>
+
+    <div class="auth-form-side">
+      <div class="auth-form-container">
+        <div class="auth-logo-top" onclick="goHome()">
+          <div class="logo-mark">99</div>
+          <div class="logo-text">EVS<span style="color:var(--amber)">.com</span></div>
+        </div>
+        <div class="auth-form-title">Sign In</div>
+        <div class="auth-form-sub">Access your mobility intelligence dashboard.</div>
+        <div class="alert" id="login-alert"></div>
+
+        <div class="form-group">
+          <label class="form-label">EMAIL ADDRESS</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="login-email" placeholder="your@email.com" autocomplete="email" maxlength="120" oninput="sanitizeInput(this)">
+          </div>
+          <div class="field-error" id="err-login-email">Please enter a valid email address.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            PASSWORD
+            <span class="form-label-right" onclick="showForgot()">Forgot password?</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" maxlength="128" onkeydown="if(event.key==='Enter') handleLogin()">
+            <button class="input-toggle" onclick="togglePassword('login-password', this)" type="button">👁</button>
+          </div>
+          <div class="field-error" id="err-login-password">Please enter your password.</div>
+        </div>
+
+        <div class="security-notice">
+          <span class="security-icon">🛡️</span>
+          <span>Login attempts are rate-limited and monitored. Suspicious activity is automatically blocked to protect your account.</span>
+        </div>
+
+        <button class="btn btn-primary btn-full btn-lg" onclick="handleLogin()" id="login-btn">Sign In Securely</button>
+        <div class="auth-divider">new to 99EVS</div>
+        <button class="btn btn-outline btn-full" onclick="showPage('page-register')">Create Free Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 4 — CHAT INTERFACE
+═══════════════════════════════════════ -->
+<div class="page" id="page-chat">
+  <div class="chat-page">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Sessions</div>
+        <button class="new-chat-btn" onclick="newSession()" title="New Chat">+</button>
+      </div>
+      <div class="sidebar-body" id="session-list">
+        <div class="session-label">Today</div>
+        <div class="session-item active" onclick="selectSession(this, 'default')">
+          <div class="session-dot"></div>
+          <div class="session-text">New Conversation</div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="chat-user-avatar">U</div>
+          <div class="user-details">
+            <div class="user-name" id="chat-user-name">User</div>
+            <div class="user-role">99EVS Member</div>
+          </div>
+          <button class="user-logout" onclick="handleLogout()" title="Sign Out">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()" id="menu-btn">☰</button>
+        <div class="ai-status">
+          <span class="badge-dot"></span>
+          MobilityAI Active
+        </div>
+        <div class="topbar-title">99EVS Intelligence</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" onclick="newSession()" title="New Session">✦</button>
+        <button class="icon-btn" onclick="clearChat()" title="Clear Chat">⌫</button>
+      </div>
+    </header>
+
+    <main class="chat-area">
+      <div class="messages-container" id="messages">
+        <div class="welcome-state" id="welcome-state">
+          <div class="welcome-mark">⚡</div>
+          <div class="welcome-title">MobilityAI Ready</div>
+          <div class="welcome-sub" id="welcome-greeting">Ask me anything about your vehicle, fleet management, EV systems, diagnostics, or mobility business strategy.</div>
+          <div class="prompt-suggestions">
+            <div class="suggestion-card" onclick="sendSuggestion('My EV battery drains faster than usual. Help me diagnose.')">
+              <div class="suggestion-icon">🔋</div>
+              <div class="suggestion-title">Battery Diagnosis</div>
+              <div class="suggestion-desc">Analyze EV battery health and degradation patterns</div>
+            </div>
+            <div class="suggestion-card" onclick="sendSuggestion('How do I optimize fleet maintenance costs?')">
+              <div class="suggestion-icon">🚛</div>
+              <div class="suggestion-title">Fleet Intelligence</div>
+              <div class="suggestion-desc">Optimize fleet uptime, costs, and maintenance strategy</div>
+            </div>
+            <div class="suggestion-card" onclick="sendSuggestion('What should I check before buying a used EV?')">
+              <div class="suggestion-icon">🔍</div>
+              <div class="suggestion-title">Resale Inspection</div>
+              <div class="suggestion-desc">Vehicle health, valuation, and inspection guidance</div>
+            </div>
+            <div class="suggestion-card" onclick="sendSuggestion('Explain regenerative braking and how to maximize it.')">
+              <div class="suggestion-icon">⚙️</div>
+              <div class="suggestion-title">Technical Deep Dive</div>
+              <div class="suggestion-desc">Engineering explanations for EV and ICE systems</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-bar">
+          <textarea
+            class="chat-input"
+            id="chat-input"
+            placeholder="Ask MobilityAI anything about your vehicle, fleet, or mobility business..."
+            rows="1"
+            maxlength="2000"
+            onkeydown="handleInputKey(event)"
+            oninput="autoResize(this); updateCharCount(this)"
+          ></textarea>
+          <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">➤</button>
+        </div>
+        <div class="input-footer">
+          <span class="input-hint">Enter to send · Shift+Enter for new line</span>
+          <span class="char-count" id="char-count">0 / 2000</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ═══ FORGOT PASSWORD MODAL ═══ -->
+<div class="modal-overlay" id="forgot-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeForgot()">✕</button>
+    <div class="auth-form-title" style="margin-bottom:6px;font-size:20px;">Reset Password</div>
+    <p style="font-size:13px;color:var(--text-2);margin-bottom:24px;">Enter your email and we will send a secure reset link.</p>
+    <div class="alert" id="forgot-alert"></div>
+    <div class="form-group">
+      <label class="form-label">EMAIL ADDRESS</label>
+      <div class="input-wrap">
+        <span class="input-icon">✉️</span>
+        <input type="email" id="forgot-email" placeholder="your@email.com" maxlength="120">
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="handleForgot()">Send Reset Link</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT — FULL SECURE LOGIC
+═══════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ═══ SECURITY CONSTANTS ═══ */
+const SECURITY = {
+  MAX_LOGIN_ATTEMPTS:   5,
+  LOCKOUT_DURATION:     15 * 60 * 1000,
+  SESSION_DURATION:     60 * 60 * 1000,
+  MAX_MSG_LENGTH:       2000,
+  RATE_LIMIT_MESSAGES:  30,
+  RATE_LIMIT_WINDOW:    60 * 1000
+};
+
+/* ═══ IN-MEMORY STATE — No sensitive data in localStorage ═══ */
+const STATE = {
+  currentUser:       null,
+  sessionToken:      null,
+  sessionExpiry:     null,
+  loginAttempts:     0,
+  lockedUntil:       null,
+  messageCount:      0,
+  messageWindowStart:Date.now(),
+  conversationHistory: [],
+  isTyping:          false,
+  currentSessionId:  null
+};
+
+/* ═══ USER STORE — In-memory for Phase 1 (replace with DB in production) ═══ */
+const USERS = new Map();
+
+/* ═══ INPUT SANITIZATION ═══ */
+function sanitizeInput(input) {
+  input.value = input.value
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+\s*=/gi, '');
+}
+
+function sanitizeText(text) {
+  if (!text) return '';
+  const map = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#x27;', '/':'&#x2F;' };
+  return String(text).replace(/[&<>"'/]/g, c => map[c]);
+}
+
+/* ═══ CRYPTO TOKEN ═══ */
+function generateToken() {
+  const arr = new Uint8Array(32);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ═══ HASH (demo — use bcrypt server-side in production) ═══ */
+function hashPassword(pwd, email) {
+  return btoa(encodeURIComponent(pwd + email + '99evs_salt_2025'));
+}
+
+/* ═══ NAVIGATION ═══ */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById(id);
+  if (pg) { pg.classList.add('active'); window.scrollTo(0,0); }
+}
+
+function goHome() {
+  showPage(STATE.currentUser ? 'page-chat' : 'page-home');
+}
+
+/* ═══ PASSWORD STRENGTH ═══ */
+function checkPasswordStrength(pwd) {
+  const el = document.getElementById('pwd-strength');
+  const txt = document.getElementById('strength-text');
+  const bars = [1,2,3,4].map(i => document.getElementById('bar-'+i));
+  if (!pwd) { el.classList.remove('visible'); return; }
+  el.classList.add('visible');
+  let s = 0;
+  if (pwd.length >= 8)  s++;
+  if (pwd.length >= 12) s++;
+  if (/[A-Z]/.test(pwd) && /[a-z]/.test(pwd)) s++;
+  if (/\d/.test(pwd) && /[^A-Za-z0-9]/.test(pwd)) s++;
+  bars.forEach((b, i) => {
+    b.className = 'strength-bar';
+    if (i < s) b.classList.add(s<=1?'weak':s<=2?'medium':'strong');
+  });
+  const labels = ['Too weak','Weak','Moderate','Strong','Very strong'];
+  const colors = ['var(--red)','var(--red)','var(--amber)','var(--green)','var(--green)'];
+  txt.textContent = labels[s]||'Too weak';
+  txt.style.color = colors[s]||'var(--red)';
+}
+
+/* ═══ TOGGLE PASSWORD ═══ */
+function togglePassword(id, btn) {
+  const inp = document.getElementById(id);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+}
+
+/* ═══ VALIDATION ═══ */
+function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e); }
+
+function showError(id, show=true) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('visible', show);
+}
+
+function showAlert(id, msg, type='error') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = `alert ${type} visible`;
+  el.innerHTML = `<span>${type==='success'?'✓':'⚠'}</span> ${sanitizeText(msg)}`;
+}
+
+function hideAlert(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('visible');
+}
+
+/* ═══ RATE LIMIT — LOGIN ═══ */
+function checkLoginRateLimit() {
+  if (STATE.lockedUntil && Date.now() < STATE.lockedUntil) {
+    const rem = Math.ceil((STATE.lockedUntil - Date.now()) / 60000);
+    return { blocked: true, message: `Account locked. Try again in ${rem} minute(s).` };
+  }
+  if (STATE.lockedUntil && Date.now() >= STATE.lockedUntil) {
+    STATE.lockedUntil = null;
+    STATE.loginAttempts = 0;
+  }
+  return { blocked: false };
+}
+
+/* ═══ REGISTER ═══ */
+function handleRegister() {
+  hideAlert('reg-alert');
+  const name    = document.getElementById('reg-name').value.trim();
+  const email   = document.getElementById('reg-email').value.trim().toLowerCase();
+  const pwd     = document.getElementById('reg-password').value;
+  const confirm = document.getElementById('reg-confirm').value;
+  let valid = true;
+
+  if (!name || name.length < 2)  { showError('err-name');       valid = false; } else showError('err-name', false);
+  if (!isValidEmail(email))       { showError('err-reg-email');  valid = false; } else showError('err-reg-email', false);
+  if (pwd.length < 8)             { showError('err-password');   valid = false; } else showError('err-password', false);
+  if (pwd !== confirm)            { showError('err-confirm');    valid = false; } else showError('err-confirm', false);
+  if (!valid) return;
+
+  if (USERS.has(email)) {
+    showAlert('reg-alert', 'An account with this email already exists. Please sign in.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('reg-btn');
+  btn.innerHTML = '<span class="spinner"></span> Creating account...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    USERS.set(email, {
+      name:         sanitizeText(name),
+      email,
+      passwordHash: hashPassword(pwd, email),
+      createdAt:    Date.now(),
+      id:           generateToken().slice(0,16)
+    });
+    btn.innerHTML = 'Create Secure Account';
+    btn.disabled = false;
+    showAlert('reg-alert', 'Account created successfully. Signing you in...', 'success');
+    setTimeout(() => activateSession(USERS.get(email)), 1000);
+  }, 1200);
+}
+
+/* ═══ LOGIN ═══ */
+function handleLogin() {
+  hideAlert('login-alert');
+  const check = checkLoginRateLimit();
+  if (check.blocked) { showAlert('login-alert', check.message, 'error'); return; }
+
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const pwd   = document.getElementById('login-password').value;
+  let valid = true;
+
+  if (!isValidEmail(email)) { showError('err-login-email');    valid = false; } else showError('err-login-email', false);
+  if (!pwd)                  { showError('err-login-password'); valid = false; } else showError('err-login-password', false);
+  if (!valid) return;
+
+  const btn = document.getElementById('login-btn');
+  btn.innerHTML = '<span class="spinner"></span> Verifying...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    const user = USERS.get(email);
+    if (user && user.passwordHash === hashPassword(pwd, email)) {
+      STATE.loginAttempts = 0;
+      btn.innerHTML = 'Sign In Securely';
+      btn.disabled = false;
+      activateSession(user);
+    } else {
+      STATE.loginAttempts++;
+      const rem = SECURITY.MAX_LOGIN_ATTEMPTS - STATE.loginAttempts;
+      if (STATE.loginAttempts >= SECURITY.MAX_LOGIN_ATTEMPTS) {
+        STATE.lockedUntil = Date.now() + SECURITY.LOCKOUT_DURATION;
+        showAlert('login-alert', 'Too many failed attempts. Account locked for 15 minutes.', 'error');
+      } else {
+        showAlert('login-alert', `Invalid email or password. ${rem} attempt(s) remaining.`, 'error');
+      }
+      btn.innerHTML = 'Sign In Securely';
+      btn.disabled = false;
+    }
+  }, 1000);
+}
+
+/* ═══ SESSION ═══ */
+function activateSession(user) {
+  STATE.currentUser   = user;
+  STATE.sessionToken  = generateToken();
+  STATE.sessionExpiry = Date.now() + SECURITY.SESSION_DURATION;
+  STATE.conversationHistory = [];
+
+  const init = user.name.charAt(0).toUpperCase();
+  document.getElementById('chat-user-avatar').textContent = init;
+  document.getElementById('chat-user-name').textContent   = user.name;
+  document.getElementById('welcome-greeting').textContent =
+    `Welcome, ${user.name}. Ask me anything about your vehicle, fleet, EV systems, or mobility business.`;
+
+  showPage('page-chat');
+  showToast(`Welcome, ${user.name}`, '✓');
+}
+
+function checkSession() {
+  if (STATE.sessionExpiry && Date.now() > STATE.sessionExpiry) {
+    showToast('Session expired. Please sign in again.', '⚠');
+    handleLogout();
+    return false;
+  }
+  return true;
+}
+
+function handleLogout() {
+  STATE.currentUser   = null;
+  STATE.sessionToken  = null;
+  STATE.sessionExpiry = null;
+  STATE.conversationHistory = [];
+  STATE.loginAttempts = 0;
+  ['login-email','login-password','reg-name','reg-email','reg-password','reg-confirm']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  hideAlert('login-alert');
+  hideAlert('reg-alert');
+  clearChat();
+  showPage('page-home');
+  showToast('Signed out securely.', '🔒');
+}
+
+/* ═══ FORGOT PASSWORD ═══ */
+function showForgot()  { document.getElementById('forgot-modal').classList.add('visible'); }
+function closeForgot() {
+  document.getElementById('forgot-modal').classList.remove('visible');
+  document.getElementById('forgot-email').value = '';
+  hideAlert('forgot-alert');
+}
+function handleForgot() {
+  const email = document.getElementById('forgot-email').value.trim().toLowerCase();
+  if (!isValidEmail(email)) { showAlert('forgot-alert','Please enter a valid email address.','error'); return; }
+  showAlert('forgot-alert','If this email is registered, a reset link has been sent.','success');
+  setTimeout(closeForgot, 3000);
+}
+
+/* ═══ SIDEBAR ═══ */
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+/* ═══ SESSIONS ═══ */
+function newSession() {
+  clearChat();
+  document.querySelectorAll('.session-item').forEach(s => s.classList.remove('active'));
+  const id   = generateToken().slice(0,8);
+  const item = document.createElement('div');
+  item.className = 'session-item active';
+  item.innerHTML = `<div class="session-dot"></div><div class="session-text">New Conversation</div>`;
+  item.onclick = () => selectSession(item, id);
+  const label = document.querySelector('#session-list .session-label');
+  if (label) label.after(item);
+  STATE.conversationHistory  = [];
+  STATE.currentSessionId     = id;
+  showToast('New session started','✦');
+}
+
+function selectSession(el, id) {
+  document.querySelectorAll('.session-item').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  STATE.currentSessionId = id;
+  if (window.innerWidth < 900) document.getElementById('sidebar').classList.remove('open');
+}
+
+function clearChat() {
+  document.getElementById('messages').innerHTML = `
+    <div class="welcome-state" id="welcome-state">
+      <div class="welcome-mark">⚡</div>
+      <div class="welcome-title">MobilityAI Ready</div>
+      <div class="welcome-sub" id="welcome-greeting">Ask me anything about your vehicle, fleet management, EV systems, diagnostics, or mobility business strategy.</div>
+      <div class="prompt-suggestions">
+        <div class="suggestion-card" onclick="sendSuggestion('My EV battery drains faster than usual. Help me diagnose.')">
+          <div class="suggestion-icon">🔋</div>
+          <div class="suggestion-title">Battery Diagnosis</div>
+          <div class="suggestion-desc">Analyze EV battery health and degradation patterns</div>
+        </div>
+        <div class="suggestion-card" onclick="sendSuggestion('How do I optimize fleet maintenance costs?')">
+          <div class="suggestion-icon">🚛</div>
+          <div class="suggestion-title">Fleet Intelligence</div>
+          <div class="suggestion-desc">Optimize fleet uptime, costs, and maintenance strategy</div>
+        </div>
+        <div class="suggestion-card" onclick="sendSuggestion('What should I check before buying a used EV?')">
+          <div class="suggestion-icon">🔍</div>
+          <div class="suggestion-title">Resale Inspection</div>
+          <div class="suggestion-desc">Vehicle health, valuation, and inspection guidance</div>
+        </div>
+        <div class="suggestion-card" onclick="sendSuggestion('Explain regenerative braking and how to maximize it.')">
+          <div class="suggestion-icon">⚙️</div>
+          <div class="suggestion-title">Technical Deep Dive</div>
+          <div class="suggestion-desc">Engineering explanations for EV and ICE systems</div>
+        </div>
+      </div>
+    </div>`;
+  STATE.conversationHistory = [];
+}
+
+/* ═══ INPUT HELPERS ═══ */
+function updateCharCount(el) {
+  const c = document.getElementById('char-count');
+  if (c) c.textContent = `${el.value.length} / ${SECURITY.MAX_MSG_LENGTH}`;
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleInputKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function sendSuggestion(text) {
+  document.getElementById('chat-input').value = text;
+  sendMessage();
+}
+
+/* ═══ MESSAGE RATE LIMIT ═══ */
+function checkMessageRateLimit() {
+  const now = Date.now();
+  if (now - STATE.messageWindowStart > SECURITY.RATE_LIMIT_WINDOW) {
+    STATE.messageWindowStart = now;
+    STATE.messageCount = 0;
+  }
+  if (STATE.messageCount >= SECURITY.RATE_LIMIT_MESSAGES) return false;
+  STATE.messageCount++;
+  return true;
+}
+
+/* ═══════════════════════════════════
+   MOBILITYAI — SYSTEM PROMPT
+═══════════════════════════════════ */
+function getMobilityAISystemPrompt() {
+  const name = STATE.currentUser?.name || 'User';
+  return `You are MobilityAI — the official intelligence engine of 99EVS.com.
+You are not a generic chatbot. You are a specialized global mobility intelligence system built for professionals, fleet operators, engineers, inspectors, entrepreneurs, and innovators.
+
+The user's name is ${name}. Address them personally when appropriate.
+
+You think and respond like:
+- A senior EV powertrain engineer
+- A multi-fuel vehicle systems specialist
+- A battery and BMS analyst
+- A fleet intelligence strategist
+- A lifecycle durability engineer
+- A resale and inspection framework architect
+- A mobility startup advisor
+- A safety and compliance analyst
+
+Core Mission:
+Make mobility safer. Increase machine durability. Enable transparent resale. Empower fleet efficiency. Support responsible innovation.
+
+Human life always overrides cost or convenience. Always highlight safety warnings when relevant.
+
+Response Format — Always use this structure:
+1. **Overview** — Brief context
+2. **Technical Explanation** — Engineering accuracy
+3. **Practical Application** — What to do
+4. **Risk Factors** — What to watch
+5. **Optimization Strategy** — How to improve
+6. **Future Scope** — If relevant
+
+For diagnostics: Ask clarifying questions first (vehicle type, OEM, model year, error codes, recent service), then provide step-by-step diagnostic flow and escalation criteria.
+
+For business questions: Market context, architecture model, revenue logic, risk analysis, scaling path, competitive advantage.
+
+Technical depth:
+- EV: Throttle → Controller → Motor → Battery → BMS → DC-DC → Auxiliary loads
+- Regenerative braking, brake signal interruption logic
+- Thermal management systems
+- Charging cycles and degradation modeling
+- Battery chemistry: LFP, NMC, NCA
+- Controller failure patterns
+- Wiring harness fault tracing
+- Hub, belt, chain drive systems
+- ICE: Petrol, diesel, CNG — injection, combustion, emission control, lubrication
+
+Tone: Professional. Engineering-grade. Confident. Clear. Strategic. Human-centered. Never casual. Never use emojis in responses.
+
+Platform: 99EVS.com
+Every interaction strengthens the intelligence network that powers 99EVS.
+Safety. Durability. Transparency. Scalability. Ethical Innovation.`;
+}
+
+/* ═══════════════════════════════════
+   SEND MESSAGE — SECURE API PROXY
+═══════════════════════════════════ */
+async function sendMessage() {
+  if (!checkSession()) return;
+
+  const input = document.getElementById('chat-input');
+  const raw   = input.value.trim();
+  if (!raw || STATE.isTyping) return;
+
+  if (raw.length > SECURITY.MAX_MSG_LENGTH) {
+    showToast('Message too long. Please shorten it.', '⚠'); return;
+  }
+
+  if (!checkMessageRateLimit()) {
+    showToast('Too many messages. Please wait a moment.', '⚠'); return;
+  }
+
+  const welcome = document.getElementById('welcome-state');
+  if (welcome) welcome.remove();
+
+  appendMessage('user', sanitizeText(raw));
+  STATE.conversationHistory.push({ role: 'user', content: raw });
+
+  input.value = '';
+  input.style.height = 'auto';
+  updateCharCount(input);
+
+  STATE.isTyping = true;
+  document.getElementById('send-btn').disabled = true;
+
+  const typingId = showTyping();
+
+  try {
+    /* ═══════════════════════════════════════════════
+       SECURE API CALL — Routes through /api/chat
+       Your Anthropic API key stays on the server.
+       Never exposed to the browser.
+    ═══════════════════════════════════════════════ */
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages:     STATE.conversationHistory,
+        systemPrompt: getMobilityAISystemPrompt()
+      })
+    });
+
+    removeTyping(typingId);
+
+    if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+    const data  = await response.json();
+    const reply = data.reply || 'Unable to process request at this time.';
+
+    STATE.conversationHistory.push({ role: 'assistant', content: reply });
+    appendMessage('ai', sanitizeText(reply));
+    updateSessionLabel(raw);
+
+  } catch (err) {
+    removeTyping(typingId);
+    console.error('MobilityAI error:', err);
+    const fallback = getMobilityAIFallback(raw);
+    STATE.conversationHistory.push({ role: 'assistant', content: fallback });
+    appendMessage('ai', sanitizeText(fallback));
+  }
+
+  STATE.isTyping = false;
+  document.getElementById('send-btn').disabled = false;
+  input.focus();
+}
+
+/* ═══ RENDER MESSAGE ═══ */
+function appendMessage(role, text) {
+  const container = document.getElementById('messages');
+  const isAI  = role === 'ai';
+  const time  = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  const name  = sanitizeText(STATE.currentUser?.name || 'You');
+  const init  = (STATE.currentUser?.name || 'U').charAt(0).toUpperCase();
+
+  const formatted = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+
+  const row = document.createElement('div');
+  row.className = `message-row ${role}`;
+  row.innerHTML = `
+    <div class="msg-av ${isAI?'ai':'user'}">${isAI?'M':init}</div>
+    <div class="msg-content">
+      <div class="msg-meta">
+        <span class="msg-name">${isAI?'MobilityAI':name}</span>
+        <span>${time}</span>
+      </div>
+      <div class="msg-body">${formatted}</div>
+    </div>`;
+
+  container.appendChild(row);
+  container.scrollTop = container.scrollHeight;
+}
+
+/* ═══ TYPING INDICATOR ═══ */
+function showTyping() {
+  const container = document.getElementById('messages');
+  const id  = 'typing-' + Date.now();
+  const row = document.createElement('div');
+  row.className = 'typing-row';
+  row.id = id;
+  row.innerHTML = `
+    <div class="msg-av ai">M</div>
+    <div>
+      <div class="msg-meta"><span class="msg-name">MobilityAI</span></div>
+      <div class="typing-bubble">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>`;
+  container.appendChild(row);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+function removeTyping(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+/* ═══ SESSION LABEL ═══ */
+function updateSessionLabel(text) {
+  const active = document.querySelector('.session-item.active .session-text');
+  if (active && active.textContent === 'New Conversation') {
+    active.textContent = text.slice(0, 28) + (text.length > 28 ? '...' : '');
+  }
+}
+
+/* ═══ FALLBACK RESPONSE ═══ */
+function getMobilityAIFallback(query) {
+  const q = query.toLowerCase();
+  if (q.includes('battery') || q.includes('ev') || q.includes('electric')) {
+    return `**Overview**\nYour query relates to EV battery intelligence — a core domain of the 99EVS platform.\n\n**Technical Explanation**\nEV battery health is governed by State of Charge (SoC), State of Health (SoH), cell voltage balance, temperature range, and charge cycle count. The BMS monitors these parameters in real time.\n\n**Practical Application**\n(1) Check SoH via your OEM app. (2) Monitor charging speed — reduced acceptance rate indicates degradation. (3) Check for thermal warnings during fast charging.\n\n**Risk Factors**\nRapid degradation is accelerated by: frequent DC fast charging, extreme temperature operation, and consistently charging to 100% or discharging below 10%.\n\n**Optimization Strategy**\nMaintain charge between 20 and 80% for daily use. Use AC slow charging as primary method. Keep vehicle thermally managed — avoid parking in extreme heat or cold.\n\n*Connect to the 99EVS API for real-time diagnostics.*`;
+  }
+  if (q.includes('fleet') || q.includes('maintenance') || q.includes('cost')) {
+    return `**Overview**\nFleet intelligence is a primary domain of 99EVS — built to reduce downtime and optimize cost-per-km.\n\n**Technical Explanation**\nEffective fleet management operates on three pillars: Preventive maintenance (scheduled by odometer or time), Predictive maintenance (data-driven fault anticipation), and Reactive maintenance (breakdown response — the most expensive mode).\n\n**Practical Application**\n(1) Standardize service intervals across all vehicles. (2) Log every maintenance event digitally. (3) Identify vehicles with recurring fault patterns.\n\n**Risk Factors**\nFleets operating on reactive-only maintenance typically spend 3x more per vehicle. Downtime cost frequently exceeds repair cost.\n\n**Optimization Strategy**\nImplement a vehicle health score system. Set maintenance alerts at 80% of service interval. Analyze cost-per-km monthly per vehicle class.\n\n*Register your fleet on 99EVS for full fleet intelligence access.*`;
+  }
+  return `**MobilityAI — 99EVS Intelligence Engine**\n\nI have received your query. To provide the most accurate engineering-grade response, please confirm a few details:\n\n1. What type of vehicle? (EV / Petrol / Diesel / CNG)\n2. Brand, model, and year?\n3. What specific symptom or situation are you experiencing?\n4. Is this a diagnostic, technical, or business strategy question?\n\nThe more context you provide, the more precise and actionable my response will be.\n\n*MobilityAI — Safety. Durability. Transparency.*`;
+}
+
+/* ═══ TOAST ═══ */
+function showToast(msg, icon='ℹ') {
+  const ex = document.querySelector('.toast');
+  if (ex) ex.remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span>${icon}</span><span>${sanitizeText(msg)}</span>`;
+  document.body.appendChild(t);
+  setTimeout(() => {
+    t.style.transition = 'all 0.3s ease';
+    t.style.opacity = '0';
+    t.style.transform = 'translateY(10px)';
+    setTimeout(() => t.remove(), 300);
+  }, 3000);
+}
+
+/* ═══ INIT ═══ */
+document.addEventListener('DOMContentLoaded', () => {
+  showPage('page-home');
+
+  // Session expiry watchdog
+  setInterval(() => { if (STATE.currentUser) checkSession(); }, 60000);
+
+  // Close sidebar on outside click (mobile)
+  document.addEventListener('click', e => {
+    const sb  = document.getElementById('sidebar');
+    const btn = document.getElementById('menu-btn');
+    if (sb?.classList.contains('open') && !sb.contains(e.target) && e.target !== btn) {
+      sb.classList.remove('open');
+    }
+  });
+
+  // Close modal on overlay click
+  document.getElementById('forgot-modal')?.addEventListener('click', e => {
+    if (e.target.id === 'forgot-modal') closeForgot();
+  });
+
+  // Prevent form submit on Enter in password fields
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.type === 'password') e.preventDefault();
+  });
+});
+</script>
+</body>
+</html>
