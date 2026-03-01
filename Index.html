@@ -3,1010 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>99EVS | Global Mobility Intelligence Platform</title>
+
+<title>99EVS | Global Mobility Intelligence</title>
+
+<meta name="description" content="99EVS — Global Mobility Intelligence Platform for EV, ICE, Fleet and Industrial Machines. Safety. Durability. Transparency.">
+<meta name="theme-color" content="#00E676">
+
 <style>
 :root{
   --green:#00E676;
   --green2:#00C853;
   --bg:#0A0F14;
   --bg2:#0E1419;
-  --bg3:#101820;
   --border:#1E3A2A;
-  --border2:#1a2a22;
   --text1:#E8EDF2;
   --text2:#7A9BB0;
   --text3:#3D5468;
-  --red:#FF4C4C;
-  --amber:#FFB300;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text1);min-height:100vh;}
-
-/* ── PAGES ── */
-.page{display:none;min-height:100vh;flex-direction:column;}
-.page.active{display:flex;}
-
-/* ── HOME ── */
-header{padding:28px 24px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text1);}
+header{padding:28px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
 .logo{color:var(--green);font-size:26px;font-weight:900;letter-spacing:2px;}
-.logo span{color:var(--text2);font-size:14px;font-weight:normal;margin-left:6px;}
-.nav-btns{display:flex;gap:10px;}
-.btn{padding:10px 20px;border-radius:7px;font-weight:bold;cursor:pointer;font-size:14px;border:none;transition:0.2s;}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2);}
-.btn-ghost:hover{border-color:var(--green);color:var(--green);}
+.btn{padding:10px 20px;border-radius:6px;font-weight:bold;border:none;cursor:pointer;}
 .btn-primary{background:linear-gradient(135deg,var(--green),var(--green2));color:#000;}
-.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px);}
-.btn-outline{background:transparent;border:1px solid var(--green);color:var(--green);}
-.btn-outline:hover{background:rgba(0,230,118,0.08);}
-
-.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;}
-.hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:100px;border:1px solid rgba(0,230,118,0.25);background:rgba(0,230,118,0.05);font-size:11px;color:var(--green);margin-bottom:24px;}
-.dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.hero h1{font-size:clamp(32px,5vw,60px);font-weight:900;line-height:1.1;margin-bottom:16px;}
-.hero h1 span{color:var(--green);}
-.hero p{font-size:16px;color:var(--text2);max-width:520px;line-height:1.7;margin-bottom:32px;}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
-.strip{display:flex;justify-content:center;flex-wrap:wrap;border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);background:var(--bg2);}
-.strip-item{padding:14px 22px;border-right:1px solid var(--border2);font-size:12px;color:var(--text2);display:flex;align-items:center;gap:7px;}
-.strip-item:last-child{border-right:none;}
-footer{background:var(--bg2);border-top:1px solid var(--border2);padding:20px 24px;text-align:center;font-size:12px;color:var(--text3);}
-
-/* ── AUTH MODAL ── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;}
-.modal-bg.open{display:flex;}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:12px;width:100%;max-width:400px;padding:30px;position:relative;animation:fadeUp 0.25s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.modal-x{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;}
-.modal-x:hover{color:var(--text1);}
-.modal h2{font-size:20px;color:var(--text1);margin-bottom:4px;}
-.modal .sub{font-size:13px;color:var(--text2);margin-bottom:22px;}
-.field{margin-bottom:14px;}
-.field label{display:block;font-size:10px;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em;}
-.field input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 13px;color:var(--text1);font-size:14px;outline:none;}
-.field input:focus{border-color:var(--green2);}
-.field input::placeholder{color:var(--text3);}
-.alert{padding:9px 12px;border-radius:6px;font-size:12px;margin-bottom:12px;display:none;}
-.alert.show{display:block;}
-.alert.err{background:rgba(255,76,76,0.1);border:1px solid rgba(255,76,76,0.3);color:#ff7070;}
-.alert.ok{background:rgba(0,230,118,0.07);border:1px solid rgba(0,230,118,0.2);color:var(--green);}
-.switch{font-size:12px;color:var(--text3);margin-top:14px;text-align:center;}
-.switch a{color:var(--green);cursor:pointer;}
-.switch a:hover{text-decoration:underline;}
-
-/* ── MOBILITYAI CHAT PAGE ── */
-.chat-page{height:100vh;display:none;flex-direction:column;}
-.chat-page.active{display:flex;}
-
-.chat-top{height:52px;background:var(--bg2);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
-.chat-top-left{display:flex;align-items:center;gap:12px;}
-.chat-logo{font-size:16px;font-weight:900;color:var(--green);}
-.chip{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;border:1px solid var(--border);background:var(--bg3);font-size:11px;color:var(--green);}
-.chat-top-right{display:flex;align-items:center;gap:8px;}
-.user-av{width:28px;height:28px;border-radius:6px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;color:var(--green);}
-.uname{font-size:13px;color:var(--text1);}
-.logout-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-size:12px;padding:5px 10px;cursor:pointer;}
-.logout-btn:hover{border-color:var(--red);color:var(--red);}
-
-.chat-body{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.messages{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:18px;}
-.messages::-webkit-scrollbar{width:3px;}
-.messages::-webkit-scrollbar-thumb{background:var(--border);}
-
-.welcome-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:30px;}
-.w-icon{font-size:36px;margin-bottom:14px;}
-.w-title{font-size:20px;font-weight:bold;color:var(--text1);margin-bottom:7px;}
-.w-sub{font-size:13px;color:var(--text2);max-width:360px;line-height:1.6;margin-bottom:24px;}
-.sugs{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:520px;width:100%;}
-.sug{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:0.2s;text-align:left;}
-.sug:hover{border-color:var(--green);background:rgba(0,230,118,0.04);transform:translateY(-2px);}
-.sug-ic{font-size:16px;margin-bottom:4px;}
-.sug-t{font-size:12px;font-weight:bold;color:var(--text1);}
-.sug-d{font-size:11px;color:var(--text3);}
-
-.msg-row{display:flex;gap:10px;animation:fadeUp 0.2s ease;}
-.msg-row.user-row{flex-direction:row-reverse;}
-.av{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;flex-shrink:0;margin-top:2px;}
-.av.ai{background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);color:var(--green);}
-.av.usr{background:var(--bg3);border:1px solid var(--border);color:var(--text2);}
-.bubble{max-width:680px;padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.7;}
-.bubble.ai{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);color:var(--text1);}
-.bubble.user{background:var(--bg3);border:1px solid var(--border);color:var(--text1);}
-.bubble strong{color:var(--green);}
-.bubble code{background:var(--bg3);padding:2px 5px;border-radius:3px;font-size:11px;color:#40C4FF;}
-.meta{font-size:10px;color:var(--text3);margin-bottom:4px;}
-.typing-row{display:flex;gap:10px;}
-.typing-bbl{padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;display:flex;gap:5px;align-items:center;}
-.td{width:5px;height:5px;background:var(--green2);border-radius:50%;animation:td 1.2s infinite;}
-.td:nth-child(2){animation-delay:0.2s;}
-.td:nth-child(3){animation-delay:0.4s;}
-@keyframes td{0%,60%,100%{transform:translateY(0);opacity:0.3}30%{transform:translateY(-5px);opacity:1}}
-
-.input-area{padding:14px 20px 18px;border-top:1px solid var(--border2);background:rgba(10,15,20,0.6);}
-.input-bar{display:flex;gap:8px;align-items:flex-end;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 10px 10px 15px;}
-.input-bar:focus-within{border-color:var(--green2);}
-.chat-in{flex:1;background:transparent;border:none;outline:none;color:var(--text1);font-size:14px;resize:none;min-height:22px;max-height:100px;overflow-y:auto;font-family:Arial,sans-serif;line-height:1.5;}
-.chat-in::placeholder{color:var(--text3);}
-.send{width:34px;height:34px;border-radius:7px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;color:#000;cursor:pointer;font-size:15px;font-weight:bold;flex-shrink:0;}
-.send:hover{filter:brightness(1.1);}
-.send:disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed;}
-.inp-foot{display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--text3);}
-
-/* ── KIAI FOUNDER DASHBOARD ── */
-.kiai-page{height:100vh;display:none;flex-direction:row;}
-.kiai-page.active{display:flex;}
-
-.kiai-sidebar{width:230px;background:var(--bg2);border-right:1px solid var(--border2);display:flex;flex-direction:column;flex-shrink:0;}
-.ks-head{padding:16px;border-bottom:1px solid var(--border2);}
-.ks-brand{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
-.ks-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--green),var(--green2));border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#000;}
-.ks-name{font-size:15px;font-weight:900;color:var(--text1);}
-.ks-name span{color:var(--green);}
-.founder-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:100px;background:rgba(0,230,118,0.07);border:1px solid rgba(0,230,118,0.15);font-size:10px;color:var(--green);}
-.ks-nav{flex:1;overflow-y:auto;padding:8px;}
-.ks-sec{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;padding:10px 8px 3px;}
-.ks-item{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text2);border:1px solid transparent;margin-bottom:1px;transition:0.15s;}
-.ks-item:hover{background:var(--bg3);color:var(--text1);}
-.ks-item.on{background:rgba(0,230,118,0.08);border-color:rgba(0,230,118,0.15);color:var(--green);}
-.ks-foot{padding:10px;border-top:1px solid var(--border2);}
-.fc{background:rgba(0,230,118,0.05);border:1px solid rgba(0,230,118,0.12);border-radius:7px;padding:10px;font-size:12px;}
-.fc-name{font-weight:bold;color:var(--text1);margin-bottom:2px;}
-.fc-email{font-size:10px;color:var(--text3);margin-bottom:2px;}
-.fc-role{font-size:10px;color:var(--green);}
-.fc-out{display:flex;align-items:center;gap:5px;margin-top:8px;padding:6px 9px;background:rgba(255,76,76,0.1);border:1px solid rgba(255,76,76,0.2);border-radius:6px;color:var(--red);font-size:11px;cursor:pointer;width:100%;}
-.fc-out:hover{background:rgba(255,76,76,0.18);}
-
-.kiai-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.kiai-top{height:52px;background:rgba(10,15,20,0.7);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:0 22px;flex-shrink:0;}
-.kiai-top-title{font-size:14px;font-weight:bold;color:var(--text1);}
-.kiai-content{flex:1;overflow-y:auto;padding:22px;}
-.kiai-content::-webkit-scrollbar{width:4px;}
-.kiai-content::-webkit-scrollbar-thumb{background:var(--border);}
-
-.panel{display:none;}
-.panel.on{display:block;animation:fadeUp 0.3s ease;}
-
-/* metrics */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px;}
-.mc{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:16px;}
-.mc:hover{border-color:rgba(0,230,118,0.2);}
-.mc-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;}
-.mc-val{font-size:26px;font-weight:900;margin-bottom:3px;}
-.mc-val.g{color:var(--green);}
-.mc-val.a{color:var(--amber);}
-.mc-change{font-size:11px;color:var(--text3);}
-.mc-change.up{color:var(--green);}
-
-/* cards */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:20px;}
-.card{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;overflow:hidden;margin-bottom:13px;}
-.card-head{padding:13px 15px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
-.card-title{font-size:13px;font-weight:bold;color:var(--text1);}
-.badge{padding:3px 9px;border-radius:100px;font-size:10px;background:rgba(0,230,118,0.08);color:var(--green);border:1px solid rgba(0,230,118,0.18);}
-.card-body{padding:14px;}
-
-/* list items */
-.act-list{display:flex;flex-direction:column;}
-.act{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border2);}
-.act:last-child{border-bottom:none;}
-.act-ic{width:26px;height:26px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
-.act-ic.g{background:rgba(0,230,118,0.08);}
-.act-ic.a{background:rgba(255,179,0,0.1);}
-.act-txt{flex:1;font-size:13px;color:var(--text1);}
-.act-sub{font-size:11px;color:var(--text3);}
-.act-time{font-size:10px;color:var(--text3);flex-shrink:0;}
-
-/* sys items */
-.sys-list{display:flex;flex-direction:column;gap:8px;}
-.sys{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;}
-.sys-name{font-size:13px;color:var(--text1);}
-.sys-status{display:flex;align-items:center;gap:5px;font-size:11px;}
-.sd{width:5px;height:5px;border-radius:50%;}
-.sd.on{background:var(--green);}
-.sd.pr{background:var(--amber);}
-.sd.off{background:var(--red);}
-.st-on{color:var(--green);}
-.st-pr{color:var(--amber);}
-.st-off{color:var(--red);}
-
-/* table */
-.tbl{width:100%;border-collapse:collapse;}
-.tbl th{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;padding:9px 11px;border-bottom:1px solid var(--border2);text-align:left;}
-.tbl td{font-size:13px;color:var(--text1);padding:10px 11px;border-bottom:1px solid var(--border2);}
-.tbl tr:last-child td{border-bottom:none;}
-.tbl tr:hover td{background:rgba(255,255,255,0.02);}
-
-/* KIAI CHAT PANEL */
-.kiai-chat-wrap{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;display:flex;flex-direction:column;height:calc(100vh - 130px);}
-.kc-head{padding:12px 15px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border-radius:10px 10px 0 0;}
-.kc-title{font-size:13px;font-weight:bold;color:var(--text1);display:flex;align-items:center;gap:8px;}
-.kc-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px;}
-.kc-msgs::-webkit-scrollbar{width:3px;}
-.kc-msgs::-webkit-scrollbar-thumb{background:var(--border);}
-.kc-input{padding:12px 15px;border-top:1px solid var(--border2);}
-.kc-bar{display:flex;gap:7px;align-items:flex-end;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 8px 8px 13px;}
-.kc-bar:focus-within{border-color:var(--green2);}
-.kc-in{flex:1;background:transparent;border:none;outline:none;color:var(--text1);font-size:13px;resize:none;min-height:22px;max-height:90px;overflow-y:auto;font-family:Arial,sans-serif;}
-.kc-in::placeholder{color:var(--text3);}
-
-/* roadmap */
-.road-row{display:flex;align-items:center;gap:14px;padding:13px 15px;border-bottom:1px solid var(--border2);}
-.road-row:last-child{border-bottom:none;}
-.road-phase{font-size:12px;font-weight:bold;min-width:70px;}
-.road-desc{flex:1;font-size:13px;color:var(--text2);}
-.road-status{font-size:11px;display:flex;align-items:center;gap:5px;min-width:90px;}
-.road-action{font-size:11px;color:var(--text3);min-width:120px;text-align:right;}
-
-/* responsive */
-@media(max-width:900px){
-  .metrics{grid-template-columns:repeat(2,1fr);}
-  .grid2{grid-template-columns:1fr;}
-  .kiai-sidebar{display:none;}
-}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2);}
+.hero{padding:100px 24px;text-align:center;}
+.hero h1{font-size:48px;margin-bottom:20px;}
+.hero span{color:var(--green);}
+.hero p{max-width:600px;margin:0 auto 30px;color:var(--text2);line-height:1.7;}
+footer{padding:20px;text-align:center;border-top:1px solid var(--border);color:var(--text3);font-size:12px;margin-top:80px;}
+.chat-container{max-width:900px;margin:40px auto;border:1px solid var(--border);border-radius:8px;background:var(--bg2);display:flex;flex-direction:column;height:70vh;}
+.messages{flex:1;padding:20px;overflow-y:auto;}
+.msg{margin-bottom:16px;}
+.msg strong{color:var(--green);}
+.input-bar{display:flex;border-top:1px solid var(--border);}
+textarea{flex:1;background:transparent;border:none;color:var(--text1);padding:15px;resize:none;outline:none;}
+.send{width:80px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;color:#000;font-weight:bold;cursor:pointer;}
 @media(max-width:600px){
-  .metrics{grid-template-columns:1fr;}
-  .sugs{grid-template-columns:1fr;}
-  .strip{display:none;}
+.hero h1{font-size:32px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════
-     HOME PAGE
-═══════════════════════════ -->
-<div class="page active" id="pg-home">
-  <header>
-    <div class="logo">99EVS <span>Mobility Intelligence</span></div>
-    <div class="nav-btns">
-      <button class="btn btn-ghost" onclick="openAuth('login')">Sign In</button>
-      <button class="btn btn-primary" onclick="openAuth('register')">Get Started Free</button>
-    </div>
-  </header>
+<header>
+  <div class="logo">99EVS</div>
+  <div>
+    <button class="btn btn-ghost" onclick="scrollToChat()">Launch MobilityAI</button>
+  </div>
+</header>
 
-  <div class="hero">
-    <div class="hero-tag"><span class="dot"></span> MobilityAI — Live & Active</div>
-    <h1>Mobility Intelligence<br><span>For Every Vehicle.</span></h1>
-    <p>Engineering-grade AI for EVs, ICE, CNG, fleet, and industrial machines. Built on safety, transparency, and engineering discipline.</p>
-    <div class="hero-btns">
-      <button class="btn btn-primary" onclick="openAuth('register')">⚡ Start for Free</button>
-      <button class="btn btn-ghost" onclick="openAuth('login')">Sign In</button>
+<section class="hero">
+  <h1>Mobility Intelligence <br><span>For Every Vehicle.</span></h1>
+  <p>
+    Engineering-grade AI for EV, ICE, CNG, fleet and industrial machines.
+    Built on safety, transparency and durability.
+  </p>
+  <button class="btn btn-primary" onclick="scrollToChat()">Start Free</button>
+</section>
+
+<section id="chat">
+  <div class="chat-container">
+    <div class="messages" id="messages">
+      <div class="msg">
+        <strong>MobilityAI:</strong><br>
+        Welcome to 99EVS.  
+        Please provide:
+        1. Vehicle type  
+        2. Brand & model  
+        3. Model year  
+        4. Issue or question  
+      </div>
+    </div>
+
+    <div class="input-bar">
+      <textarea id="input" rows="2" placeholder="Ask about EV battery, fleet maintenance, inspection, resale, diagnostics..."></textarea>
+      <button class="send" onclick="send()">Send</button>
     </div>
   </div>
+</section>
 
-  <div class="strip">
-    <div class="strip-item">🔒 Zero-Trust Security</div>
-    <div class="strip-item">⚡ EV · ICE · CNG · Hybrid</div>
-    <div class="strip-item">🛡️ Privacy First</div>
-    <div class="strip-item">🌐 Global Standards</div>
-    <div class="strip-item">📊 Engineering-Grade AI</div>
-  </div>
-
-  <footer>© 2026 99EVS.com | Founder: Kiran SR | Safety First | Built for Humanity</footer>
-</div>
-
-<!-- ═══════════════════════════
-     AUTH MODAL
-═══════════════════════════ -->
-<div class="modal-bg" id="auth-modal">
-  <div class="modal">
-    <button class="modal-x" onclick="closeAuth()">✕</button>
-    <h2 id="auth-h">Sign In</h2>
-    <p class="sub" id="auth-sub">Access MobilityAI — your mobility intelligence engine.</p>
-    <div class="alert" id="auth-err"></div>
-
-    <!-- LOGIN FORM -->
-    <div id="login-form">
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" id="l-email" placeholder="your@email.com" maxlength="120" oninput="detectFounder(this.value)">
-      </div>
-      <div class="field">
-        <label>Password</label>
-        <input type="password" id="l-pwd" placeholder="Your password" maxlength="128" onkeydown="if(event.key==='Enter')doLogin()">
-      </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:4px" id="login-btn" onclick="doLogin()">Sign In Securely</button>
-      <div class="switch">No account? <a onclick="switchForm('register')">Create one free</a></div>
-    </div>
-
-    <!-- REGISTER FORM -->
-    <div id="register-form" style="display:none">
-      <div class="field">
-        <label>Full Name</label>
-        <input type="text" id="r-name" placeholder="Your full name" maxlength="80">
-      </div>
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" id="r-email" placeholder="your@email.com" maxlength="120">
-      </div>
-      <div class="field">
-        <label>Password (min 8 chars)</label>
-        <input type="password" id="r-pwd" placeholder="Create a strong password" maxlength="128">
-      </div>
-      <div class="field">
-        <label>Confirm Password</label>
-        <input type="password" id="r-confirm" placeholder="Repeat password" maxlength="128" onkeydown="if(event.key==='Enter')doRegister()">
-      </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:4px" id="reg-btn" onclick="doRegister()">Create Account</button>
-      <div class="switch">Already registered? <a onclick="switchForm('login')">Sign in</a></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════
-     MOBILITYAI CHAT PAGE (USERS)
-═══════════════════════════ -->
-<div class="chat-page" id="pg-chat">
-  <div class="chat-top">
-    <div class="chat-top-left">
-      <div class="chat-logo">99EVS</div>
-      <div class="chip"><span class="dot"></span> MobilityAI Active</div>
-    </div>
-    <div class="chat-top-right">
-      <div class="user-av" id="chat-av">U</div>
-      <div class="uname" id="chat-uname">User</div>
-      <button class="logout-btn" onclick="doLogout()">⏻ Sign Out</button>
-    </div>
-  </div>
-
-  <div class="chat-body">
-    <div class="messages" id="msgs">
-      <div class="welcome-state" id="welcome">
-        <div class="w-icon">⚡</div>
-        <div class="w-title">MobilityAI Ready</div>
-        <div class="w-sub" id="w-msg">Ask me anything about your vehicle, fleet, EV systems, or mobility business.</div>
-        <div class="sugs">
-          <div class="sug" onclick="useSug('My EV battery drains faster than usual. Help me diagnose.')">
-            <div class="sug-ic">🔋</div><div class="sug-t">Battery Diagnosis</div><div class="sug-d">EV health & degradation</div>
-          </div>
-          <div class="sug" onclick="useSug('How do I optimize fleet maintenance costs?')">
-            <div class="sug-ic">🚛</div><div class="sug-t">Fleet Intelligence</div><div class="sug-d">Uptime & cost optimization</div>
-          </div>
-          <div class="sug" onclick="useSug('What should I check before buying a used EV?')">
-            <div class="sug-ic">🔍</div><div class="sug-t">Resale Inspection</div><div class="sug-d">Vehicle health & valuation</div>
-          </div>
-          <div class="sug" onclick="useSug('Explain regenerative braking and how to maximize it.')">
-            <div class="sug-ic">⚙️</div><div class="sug-t">Technical Deep Dive</div><div class="sug-d">EV engineering explained</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="input-area">
-      <div class="input-bar">
-        <textarea class="chat-in" id="chat-inp" placeholder="Ask MobilityAI anything about your vehicle, fleet, or mobility business..." maxlength="2000" rows="1" onkeydown="chatKey(event)" oninput="autoH(this)"></textarea>
-        <button class="send" id="send-btn" onclick="sendMsg()">➤</button>
-      </div>
-      <div class="inp-foot">
-        <span>Enter to send · Shift+Enter for new line</span>
-        <span id="cc">0 / 2000</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════
-     KIAI FOUNDER DASHBOARD
-═══════════════════════════ -->
-<div class="kiai-page" id="pg-kiai">
-
-  <!-- SIDEBAR -->
-  <div class="kiai-sidebar">
-    <div class="ks-head">
-      <div class="ks-brand">
-        <div class="ks-mark">K</div>
-        <div>
-          <div class="ks-name"><span>KIAI</span></div>
-          <div style="font-size:10px;color:var(--text3)">99EVS Intelligence</div>
-        </div>
-      </div>
-      <div class="founder-chip"><span class="dot"></span> Founder Mode</div>
-    </div>
-    <div class="ks-nav">
-      <div class="ks-sec">Command</div>
-      <div class="ks-item on" onclick="showPanel('overview',this)">📊 Overview</div>
-      <div class="ks-item" onclick="showPanel('kiai-chat',this)">🧠 KIAI Intelligence</div>
-      <div class="ks-sec">Platform</div>
-      <div class="ks-item" onclick="showPanel('infra',this)">🏗️ Infrastructure</div>
-      <div class="ks-item" onclick="showPanel('security',this)">🔐 Security & Audit</div>
-      <div class="ks-sec">Business</div>
-      <div class="ks-item" onclick="showPanel('users',this)">👥 Users</div>
-      <div class="ks-item" onclick="showPanel('vendors',this)">🏭 Vendors</div>
-      <div class="ks-item" onclick="showPanel('analytics',this)">📈 Analytics</div>
-      <div class="ks-sec">System</div>
-      <div class="ks-item" onclick="showPanel('settings',this)">⚙️ Settings</div>
-    </div>
-    <div class="ks-foot">
-      <div class="fc">
-        <div class="fc-name">Kiran SR</div>
-        <div class="fc-email">shelltwo6565@gmail.com</div>
-        <div class="fc-role">Supreme Admin · Founder</div>
-        <button class="fc-out" onclick="doLogout()">⏻ Sign Out</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MAIN -->
-  <div class="kiai-main">
-    <div class="kiai-top">
-      <div class="kiai-top-title" id="panel-title">Overview — KIAI Dashboard</div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="chip"><span class="dot"></span> KIAI Active</div>
-        <button class="btn btn-ghost" style="font-size:12px;padding:6px 13px" onclick="goPublic()">↗ Public View</button>
-      </div>
-    </div>
-
-    <div class="kiai-content">
-
-      <!-- OVERVIEW PANEL -->
-      <div class="panel on" id="panel-overview">
-        <div class="metrics">
-          <div class="mc"><div class="mc-label">Total Users</div><div class="mc-val g" id="mc-users">0</div><div class="mc-change">Phase 1 Launch</div></div>
-          <div class="mc"><div class="mc-label">AI Sessions</div><div class="mc-val g" id="mc-sess">0</div><div class="mc-change up">Active Today</div></div>
-          <div class="mc"><div class="mc-label">Vendors Onboard</div><div class="mc-val a">0</div><div class="mc-change">Phase 2 →</div></div>
-          <div class="mc"><div class="mc-label">System Status</div><div class="mc-val g" style="font-size:18px">LIVE</div><div class="mc-change up">All Normal</div></div>
-        </div>
-        <div class="grid2">
-          <div class="card">
-            <div class="card-head"><div class="card-title">Recent Activity</div><div class="badge">Live</div></div>
-            <div class="card-body">
-              <div class="act-list">
-                <div class="act"><div class="act-ic g">🚀</div><div class="act-txt">Platform Deployed<div class="act-sub">99EVS v2.0 live on Vercel</div></div><div class="act-time">Now</div></div>
-                <div class="act"><div class="act-ic g">🔑</div><div class="act-txt">Anthropic API Connected<div class="act-sub">MobilityAI engine active</div></div><div class="act-time">Today</div></div>
-                <div class="act"><div class="act-ic a">🔒</div><div class="act-txt">KIAI Security Active<div class="act-sub">Zero-trust model enforced</div></div><div class="act-time">Today</div></div>
-                <div class="act"><div class="act-ic g">🌐</div><div class="act-txt">Domain Pending<div class="act-sub">99evs.com DNS propagation</div></div><div class="act-time">Pending</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">System Status</div><div class="badge">Monitoring</div></div>
-            <div class="card-body">
-              <div class="sys-list">
-                <div class="sys"><span class="sys-name">MobilityAI Engine</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Online</span></div></div>
-                <div class="sys"><span class="sys-name">Vercel Deployment</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Live</span></div></div>
-                <div class="sys"><span class="sys-name">Authentication</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-                <div class="sys"><span class="sys-name">99evs.com Domain</span><div class="sys-status"><div class="sd pr"></div><span class="st-pr">Propagating</span></div></div>
-                <div class="sys"><span class="sys-name">Anthropic API</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Connected</span></div></div>
-                <div class="sys"><span class="sys-name">GitHub Repository</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Synced</span></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Platform Roadmap</div></div>
-          <div class="card-body" style="padding:0">
-            <div class="road-row"><div class="road-phase" style="color:var(--green)">Phase 1</div><div class="road-desc">User Login + MobilityAI Chat</div><div class="road-status"><div class="sd on"></div><span class="st-on">Live</span></div><div class="road-action">Test & monitor</div></div>
-            <div class="road-row"><div class="road-phase" style="color:var(--text2)">Phase 2</div><div class="road-desc">Vehicle Profiles + Inspection Network</div><div class="road-status"><div class="sd pr"></div><span class="st-pr">Planned</span></div><div class="road-action">Post Phase 1</div></div>
-            <div class="road-row"><div class="road-phase" style="color:var(--text3)">Phase 3</div><div class="road-desc">Fleet Dashboard + Multi-User</div><div class="road-status"><div class="sd off"></div><span class="st-off">Queued</span></div><div class="road-action">After Phase 2</div></div>
-            <div class="road-row"><div class="road-phase" style="color:var(--text3)">Phase 4</div><div class="road-desc">Vendor Ecosystem + Marketplace</div><div class="road-status"><div class="sd off"></div><span class="st-off">Queued</span></div><div class="road-action">After Phase 3</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- KIAI CHAT PANEL -->
-      <div class="panel" id="panel-kiai-chat">
-        <div class="kiai-chat-wrap">
-          <div class="kc-head">
-            <div class="kc-title">🧠 KIAI — Founder Intelligence Layer <span class="badge" style="font-size:10px">Founder Only</span></div>
-            <div class="chip"><span class="dot"></span> Active</div>
-          </div>
-          <div class="kc-msgs" id="kiai-msgs">
-            <div class="welcome-state" style="height:auto;padding:30px 20px">
-              <div class="w-icon">🧠</div>
-              <div class="w-title" style="font-size:17px">KIAI Intelligence Ready</div>
-              <div class="w-sub">Founder-exclusive intelligence. Ask about platform strategy, business, technical architecture, vendor ecosystem, or system monitoring.</div>
-            </div>
-          </div>
-          <div class="kc-input">
-            <div class="kc-bar">
-              <textarea class="kc-in" id="kiai-inp" placeholder="Ask KIAI anything — strategy, architecture, business, security..." rows="1" maxlength="3000" onkeydown="kiaiKey(event)" oninput="autoH(this)"></textarea>
-              <button class="send" id="kiai-send" onclick="sendKiai()" style="width:30px;height:30px;font-size:13px">➤</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- INFRASTRUCTURE PANEL -->
-      <div class="panel" id="panel-infra">
-        <div class="card">
-          <div class="card-head"><div class="card-title">Infrastructure Stack</div><div class="badge">Kiran SR Control</div></div>
-          <div class="card-body" style="padding:0">
-            <table class="tbl">
-              <thead><tr><th>Service</th><th>Provider</th><th>Purpose</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr><td>Domain</td><td>GoDaddy</td><td>99evs.com DNS control</td><td><div class="sys-status"><div class="sd pr"></div><span class="st-pr">Propagating</span></div></td></tr>
-                <tr><td>Hosting</td><td>Hostinger Premium</td><td>Infrastructure layer</td><td><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></td></tr>
-                <tr><td>Deployment</td><td>Vercel</td><td>Frontend + API proxy</td><td><div class="sys-status"><div class="sd on"></div><span class="st-on">Live</span></div></td></tr>
-                <tr><td>Code</td><td>GitHub</td><td>Version control</td><td><div class="sys-status"><div class="sd on"></div><span class="st-on">Synced</span></div></td></tr>
-                <tr><td>AI Engine</td><td>Anthropic Claude</td><td>MobilityAI + KIAI</td><td><div class="sys-status"><div class="sd on"></div><span class="st-on">Connected</span></div></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="grid2">
-          <div class="card">
-            <div class="card-head"><div class="card-title">AI Stack</div></div>
-            <div class="card-body"><div class="sys-list">
-              <div class="sys"><span class="sys-name">Claude (Anthropic)</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Primary</span></div></div>
-              <div class="sys"><span class="sys-name">DeepSeek</span><div class="sys-status"><div class="sd pr"></div><span class="st-pr">Analysis Layer</span></div></div>
-              <div class="sys"><span class="sys-name">ChatGPT</span><div class="sys-status"><div class="sd pr"></div><span class="st-pr">General Reasoning</span></div></div>
-              <div class="sys"><span class="sys-name">Gemini</span><div class="sys-status"><div class="sd pr"></div><span class="st-pr">Research Layer</span></div></div>
-              <div class="sys"><span class="sys-name">Gamma</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Presentations</span></div></div>
-            </div></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">Access Control</div></div>
-            <div class="card-body"><div class="sys-list">
-              <div class="sys"><span class="sys-name">GitHub Orgs</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Founder Only</span></div></div>
-              <div class="sys"><span class="sys-name">Vercel Projects</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Founder Only</span></div></div>
-              <div class="sys"><span class="sys-name">GoDaddy DNS</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Founder Only</span></div></div>
-              <div class="sys"><span class="sys-name">API Keys</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Env Isolated</span></div></div>
-            </div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECURITY PANEL -->
-      <div class="panel" id="panel-security">
-        <div class="metrics">
-          <div class="mc"><div class="mc-label">Failed Logins</div><div class="mc-val a" id="mc-fails">0</div><div class="mc-change">Today</div></div>
-          <div class="mc"><div class="mc-label">Locked Accounts</div><div class="mc-val g">0</div><div class="mc-change up">None Active</div></div>
-          <div class="mc"><div class="mc-label">Active Sessions</div><div class="mc-val g" id="mc-active">0</div><div class="mc-change">Live Count</div></div>
-          <div class="mc"><div class="mc-label">Security Model</div><div class="mc-val g" style="font-size:16px">Zero Trust</div><div class="mc-change up">Enforced</div></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Security Architecture</div><div class="badge">KIAI Enforced</div></div>
-          <div class="card-body"><div class="sys-list">
-            <div class="sys"><span class="sys-name">Zero Trust Model</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-            <div class="sys"><span class="sys-name">JWT Authentication</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-            <div class="sys"><span class="sys-name">Rate Limiting (5 attempts / 15 min)</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-            <div class="sys"><span class="sys-name">Input Sanitization</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-            <div class="sys"><span class="sys-name">API Abuse Protection</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-            <div class="sys"><span class="sys-name">Role-Based Access Control</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-            <div class="sys"><span class="sys-name">Environment Variable Isolation</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-            <div class="sys"><span class="sys-name">Session Expiry (60 min)</span><div class="sys-status"><div class="sd on"></div><span class="st-on">Active</span></div></div>
-          </div></div>
-        </div>
-      </div>
-
-      <!-- USERS PANEL -->
-      <div class="panel" id="panel-users">
-        <div class="card">
-          <div class="card-head"><div class="card-title">Registered Users</div><div class="badge" id="user-badge">0 Total</div></div>
-          <div class="card-body" style="padding:0">
-            <table class="tbl">
-              <thead><tr><th>Name</th><th>Email</th><th>Registered</th><th>Role</th><th>Status</th></tr></thead>
-              <tbody id="users-tbody">
-                <tr><td colspan="5" style="text-align:center;color:var(--text3);padding:22px">No users registered yet. Phase 1 launch in progress.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- VENDORS PANEL -->
-      <div class="panel" id="panel-vendors">
-        <div style="background:rgba(64,196,255,0.07);border:1px solid rgba(64,196,255,0.2);border-radius:8px;padding:12px 15px;font-size:13px;color:#40C4FF;margin-bottom:16px">
-          ℹ Vendor onboarding activates in Phase 2, after Phase 1 user validation is complete.
-        </div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Vendor Ecosystem</div><div class="badge">Phase 2</div></div>
-          <div class="card-body" style="padding:0">
-            <table class="tbl">
-              <thead><tr><th>Vendor ID</th><th>Name</th><th>Service Type</th><th>Location</th><th>Rating</th><th>Status</th></tr></thead>
-              <tbody><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:22px">Vendor network launches in Phase 2. Structure is ready.</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ANALYTICS PANEL -->
-      <div class="panel" id="panel-analytics">
-        <div class="metrics">
-          <div class="mc"><div class="mc-label">Total Queries</div><div class="mc-val g" id="mc-queries">0</div><div class="mc-change">All Time</div></div>
-          <div class="mc"><div class="mc-label">EV Queries</div><div class="mc-val g">0</div><div class="mc-change">Vehicle Type</div></div>
-          <div class="mc"><div class="mc-label">Fleet Queries</div><div class="mc-val a">0</div><div class="mc-change">Business Type</div></div>
-          <div class="mc"><div class="mc-label">Avg Response</div><div class="mc-val g">—</div><div class="mc-change">Time (ms)</div></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Query Intelligence Tracking</div></div>
-          <div class="card-body" style="text-align:center;color:var(--text3);font-size:13px;padding:28px">
-            Analytics will populate as users interact with MobilityAI. Query patterns, vehicle types, and regional breakdowns will appear here.
-          </div>
-        </div>
-      </div>
-
-      <!-- SETTINGS PANEL -->
-      <div class="panel" id="panel-settings">
-        <div class="card">
-          <div class="card-head"><div class="card-title">Platform Configuration</div><div class="badge">Founder Only</div></div>
-          <div class="card-body"><div class="sys-list">
-            <div class="sys"><span class="sys-name">Platform Version</span><span style="font-size:11px;color:var(--text2)">v2.0.0 — Phase 1</span></div>
-            <div class="sys"><span class="sys-name">Founder Email</span><span style="font-size:11px;color:var(--green)">shelltwo6565@gmail.com</span></div>
-            <div class="sys"><span class="sys-name">Brand Contact</span><span style="font-size:11px;color:var(--text2)">99evsworld@gmail.com</span></div>
-            <div class="sys"><span class="sys-name">AI Model</span><span style="font-size:11px;color:var(--text2)">claude-sonnet-4-20250514</span></div>
-            <div class="sys"><span class="sys-name">Session Timeout</span><span style="font-size:11px;color:var(--text2)">60 minutes</span></div>
-            <div class="sys"><span class="sys-name">Login Lockout</span><span style="font-size:11px;color:var(--text2)">5 attempts / 15 min</span></div>
-          </div></div>
-        </div>
-      </div>
-
-    </div><!-- /kiai-content -->
-  </div><!-- /kiai-main -->
-</div><!-- /kiai-page -->
+<footer>
+© 2026 99EVS.com | Founder: Kiran SR  
+Mobility intelligence is advisory. Always verify with certified OEM or licensed technician.  
+Privacy First | Zero Trust Architecture | Built for Humanity
+</footer>
 
 <script>
-'use strict';
-
-const FOUNDER_EMAIL = 'shelltwo6565@gmail.com';
-const FOUNDER_PWD   = 'kiran99evs2025';
-const USERS = new Map();
-const S = {
-  user:null, history:[], kiaiHistory:[],
-  typing:false, kiaiTyping:false,
-  attempts:0, locked:null,
-  sessions:0, queries:0
-};
-
-const $ = id => document.getElementById(id);
-const esc = t => !t?'':String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'}[c]));
-const hsh = (p,e) => btoa(encodeURIComponent(p+e+'99evs_kiai_2025'));
-const emailOk = e => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
-
-/* ── PAGE ROUTING ── */
-function showPage(id){
-  document.querySelectorAll('.page,.chat-page,.kiai-page').forEach(p=>p.classList.remove('active'));
-  $(id).classList.add('active');
+function scrollToChat(){
+  document.getElementById('chat').scrollIntoView({behavior:'smooth'});
 }
 
-/* ── AUTH ── */
-function openAuth(mode='login'){
-  switchForm(mode);
-  $('auth-modal').classList.add('open');
-  if(mode==='login') setTimeout(()=>$('l-email').focus(),100);
-}
-function closeAuth(){
-  $('auth-modal').classList.remove('open');
-  clearErr();
-}
+async function send(){
+  const input=document.getElementById('input');
+  const messages=document.getElementById('messages');
+  const text=input.value.trim();
+  if(!text) return;
 
-function switchForm(mode){
-  if(mode==='login'){
-    $('login-form').style.display='block';
-    $('register-form').style.display='none';
-    $('auth-h').textContent='Sign In';
-    $('auth-sub').textContent='Access MobilityAI — your mobility intelligence engine.';
-  } else {
-    $('login-form').style.display='none';
-    $('register-form').style.display='block';
-    $('auth-h').textContent='Create Account';
-    $('auth-sub').textContent='Join the 99EVS intelligence network. Free to start.';
-  }
-  clearErr();
-}
+  messages.innerHTML+=`<div class="msg"><strong>You:</strong><br>${text}</div>`;
+  input.value="";
 
-function detectFounder(email){
-  // subtle visual hint handled silently
-}
+  messages.innerHTML+=`<div class="msg"><strong>MobilityAI:</strong><br>Analyzing...</div>`;
+  messages.scrollTop=messages.scrollHeight;
 
-function showErr(msg,type='err'){
-  const el=$('auth-err');
-  el.textContent=msg;
-  el.className='alert show '+type;
-}
-function clearErr(){
-  const el=$('auth-err');
-  el.className='alert';
-  el.textContent='';
-}
-
-function doLogin(){
-  clearErr();
-  const email=$('l-email').value.trim().toLowerCase();
-  const pwd=$('l-pwd').value;
-  if(!emailOk(email)){showErr('Please enter a valid email address.');return;}
-  if(!pwd){showErr('Please enter your password.');return;}
-  if(S.locked&&Date.now()<S.locked){
-    showErr('Account locked. Try again in '+Math.ceil((S.locked-Date.now())/60000)+' min.');return;
-  }
-  const btn=$('login-btn');
-  btn.textContent='Verifying...';btn.disabled=true;
-  setTimeout(()=>{
-    // FOUNDER CHECK
-    if(email===FOUNDER_EMAIL&&pwd===FOUNDER_PWD){
-      S.attempts=0;btn.textContent='Sign In Securely';btn.disabled=false;
-      startSession({name:'Kiran SR',email,role:'founder'});
-      return;
-    }
-    // USER CHECK
-    const user=USERS.get(email);
-    if(user&&user.hash===hsh(pwd,email)){
-      S.attempts=0;btn.textContent='Sign In Securely';btn.disabled=false;
-      startSession(user);
-    } else {
-      S.attempts++;
-      if(S.attempts>=5){
-        S.locked=Date.now()+15*60*1000;
-        showErr('Too many attempts. Locked for 15 minutes.');
-      } else {
-        showErr('Invalid email or password. '+(5-S.attempts)+' attempt(s) remaining.');
-      }
-      btn.textContent='Sign In Securely';btn.disabled=false;
-    }
-  },900);
-}
-
-function doRegister(){
-  clearErr();
-  const name=$('r-name').value.trim();
-  const email=$('r-email').value.trim().toLowerCase();
-  const pwd=$('r-pwd').value;
-  const confirm=$('r-confirm').value;
-  if(!name||name.length<2){showErr('Please enter your full name.');return;}
-  if(!emailOk(email)){showErr('Please enter a valid email address.');return;}
-  if(email===FOUNDER_EMAIL){showErr('This email is reserved.');return;}
-  if(pwd.length<8){showErr('Password must be at least 8 characters.');return;}
-  if(pwd!==confirm){showErr('Passwords do not match.');return;}
-  if(USERS.has(email)){showErr('Account already exists. Please sign in.');return;}
-  const btn=$('reg-btn');
-  btn.textContent='Creating...';btn.disabled=true;
-  setTimeout(()=>{
-    USERS.set(email,{name:esc(name),email,hash:hsh(pwd,email),role:'user',created:Date.now()});
-    showErr('Account created! Signing you in...','ok');
-    refreshUsersTable();
-    setTimeout(()=>{btn.textContent='Create Account';btn.disabled=false;startSession(USERS.get(email));},900);
-  },1000);
-}
-
-/* ── SESSION ── */
-function startSession(user){
-  S.user=user;
-  S.history=[];
-  S.kiaiHistory=[];
-  S.sessions++;
-  closeAuth();
-  if(user.role==='founder'){
-    loadFounderDashboard();
-  } else {
-    loadUserChat(user);
-  }
-}
-
-function loadUserChat(user){
-  $('chat-av').textContent=user.name.charAt(0).toUpperCase();
-  $('chat-uname').textContent=user.name;
-  $('w-msg').textContent='Welcome, '+user.name+'. Ask me anything about your vehicle, fleet, EV systems, or mobility business.';
-  showPage('pg-chat');
-}
-
-function loadFounderDashboard(){
-  updateFounderMetrics();
-  showPage('pg-kiai');
-}
-
-function doLogout(){
-  S.user=null;S.history=[];S.kiaiHistory=[];S.attempts=0;
-  ['l-email','l-pwd','r-name','r-email','r-pwd','r-confirm'].forEach(id=>{const el=$(id);if(el)el.value='';});
-  // clear chat messages
-  const msgs=$('msgs');
-  if(msgs) msgs.innerHTML=`<div class="welcome-state" id="welcome"><div class="w-icon">⚡</div><div class="w-title">MobilityAI Ready</div><div class="w-sub" id="w-msg">Ask me anything.</div><div class="sugs"><div class="sug" onclick="useSug('My EV battery drains faster than usual. Help me diagnose.')"><div class="sug-ic">🔋</div><div class="sug-t">Battery Diagnosis</div><div class="sug-d">EV health & degradation</div></div><div class="sug" onclick="useSug('How do I optimize fleet maintenance costs?')"><div class="sug-ic">🚛</div><div class="sug-t">Fleet Intelligence</div><div class="sug-d">Uptime & cost optimization</div></div><div class="sug" onclick="useSug('What should I check before buying a used EV?')"><div class="sug-ic">🔍</div><div class="sug-t">Resale Inspection</div><div class="sug-d">Vehicle health & valuation</div></div><div class="sug" onclick="useSug('Explain regenerative braking.')"><div class="sug-ic">⚙️</div><div class="sug-t">Technical Deep Dive</div><div class="sug-d">EV engineering explained</div></div></div></div>`;
-  showPage('pg-home');
-}
-
-function goPublic(){
-  // Founder previews public chat
-  $('chat-av').textContent='K';
-  $('chat-uname').textContent='Kiran SR (Founder)';
-  $('w-msg').textContent='You are viewing the public MobilityAI interface as founder.';
-  showPage('pg-chat');
-}
-
-/* ── KIAI DASHBOARD ── */
-function showPanel(id,el){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.ks-item').forEach(n=>n.classList.remove('on'));
-  $('panel-'+id)?.classList.add('on');
-  el?.classList.add('on');
-  const titles={
-    'overview':'Overview — KIAI Dashboard',
-    'kiai-chat':'KIAI Intelligence Layer',
-    'infra':'Infrastructure Control',
-    'security':'Security & Audit',
-    'users':'User Management',
-    'vendors':'Vendor Ecosystem',
-    'analytics':'Analytics Intelligence',
-    'settings':'Platform Settings'
-  };
-  $('panel-title').textContent=titles[id]||'KIAI Dashboard';
-  if(id==='users')refreshUsersTable();
-  if(id==='security'){$('mc-fails').textContent=S.attempts;$('mc-active').textContent=S.sessions;}
-  if(id==='analytics')$('mc-queries').textContent=S.queries;
-}
-
-function updateFounderMetrics(){
-  $('mc-users').textContent=USERS.size;
-  $('mc-sess').textContent=S.sessions;
-}
-
-function refreshUsersTable(){
-  const tbody=$('users-tbody'),badge=$('user-badge');
-  if(!tbody)return;
-  $('mc-users').textContent=USERS.size;
-  if(badge)badge.textContent=USERS.size+' Total';
-  if(USERS.size===0){
-    tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:22px">No users registered yet.</td></tr>';
-    return;
-  }
-  let rows='';
-  USERS.forEach(u=>{
-    rows+=`<tr><td>${esc(u.name)}</td><td style="font-size:12px">${esc(u.email)}</td><td style="font-size:11px;color:var(--text3)">${new Date(u.created).toLocaleDateString()}</td><td style="font-size:11px;color:var(--text2)">${u.role}</td><td><div class="sys-status"><div class="sd on"></div><span class="st-on" style="font-size:11px">Active</span></div></td></tr>`;
-  });
-  tbody.innerHTML=rows;
-}
-
-/* ── CHAT (PUBLIC) ── */
-function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
-function kiaiKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendKiai();}}
-function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
-function useSug(t){$('chat-inp').value=t;sendMsg();}
-
-async function sendMsg(){
-  if(S.typing)return;
-  const inp=$('chat-inp');
-  const text=inp.value.trim();
-  if(!text)return;
-  $('welcome')?.remove();
-  addBubble('msgs','user',esc(text));
-  S.history.push({role:'user',content:text});
-  S.queries++;
-  inp.value='';inp.style.height='44px';
-  S.typing=true;$('send-btn').disabled=true;
-  const tid=addTyping('msgs');
   try{
     const res=await fetch('/api/chat',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:S.history,systemPrompt:getMobilityPrompt()})
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:text})
     });
-    removeTyping(tid);
-    if(!res.ok)throw new Error(res.status);
-    const d=await res.json();
-    const reply=d.reply||'Unable to process.';
-    S.history.push({role:'assistant',content:reply});
-    addBubble('msgs','ai',esc(reply));
-  }catch(e){
-    removeTyping(tid);
-    const fb=fallback(text);
-    S.history.push({role:'assistant',content:fb});
-    addBubble('msgs','ai',esc(fb));
+
+    const data=await res.json();
+    const reply=data.reply || "No response.";
+    messages.lastChild.innerHTML=`<strong>MobilityAI:</strong><br>${reply}`;
   }
-  S.typing=false;$('send-btn').disabled=false;inp.focus();
-}
-
-/* ── KIAI CHAT ── */
-async function sendKiai(){
-  if(S.kiaiTyping)return;
-  const inp=$('kiai-inp');
-  const text=inp.value.trim();
-  if(!text)return;
-  $('kiai-msgs').querySelector('.welcome-state')?.remove();
-  addBubble('kiai-msgs','user',esc(text));
-  S.kiaiHistory.push({role:'user',content:text});
-  inp.value='';inp.style.height='22px';
-  S.kiaiTyping=true;$('kiai-send').disabled=true;
-  const tid=addTyping('kiai-msgs');
-  try{
-    const res=await fetch('/api/chat',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:S.kiaiHistory,systemPrompt:getKiaiPrompt()})
-    });
-    removeTyping(tid);
-    if(!res.ok)throw new Error(res.status);
-    const d=await res.json();
-    const reply=d.reply||'Unable to process.';
-    S.kiaiHistory.push({role:'assistant',content:reply});
-    addBubble('kiai-msgs','ai',esc(reply));
-  }catch(e){
-    removeTyping(tid);
-    addBubble('kiai-msgs','ai',esc('KIAI requires the Anthropic API key. Add ANTHROPIC_API_KEY to Vercel environment variables to activate full KIAI intelligence.'));
+  catch(e){
+    messages.lastChild.innerHTML=`<strong>MobilityAI:</strong><br>
+    AI not connected. Add ANTHROPIC_API_KEY in Vercel to activate live intelligence.`;
   }
-  S.kiaiTyping=false;$('kiai-send').disabled=false;inp.focus();
+
+  messages.scrollTop=messages.scrollHeight;
 }
-
-/* ── RENDER ── */
-function addBubble(containerId,role,text){
-  const c=$(containerId);if(!c)return;
-  const fmt=text
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/`(.*?)`/g,'<code>$1</code>')
-    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-  const isAI=role==='ai';
-  const init=(S.user?.name||'U').charAt(0).toUpperCase();
-  const row=document.createElement('div');
-  row.className='msg-row'+(isAI?'':' user-row');
-  row.innerHTML=`<div class="av ${isAI?'ai':'usr'}">${isAI?'M':init}</div><div><div class="meta">${isAI?'MobilityAI':esc(S.user?.name||'You')} · ${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div><div class="bubble ${isAI?'ai':'user'}">${fmt}</div></div>`;
-  c.appendChild(row);
-  c.scrollTop=c.scrollHeight;
-}
-
-function addTyping(cid){
-  const c=$(cid);if(!c)return null;
-  const id='t'+Date.now();
-  const row=document.createElement('div');
-  row.className='typing-row';row.id=id;
-  row.innerHTML='<div class="av ai">M</div><div class="typing-bbl"><span class="td"></span><span class="td"></span><span class="td"></span></div>';
-  c.appendChild(row);c.scrollTop=c.scrollHeight;return id;
-}
-function removeTyping(id){$(id)?.remove();}
-
-/* ── SYSTEM PROMPTS ── */
-function getMobilityPrompt(){
-  const name=S.user?.name||'User';
-  return `You are MobilityAI — the official intelligence engine of 99EVS.com, founded by Kiran SR.
-You are a specialized global mobility intelligence system, not a generic chatbot.
-The user's name is ${name}.
-
-You think and respond like a senior EV powertrain engineer, fleet strategist, BMS analyst, lifecycle durability expert, resale inspection architect, and mobility advisor combined.
-
-Mission: Make mobility safer. Increase machine durability. Enable transparent resale. Empower fleet efficiency.
-Human safety always overrides cost or convenience. Always flag safety risks clearly.
-Never hallucinate. Separate verified fact from opinion.
-
-Always structure responses as:
-1. **Overview**
-2. **Technical Explanation**
-3. **Practical Application**
-4. **Risk Factors**
-5. **Optimization Strategy**
-
-For diagnostics: First ask vehicle type, brand, model year, error codes, service history. Then provide stepwise diagnostic flow.
-
-Technical scope: EV (Throttle→Controller→Motor→Battery→BMS→DC-DC→Auxiliary), ICE (petrol/diesel/CNG), fleet management, resale inspection, thermal management, charging cycles, LFP/NMC/NCA chemistry, regenerative braking, controller fault patterns.
-
-Tone: Professional. Engineering-grade. Confident. Clear. No emojis in responses. No fluff.
-Platform: 99EVS.com — Safety. Durability. Transparency. Scalability. Ethical Innovation.`;
-}
-
-function getKiaiPrompt(){
-  return `You are KIAI — the exclusive sovereign intelligence infrastructure of 99EVS.com, operating in private Founder Mode for Kiran SR only.
-
-Founder: Kiran SR | Email: shelltwo6565@gmail.com | Platform: 99EVS.com
-
-You advise on: platform strategy and architecture, business model development, vendor ecosystem, security architecture, revenue optimization, infrastructure decisions (GoDaddy, Hostinger, Vercel, GitHub), AI stack orchestration (Claude, DeepSeek, ChatGPT, Gemini, Gamma, Power BI), market expansion, investor preparation, and operational monitoring.
-
-Current Platform State:
-- Phase 1 LIVE: User login + MobilityAI chat
-- Phase 2 NEXT: Vehicle profiles + Inspection network
-- Phase 3: Fleet dashboard + Multi-user
-- Phase 4: Vendor ecosystem + Marketplace
-
-Rules: Never act autonomously without founder approval. Always recommend, never execute. Flag all risks clearly. Separate verified data from projections. Think systemically and long-term. Privacy first. Safety first. No data exploitation.
-
-Mission: Build the most trusted global mobility intelligence infrastructure in the world.
-Tone: Strategic. Precise. Founder-grade. Think like a co-founder, CTO, and Chief Strategist combined.`;
-}
-
-function fallback(q){
-  const ql=q.toLowerCase();
-  if(ql.includes('battery')||ql.includes('ev')||ql.includes('electric'))
-    return `**Overview**\nEV battery intelligence is a core 99EVS domain.\n\n**Technical Explanation**\nBattery health is governed by SoC, SoH, cell voltage balance, thermal range, and charge cycle count. The BMS monitors these in real time.\n\n**Practical Application**\n(1) Check SoH via OEM app. (2) Monitor charging acceptance rate — reduction signals degradation. (3) Check for thermal warnings during fast charging.\n\n**Risk Factors**\nRapid degradation is caused by frequent DC fast charging, extreme temperature operation, and charging habitually above 90% or below 10%.\n\n**Optimization Strategy**\nMaintain 20–80% SoC for daily use. Prioritize AC slow charging. Verify cooling system functionality.\n\n*Add ANTHROPIC_API_KEY to Vercel to activate live MobilityAI responses.*`;
-  if(ql.includes('fleet')||ql.includes('maintenance'))
-    return `**Overview**\nFleet intelligence reduces downtime and cost-per-km — a primary 99EVS domain.\n\n**Technical Explanation**\nFleet management operates on three tiers: Preventive (scheduled), Predictive (data-driven), and Reactive (breakdown — most expensive).\n\n**Practical Application**\n(1) Standardize all service intervals. (2) Log every maintenance event digitally. (3) Identify recurring fault patterns per vehicle.\n\n**Risk Factors**\nReactive-only fleets spend 3x more per vehicle. Downtime cost consistently exceeds repair cost.\n\n**Optimization Strategy**\nSet maintenance alerts at 80% of service interval. Analyze cost-per-km monthly per vehicle class.\n\n*Add ANTHROPIC_API_KEY to Vercel to activate live MobilityAI responses.*`;
-  return `**MobilityAI — 99EVS Intelligence Engine**\n\nTo give you engineering-grade intelligence, I need a few details:\n\n1. Vehicle type? (EV / Petrol / Diesel / CNG)\n2. Brand, model, and year?\n3. Specific symptom or situation?\n4. Diagnostic, technical, or business question?\n\nMore context = more precise intelligence.\n\n*Safety. Durability. Transparency. — 99EVS*\n\nNote: Add ANTHROPIC_API_KEY in Vercel environment variables to activate full live AI responses.`;
-}
-
-/* ── INIT ── */
-document.addEventListener('DOMContentLoaded',()=>{
-  showPage('pg-home');
-  // Close auth modal on background click
-  $('auth-modal').addEventListener('click',e=>{
-    if(e.target===$('auth-modal'))closeAuth();
-  });
-  // Chat input char counter
-  $('chat-inp')?.addEventListener('input',function(){
-    const cc=$(cc);
-    if($('cc'))$('cc').textContent=this.value.length+' / 2000';
-  });
-});
 </script>
+
 </body>
 </html>
