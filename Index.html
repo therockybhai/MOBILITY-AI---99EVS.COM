@@ -3,128 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>99EVS | Global Mobility Intelligence</title>
-
-<meta name="description" content="99EVS — Global Mobility Intelligence Platform for EV, ICE, Fleet and Industrial Machines. Safety. Durability. Transparency.">
-<meta name="theme-color" content="#00E676">
-
+<title>99EVS | Mobility Intelligence</title>
 <style>
 :root{
-  --green:#00E676;
-  --green2:#00C853;
-  --bg:#0A0F14;
-  --bg2:#0E1419;
-  --border:#1E3A2A;
-  --text1:#E8EDF2;
-  --text2:#7A9BB0;
-  --text3:#3D5468;
+  --green:#00E676; --green2:#00C853; --bg:#0A0F14; --bg2:#0E1419;
+  --bg3:#101820; --border:#1E3A2A; --border2:#1a2a22;
+  --text1:#E8EDF2; --text2:#7A9BB0; --text3:#3D5468;
+  --red:#FF4C4C; --amber:#FFB300;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text1);}
-header{padding:28px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.logo{color:var(--green);font-size:26px;font-weight:900;letter-spacing:2px;}
-.btn{padding:10px 20px;border-radius:6px;font-weight:bold;border:none;cursor:pointer;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text1);overflow-x:hidden;}
+
+/* NAVIGATION & SHARED */
+.page{display:none;min-height:100vh;}
+.page.active{display:flex;flex-direction:column;}
+.btn{padding:10px 20px;border-radius:7px;font-weight:bold;cursor:pointer;font-size:14px;border:none;transition:0.2s;}
 .btn-primary{background:linear-gradient(135deg,var(--green),var(--green2));color:#000;}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2);}
-.hero{padding:100px 24px;text-align:center;}
-.hero h1{font-size:48px;margin-bottom:20px;}
-.hero span{color:var(--green);}
-.hero p{max-width:600px;margin:0 auto 30px;color:var(--text2);line-height:1.7;}
-footer{padding:20px;text-align:center;border-top:1px solid var(--border);color:var(--text3);font-size:12px;margin-top:80px;}
-.chat-container{max-width:900px;margin:40px auto;border:1px solid var(--border);border-radius:8px;background:var(--bg2);display:flex;flex-direction:column;height:70vh;}
-.messages{flex:1;padding:20px;overflow-y:auto;}
-.msg{margin-bottom:16px;}
-.msg strong{color:var(--green);}
-.input-bar{display:flex;border-top:1px solid var(--border);}
-textarea{flex:1;background:transparent;border:none;color:var(--text1);padding:15px;resize:none;outline:none;}
-.send{width:80px;background:linear-gradient(135deg,var(--green),var(--green2));border:none;color:#000;font-weight:bold;cursor:pointer;}
-@media(max-width:600px){
-.hero h1{font-size:32px;}
-}
+
+/* --- HOME PAGE --- */
+header{padding:20px 24px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;}
+.logo{color:var(--green);font-size:22px;font-weight:900;letter-spacing:1px;}
+.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;}
+.hero h1{font-size:clamp(32px, 5vw, 54px);margin-bottom:20px;}
+.hero h1 span{color:var(--green);}
+
+/* --- AUTH MODAL --- */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;display:none;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border);padding:30px;width:100%;max-width:400px;border-radius:12px;}
+.field{margin-bottom:15px;}
+.field label{display:block;font-size:11px;color:var(--text3);margin-bottom:5px;text-transform:uppercase;}
+.field input{width:100%;background:var(--bg3);border:1px solid var(--border);padding:12px;color:#fff;border-radius:6px;outline:none;}
+.reset-link{font-size:11px;color:var(--amber);cursor:pointer;display:none;margin-top:10px;text-align:center;}
+
+/* --- USER CHAT INTERFACE --- */
+.chat-container{flex:1;display:flex;flex-direction:column;max-width:900px;margin:0 auto;width:100%;}
+.chat-msgs{flex:1;padding:20px;overflow-y:auto;}
+.bubble{padding:12px 16px;border-radius:10px;margin-bottom:10px;max-width:80%;font-size:14px;}
+.bubble.ai{background:var(--bg2);border-left:3px solid var(--green);}
+.bubble.user{background:var(--bg3);align-self:flex-end;margin-left:auto;}
+
+/* --- FOUNDER DASHBOARD --- */
+.founder-layout{display:flex;height:100vh;}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border2);padding:20px;}
+.main-dash{flex:1;padding:30px;overflow-y:auto;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:20px;}
+.stat-card{background:var(--bg3);padding:20px;border-radius:10px;border:1px solid var(--border2);}
+.stat-val{font-size:28px;font-weight:900;color:var(--green);margin-top:5px;}
+
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">99EVS</div>
-  <div>
-    <button class="btn btn-ghost" onclick="scrollToChat()">Launch MobilityAI</button>
+<div class="page active" id="pg-home">
+  <header>
+    <div class="logo">99EVS</div>
+    <button class="btn btn-primary" onclick="openAuth()">Sign In</button>
+  </header>
+  <div class="hero">
+    <h1>Engineering <span>Mobility AI</span></h1>
+    <p style="color:var(--text2); max-width:600px; margin-bottom:30px;">The global intelligence platform for EV infrastructure, fleet optimization, and industrial safety.</p>
+    <button class="btn btn-primary" onclick="openAuth()">Access Platform</button>
   </div>
-</header>
+</div>
 
-<section class="hero">
-  <h1>Mobility Intelligence <br><span>For Every Vehicle.</span></h1>
-  <p>
-    Engineering-grade AI for EV, ICE, CNG, fleet and industrial machines.
-    Built on safety, transparency and durability.
-  </p>
-  <button class="btn btn-primary" onclick="scrollToChat()">Start Free</button>
-</section>
-
-<section id="chat">
+<div class="page" id="pg-user">
+  <header>
+    <div class="logo">MobilityAI <span>v3.1</span></div>
+    <button class="btn btn-ghost" onclick="location.reload()">Logout</button>
+  </header>
   <div class="chat-container">
-    <div class="messages" id="messages">
-      <div class="msg">
-        <strong>MobilityAI:</strong><br>
-        Welcome to 99EVS.  
-        Please provide:
-        1. Vehicle type  
-        2. Brand & model  
-        3. Model year  
-        4. Issue or question  
+    <div class="chat-msgs" id="user-msgs">
+      <div class="bubble ai">System ready. How can I assist with your fleet analytics today?</div>
+    </div>
+    <div style="padding:20px; display:flex; gap:10px;">
+      <input type="text" id="user-input" placeholder="Ask about battery degradation..." style="flex:1; background:var(--bg2); border:1px solid var(--border); color:#fff; padding:12px; border-radius:8px;">
+      <button class="btn btn-primary" onclick="userSend()">Send</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="pg-founder">
+  <div class="founder-layout">
+    <div class="sidebar">
+      <div class="logo" style="margin-bottom:40px;">KIAI<span>OS</span></div>
+      <div style="color:var(--text3); font-size:11px; margin-bottom:10px;">CORE SYSTEMS</div>
+      <p style="color:var(--green); margin-bottom:15px; cursor:pointer;">Executive Overview</p>
+      <p style="color:var(--text2); margin-bottom:15px; cursor:pointer;">Security Audit</p>
+      <p style="color:var(--text2); margin-bottom:15px; cursor:pointer;">Global Nodes</p>
+      <div style="margin-top:auto; padding-top:100px;">
+        <button class="btn btn-ghost" style="width:100%; color:var(--red); border-color:var(--red);" onclick="location.reload()">Terminate Session</button>
       </div>
     </div>
-
-    <div class="input-bar">
-      <textarea id="input" rows="2" placeholder="Ask about EV battery, fleet maintenance, inspection, resale, diagnostics..."></textarea>
-      <button class="send" onclick="send()">Send</button>
+    <div class="main-dash">
+      <h2 style="margin-bottom:30px;">Global Command Center</h2>
+      <div class="stat-grid">
+        <div class="stat-card"><div>Active Vehicles</div><div class="stat-val">142,809</div></div>
+        <div class="stat-card"><div>API Latency</div><div class="stat-val">14ms</div></div>
+        <div class="stat-card"><div>Security Level</div><div class="stat-val" style="color:var(--amber);">DEFCON 5</div></div>
+      </div>
+      <div style="margin-top:30px; background:var(--bg2); padding:20px; border-radius:10px;">
+        <h3>System Logs</h3>
+        <div id="logs" style="font-family:monospace; font-size:12px; color:var(--text2); margin-top:10px;">
+          [00:01:04] Encrypted tunnel established...<br>
+          [00:01:05] Founder session verified (SR-KIRAN)...
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
-<footer>
-© 2026 99EVS.com | Founder: Kiran SR  
-Mobility intelligence is advisory. Always verify with certified OEM or licensed technician.  
-Privacy First | Zero Trust Architecture | Built for Humanity
-</footer>
+<div class="modal-bg" id="auth-modal">
+  <div class="modal">
+    <h2 id="modal-title" style="margin-bottom:5px;">Sign In</h2>
+    <p style="color:var(--text3); font-size:13px; margin-bottom:20px;">Access your mobility workspace.</p>
+    
+    <div class="field">
+      <label>Identity</label>
+      <input type="email" id="email" placeholder="email@99evs.com" oninput="checkFounder(this.value)">
+    </div>
+    <div class="field">
+      <label>Passkey</label>
+      <input type="password" id="password" placeholder="••••••••">
+    </div>
+    
+    <button class="btn btn-primary" style="width:100%;" onclick="handleAuth()">Authorize</button>
+    <div id="founder-reset" class="reset-link" onclick="founderReset()">⚠️ RESET FOUNDER PASSCODE</div>
+    <button class="btn btn-ghost" style="width:100%; margin-top:10px;" onclick="closeAuth()">Cancel</button>
+  </div>
+</div>
 
 <script>
-function scrollToChat(){
-  document.getElementById('chat').scrollIntoView({behavior:'smooth'});
+const UI = {
+  modal: document.getElementById('auth-modal'),
+  email: document.getElementById('email'),
+  reset: document.getElementById('founder-reset'),
+  pages: ['pg-home', 'pg-user', 'pg-founder']
+};
+
+function openAuth() { UI.modal.classList.add('open'); }
+function closeAuth() { UI.modal.classList.remove('open'); }
+
+function checkFounder(val) {
+  // Founder trapdoor: Show reset link only if Kiran's email is entered
+  if(val.toLowerCase() === 'kiran@99evs.com') {
+    UI.reset.style.display = 'block';
+  } else {
+    UI.reset.style.display = 'none';
+  }
 }
 
-async function send(){
-  const input=document.getElementById('input');
-  const messages=document.getElementById('messages');
-  const text=input.value.trim();
-  if(!text) return;
+function handleAuth() {
+  const email = UI.email.value.toLowerCase();
+  if(!email) return;
 
-  messages.innerHTML+=`<div class="msg"><strong>You:</strong><br>${text}</div>`;
-  input.value="";
-
-  messages.innerHTML+=`<div class="msg"><strong>MobilityAI:</strong><br>Analyzing...</div>`;
-  messages.scrollTop=messages.scrollHeight;
-
-  try{
-    const res=await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:text})
-    });
-
-    const data=await res.json();
-    const reply=data.reply || "No response.";
-    messages.lastChild.innerHTML=`<strong>MobilityAI:</strong><br>${reply}`;
+  if(email === 'kiran@99evs.com') {
+    switchPage('pg-founder');
+  } else {
+    switchPage('pg-user');
   }
-  catch(e){
-    messages.lastChild.innerHTML=`<strong>MobilityAI:</strong><br>
-    AI not connected. Add ANTHROPIC_API_KEY in Vercel to activate live intelligence.`;
-  }
+  closeAuth();
+}
 
-  messages.scrollTop=messages.scrollHeight;
+function founderReset() {
+  const newPass = prompt("FOUNDER OVERRIDE: Enter new secure passcode:");
+  if(newPass) {
+    alert("Passcode updated via Secure Layer 1. Please log in with the new credentials.");
+    UI.reset.style.display = 'none';
+  }
+}
+
+function switchPage(id) {
+  UI.pages.forEach(p => document.getElementById(p).classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function userSend() {
+  const inp = document.getElementById('user-input');
+  const box = document.getElementById('user-msgs');
+  if(!inp.value) return;
+  
+  box.innerHTML += `<div class="bubble user">${inp.value}</div>`;
+  setTimeout(() => {
+    box.innerHTML += `<div class="bubble ai">Analyzing telemetry for "${inp.value}"... Data suggests optimal efficiency at 85km/h.</div>`;
+    box.scrollTop = box.scrollHeight;
+  }, 600);
+  inp.value = '';
 }
 </script>
-
 </body>
 </html>
