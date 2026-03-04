@@ -1,6 +1,3 @@
-// api/chat.js — 99EVS MobilityAI Engine
-// Correct model: claude-haiku-4-5-20251001
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -9,42 +6,41 @@ export default async function handler(req, res) {
   const { messages, systemPrompt } = req.body;
 
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ error: 'Invalid messages' });
+    return res.status(200).json({ reply: 'No message received. Please type your question and try again.' });
   }
 
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
   if (!ANTHROPIC_API_KEY) {
     return res.status(200).json({
-      reply: '**Setup Required**\n\nAdd ANTHROPIC_API_KEY to Vercel environment variables to activate MobilityAI.'
+      reply: '**Setup incomplete.** ANTHROPIC_API_KEY is missing from Vercel. Go to Vercel → Settings → Environment Variables → add it → Redeploy.'
     });
   }
 
-  // Clean and validate messages
-  const cleanMessages = messages
+  const clean = messages
+    .filter(m => m && m.content && String(m.content).trim().length > 0)
     .slice(-20)
-    .filter(m => m.content && String(m.content).trim().length > 0)
     .map(m => ({
       role: m.role === 'user' ? 'user' : 'assistant',
-      content: String(m.content).slice(0, 4000)
+      content: String(m.content).slice(0, 4000).trim()
     }));
 
-  if (!cleanMessages.length || cleanMessages[0].role !== 'user') {
-    return res.status(400).json({ error: 'First message must be from user' });
+  if (!clean.length) {
+    return res.status(200).json({ reply: 'Your message was empty. Please type a question.' });
   }
 
-  // Ensure alternating roles
-  const validMessages = [];
-  let lastRole = null;
-  for (const msg of cleanMessages) {
-    if (msg.role !== lastRole) {
-      validMessages.push(msg);
-      lastRole = msg.role;
-    }
+  const valid = [];
+  let last = null;
+  for (const m of clean) {
+    if (m.role !== last) { valid.push(m); last = m.role; }
+  }
+
+  if (valid[0].role !== 'user') {
+    return res.status(200).json({ reply: 'Please send your question first.' });
   }
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,27 +50,31 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 1500,
-        system: systemPrompt || 'You are MobilityAI, the intelligence engine of 99EVS.com. Provide engineering-grade mobility intelligence.',
-        messages: validMessages
+        system: systemPrompt || 'You are MobilityAI, the intelligence engine of 99EVS.com. Give engineering-grade vehicle intelligence.',
+        messages: valid
       })
     });
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      console.error('Anthropic error:', response.status, err);
-      if (response.status === 401) return res.status(200).json({ reply: 'API key error. Check ANTHROPIC_API_KEY in Vercel.' });
-      if (response.status === 429) return res.status(200).json({ reply: 'MobilityAI is busy. Please try again in 30 seconds.' });
-      return res.status(200).json({ reply: 'MobilityAI is temporarily unavailable. Please try again.' });
+    console.log('Anthropic status:', apiResponse.status);
+
+    if (!apiResponse.ok) {
+      const errText = await apiResponse.text();
+      console.error('Anthropic error:', errText);
+      if (apiResponse.status === 401) return res.status(200).json({ reply: '**API key rejected.** Your ANTHROPIC_API_KEY in Vercel is invalid. Go to console.anthropic.com, create a new key, update in Vercel env vars, then redeploy.' });
+      if (apiResponse.status === 429) return res.status(200).json({ reply: '**High traffic.** Please wait 30 seconds and try again.' });
+      if (apiResponse.status === 400) return res.status(200).json({ reply: '**Request error.** Please refresh the page and try again.' });
+      return res.status(200).json({ reply: `**AI error (${apiResponse.status}).** Please try again. Contact 99evsworld@gmail.com if this continues.` });
     }
 
-    const data = await response.json();
-    const reply = data.content?.[0]?.text?.trim();
-    if (!reply) return res.status(200).json({ reply: 'No response generated. Please rephrase and try again.' });
+    const data = await apiResponse.json();
+    const reply = data?.content?.[0]?.text?.trim();
+
+    if (!reply) return res.status(200).json({ reply: 'Empty response from AI. Please rephrase your question and try again.' });
 
     return res.status(200).json({ reply });
 
-  } catch (error) {
-    console.error('Chat error:', error.message);
-    return res.status(200).json({ reply: 'Connection error. Please check your internet and try again.' });
+  } catch (err) {
+    console.error('Network error:', err.message);
+    return res.status(200).json({ reply: '**Connection error.** Could not reach AI servers. Please try again in 30 seconds.' });
   }
 }
