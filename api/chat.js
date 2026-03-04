@@ -1,3 +1,6 @@
+// api/chat.js — 99EVS MobilityAI Engine
+// Correct model: claude-haiku-4-5-20251001
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -5,7 +8,7 @@ export default async function handler(req, res) {
 
   const { messages, systemPrompt } = req.body;
 
-  if (!messages || !Array.isArray(messages)) {
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'Invalid messages' });
   }
 
@@ -13,24 +16,24 @@ export default async function handler(req, res) {
 
   if (!ANTHROPIC_API_KEY) {
     return res.status(200).json({
-      reply: '**MobilityAI Setup Required**\n\nAdd your ANTHROPIC_API_KEY to Vercel environment variables to activate live AI responses.'
+      reply: '**Setup Required**\n\nAdd ANTHROPIC_API_KEY to Vercel environment variables to activate MobilityAI.'
     });
   }
 
-  // Clean and limit messages
+  // Clean and validate messages
   const cleanMessages = messages
     .slice(-20)
-    .filter(m => m.content && m.content.trim())
+    .filter(m => m.content && String(m.content).trim().length > 0)
     .map(m => ({
       role: m.role === 'user' ? 'user' : 'assistant',
       content: String(m.content).slice(0, 4000)
     }));
 
-  if (cleanMessages.length === 0) {
-    return res.status(400).json({ error: 'No valid messages' });
+  if (!cleanMessages.length || cleanMessages[0].role !== 'user') {
+    return res.status(400).json({ error: 'First message must be from user' });
   }
 
-  // Ensure messages alternate correctly (Anthropic requirement)
+  // Ensure alternating roles
   const validMessages = [];
   let lastRole = null;
   for (const msg of cleanMessages) {
@@ -38,11 +41,6 @@ export default async function handler(req, res) {
       validMessages.push(msg);
       lastRole = msg.role;
     }
-  }
-
-  // Must start with user message
-  if (validMessages[0]?.role !== 'user') {
-    return res.status(400).json({ error: 'First message must be from user' });
   }
 
   try {
@@ -55,8 +53,8 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        system: systemPrompt || getMobilitySystemPrompt('User'),
+        max_tokens: 1500,
+        system: systemPrompt || 'You are MobilityAI, the intelligence engine of 99EVS.com. Provide engineering-grade mobility intelligence.',
         messages: validMessages
       })
     });
@@ -64,76 +62,19 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
       console.error('Anthropic error:', response.status, err);
-      return res.status(200).json({
-        reply: '**MobilityAI is temporarily unavailable.**\n\nPlease try again in a moment. If the issue persists, contact support at 99evsworld@gmail.com'
-      });
+      if (response.status === 401) return res.status(200).json({ reply: 'API key error. Check ANTHROPIC_API_KEY in Vercel.' });
+      if (response.status === 429) return res.status(200).json({ reply: 'MobilityAI is busy. Please try again in 30 seconds.' });
+      return res.status(200).json({ reply: 'MobilityAI is temporarily unavailable. Please try again.' });
     }
 
     const data = await response.json();
-    const reply = data.content?.[0]?.text;
-
-    if (!reply) {
-      return res.status(200).json({ reply: 'No response generated. Please try again.' });
-    }
+    const reply = data.content?.[0]?.text?.trim();
+    if (!reply) return res.status(200).json({ reply: 'No response generated. Please rephrase and try again.' });
 
     return res.status(200).json({ reply });
 
   } catch (error) {
-    console.error('Handler error:', error);
-    return res.status(200).json({
-      reply: '**Connection error.**\n\nMobilityAI could not be reached. Please check your connection and try again.'
-    });
+    console.error('Chat error:', error.message);
+    return res.status(200).json({ reply: 'Connection error. Please check your internet and try again.' });
   }
-}
-
-function getMobilitySystemPrompt(name) {
-  return `You are MobilityAI — the official intelligence engine of 99EVS.com, founded by Kiran SR.
-You are a specialized global mobility intelligence system built to serve vehicle owners, fleet managers, and mobility professionals.
-The user's name is ${name}.
-
-You think and respond like a senior EV powertrain engineer, fleet strategist, BMS analyst, lifecycle durability expert, resale inspection architect, and mobility advisor combined.
-
-CORE MISSION:
-- Make mobility safer for every person
-- Increase machine durability and lifecycle
-- Enable transparent vehicle resale
-- Empower fleet efficiency and cost reduction
-- Human safety ALWAYS overrides cost or convenience
-
-RESPONSE STRUCTURE — always follow this format:
-1. **Overview** — what the issue or topic is
-2. **Technical Explanation** — the engineering behind it
-3. **Practical Application** — what to actually do
-4. **Risk Factors** — what could go wrong
-5. **Optimization Strategy** — how to get the best outcome
-
-DIAGNOSTIC PROTOCOL:
-Before diagnosing, always ask:
-- Vehicle type? (EV / Petrol / Diesel / CNG / Hybrid)
-- Brand, model, year?
-- Specific symptom or error code?
-- Service history?
-Then provide stepwise diagnostic flow.
-
-TECHNICAL DOMAINS:
-- EV systems: Throttle → Controller → Motor → Battery → BMS → DC-DC → Auxiliary
-- ICE engines: Petrol, Diesel, CNG, Hybrid
-- Battery chemistry: LFP, NMC, NCA — SoC, SoH, cell balancing, thermal management
-- Fleet management: preventive, predictive, reactive maintenance
-- Resale inspection: pre-purchase checks, valuation, fault history
-- Charging systems: AC/DC, fast charging, regenerative braking
-- Safety systems: BMS faults, thermal runaway, fire risk assessment
-
-TONE AND STYLE:
-- Professional and engineering-grade
-- Confident but never arrogant
-- Clear and structured
-- No emojis in responses
-- No fluff or padding
-- If unsure, say so — never hallucinate facts
-- Separate verified facts from recommendations
-
-PLATFORM IDENTITY:
-You represent 99EVS.com — Safety. Durability. Transparency. Scalability. Ethical Innovation.
-Always end responses with actionable next steps.`;
 }
