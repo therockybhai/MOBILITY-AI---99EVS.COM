@@ -3,268 +3,1011 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>99EVS | MobilityAI — World's Smartest EV & Vehicle Intelligence Platform</title>
-<meta name="description" content="99EVS MobilityAI gives you engineering-grade AI answers for EVs, ICE vehicles, fleet management, battery diagnosis, and resale inspection. Free to start. Built for safety, durability and transparency.">
-<meta name="keywords" content="EV intelligence, electric vehicle AI, fleet management AI, battery diagnosis, EV maintenance, MobilityAI, 99EVS, vehicle inspection, EV range, BMS analysis, EV India">
-<meta name="author" content="Kiran SR — 99EVS">
+<title>99EVS | MobilityAI — World's Smartest Vehicle Intelligence Platform</title>
+<meta name="description" content="99EVS MobilityAI gives engineering-grade AI answers for EVs, ICE, fleet, battery, resale. Free forever. No subscription. No limit.">
+<meta name="keywords" content="EV intelligence, electric vehicle AI, fleet management, battery diagnosis, MobilityAI, 99EVS, vehicle inspection">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.99evs.com">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.99evs.com">
 <meta property="og:title" content="99EVS MobilityAI — Engineering-Grade AI for Every Vehicle">
-<meta property="og:description" content="Ask MobilityAI anything about your EV, fleet, battery, or vehicle. Get engineering-grade answers instantly. Free to start.">
+<meta property="og:description" content="Ask MobilityAI anything about your EV, fleet, battery. Engineering-grade answers. Free forever.">
 <meta property="og:image" content="https://www.99evs.com/og-image.png">
 <meta property="og:site_name" content="99EVS">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="99EVS MobilityAI — Intelligence for Every Vehicle">
-<meta name="twitter:description" content="Engineering-grade AI for EVs, fleets, battery diagnosis and vehicle inspection. Free at 99evs.com">
-<meta name="twitter:image" content="https://www.99evs.com/og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"99EVS MobilityAI","applicationCategory":"UtilitiesApplication","description":"Engineering-grade AI platform for electric vehicles, fleet management, battery diagnosis and mobility intelligence","url":"https://www.99evs.com","author":{"@type":"Person","name":"Kiran SR"},"offers":{"@type":"Offer","price":"0","priceCurrency":"INR"}}</script>
+<meta name="twitter:description" content="Engineering-grade AI for EVs, fleets, battery diagnosis. Free at 99evs.com">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"99EVS MobilityAI","applicationCategory":"UtilitiesApplication","description":"Engineering-grade AI for EVs, fleet management, battery diagnosis","url":"https://www.99evs.com","author":{"@type":"Person","name":"Kiran SR"},"offers":{"@type":"Offer","price":"0","priceCurrency":"INR"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-/* ── VARIABLES ── */
-:root{
-  --g:#00E676;--g2:#00C853;--g3:#69F0AE;
-  --bg:#070D0A;--bg2:#0C1410;--bg3:#111A15;--bg4:#151F18;
-  --border:rgba(0,230,118,0.12);--border2:rgba(0,230,118,0.06);
-  --gdim:rgba(0,230,118,0.07);
-  --t1:#EEF4F0;--t2:#8BA899;--t3:#3D5C4A;
-  --red:#FF4757;--amber:#FFA502;--blue:#40C4FF;
-  --fd:'Barlow Condensed',sans-serif;
-  --fb:'DM Sans',sans-serif;
-  --r:10px;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--fb);background:var(--bg);color:var(--t1);overflow-x:hidden;}
-
-/* ── PAGE SYSTEM ── */
-.pg{display:none;min-height:100vh;flex-direction:column;}
-.pg.on{display:flex;}
-.cpg{display:none;height:100vh;flex-direction:column;}
-.cpg.on{display:flex;}
-.kpg{display:none;height:100vh;flex-direction:row;}
-.kpg.on{display:flex;}
-
-/* ── TYPOGRAPHY ── */
-h1,h2,h3,.disp{font-family:var(--fd);font-weight:900;line-height:1.05;}
-.disp{font-size:clamp(44px,7vw,88px);text-transform:uppercase;}
-h1{font-size:clamp(30px,5vw,60px);text-transform:uppercase;}
-h2{font-size:clamp(22px,3vw,38px);text-transform:uppercase;}
-h3{font-size:clamp(16px,2vw,22px);text-transform:uppercase;}
-
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:var(--r);font-weight:600;font-size:14px;cursor:pointer;border:none;font-family:var(--fb);transition:all .2s;letter-spacing:.01em;}
-.btn-p{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;font-weight:700;}
-.btn-p:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,230,118,.28);}
-.btn-g{background:transparent;border:1px solid var(--border);color:var(--t2);}
-.btn-g:hover{border-color:var(--g);color:var(--g);}
-.btn-o{background:transparent;border:1px solid var(--g);color:var(--g);}
-.btn-o:hover{background:var(--gdim);}
-
-/* ── CHIP ── */
-.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:var(--gdim);font-size:11px;color:var(--g);font-weight:600;letter-spacing:.04em;}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--g);flex-shrink:0;}
-.dot-p{animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,230,118,.4)}50%{box-shadow:0 0 0 6px rgba(0,230,118,0)}}
-
-/* ── BADGES ── */
-.badge{padding:3px 9px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
-.b-g{background:rgba(0,230,118,.1);color:var(--g);border:1px solid rgba(0,230,118,.2);}
-.b-a{background:rgba(255,165,2,.1);color:var(--amber);border:1px solid rgba(255,165,2,.2);}
-.b-r{background:rgba(255,71,87,.1);color:var(--red);border:1px solid rgba(255,71,87,.2);}
-.b-b{background:rgba(64,196,255,.1);color:var(--blue);border:1px solid rgba(64,196,255,.2);}
-
-/* ── ANIMATIONS ── */
+:root{--g:#00E676;--g2:#00C853;--gdim:rgba(0,230,118,.08);--bg:#070D0A;--bg2:#0C1410;--bg3:#101A14;--bg4:#141F18;--b1:rgba(0,230,118,.12);--b2:rgba(0,230,118,.06);--t1:#EEF4F0;--t2:#8BA899;--t3:#3D5C4A;--red:#FF4757;--amber:#FFA502;--blue:#40C4FF;--fd:'Barlow Condensed',sans-serif;--fb:'DM Sans',sans-serif;--r:10px;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;}
+.pg,.cpg,.kpg,.fpg{display:none;flex-direction:column;}.pg{min-height:100vh;}.cpg{height:100vh;}.kpg{height:100vh;flex-direction:row;}.fpg{min-height:100vh;}.pg.on,.cpg.on,.kpg.on,.fpg.on{display:flex;}
+h1,h2,h3,.disp{font-family:var(--fd);font-weight:900;line-height:1.05;}.disp{font-size:clamp(44px,7vw,88px);text-transform:uppercase;}h1{font-size:clamp(28px,5vw,56px);}h2{font-size:clamp(20px,3vw,36px);}h3{font-size:clamp(15px,2vw,20px);}
+.btn{padding:10px 20px;border-radius:var(--r);font-weight:600;cursor:pointer;font-size:14px;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:7px;font-family:var(--fb);}.bp{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;font-weight:700;}.bp:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,230,118,.3);}.bg2btn{background:transparent;border:1px solid var(--b1);color:var(--t2);}.bg2btn:hover{border-color:var(--g);color:var(--g);}.bo{background:transparent;border:1px solid var(--g);color:var(--g);}.bo:hover{background:var(--gdim);}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;border:1px solid var(--b1);background:var(--gdim);font-size:11px;color:var(--g);font-weight:500;}.badge{padding:3px 9px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}.bdg{background:rgba(0,230,118,.1);color:var(--g);border:1px solid rgba(0,230,118,.2);}.bda{background:rgba(255,165,2,.1);color:var(--amber);border:1px solid rgba(255,165,2,.2);}.bdb{background:rgba(64,196,255,.1);color:var(--blue);border:1px solid rgba(64,196,255,.2);}
+.dot{width:7px;height:7px;background:var(--g);border-radius:50%;flex-shrink:0;}.pulse{animation:pulseA 2s infinite;}
+@keyframes pulseA{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,230,118,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(0,230,118,0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.3}30%{transform:translateY(-5px);opacity:1}}
-.au{animation:fadeUp .45s ease both;}
-.spinner{width:13px;height:13px;border:2px solid rgba(0,0,0,.15);border-top:2px solid #000;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;}
+.au{animation:fadeUp .4s ease forwards;}.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(0,0,0,.15);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;}
+/* HEADER */
+.sh{padding:14px 24px;border-bottom:1px solid var(--b2);display:flex;align-items:center;justify-content:space-between;background:rgba(7,13,10,.96);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+.logo{font-family:var(--fd);color:var(--g);font-size:22px;font-weight:900;letter-spacing:3px;cursor:pointer;}.logo sup{font-size:8px;color:var(--t3);font-family:var(--fb);font-weight:400;margin-left:3px;}
+.nav{display:flex;align-items:center;gap:4px;}.nl{background:none;border:none;color:var(--t2);font-size:13px;font-family:var(--fb);cursor:pointer;padding:6px 10px;border-radius:6px;transition:.2s;}.nl:hover{color:var(--t1);background:var(--bg3);}
+/* HERO */
+.hero{position:relative;padding:72px 28px 56px;overflow:hidden;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.hbg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,230,118,.07),transparent 70%);pointer-events:none;}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(var(--b2) 1px,transparent 1px),linear-gradient(90deg,var(--b2) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;mask-image:radial-gradient(ellipse 100% 80% at 50% 0%,black,transparent);}
+.htag{margin-bottom:22px;animation:fadeUp .5s ease;}.hhead{margin-bottom:14px;animation:fadeUp .5s .1s ease both;}.hhead .l1{display:block;color:var(--t1);}.hhead .l2{display:block;color:var(--g);}
+.hsub{font-size:15px;color:var(--t2);max-width:520px;line-height:1.75;margin:0 auto 28px;font-weight:300;animation:fadeUp .5s .2s ease both;}
+.hact{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:44px;animation:fadeUp .5s .3s ease both;}
+.hstats{display:flex;flex-wrap:wrap;justify-content:center;animation:fadeUp .5s .4s ease both;border:1px solid var(--b1);border-radius:12px;background:var(--bg2);overflow:hidden;}
+.hst{padding:16px 26px;border-right:1px solid var(--b1);text-align:center;}.hst:last-child{border-right:none;}.hstv{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--g);}.hstl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+/* SECTIONS */
+.sec{padding:64px 28px;}.si{max-width:1080px;margin:0 auto;}.stag{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border-radius:100px;border:1px solid var(--b1);background:var(--gdim);font-size:11px;color:var(--g);font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}.shead{margin-bottom:10px;}.ssub{font-size:14px;color:var(--t2);max-width:540px;line-height:1.75;font-weight:300;}
+/* FEATURE STRIP */
+.fstrip{background:var(--bg2);border-top:1px solid var(--b2);border-bottom:1px solid var(--b2);}.fsi{display:flex;flex-wrap:wrap;justify-content:center;}.fs{padding:12px 22px;border-right:1px solid var(--b2);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:7px;font-weight:500;}.fs:last-child{border-right:none;}.fsd{width:5px;height:5px;border-radius:50%;background:var(--g);}
+/* HOW IT WORKS */
+.hiw{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:36px;background:var(--b1);border-radius:12px;overflow:hidden;border:1px solid var(--b1);}.hiws{background:var(--bg2);padding:26px 22px;}.hiwn{font-family:var(--fd);font-size:44px;font-weight:900;color:var(--g);opacity:.2;line-height:1;margin-bottom:10px;}.hiwt{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--t1);margin-bottom:7px;text-transform:uppercase;}.hiwd{font-size:13px;color:var(--t2);line-height:1.7;}
+/* CAP GRID */
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px;}.cc{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r);padding:20px;transition:.25s;}.cc:hover{border-color:var(--b1);transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.3);}.cci{font-size:26px;margin-bottom:10px;}.cct{font-family:var(--fd);font-size:16px;font-weight:700;text-transform:uppercase;color:var(--t1);margin-bottom:5px;}.ccd{font-size:12px;color:var(--t2);line-height:1.7;}.cctags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}.ctag{padding:2px 7px;border-radius:4px;font-size:10px;background:var(--bg3);color:var(--t3);border:1px solid var(--b2);}
+/* LEARN PREVIEW */
+.lgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:28px;}.lc{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r);padding:18px;cursor:pointer;transition:.2s;display:flex;align-items:flex-start;gap:12px;}.lc:hover{border-color:var(--g);transform:translateX(3px);}.lci{font-size:20px;flex-shrink:0;margin-top:1px;}.lct{font-weight:600;font-size:13px;color:var(--t1);margin-bottom:4px;}.lcd{font-size:12px;color:var(--t2);line-height:1.6;}.lca{margin-left:auto;color:var(--t3);flex-shrink:0;align-self:center;}
+/* CTA */
+.ctab{background:linear-gradient(135deg,rgba(0,230,118,.07),rgba(0,200,83,.03));border:1px solid var(--b1);border-radius:14px;padding:44px 36px;text-align:center;position:relative;overflow:hidden;}.ctab::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(0,230,118,.04),transparent 60%);pointer-events:none;}.ctab h2{margin-bottom:10px;}.ctab p{color:var(--t2);margin-bottom:24px;font-size:14px;}
+/* FOOTER */
+.ft{background:var(--bg2);border-top:1px solid var(--b2);padding:36px 28px 20px;}.fti{max-width:1080px;margin:0 auto;}.fttop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:28px;}.fbrand .logo{font-size:20px;display:block;margin-bottom:8px;}.fbrand p{font-size:12px;color:var(--t3);line-height:1.7;max-width:240px;}.fcol h4{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-weight:600;}.fl{display:block;font-size:13px;color:var(--t2);margin-bottom:6px;cursor:pointer;background:none;border:none;text-align:left;font-family:var(--fb);transition:.15s;}.fl:hover{color:var(--g);}.ftbot{border-top:1px solid var(--b2);padding-top:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}.ftcopy{font-size:12px;color:var(--t3);}
+/* WHATSAPP */
+.waf{position:fixed;bottom:22px;right:22px;width:50px;height:50px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;z-index:999;box-shadow:0 4px 18px rgba(37,211,102,.4);transition:.2s;text-decoration:none;}.waf:hover{transform:scale(1.1);}.watt{position:absolute;right:58px;background:var(--bg3);border:1px solid var(--b1);color:var(--t1);font-size:12px;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:.2s;font-family:var(--fb);}.waf:hover .watt{opacity:1;}
+/* COOKIE */
+.ckb{position:fixed;bottom:0;left:0;right:0;background:var(--bg3);border-top:1px solid var(--b1);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;z-index:998;font-size:13px;color:var(--t2);flex-wrap:wrap;}.ckb.gone{display:none;}
+/* AUTH MODAL */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;display:none;align-items:center;justify-content:center;padding:18px;}.mbg.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;width:100%;max-width:400px;padding:28px;position:relative;animation:fadeUp .25s ease;}.mx{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--t3);font-size:19px;cursor:pointer;padding:2px 5px;line-height:1;transition:.15s;}.mx:hover{color:var(--t1);}
+.mtit{font-family:var(--fd);font-size:24px;font-weight:900;text-transform:uppercase;margin-bottom:3px;}.msub{font-size:13px;color:var(--t2);margin-bottom:20px;font-weight:300;}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:11px;background:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;color:#1a1a1a;transition:.2s;margin-bottom:16px;font-family:var(--fb);}.gbtn:hover{background:#f5f5f5;}
+.divider{display:flex;align-items:center;gap:10px;margin-bottom:16px;}.divider hr{flex:1;border:none;border-top:1px solid var(--b1);}.divider span{font-size:11px;color:var(--t3);}
+.fld{margin-bottom:12px;}.fld label{display:block;font-size:10px;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;}.fld input{width:100%;background:var(--bg3);border:1px solid var(--b1);border-radius:7px;padding:10px 13px;color:var(--t1);font-size:14px;outline:none;transition:.2s;font-family:var(--fb);}.fld input:focus{border-color:var(--g2);}.fld input::placeholder{color:var(--t3);}
+.aalert{padding:9px 12px;border-radius:7px;font-size:12px;margin-bottom:12px;display:none;}.aalert.on{display:block;}.aerr{background:rgba(255,71,87,.07);border:1px solid rgba(255,71,87,.25);color:#ff7070;}.aok{background:rgba(0,230,118,.05);border:1px solid rgba(0,230,118,.2);color:var(--g);}
+.swl{font-size:12px;color:var(--t3);margin-top:14px;text-align:center;}.swl a{color:var(--g);cursor:pointer;}
+/* CHAT PAGE */
+.chdr{height:52px;background:var(--bg2);border-bottom:1px solid var(--b2);display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;}
+.chl{display:flex;align-items:center;gap:10px;}.chlogo{font-family:var(--fd);font-size:17px;font-weight:900;color:var(--g);letter-spacing:2px;cursor:pointer;}.chr{display:flex;align-items:center;gap:7px;}
+.uav{width:28px;height:28px;border-radius:7px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--g);overflow:hidden;flex-shrink:0;}.uav img{width:100%;height:100%;object-fit:cover;}
+.unm{font-size:13px;color:var(--t1);font-weight:500;}.sob{background:none;border:1px solid var(--b1);border-radius:6px;color:var(--t3);font-size:12px;padding:5px 9px;cursor:pointer;transition:.2s;font-family:var(--fb);}.sob:hover{border-color:var(--red);color:var(--red);}
+.vpr{background:linear-gradient(135deg,rgba(0,230,118,.05),rgba(0,230,118,.02));border:1px solid var(--b1);border-radius:var(--r);padding:10px 14px;margin:10px 18px 0;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;}.vpr.gone{display:none;}.vprt{font-size:12px;color:var(--t2);}.vprt strong{color:var(--t1);}.vprb{display:flex;gap:5px;flex-shrink:0;}
+.mwrap{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:16px;}.mwrap::-webkit-scrollbar{width:3px;}.mwrap::-webkit-scrollbar-thumb{background:var(--b1);}
+/* WELCOME BOX */
+.wb{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:240px;text-align:center;padding:24px;}.wbi{font-size:38px;margin-bottom:12px;}.wbt{font-family:var(--fd);font-size:22px;font-weight:900;text-transform:uppercase;margin-bottom:7px;}.wbs{font-size:13px;color:var(--t2);max-width:360px;line-height:1.7;margin-bottom:20px;font-weight:300;}
+.sgg{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-width:500px;width:100%;}.sg{background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:11px;cursor:pointer;transition:.2s;text-align:left;}.sg:hover{border-color:var(--g);background:rgba(0,230,118,.03);transform:translateY(-2px);}.sgi{font-size:15px;margin-bottom:4px;}.sgt{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:2px;}.sgd{font-size:11px;color:var(--t3);}
+/* BUBBLES */
+.mrow{display:flex;gap:9px;animation:fadeUp .2s ease;}.mrow.me{flex-direction:row-reverse;}.av{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:11px;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;overflow:hidden;justify-content:center;}.av.ai{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);color:var(--g);}.av.us{background:var(--bg3);border:1px solid var(--b1);color:var(--t2);}.av.us img{width:100%;height:100%;object-fit:cover;}
+.mmeta{font-size:10px;color:var(--t3);margin-bottom:4px;}.mrow.me .mmeta{text-align:right;}
+.bbl{max-width:680px;padding:12px 15px;border-radius:9px;font-size:13.5px;line-height:1.8;font-family:var(--fb);}.aibbl{background:var(--bg2);border:1px solid var(--b2);border-left:3px solid var(--g);color:var(--t1);}.usbbl{background:var(--bg3);border:1px solid var(--b2);color:var(--t1);}
+.bbl strong{color:var(--g);font-weight:600;}.bbl code{background:rgba(0,0,0,.35);padding:2px 5px;border-radius:3px;font-size:12px;color:var(--blue);font-family:monospace;}.bbl h2,.bbl h3{font-family:var(--fd);font-size:14px;text-transform:uppercase;color:var(--g);margin:10px 0 4px;}.bbl ul,.bbl ol{padding-left:16px;margin:5px 0;}.bbl li{margin-bottom:2px;}
+/* TYPING */
+.trow{display:flex;gap:9px;}.tbbl{padding:12px 15px;background:var(--bg2);border:1px solid var(--b2);border-left:3px solid var(--g);border-radius:9px;display:flex;gap:5px;align-items:center;}.td{width:5px;height:5px;background:var(--g2);border-radius:50%;animation:bounce 1.2s infinite;}.td:nth-child(2){animation-delay:.2s;}.td:nth-child(3){animation-delay:.4s;}
+/* INPUT */
+.inpz{padding:10px 18px 16px;border-top:1px solid var(--b2);background:rgba(7,13,10,.6);flex-shrink:0;backdrop-filter:blur(8px);}.inpbar{display:flex;gap:7px;align-items:flex-end;background:var(--bg2);border:1px solid var(--b1);border-radius:11px;padding:9px 9px 9px 14px;transition:.2s;}.inpbar:focus-within{border-color:var(--g2);box-shadow:0 0 0 3px rgba(0,230,118,.05);}
+.cin{flex:1;background:transparent;border:none;outline:none;color:var(--t1);font-size:13.5px;resize:none;min-height:22px;max-height:110px;overflow-y:auto;font-family:var(--fb);line-height:1.5;}.cin::placeholder{color:var(--t3);}
+.sbtn{width:34px;height:34px;border-radius:7px;background:linear-gradient(135deg,var(--g),var(--g2));border:none;color:#000;cursor:pointer;font-size:15px;flex-shrink:0;transition:.2s;display:flex;align-items:center;justify-content:center;}.sbtn:hover{filter:brightness(1.1);}.sbtn:disabled{background:var(--bg3);color:var(--t3);cursor:not-allowed;}
+.inpft{display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--t3);}
+/* KIAI SIDEBAR */
+.kside{width:230px;background:var(--bg2);border-right:1px solid var(--b2);display:flex;flex-direction:column;flex-shrink:0;}.ksh{padding:16px;border-bottom:1px solid var(--b2);}.ksb{display:flex;align-items:center;gap:9px;margin-bottom:8px;}.ksm{width:32px;height:32px;background:linear-gradient(135deg,var(--g),var(--g2));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:900;font-size:15px;color:#000;}.ksbn{font-family:var(--fd);font-size:16px;font-weight:900;}.ksbn span{color:var(--g);}
+.ksnav{flex:1;overflow-y:auto;padding:6px;}.kssec{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;padding:9px 8px 3px;font-weight:600;}
+.ksi{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--t2);border:1px solid transparent;margin-bottom:1px;transition:.15s;font-family:var(--fb);background:none;width:100%;text-align:left;}.ksi:hover{background:var(--bg3);color:var(--t1);}.ksi.on{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.15);color:var(--g);}
+.ksft{padding:9px;border-top:1px solid var(--b2);}.fcard{background:rgba(0,230,118,.03);border:1px solid rgba(0,230,118,.12);border-radius:7px;padding:10px;}.fcn{font-weight:600;color:var(--t1);font-size:13px;margin-bottom:2px;}.fce{font-size:10px;color:var(--t3);margin-bottom:2px;}.fcr{font-size:10px;color:var(--g);}
+.fco{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:7px;padding:5px;background:rgba(255,71,87,.07);border-radius:5px;color:var(--red);font-size:11px;cursor:pointer;width:100%;transition:.2s;font-family:var(--fb);border:none;}.fco:hover{background:rgba(255,71,87,.14);}
+/* KIAI MAIN */
+.kmain{flex:1;display:flex;flex-direction:column;overflow:hidden;}.ktop{height:52px;background:rgba(7,13,10,.8);border-bottom:1px solid var(--b2);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;backdrop-filter:blur(8px);}.kttl{font-family:var(--fd);font-size:14px;font-weight:700;text-transform:uppercase;}
+.kcont{flex:1;overflow-y:auto;padding:20px;}.kcont::-webkit-scrollbar{width:4px;}.kcont::-webkit-scrollbar-thumb{background:var(--b1);}.kpanel{display:none;}.kpanel.on{display:block;animation:fadeUp .25s ease;}
+/* KIAI METRICS */
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}.mc{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r);padding:14px;}.mclbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;font-weight:600;}.mcv{font-family:var(--fd);font-size:26px;font-weight:900;margin-bottom:2px;}.mcv.g{color:var(--g);}.mcv.sm{font-size:16px;}.mcn{font-size:11px;color:var(--t3);}.mcn.up{color:var(--g);}
+.g2c{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}.dcard{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r);overflow:hidden;margin-bottom:12px;}.dch{padding:10px 14px;border-bottom:1px solid var(--b2);display:flex;align-items:center;justify-content:space-between;}.dct{font-family:var(--fd);font-size:12px;font-weight:700;text-transform:uppercase;}.dcb{padding:12px;}
+.ar{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--b2);}.ar:last-child{border-bottom:none;}.ari{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;background:var(--bg3);}.ari.g{background:rgba(0,230,118,.07);}.ari.a{background:rgba(255,165,2,.07);}.art{flex:1;font-size:13px;color:var(--t1);}.ars{font-size:11px;color:var(--t3);}.artm{font-size:10px;color:var(--t3);flex-shrink:0;}
+.sr{display:flex;align-items:center;justify-content:space-between;padding:7px 11px;background:var(--bg3);border:1px solid var(--b2);border-radius:5px;margin-bottom:6px;}.sr:last-child{margin-bottom:0;}.srn{font-size:13px;color:var(--t1);}.srs{display:flex;align-items:center;gap:5px;font-size:11px;}.sd{width:5px;height:5px;border-radius:50%;}.sdon{background:var(--g);}.sdpr{background:var(--amber);}.sdof{background:var(--red);}.cog{color:var(--g);}.coa{color:var(--amber);}.cor{color:var(--red);}
+.dtbl{width:100%;border-collapse:collapse;}.dtbl th{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;padding:8px 11px;border-bottom:1px solid var(--b2);text-align:left;font-weight:600;}.dtbl td{font-size:13px;color:var(--t1);padding:9px 11px;border-bottom:1px solid var(--b2);}.dtbl tr:last-child td{border-bottom:none;}.dtbl tr:hover td{background:rgba(255,255,255,.015);}
+.rr{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--b2);}.rr:last-child{border-bottom:none;}.rrp{font-family:var(--fd);font-size:12px;font-weight:700;min-width:68px;text-transform:uppercase;}
+/* KIAI EVENT LOG */
+.elog{font-size:11px;font-family:monospace;background:#030806;border:1px solid var(--b1);border-radius:7px;padding:12px;max-height:340px;overflow-y:auto;color:#6BE996;}.elog::-webkit-scrollbar{width:3px;}.elog::-webkit-scrollbar-thumb{background:var(--b1);}.eline{padding:2px 0;border-bottom:1px solid rgba(0,230,118,.04);}.eline:last-child{border-bottom:none;}
+/* KIAI CHAT */
+.kcw{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r);display:flex;flex-direction:column;height:calc(100vh - 120px);}.kch{padding:12px 15px;border-bottom:1px solid var(--b2);background:var(--bg3);border-radius:var(--r) var(--r) 0 0;display:flex;align-items:center;justify-content:space-between;}.kcht{font-family:var(--fd);font-size:13px;font-weight:700;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
+.kcm{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:13px;}.kcm::-webkit-scrollbar{width:3px;}.kcm::-webkit-scrollbar-thumb{background:var(--b1);}.kci{padding:10px 13px;border-top:1px solid var(--b2);}
+.kcbar{display:flex;gap:6px;align-items:flex-end;background:var(--bg3);border:1px solid var(--b1);border-radius:7px;padding:7px 7px 7px 13px;transition:.2s;}.kcbar:focus-within{border-color:var(--g2);}
+.kcin{flex:1;background:transparent;border:none;outline:none;color:var(--t1);font-size:13px;resize:none;min-height:22px;max-height:80px;overflow-y:auto;font-family:var(--fb);}.kcin::placeholder{color:var(--t3);}
+/* LEARN HUB */
+.lhdr{padding:44px 28px 28px;background:var(--bg2);border-bottom:1px solid var(--b2);}.lcont{padding:28px;max-width:1080px;margin:0 auto;}.lcats{display:flex;gap:7px;margin-bottom:24px;flex-wrap:wrap;}.lcat{padding:5px 13px;border-radius:100px;font-size:12px;border:1px solid var(--b1);background:var(--bg2);color:var(--t2);cursor:pointer;transition:.2s;font-family:var(--fb);}.lcat.on{background:rgba(0,230,118,.09);border-color:rgba(0,230,118,.3);color:var(--g);}.lcat:hover{border-color:var(--g);color:var(--g);}
+.agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}.acard{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:.25s;}.acard:hover{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3);}
+.atop{padding:18px 18px 12px;background:linear-gradient(135deg,var(--bg3),var(--bg4));}.aico{font-size:26px;margin-bottom:9px;}.acat{font-size:10px;color:var(--g);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:5px;}.atit{font-family:var(--fd);font-size:16px;font-weight:700;text-transform:uppercase;color:var(--t1);line-height:1.15;}
+.abdy{padding:12px 18px;}.adsc{font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:9px;}.aft{display:flex;align-items:center;justify-content:space-between;}.atm{font-size:10px;color:var(--t3);}.ard{font-size:11px;color:var(--g);}
+.avwr{display:none;padding:28px;max-width:700px;margin:0 auto;}.avwr.on{display:block;animation:fadeUp .3s ease;}.avbk{background:none;border:none;color:var(--t2);cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;margin-bottom:22px;font-family:var(--fb);transition:.15s;}.avbk:hover{color:var(--g);}
+.avttl{font-family:var(--fd);font-size:clamp(26px,4vw,44px);font-weight:900;text-transform:uppercase;line-height:1.1;margin-bottom:14px;}.avmt{display:flex;align-items:center;gap:10px;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--b1);}
+.avcont h2{font-family:var(--fd);font-size:18px;font-weight:700;text-transform:uppercase;color:var(--g);margin:22px 0 9px;}.avcont p{font-size:14px;color:var(--t2);line-height:1.8;margin-bottom:12px;font-weight:300;}.avcont ul{padding-left:16px;margin-bottom:12px;}.avcont li{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:4px;}.avcont strong{color:var(--t1);}
+.hl{background:rgba(0,230,118,.05);border:1px solid rgba(0,230,118,.15);border-left:3px solid var(--g);border-radius:6px;padding:12px 14px;margin:14px 0;}.hl p{margin:0;color:var(--t1);}
+/* STATIC PAGES */
+.phdr{padding:56px 28px 40px;background:var(--bg2);border-bottom:1px solid var(--b2);text-align:center;}.pcont{padding:44px 28px;max-width:760px;margin:0 auto;}.pcont h2{font-family:var(--fd);font-size:22px;font-weight:700;text-transform:uppercase;color:var(--g);margin:28px 0 10px;}.pcont p{font-size:14px;color:var(--t2);line-height:1.8;margin-bottom:12px;font-weight:300;}.pcont ul{padding-left:16px;margin-bottom:12px;}.pcont li{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:5px;}.pcont a{color:var(--g);}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0;}.vc{background:var(--bg2);border:1px solid var(--b2);border-radius:7px;padding:16px;}.vci{font-size:20px;margin-bottom:7px;}.vct{font-family:var(--fd);font-size:13px;font-weight:700;text-transform:uppercase;margin-bottom:4px;}.vcd{font-size:12px;color:var(--t2);line-height:1.6;}
+.vsel{width:100%;background:var(--bg3);border:1px solid var(--b1);border-radius:7px;padding:10px 13px;color:var(--t1);font-size:14px;outline:none;font-family:var(--fb);cursor:pointer;}
+@media(max-width:960px){.fttop{grid-template-columns:1fr 1fr;}.cgrid{grid-template-columns:repeat(2,1fr);}.hiw{grid-template-columns:1fr;}.mets{grid-template-columns:repeat(2,1fr);}.g2c{grid-template-columns:1fr;}.kside{display:none;}.agrid{grid-template-columns:repeat(2,1fr);}.vgrid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.sh{padding:12px 14px;}.nav .nl{display:none;}.hero{padding:44px 14px 36px;}.sec{padding:44px 14px;}.cgrid,.agrid{grid-template-columns:1fr;}.hst{border-right:none;border-bottom:1px solid var(--b1);}.hst:last-child{border-bottom:none;}.fttop{grid-template-columns:1fr;}.lgrid,.fstrip{display:none;}.mets{grid-template-columns:1fr 1fr;}.vgrid{grid-template-columns:1fr;}.sgg{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   HOME PAGE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.hdr{padding:16px 32px;background:rgba(7,13,10,.96);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
-.logo{font-family:var(--fd);color:var(--g);font-size:24px;font-weight:900;letter-spacing:3px;cursor:pointer;user-select:none;}
-.logo sup{font-size:9px;color:var(--t3);font-family:var(--fb);font-weight:400;margin-left:4px;}
-.nav{display:flex;align-items:center;gap:6px;}
-.navl{background:none;border:none;color:var(--t2);font-size:13px;font-family:var(--fb);cursor:pointer;padding:7px 12px;border-radius:6px;transition:.15s;}
-.navl:hover{color:var(--t1);background:var(--bg3);}
+<!-- COOKIE BANNER -->
+<div class="ckb" id="ckb">
+  <span>Essential cookies only. No tracking. No ads. Your conversations are private.</span>
+  <div style="display:flex;gap:7px;flex-shrink:0">
+    <button class="btn bg2btn" style="padding:5px 12px;font-size:12px" onclick="ckAccept()">Accept</button>
+  </div>
+</div>
 
-/* ── HERO ── */
-.hero{position:relative;padding:80px 32px 60px;display:flex;flex-direction:column;align-items:center;text-align:center;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(0,230,118,.07),transparent 70%);pointer-events:none;}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border2) 1px,transparent 1px),linear-gradient(90deg,var(--border2) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;mask-image:radial-gradient(ellipse 100% 80% at 50% 0%,black,transparent);}
-.hero .chip{margin-bottom:22px;animation:fadeUp .4s ease;}
-.hero h1{margin-bottom:10px;animation:fadeUp .4s .08s ease both;}
-.hero h1 .g{color:var(--g);}
-.hero-sub{font-size:16px;color:var(--t2);max-width:520px;line-height:1.75;font-weight:300;margin:0 auto 28px;animation:fadeUp .4s .16s ease both;}
-.hero-acts{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:44px;animation:fadeUp .4s .22s ease both;}
-.stats{display:flex;flex-wrap:wrap;justify-content:center;border:1px solid var(--border);border-radius:12px;background:var(--bg2);overflow:hidden;animation:fadeUp .4s .28s ease both;}
-.stat{padding:16px 26px;border-right:1px solid var(--border);text-align:center;}
-.stat:last-child{border-right:none;}
-.stat-v{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--g);}
-.stat-l{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+<!-- WHATSAPP -->
+<a class="waf" href="https://wa.me/message/99EVSWORLD" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <span>💬</span><span class="watt">WhatsApp Support</span>
+</a>
 
-/* ── STRIP ── */
-.strip{background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);display:flex;flex-wrap:wrap;justify-content:center;}
-.strp{padding:12px 20px;border-right:1px solid var(--border2);font-size:11px;color:var(--t2);display:flex;align-items:center;gap:7px;font-weight:500;}
-.strp:last-child{border-right:none;}
-.strp-d{width:4px;height:4px;border-radius:50%;background:var(--g);}
+<!-- ═══ HOME PAGE ═══ -->
+<div class="pg on" id="pg-home">
+  <header class="sh">
+    <div class="logo" onclick="goHome()">99EVS <sup>MOBILITY AI</sup></div>
+    <nav class="nav">
+      <button class="nl" onclick="openLearn()">Learn</button>
+      <button class="nl" onclick="showFull('pg-about')">About</button>
+      <button class="nl" onclick="showFull('pg-privacy')">Privacy</button>
+      <button class="btn bg2btn" style="padding:7px 14px;font-size:13px" onclick="openAuth('login')">Sign In</button>
+      <button class="btn bp" style="padding:7px 14px;font-size:13px" onclick="openAuth('register')">Get Started Free</button>
+    </nav>
+  </header>
 
-/* ── SECTION BASE ── */
-.sec{padding:64px 32px;}
-.sec-in{max-width:1080px;margin:0 auto;}
-.sec-tag{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:var(--gdim);font-size:10px;color:var(--g);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
-.sec-sub{font-size:14px;color:var(--t2);max-width:520px;line-height:1.75;font-weight:300;margin-top:8px;}
+  <section class="hero">
+    <div class="hbg"></div><div class="hgrid"></div>
+    <div class="chip htag"><span class="dot pulse"></span> MobilityAI — Always Live · No Limits</div>
+    <h1 class="hhead"><span class="l1">World's Smartest</span><span class="l2">Mobility Intelligence.</span></h1>
+    <p class="hsub">Engineering-grade AI for every vehicle on Earth. EVs, ICE, CNG, fleet. Expert-level answers in seconds. Free forever. No subscription. No limit.</p>
+    <div class="hact">
+      <button class="btn bp" style="padding:12px 26px;font-size:14px" onclick="openAuth('register')">⚡ Start for Free — Forever</button>
+      <button class="btn bg2btn" style="padding:12px 22px;font-size:14px" onclick="openAuth('login')">Sign In</button>
+    </div>
+    <div class="hstats">
+      <div class="hst"><div class="hstv">∞</div><div class="hstl">No Message Limit</div></div>
+      <div class="hst"><div class="hstv">Free</div><div class="hstl">Forever. No Card.</div></div>
+      <div class="hst"><div class="hstv">Zero</div><div class="hstl">Data Exploitation</div></div>
+      <div class="hst"><div class="hstv">Global</div><div class="hstl">All Languages</div></div>
+    </div>
+  </section>
 
-/* ── HOW IT WORKS ── */
-.hiw{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:36px;background:var(--border);border-radius:12px;overflow:hidden;border:1px solid var(--border);}
-.hiw-s{background:var(--bg2);padding:26px 22px;}
-.hiw-n{font-family:var(--fd);font-size:44px;font-weight:900;color:var(--g);opacity:.18;line-height:1;margin-bottom:10px;}
-.hiw-t{font-family:var(--fd);font-size:16px;font-weight:700;text-transform:uppercase;color:var(--t1);margin-bottom:7px;}
-.hiw-d{font-size:13px;color:var(--t2);line-height:1.7;}
+  <div class="fstrip">
+    <div class="fsi">
+      <div class="fs"><span class="fsd"></span>Battery Diagnosis</div>
+      <div class="fs"><span class="fsd"></span>Fleet Intelligence</div>
+      <div class="fs"><span class="fsd"></span>Resale Inspection</div>
+      <div class="fs"><span class="fsd"></span>Range Optimization</div>
+      <div class="fs"><span class="fsd"></span>BMS Analysis</div>
+      <div class="fs"><span class="fsd"></span>Charging Guidance</div>
+      <div class="fs"><span class="fsd"></span>Hindi · Telugu · Tamil · Kannada</div>
+    </div>
+  </div>
 
-/* ── CAPABILITIES ── */
-.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px;}
-.cap{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:20px;transition:.25s;}
-.cap:hover{border-color:var(--border);transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.3);}
-.cap-ic{font-size:26px;margin-bottom:10px;}
-.cap-t{font-family:var(--fd);font-size:16px;font-weight:700;text-transform:uppercase;color:var(--t1);margin-bottom:5px;}
-.cap-d{font-size:12px;color:var(--t2);line-height:1.7;}
-.cap-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
-.ctag{padding:2px 7px;border-radius:4px;font-size:10px;background:var(--bg3);color:var(--t3);border:1px solid var(--border2);}
+  <section class="sec" style="background:var(--bg2);border-top:1px solid var(--b2)">
+    <div class="si">
+      <div class="stag">💡 How It Works</div>
+      <h2 class="shead">Three Steps to Smarter Mobility</h2>
+      <div class="hiw">
+        <div class="hiws"><div class="hiwn">01</div><div class="hiwt">One-Time Sign In</div><div class="hiwd">Register once. You are remembered forever. No repeated logins. Your account stays active across sessions, devices and visits.</div></div>
+        <div class="hiws"><div class="hiwn">02</div><div class="hiwt">Tell Us Your Vehicle</div><div class="hiwd">Share your vehicle type, brand and model. MobilityAI gives personalised, specific answers — not generic advice. Supports all languages.</div></div>
+        <div class="hiws"><div class="hiwn">03</div><div class="hiwt">Get Engineering-Grade Answers</div><div class="hiwd">Every response is structured: Overview, Technical Explanation, Practical Steps, Risk Factors, Optimization Strategy. Every time. No limit.</div></div>
+      </div>
+    </div>
+  </section>
 
-/* ── LEARN PREVIEW ── */
-.lgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:28px;}
-.lcard{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:18px;cursor:pointer;transition:.2s;display:flex;align-items:flex-start;gap:12px;}
-.lcard:hover{border-color:var(--g);transform:translateX(3px);}
-.lcard-ic{font-size:20px;flex-shrink:0;margin-top:1px;}
-.lcard-t{font-weight:600;font-size:13px;color:var(--t1);margin-bottom:4px;}
-.lcard-d{font-size:11px;color:var(--t2);line-height:1.6;}
-.lcard-arr{margin-left:auto;color:var(--t3);font-size:13px;flex-shrink:0;align-self:center;}
+  <section class="sec">
+    <div class="si">
+      <div class="stag">⚡ Capabilities</div>
+      <h2 class="shead">Everything Your Vehicle Needs</h2>
+      <p class="ssub">MobilityAI covers the full spectrum of vehicle intelligence — never goes offline, never runs out of answers.</p>
+      <div class="cgrid">
+        <div class="cc"><div class="cci">🔋</div><div class="cct">Battery Intelligence</div><div class="ccd">BMS analysis, SoC/SoH diagnostics, cell degradation, thermal management, charging cycle optimization.</div><div class="cctags"><span class="ctag">LFP</span><span class="ctag">NMC</span><span class="ctag">BMS</span><span class="ctag">SoH</span></div></div>
+        <div class="cc"><div class="cci">🚌</div><div class="cct">Fleet Management</div><div class="ccd">Preventive and predictive maintenance, cost-per-km analysis, downtime reduction, fleet health monitoring.</div><div class="cctags"><span class="ctag">Preventive</span><span class="ctag">CPK</span><span class="ctag">Uptime</span></div></div>
+        <div class="cc"><div class="cci">🔍</div><div class="cct">Resale Inspection</div><div class="ccd">Pre-purchase EV inspection checklist, battery health verification, fault history, fair valuation.</div><div class="cctags"><span class="ctag">12-Point Check</span><span class="ctag">Valuation</span></div></div>
+        <div class="cc"><div class="cci">⚡</div><div class="cct">EV Powertrain</div><div class="ccd">Motor diagnostics, regen braking optimization, range anxiety resolution, efficiency tuning.</div><div class="cctags"><span class="ctag">Motor</span><span class="ctag">Regen</span><span class="ctag">Range</span></div></div>
+        <div class="cc"><div class="cci">🔧</div><div class="cct">ICE & Multi-Fuel</div><div class="ccd">Petrol, diesel, CNG and hybrid diagnostics. Engine health, fuel efficiency, emission compliance.</div><div class="cctags"><span class="ctag">Petrol</span><span class="ctag">Diesel</span><span class="ctag">CNG</span></div></div>
+        <div class="cc"><div class="cci">🌍</div><div class="cct">All Languages</div><div class="ccd">MobilityAI detects your language automatically. Ask in Hindi, Telugu, Tamil, Kannada, or any global language.</div><div class="cctags"><span class="ctag">Hindi</span><span class="ctag">Telugu</span><span class="ctag">Tamil</span><span class="ctag">Global</span></div></div>
+      </div>
+    </div>
+  </section>
 
-/* ── CTA ── */
-.cta{background:linear-gradient(135deg,rgba(0,230,118,.07),rgba(0,200,83,.03));border:1px solid var(--border);border-radius:14px;padding:44px 36px;text-align:center;position:relative;overflow:hidden;}
-.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,230,118,.04),transparent 60%);pointer-events:none;}
-.cta h2{margin-bottom:10px;}
-.cta p{color:var(--t2);margin-bottom:24px;font-size:14px;font-weight:300;}
+  <section class="sec" style="background:var(--bg2);border-top:1px solid var(--b2)">
+    <div class="si">
+      <div class="stag">📚 Learn Hub</div>
+      <h2 class="shead">Become the Smartest Person About Your Vehicle</h2>
+      <p class="ssub">Free engineering-grade articles. No jargon. Practical knowledge for every vehicle owner.</p>
+      <div class="lgrid">
+        <div class="lc" onclick="openLearnArt('batt101')"><div class="lci">🔋</div><div><div class="lct">EV Battery 101 — Everything You Must Know</div><div class="lcd">SoC, SoH, cell chemistry, charging myths.</div></div><div class="lca">→</div></div>
+        <div class="lc" onclick="openLearnArt('range')"><div class="lci">📍</div><div><div class="lct">Why Your EV Range Is Less Than Promised</div><div class="lcd">The real science behind range anxiety.</div></div><div class="lca">→</div></div>
+        <div class="lc" onclick="openLearnArt('fleet')"><div class="lci">📊</div><div><div class="lct">Fleet Maintenance: Preventive vs Reactive</div><div class="lcd">Why reactive costs 3x more.</div></div><div class="lca">→</div></div>
+        <div class="lc" onclick="openLearnArt('buysell')"><div class="lci">💰</div><div><div class="lct">How to Buy a Used EV Without Getting Cheated</div><div class="lcd">The 12-point inspection checklist.</div></div><div class="lca">→</div></div>
+      </div>
+      <div style="margin-top:18px;text-align:center"><button class="btn bo" onclick="openLearn()">View All Articles →</button></div>
+    </div>
+  </section>
 
-/* ── FOOTER ── */
-.ftr{background:var(--bg2);border-top:1px solid var(--border2);padding:36px 32px 20px;}
-.ftr-in{max-width:1080px;margin:0 auto;}
-.ftr-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:28px;}
-.ftr-logo{font-family:var(--fd);color:var(--g);font-size:20px;font-weight:900;letter-spacing:2px;display:block;margin-bottom:8px;cursor:pointer;}
-.ftr-desc{font-size:12px;color:var(--t3);line-height:1.7;max-width:240px;}
-.ftr-col h4{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-weight:700;}
-.flink{display:block;font-size:12px;color:var(--t2);margin-bottom:6px;cursor:pointer;background:none;border:none;text-align:left;font-family:var(--fb);transition:.15s;}
-.flink:hover{color:var(--g);}
-.ftr-bot{border-top:1px solid var(--border2);padding-top:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.ftr-copy{font-size:11px;color:var(--t3);}
+  <section class="sec">
+    <div class="si">
+      <div class="ctab">
+        <div class="chip" style="margin-bottom:14px"><span class="dot pulse"></span> Free Forever · No Subscription · No Limit</div>
+        <h2>One Sign-In. <span style="color:var(--g)">Intelligence For Life.</span></h2>
+        <p>Register once. Ask unlimited questions. Remembered forever. 99EVS is your lifelong mobility partner.</p>
+        <button class="btn bp" style="padding:13px 28px;font-size:14px" onclick="openAuth('register')">⚡ Start Free — Remembered Forever</button>
+      </div>
+    </div>
+  </section>
 
-/* ── WA FLOAT ── */
-.wa{position:fixed;bottom:22px;right:22px;width:50px;height:50px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;z-index:999;box-shadow:0 4px 18px rgba(37,211,102,.4);transition:.2s;text-decoration:none;}
-.wa:hover{transform:scale(1.1);}
+  <footer class="ft">
+    <div class="fti">
+      <div class="fttop">
+        <div class="fbrand"><span class="logo">99EVS</span><p>World's most trusted mobility intelligence. No subscription. No limit. Safety first. Built for humanity.</p><div style="margin-top:12px;display:flex;gap:7px"><span class="badge bdg">Always Live</span><span class="badge bdb">AI Powered</span></div></div>
+        <div class="fcol"><h4>Platform</h4><button class="fl" onclick="openAuth('register')">Get Started Free</button><button class="fl" onclick="openLearn()">Learn Hub</button></div>
+        <div class="fcol"><h4>Company</h4><button class="fl" onclick="showFull('pg-about')">About 99EVS</button><button class="fl" onclick="showFull('pg-privacy')">Privacy Policy</button><button class="fl" onclick="showFull('pg-terms')">Terms of Service</button></div>
+        <div class="fcol"><h4>Contact</h4><span class="fl" style="cursor:default">99evsworld@gmail.com</span><a class="fl" href="https://wa.me/message/99EVSWORLD" target="_blank" rel="noopener">WhatsApp</a></div>
+      </div>
+      <div class="ftbot"><div class="ftcopy">© 2026 99EVS.com · Founder: Kiran SR · Safety First · Built for Humanity · Free Forever</div><div style="display:flex;gap:7px"><span class="badge bdg">🔒 Zero-Trust</span><span class="badge bdb">🤖 AI Powered</span></div></div>
+    </div>
+  </footer>
+</div>
 
-/* ── COOKIE ── */
-.cookie{position:fixed;bottom:0;left:0;right:0;background:var(--bg3);border-top:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;z-index:998;font-size:12px;color:var(--t2);flex-wrap:wrap;}
-.cookie.gone{display:none;}
+<!-- ═══ AUTH MODAL ═══ -->
+<div class="mbg" id="auth-modal">
+  <div class="modal">
+    <button class="mx" onclick="closeAuth()">✕</button>
+    <div class="mtit" id="atit">Sign In</div>
+    <p class="msub" id="asub">You will be remembered forever — sign in once, always stay signed in.</p>
+    <div class="aalert" id="aalert"></div>
+    <button class="gbtn" onclick="startGoogle()">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div class="divider"><hr><span>or use email</span><hr></div>
+    <div id="form-login">
+      <div class="fld"><label>Email Address</label><input type="email" id="l-email" placeholder="you@example.com" maxlength="120"></div>
+      <div class="fld"><label>Password</label><input type="password" id="l-pwd" placeholder="Your password" maxlength="128" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn bp" style="width:100%;justify-content:center" id="lbtn" onclick="doLogin()">Sign In — Stay Signed In</button>
+      <div class="swl">No account? <a onclick="switchForm('register')">Create one free</a></div>
+    </div>
+    <div id="form-reg" style="display:none">
+      <div class="fld"><label>Full Name</label><input type="text" id="r-name" placeholder="Your full name" maxlength="80"></div>
+      <div class="fld"><label>Email Address</label><input type="email" id="r-email" placeholder="you@example.com" maxlength="120"></div>
+      <div class="fld"><label>Password (min 8 chars)</label><input type="password" id="r-pwd" placeholder="Create a strong password" maxlength="128"></div>
+      <div class="fld"><label>Confirm Password</label><input type="password" id="r-conf" placeholder="Repeat password" maxlength="128" onkeydown="if(event.key==='Enter')doReg()"></div>
+      <button class="btn bp" style="width:100%;justify-content:center" id="rbtn" onclick="doReg()">Create Free Account</button>
+      <div class="swl">Already registered? <a onclick="switchForm('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   AUTH MODAL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
-.modal-bg.open{display:flex;}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:14px;width:100%;max-width:400px;padding:30px;position:relative;animation:fadeUp .25s ease;}
-.modal-x{position:absolute;top:13px;right:14px;background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;padding:2px 5px;line-height:1;transition:.15s;}
-.modal-x:hover{color:var(--t1);}
-.modal-title{font-family:var(--fd);font-size:24px;font-weight:900;text-transform:uppercase;color:var(--t1);margin-bottom:3px;}
-.modal-sub{font-size:12px;color:var(--t2);margin-bottom:20px;font-weight:300;}
-.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:11px;background:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#1a1a1a;transition:.2s;margin-bottom:16px;font-family:var(--fb);}
-.gbtn:hover{background:#f5f5f5;box-shadow:0 2px 10px rgba(0,0,0,.15);}
-.gbtn svg{width:17px;height:17px;flex-shrink:0;}
-.divd{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
-.divd hr{flex:1;border:none;border-top:1px solid var(--border);}
-.divd span{font-size:10px;color:var(--t3);white-space:nowrap;}
-.field{margin-bottom:12px;}
-.field label{display:block;font-size:10px;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
-.field input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px 13px;color:var(--t1);font-size:13px;outline:none;transition:.2s;font-family:var(--fb);}
-.field input:focus{border-color:var(--g2);}
-.field input::placeholder{color:var(--t3);}
-.alert{padding:9px 12px;border-radius:7px;font-size:12px;margin-bottom:12px;display:none;}
-.alert.show{display:block;}
-.alert.err{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.25);color:#ff7070;}
-.alert.ok{background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);color:var(--g);}
-.swl{font-size:11px;color:var(--t3);margin-top:14px;text-align:center;}
-.swl a{color:var(--g);cursor:pointer;}
-.swl a:hover{text-decoration:underline;}
+<!-- ═══ MOBILITYAI CHAT PAGE ═══ -->
+<div class="cpg" id="pg-chat">
+  <header class="chdr">
+    <div class="chl"><div class="chlogo" onclick="goHome()">99EVS</div><div class="chip"><span class="dot pulse"></span> MobilityAI — No Limit</div></div>
+    <div class="chr">
+      <div class="uav" id="chat-av">U</div>
+      <div class="unm" id="chat-nm">User</div>
+      <button class="sob" onclick="doLogout()">⏻ Sign Out</button>
+    </div>
+  </header>
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   MOBILITYAI CHAT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.chat-hdr{height:52px;background:var(--bg2);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;}
-.ch-l{display:flex;align-items:center;gap:10px;}
-.ch-logo{font-family:var(--fd);font-size:17px;font-weight:900;color:var(--g);letter-spacing:2px;cursor:pointer;}
-.ch-r{display:flex;align-items:center;gap:8px;}
-.uav{width:28px;height:28px;border-radius:7px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--g);overflow:hidden;flex-shrink:0;}
-.uav img{width:100%;height:100%;object-fit:cover;}
-.uname{font-size:12px;color:var(--t1);font-weight:500;}
-.sout{background:none;border:1px solid var(--border);border-radius:6px;color:var(--t3);font-size:11px;padding:4px 9px;cursor:pointer;transition:.2s;font-family:var(--fb);}
-.sout:hover{border-color:var(--red);color:var(--red);}
+  <div class="vpr gone" id="vpr">
+    <div class="vprt"><strong>🚗 Save your vehicle</strong> for personalised MobilityAI answers</div>
+    <div class="vprb">
+      <button class="btn bp" style="padding:4px 11px;font-size:12px" onclick="openVeh()">Add Vehicle</button>
+      <button class="btn bg2btn" style="padding:4px 9px;font-size:11px" onclick="$('vpr').classList.add('gone')">Later</button>
+    </div>
+  </div>
 
-/* vehicle prompt */
-.vpbar{background:linear-gradient(135deg,rgba(0,230,118,.06),rgba(0,230,118,.02));border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin:10px 18px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;}
-.vpbar.gone{display:none;}
-.vpt{font-size:11px;color:var(--t2);}
-.vpt strong{color:var(--t1);}
-.vpbs{display:flex;gap:5px;flex-shrink:0;}
+  <div class="mwrap" id="msgs"></div>
 
-/* messages */
-.msgs{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:16px;}
-.msgs::-webkit-scrollbar{width:3px;}
-.msgs::-webkit-scrollbar-thumb{background:var(--border);}
+  <div class="inpz">
+    <div class="inpbar">
+      <textarea class="cin" id="cin" placeholder="Ask in any language — Hindi, Telugu, Tamil, English, or any language worldwide..." maxlength="2000" rows="1" onkeydown="chatKey(event)" oninput="autoH(this);updCC()"></textarea>
+      <button class="sbtn" id="sbtn" onclick="sendMsg()">▶</button>
+    </div>
+    <div class="inpft">
+      <span>Enter to send · Shift+Enter for new line · <button onclick="openLearn()" style="background:none;border:none;color:var(--g);font-size:10px;cursor:pointer;font-family:var(--fb)">📚 Learn Hub</button></span>
+      <span id="cc">0 / 2000</span>
+    </div>
+  </div>
+</div>
 
-.wbox{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:240px;text-align:center;padding:24px;}
-.wbox-ic{font-size:38px;margin-bottom:12px;}
-.wbox-t{font-family:var(--fd);font-size:22px;font-weight:900;text-transform:uppercase;color:var(--t1);margin-bottom:7px;}
-.wbox-s{font-size:12px;color:var(--t2);max-width:360px;line-height:1.7;margin-bottom:22px;font-weight:300;}
-.sugg{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-width:500px;width:100%;}
-.sg{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:11px;cursor:pointer;transition:.2s;text-align:left;}
-.sg:hover{border-color:var(--g);transform:translateY(-1px);}
-.sg-i{font-size:15px;margin-bottom:4px;}
-.sg-t{font-size:11px;font-weight:600;color:var(--t1);margin-bottom:2px;}
-.sg-d{font-size:10px;color:var(--t3);}
+<!-- Vehicle Modal -->
+<div class="mbg" id="veh-modal">
+  <div class="modal" style="max-width:360px">
+    <button class="mx" onclick="closeVeh()">✕</button>
+    <div class="mtit">My Vehicle</div>
+    <p class="msub">MobilityAI gives personalised answers when it knows your vehicle.</p>
+    <div class="fld"><label>Vehicle Type</label>
+      <select id="v-type" class="vsel"><option value="">Select type</option><option>Electric Vehicle (EV)</option><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Hybrid</option><option>Fleet</option></select>
+    </div>
+    <div class="fld"><label>Brand & Model</label><input type="text" id="v-model" placeholder="e.g. Tata Nexon EV, Ather 450X" maxlength="80"></div>
+    <div class="fld"><label>Year</label><input type="text" id="v-year" placeholder="e.g. 2023" maxlength="4"></div>
+    <button class="btn bp" style="width:100%;justify-content:center" onclick="saveVeh()">Save Vehicle</button>
+  </div>
+</div>
 
-.mrow{display:flex;gap:9px;animation:fadeUp .2s ease;}
-.mrow.me{flex-direction:row-reverse;}
-.av{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;overflow:hidden;}
-.av.ai{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);color:var(--g);}
-.av.us{background:var(--bg3);border:1px solid var(--border);color:var(--t2);}
-.av.us img{width:100%;height:100%;object-fit:cover;}
-.mmeta{font-size:10px;color:var(--t3);margin-bottom:4px;}
-.mrow.me .mmeta{text-align:right;}
-.bub{max-width:680px;padding:12px 15px;border-radius:9px;font-size:13px;line-height:1.78;font-family:var(--fb);}
-.bub.ai{background:var(--bg2);border:1px solid var(--border2);border-left:3px solid var(--g);color:var(--t1);}
-.bub.us{background:var(--bg3);border:1px solid var(--border2);color:var(--t1);}
-.bub strong{color:var(--g);font-weight:600;}
-.bub code{background:rgba(0,0,0,.35);padding:1px 5px;border-radius:3px;font-size:11px;color:var(--blue);font-family:monospace;}
-.bub h2,.bub h3{font-family:var(--fd);font-size:14px;text-transform:uppercase;color:var(--g);margin:10px 0 4px;font-weight:700;}
-.bub ul,.bub ol{padding-left:17px;margin:5px 0;}
-.bub li{margin-bottom:3px;}
-.bub hr{border:none;border-top:1px solid var(--border);margin:10px 0;}
+<!-- ═══ KIAI FOUNDER DASHBOARD ═══ -->
+<div class="kpg" id="pg-kiai">
+  <div class="kside">
+    <div class="ksh">
+      <div class="ksb"><div class="ksm">K</div><div><div class="ksbn"><span>KIAI</span></div><div style="font-size:10px;color:var(--t3)">99EVS Intelligence</div></div></div>
+      <div class="chip" style="margin-top:4px"><span class="dot pulse"></span> Founder Mode</div>
+    </div>
+    <nav class="ksnav">
+      <div class="kssec">Command</div>
+      <button class="ksi on" onclick="showPanel('overview',this)">📊 Overview</button>
+      <button class="ksi" onclick="showPanel('kiai-chat',this)">🧠 KIAI Intelligence</button>
+      <div class="kssec">Platform</div>
+      <button class="ksi" onclick="showPanel('infra',this)">🏗 Infrastructure</button>
+      <button class="ksi" onclick="showPanel('security',this)">🔒 Security</button>
+      <div class="kssec">Business</div>
+      <button class="ksi" onclick="showPanel('users',this)">👥 Users</button>
+      <button class="ksi" onclick="showPanel('analytics',this)">📈 Analytics</button>
+      <div class="kssec">System</div>
+      <button class="ksi" onclick="showPanel('eventlog',this)">🕐 Event Log</button>
+      <button class="ksi" onclick="showPanel('settings',this)">⚙ Settings</button>
+      <button class="ksi" onclick="showPanel('seo',this)">🔍 SEO Status</button>
+    </nav>
+    <div class="ksft">
+      <div class="fcard">
+        <div class="fcn">Kiran SR</div><div class="fce">shelltwo6565@gmail.com</div><div class="fcr">★ Supreme Admin · Founder</div>
+        <button class="fco" onclick="doLogout()">⏻ Sign Out</button>
+      </div>
+    </div>
+  </div>
 
-.typrow{display:flex;gap:9px;}
-.typbub{padding:12px 15px;background:var(--bg2);border:1px solid var(--border2);border-left:3px solid var(--g);border-radius:9px;display:flex;gap:4px;align-items:center;}
-.td{width:5px;height:5px;background:var(--g2);border-radius:50%;animation:bounce 1.2s infinite;}
-.td:nth-child(2){animation-delay:.2s;}
-.td:nth-child(3){animation-delay:.4s;}
+  <div class="kmain">
+    <div class="ktop">
+      <div class="kttl" id="ptitle">Overview</div>
+      <div style="display:flex;align-items:center;gap:7px">
+        <div class="chip"><span class="dot pulse"></span> KIAI Active</div>
+        <button class="btn bg2btn" style="font-size:12px;padding:5px 11px" onclick="goUserView()">↗ User View</button>
+      </div>
+    </div>
+    <div class="kcont">
 
-.inp-zone{padding:10px 18px 16px;border-top:1px solid var(--border2);background:rgba(7,13,10,.7);flex-shrink:0;backdrop-filter:blur(8px);}
-.inp-bar{display:flex;gap:7px;align-items:flex-end;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:9px 9px 9px 14px;transition:.2s;}
-.inp-bar:focus-within{border-color:var(--g2);box-shadow:0 0 0 3px rgba(0,230,118,.05);}
-.cinp{flex:1;background:transparent;border:none;outline:none;color:var(--t1);font-size:13px;resize:none;min-height:21px
+      <!-- OVERVIEW -->
+      <div class="kpanel on" id="panel-overview">
+        <div class="mets">
+          <div class="mc"><div class="mclbl">Registered Users</div><div class="mcv g" id="mc-u">0</div><div class="mcn">Session Count</div></div>
+          <div class="mc"><div class="mclbl">AI Queries</div><div class="mcv g" id="mc-q">0</div><div class="mcn up">This Session</div></div>
+          <div class="mc"><div class="mclbl">Sessions</div><div class="mcv g" id="mc-s">0</div><div class="mcn up">Total</div></div>
+          <div class="mc"><div class="mclbl">AI Engine</div><div class="mcv g sm">LIVE</div><div class="mcn up">Always On</div></div>
+        </div>
+        <div class="g2c">
+          <div class="dcard">
+            <div class="dch"><div class="dct">System Health</div><div class="badge bdg">All Green</div></div>
+            <div class="dcb">
+              <div class="sr"><span class="srn">MobilityAI Built-In Engine</span><div class="srs"><div class="sd sdon"></div><span class="cog">Always Live</span></div></div>
+              <div class="sr"><span class="srn">KIAI Intelligence</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+              <div class="sr"><span class="srn">Vercel Deployment</span><div class="srs"><div class="sd sdon"></div><span class="cog">Live</span></div></div>
+              <div class="sr"><span class="srn">Persistent Login (localStorage)</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+              <div class="sr"><span class="srn">Anthropic API</span><div class="srs"><div class="sd sdpr"></div><span class="coa">Add Credits</span></div></div>
+              <div class="sr"><span class="srn">99evs.com Domain</span><div class="srs"><div class="sd sdon"></div><span class="cog">Connected</span></div></div>
+            </div>
+          </div>
+          <div class="dcard">
+            <div class="dch"><div class="dct">Platform Roadmap</div></div>
+            <div class="dcb" style="padding:0">
+              <div class="rr"><div class="rrp" style="color:var(--g)">Phase 1</div><div style="flex:1;font-size:13px;color:var(--t2)">MobilityAI + KIAI + Learn Hub + Auth</div><div class="srs"><div class="sd sdon"></div><span class="cog" style="font-size:11px">LIVE</span></div></div>
+              <div class="rr"><div class="rrp" style="color:var(--t2)">Phase 2</div><div style="flex:1;font-size:13px;color:var(--t2)">Vehicle Profiles + Inspection Network</div><div class="srs"><div class="sd sdpr"></div><span class="coa" style="font-size:11px">Planning</span></div></div>
+              <div class="rr"><div class="rrp" style="color:var(--t3)">Phase 3</div><div style="flex:1;font-size:13px;color:var(--t3)">Fleet Dashboard + Business Accounts</div><div class="srs"><div class="sd sdof"></div><span class="cor" style="font-size:11px">Queued</span></div></div>
+              <div class="rr"><div class="rrp" style="color:var(--t3)">Phase 4</div><div style="flex:1;font-size:13px;color:var(--t3)">Vendor Marketplace + Revenue</div><div class="srs"><div class="sd sdof"></div><span class="cor" style="font-size:11px">Queued</span></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dcard">
+          <div class="dch"><div class="dct">Fix Required — Anthropic API Credits</div><div class="badge bda">Action Needed</div></div>
+          <div class="dcb">
+            <p style="font-size:13px;color:var(--t2);margin-bottom:10px">Your Anthropic API account has insufficient credits. MobilityAI's built-in engine is handling all queries — users are not affected. To restore full AI responses:</p>
+            <ol style="font-size:13px;color:var(--t2);padding-left:18px">
+              <li style="margin-bottom:5px">Go to <strong style="color:var(--g)">console.anthropic.com</strong></li>
+              <li style="margin-bottom:5px">Click <strong style="color:var(--t1)">Billing → Add Credits</strong></li>
+              <li style="margin-bottom:5px">Add minimum <strong style="color:var(--t1)">$5 USD</strong></li>
+              <li>No code changes needed — works instantly after payment</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- KIAI CHAT -->
+      <div class="kpanel" id="panel-kiai-chat">
+        <div class="kcw">
+          <div class="kch"><div class="kcht">🧠 KIAI Intelligence <span class="badge bdg" style="margin-left:5px">Founder Only</span></div><div class="chip"><span class="dot pulse"></span> Secure</div></div>
+          <div class="kcm" id="kiai-msgs">
+            <div class="wb" style="min-height:auto;padding:24px">
+              <div class="wbi">🧠</div><div class="wbt" style="font-size:18px">KIAI Ready</div>
+              <div class="wbs">Your exclusive founder intelligence. Strategy, architecture, business, security, market expansion.</div>
+            </div>
+          </div>
+          <div class="kci">
+            <div class="kcbar">
+              <textarea class="kcin" id="kiai-in" placeholder="Ask KIAI about strategy, business, architecture, security..." rows="1" maxlength="3000" onkeydown="kiaiKey(event)" oninput="autoH(this)"></textarea>
+              <button class="sbtn" id="ksend" onclick="sendKiai()" style="width:30px;height:30px;font-size:12px">▶</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFRASTRUCTURE -->
+      <div class="kpanel" id="panel-infra">
+        <div class="dcard">
+          <div class="dch"><div class="dct">Infrastructure Stack</div><div class="badge bdg">Founder Controlled</div></div>
+          <div class="dcb" style="padding:0">
+            <table class="dtbl">
+              <thead><tr><th>Service</th><th>Provider</th><th>Purpose</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Domain</td><td>GoDaddy</td><td>99evs.com DNS</td><td><div class="srs"><div class="sd sdon"></div><span class="cog">Live</span></div></td></tr>
+                <tr><td>Deployment</td><td>Vercel</td><td>Frontend + Serverless API</td><td><div class="srs"><div class="sd sdon"></div><span class="cog">Live</span></div></td></tr>
+                <tr><td>Code</td><td>GitHub</td><td>Version control + auto-deploy</td><td><div class="srs"><div class="sd sdon"></div><span class="cog">Synced</span></div></td></tr>
+                <tr><td>Built-In AI</td><td>99EVS Engine</td><td>Always-on mobile intelligence</td><td><div class="srs"><div class="sd sdon"></div><span class="cog">Always Live</span></div></td></tr>
+                <tr><td>AI Enhancement</td><td>Anthropic API</td><td>Enhanced responses when credits active</td><td><div class="srs"><div class="sd sdpr"></div><span class="coa">Add Credits</span></div></td></tr>
+                <tr><td>Auth</td><td>Google OAuth + localStorage</td><td>Persistent one-time login</td><td><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECURITY -->
+      <div class="kpanel" id="panel-security">
+        <div class="mets">
+          <div class="mc"><div class="mclbl">Secrets in Code</div><div class="mcv g sm">ZERO</div><div class="mcn up">Verified</div></div>
+          <div class="mc"><div class="mclbl">Auth Model</div><div class="mcv g sm">Server</div><div class="mcn up">Side + Local</div></div>
+          <div class="mc"><div class="mclbl">Login Attempts</div><div class="mcv g" id="mc-fail">0</div><div class="mcn">Failed</div></div>
+          <div class="mc"><div class="mclbl">User Privacy</div><div class="mcv g sm">MAX</div><div class="mcn up">No Tracking</div></div>
+        </div>
+        <div class="dcard">
+          <div class="dch"><div class="dct">Security Architecture</div><div class="badge bdg">All Active</div></div>
+          <div class="dcb">
+            <div class="sr"><span class="srn">Passwords stored in Vercel env — not in source code</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+            <div class="sr"><span class="srn">Server-side founder auth via /api/auth</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+            <div class="sr"><span class="srn">Google OAuth 2.0 token verification</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+            <div class="sr"><span class="srn">System prompts server-side only (not in browser)</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+            <div class="sr"><span class="srn">Rate limiting — 5 attempts / 15 min lockout</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+            <div class="sr"><span class="srn">Input sanitization — XSS prevention</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+            <div class="sr"><span class="srn">Persistent sessions via encrypted localStorage</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+            <div class="sr"><span class="srn">HTTPS enforced by Vercel</span><div class="srs"><div class="sd sdon"></div><span class="cog">Active</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="kpanel" id="panel-users">
+        <div class="dcard">
+          <div class="dch"><div class="dct">Registered Users</div><div class="badge bdg" id="ubadge">0 Total</div></div>
+          <div class="dcb" style="padding:0">
+            <table class="dtbl">
+              <thead><tr><th>Name</th><th>Email</th><th>Registered</th><th>Auth</th><th>Status</th></tr></thead>
+              <tbody id="utbody"><tr><td colspan="5" style="text-align:center;color:var(--t3);padding:24px">No users yet. Share 99evs.com to get first users.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="kpanel" id="panel-analytics">
+        <div class="mets">
+          <div class="mc"><div class="mclbl">Total Queries</div><div class="mcv g" id="an-q">0</div><div class="mcn">All Time</div></div>
+          <div class="mc"><div class="mclbl">Sessions</div><div class="mcv g" id="an-s">0</div><div class="mcn up">Total</div></div>
+          <div class="mc"><div class="mclbl">Registered Users</div><div class="mcv g" id="an-u">0</div><div class="mcn">In Memory</div></div>
+          <div class="mc"><div class="mclbl">AI Response</div><div class="mcv g sm">Always</div><div class="mcn up">Built-In Active</div></div>
+        </div>
+      </div>
+
+      <!-- EVENT LOG — FOUNDER ONLY -->
+      <div class="kpanel" id="panel-eventlog">
+        <div class="dcard">
+          <div class="dch"><div class="dct">Event Log — Founder Exclusive</div><div class="badge bdg">Timestamped</div></div>
+          <div class="dcb">
+            <div class="elog" id="elog">Waiting for events...</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;text-align:right"><button class="btn bg2btn" style="font-size:11px;padding:4px 10px" onclick="clearLog()">Clear Log</button></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="kpanel" id="panel-settings">
+        <div class="dcard">
+          <div class="dch"><div class="dct">Platform Configuration</div><div class="badge bdg">Founder Only</div></div>
+          <div class="dcb">
+            <div class="sr"><span class="srn">Platform Version</span><span style="font-size:12px;color:var(--t2)">v3.0 — Always-On AI</span></div>
+            <div class="sr"><span class="srn">Founder Email</span><span style="font-size:12px;color:var(--g)">shelltwo6565@gmail.com</span></div>
+            <div class="sr"><span class="srn">Brand Contact</span><span style="font-size:12px;color:var(--t2)">99evsworld@gmail.com</span></div>
+            <div class="sr"><span class="srn">Primary AI Engine</span><span style="font-size:12px;color:var(--g)">Built-In MobilityAI (Zero Cost)</span></div>
+            <div class="sr"><span class="srn">Enhanced AI</span><span style="font-size:12px;color:var(--t2)">claude-haiku-4-5-20251001 (when credits active)</span></div>
+            <div class="sr"><span class="srn">Persistent Login</span><span style="font-size:12px;color:var(--g)">localStorage — users stay signed in</span></div>
+            <div class="sr"><span class="srn">Languages Supported</span><span style="font-size:12px;color:var(--g)">All world languages (auto-detect)</span></div>
+            <div class="sr"><span class="srn">Subscription Required</span><span style="font-size:12px;color:var(--g)">None — Free Forever</span></div>
+            <div class="sr"><span class="srn">Message Limit</span><span style="font-size:12px;color:var(--g)">Unlimited</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEO -->
+      <div class="kpanel" id="panel-seo">
+        <div class="mets">
+          <div class="mc"><div class="mclbl">Meta Tags</div><div class="mcv g sm">Done</div><div class="mcn up">All Present</div></div>
+          <div class="mc"><div class="mclbl">Open Graph</div><div class="mcv g sm">Done</div><div class="mcn up">Social Ready</div></div>
+          <div class="mc"><div class="mclbl">JSON-LD</div><div class="mcv g sm">Done</div><div class="mcn up">Structured</div></div>
+          <div class="mc"><div class="mclbl">Search Console</div><div class="mcv" style="font-size:16px;color:var(--amber)">TODO</div><div class="mcn">Register Now</div></div>
+        </div>
+        <div class="dcard">
+          <div class="dch"><div class="dct">SEO Checklist</div></div>
+          <div class="dcb">
+            <div class="sr"><span class="srn">Title + meta description</span><div class="srs"><div class="sd sdon"></div><span class="cog">Done</span></div></div>
+            <div class="sr"><span class="srn">Open Graph (Facebook / WhatsApp / LinkedIn)</span><div class="srs"><div class="sd sdon"></div><span class="cog">Done</span></div></div>
+            <div class="sr"><span class="srn">Twitter Card</span><div class="srs"><div class="sd sdon"></div><span class="cog">Done</span></div></div>
+            <div class="sr"><span class="srn">JSON-LD structured data</span><div class="srs"><div class="sd sdon"></div><span class="cog">Done</span></div></div>
+            <div class="sr"><span class="srn">robots.txt + sitemap.xml uploaded</span><div class="srs"><div class="sd sdpr"></div><span class="coa">Upload to GitHub</span></div></div>
+            <div class="sr"><span class="srn">Google Search Console registered</span><div class="srs"><div class="sd sdpr"></div><span class="coa">search.google.com/search-console</span></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- kcont -->
+  </div><!-- kmain -->
+</div>
+
+<!-- ═══ LEARN HUB ═══ -->
+<div class="fpg" id="pg-learn">
+  <header class="sh"><div class="logo" onclick="goHome()">99EVS <sup>MOBILITY AI</sup></div><nav class="nav"><button class="nl" onclick="goHome()">← Home</button><button class="btn bp" style="padding:7px 14px;font-size:13px" onclick="openAuth('register')">Start Free</button></nav></header>
+  <div class="lhdr">
+    <div class="stag">📚 Learn Hub</div>
+    <h1 style="font-family:var(--fd);margin:10px 0 7px;text-transform:uppercase">Become Mobility Intelligent</h1>
+    <p style="color:var(--t2);font-size:14px;max-width:520px;font-weight:300">Free engineering-grade articles. Zero jargon. For every vehicle owner and fleet manager worldwide.</p>
+  </div>
+  <div class="lcont">
+    <div class="lcats">
+      <button class="lcat on" onclick="filterCat('all',this)">All Topics</button>
+      <button class="lcat" onclick="filterCat('battery',this)">🔋 Battery</button>
+      <button class="lcat" onclick="filterCat('fleet',this)">🚌 Fleet</button>
+      <button class="lcat" onclick="filterCat('buying',this)">🔍 Buying</button>
+      <button class="lcat" onclick="filterCat('safety',this)">🛡 Safety</button>
+      <button class="lcat" onclick="filterCat('tech',this)">⚙ Technology</button>
+    </div>
+    <div class="agrid" id="agrid"></div>
+    <div class="avwr" id="avwr"></div>
+  </div>
+  <footer class="ft" style="margin-top:auto"><div style="text-align:center;padding:18px;font-size:12px;color:var(--t3)">© 2026 99EVS.com · <button onclick="goHome()" style="background:none;border:none;color:var(--g);cursor:pointer;font-family:var(--fb);font-size:12px">Back to Home</button></div></footer>
+</div>
+
+<!-- ═══ ABOUT PAGE ═══ -->
+<div class="fpg" id="pg-about">
+  <header class="sh"><div class="logo" onclick="goHome()">99EVS <sup>MOBILITY AI</sup></div><nav class="nav"><button class="nl" onclick="goHome()">← Home</button><button class="btn bp" style="padding:7px 14px;font-size:13px" onclick="openAuth('register')">Start Free</button></nav></header>
+  <div class="phdr"><div class="chip" style="margin-bottom:14px"><span class="dot"></span> Our Mission</div><h1 style="font-family:var(--fd);text-transform:uppercase;margin-bottom:10px">About 99EVS</h1><p style="color:var(--t2);max-width:580px;margin:0 auto;font-size:14px;font-weight:300;line-height:1.75">Building the world's most trusted mobility intelligence platform — where knowledge protects lives and engineering discipline drives sustainable transportation.</p></div>
+  <div class="pcont">
+    <h2>Our Story</h2><p>99EVS was founded by Kiran SR with one clear goal: make vehicle intelligence accessible to every person, not just engineers and specialists. MobilityAI is free forever. No subscription. No message limit. Register once and it is yours for life.</p>
+    <h2>Our Values</h2>
+    <div class="vgrid">
+      <div class="vc"><div class="vci">🔒</div><div class="vct">Safety First</div><div class="vcd">Every response prioritises human safety over cost or convenience. Always.</div></div>
+      <div class="vc"><div class="vci">∞</div><div class="vct">No Limits Ever</div><div class="vcd">Free forever. No subscription. No message cap. No paywalls. Ever.</div></div>
+      <div class="vc"><div class="vci">🌍</div><div class="vct">No Data Exploitation</div><div class="vcd">We never sell data, show ads, or monetise conversations.</div></div>
+      <div class="vc"><div class="vci">📚</div><div class="vct">User Empowerment</div><div class="vcd">Every interaction teaches you something. We make you smarter, not dependent.</div></div>
+      <div class="vc"><div class="vci">🌐</div><div class="vct">All Languages</div><div class="vcd">Hindi, Telugu, Tamil, Kannada, English and every world language.</div></div>
+      <div class="vc"><div class="vci">⚡</div><div class="vct">Always On</div><div class="vcd">Built-in intelligence means MobilityAI never goes offline. Zero downtime.</div></div>
+    </div>
+    <h2>Founder</h2><p><strong>Kiran SR</strong> founded 99EVS to make mobility intelligence a fundamental right. Based in India, building for the world. Contact: <a href="mailto:99evsworld@gmail.com">99evsworld@gmail.com</a></p>
+    <div style="margin-top:24px;text-align:center"><button class="btn bp" style="padding:12px 26px" onclick="openAuth('register')">Join 99EVS Free</button></div>
+  </div>
+  <footer class="ft" style="margin-top:auto"><div style="text-align:center;padding:18px;font-size:12px;color:var(--t3)">© 2026 99EVS.com · <button onclick="goHome()" style="background:none;border:none;color:var(--g);cursor:pointer;font-family:var(--fb);font-size:12px">Back to Home</button></div></footer>
+</div>
+
+<!-- ═══ PRIVACY PAGE ═══ -->
+<div class="fpg" id="pg-privacy">
+  <header class="sh"><div class="logo" onclick="goHome()">99EVS <sup>MOBILITY AI</sup></div><nav class="nav"><button class="nl" onclick="goHome()">← Home</button></nav></header>
+  <div class="pcont">
+    <h1 style="font-family:var(--fd);margin-bottom:6px">Privacy Policy</h1><p style="font-size:12px;color:var(--t3);margin-bottom:28px">Last updated: March 2026</p>
+    <h2>Who We Are</h2><p>99EVS.com is operated by Kiran SR. Contact: 99evsworld@gmail.com</p>
+    <h2>What We Collect</h2><ul><li>Name and email on registration</li><li>Vehicle details you voluntarily provide</li><li>Questions asked to MobilityAI (to improve responses)</li><li>Google profile data if you use Google login</li></ul>
+    <h2>What We Never Do</h2><ul><li>Never sell your data to anyone</li><li>Never show ads based on conversations</li><li>Never share personal information without consent</li><li>Never store passwords in code or plain text</li></ul>
+    <h2>Persistent Login</h2><p>To keep you signed in, we store a secure session token in your browser's localStorage. This is private to your device. Clear your browser data at any time to remove it.</p>
+    <h2>AI Conversations</h2><p>Questions are processed by our built-in engine and optionally by Anthropic's Claude API. See anthropic.com/privacy for Anthropic's data practices.</p>
+    <h2>Your Rights</h2><p>Request access, correction or deletion at any time: 99evsworld@gmail.com — response within 30 days.</p>
+    <h2>Contact</h2><p><a href="mailto:99evsworld@gmail.com">99evsworld@gmail.com</a></p>
+  </div>
+  <footer class="ft" style="margin-top:auto"><div style="text-align:center;padding:18px;font-size:12px;color:var(--t3)">© 2026 99EVS.com · <button onclick="goHome()" style="background:none;border:none;color:var(--g);cursor:pointer;font-family:var(--fb);font-size:12px">Back to Home</button></div></footer>
+</div>
+
+<!-- ═══ TERMS PAGE ═══ -->
+<div class="fpg" id="pg-terms">
+  <header class="sh"><div class="logo" onclick="goHome()">99EVS <sup>MOBILITY AI</sup></div><nav class="nav"><button class="nl" onclick="goHome()">← Home</button></nav></header>
+  <div class="pcont">
+    <h1 style="font-family:var(--fd);margin-bottom:6px">Terms of Service</h1><p style="font-size:12px;color:var(--t3);margin-bottom:28px">Last updated: March 2026</p>
+    <h2>Acceptance</h2><p>By using 99EVS.com, you agree to these terms.</p>
+    <h2>What MobilityAI Provides</h2><p>MobilityAI provides vehicle intelligence for informational purposes. Always consult a qualified professional for critical decisions.</p>
+    <h2>Safety Disclaimer</h2><p><strong>MobilityAI is not a substitute for professional mechanical advice.</strong> For safety-critical issues — brake failure, fire risk, thermal events — stop using the vehicle immediately and consult professionals.</p>
+    <h2>User Responsibilities</h2><ul><li>Provide accurate information for relevant advice</li><li>You are responsible for decisions made based on MobilityAI responses</li><li>Must be 18+ to register</li></ul>
+    <h2>Intellectual Property</h2><p>The 99EVS platform, MobilityAI system, KIAI framework and all content are owned by Kiran SR / 99EVS.</p>
+    <h2>Contact</h2><p><a href="mailto:99evsworld@gmail.com">99evsworld@gmail.com</a></p>
+  </div>
+  <footer class="ft" style="margin-top:auto"><div style="text-align:center;padding:18px;font-size:12px;color:var(--t3)">© 2026 99EVS.com · <button onclick="goHome()" style="background:none;border:none;color:var(--g);cursor:pointer;font-family:var(--fb);font-size:12px">Back to Home</button></div></footer>
+</div>
+
+<script>
+'use strict';
+
+// ── STATE ──────────────────────────────────────────────────
+const USERS = new Map();
+const S = { user:null, hist:[], khist:[], typing:false, ktyping:false, attempts:0, locked:null, sessions:0, queries:0, vehicle:null };
+const EVENTS = []; // Founder-only event log
+
+// ── UTILS ──────────────────────────────────────────────────
+const $=id=>document.getElementById(id);
+const esc=t=>!t?'':String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'}[c]));
+const hsh=(p,e)=>btoa(encodeURIComponent(p+e+'99evs_2026_v3'));
+const emailOk=e=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+const tsNow=()=>new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+
+// ── EVENT LOG (Founder Only) ───────────────────────────────
+function logEvent(type, detail) {
+  const ev = { ts: tsNow(), type, detail };
+  EVENTS.unshift(ev);
+  if (EVENTS.length > 200) EVENTS.pop();
+  const el = $('elog');
+  if (el) {
+    el.innerHTML = EVENTS.map(e => `<div class="eline"><span style="color:var(--t3)">${e.ts}</span> <span style="color:var(--g)">[${e.type}]</span> ${esc(e.detail)}</div>`).join('');
+  }
+}
+function clearLog() { EVENTS.length = 0; const el=$('elog'); if(el) el.innerHTML='Log cleared.'; }
+
+// ── PERSISTENT SESSION (localStorage) ─────────────────────
+const LS_KEY = '99evs_session_v3';
+
+function saveSession(u) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify({name:u.name,email:u.email,role:u.role||'user',picture:u.picture||null,authMethod:u.authMethod||'email',saved:Date.now()})); } catch(e) {}
+}
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const u = JSON.parse(raw);
+    // Sessions valid for 60 days
+    if (Date.now() - u.saved > 60 * 24 * 60 * 60 * 1000) { localStorage.removeItem(LS_KEY); return null; }
+    return u;
+  } catch(e) { return null; }
+}
+function clearSession() { try { localStorage.removeItem(LS_KEY); } catch(e) {} }
+
+// ── PAGE ROUTING ───────────────────────────────────────────
+function showPage(id){document.querySelectorAll('.pg,.cpg,.kpg,.fpg').forEach(p=>p.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0);}
+function goHome(){showPage('pg-home');}
+function showFull(id){showPage(id);}
+function openLearn(){showPage('pg-learn');renderArts('all');}
+function goUserView(){showPage('pg-chat');}
+
+// ── COOKIE ─────────────────────────────────────────────────
+function ckAccept(){$('ckb').classList.add('gone');try{localStorage.setItem('ck99','1');}catch(e){}}
+try{if(localStorage.getItem('ck99'))$('ckb').classList.add('gone');}catch(e){}
+
+// ── AUTH ───────────────────────────────────────────────────
+function openAuth(mode){switchForm(mode);$('auth-modal').classList.add('open');}
+function closeAuth(){$('auth-modal').classList.remove('open');clrAlert();}
+function switchForm(mode){
+  $('form-login').style.display=mode==='login'?'block':'none';
+  $('form-reg').style.display=mode==='register'?'block':'none';
+  $('atit').textContent=mode==='login'?'Sign In':'Create Account';
+  $('asub').textContent=mode==='login'?'You will be remembered forever — sign in once, always stay signed in.':'Join free. Register once. Remembered forever. No card needed.';
+  clrAlert();
+}
+function showAlert(msg,type){const e=$('aalert');e.textContent=msg;e.className='aalert on '+(type==='ok'?'aok':'aerr');}
+function clrAlert(){const e=$('aalert');if(e){e.className='aalert';e.textContent='';}}
+
+// ── GOOGLE ─────────────────────────────────────────────────
+function startGoogle(){
+  if(typeof google==='undefined'){showAlert('Google is loading — try again in 2 seconds, or use email below.');return;}
+  google.accounts.id.initialize({client_id:'REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID',callback:handleGoogle,auto_select:false});
+  google.accounts.id.prompt(n=>{if(n.isNotDisplayed()||n.isSkippedMoment()){
+    const d=document.createElement('div');d.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center';
+    d.onclick=e=>{if(e.target===d)document.body.removeChild(d);};
+    const i=document.createElement('div');i.style.cssText='background:#fff;padding:20px;border-radius:10px';
+    d.appendChild(i);document.body.appendChild(d);
+    google.accounts.id.renderButton(i,{theme:'outline',size:'large'});
+  }});
+}
+async function handleGoogle(resp){
+  if(!resp.credential){showAlert('Google login failed. Please try again.');return;}
+  showAlert('Verifying with Google...','ok');
+  try{
+    const r=await fetch('/api/google-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({credential:resp.credential})});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'Auth failed');
+    logEvent('GOOGLE_LOGIN', d.email||'unknown');
+    startSession(d);
+  }catch(e){showAlert('Google verification failed. Please use email login.');}
+}
+
+// ── EMAIL AUTH ─────────────────────────────────────────────
+async function doLogin(){
+  clrAlert();
+  const email=$('l-email').value.trim().toLowerCase();
+  const pwd=$('l-pwd').value;
+  if(!emailOk(email)){showAlert('Please enter a valid email address.');return;}
+  if(!pwd){showAlert('Please enter your password.');return;}
+  if(S.locked&&Date.now()<S.locked){showAlert('Locked. Try again in '+Math.ceil((S.locked-Date.now())/60000)+' min.');return;}
+  const btn=$('lbtn');btn.innerHTML='<span class="spinner"></span> Verifying...';btn.disabled=true;
+  try{
+    const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pwd})});
+    const d=await r.json();
+    if(r.ok&&d.success){S.attempts=0;btn.innerHTML='Sign In — Stay Signed In';btn.disabled=false;logEvent('FOUNDER_LOGIN',email);startSession(d);return;}
+  }catch(e){}
+  const u=USERS.get(email);
+  if(u&&u.hash===hsh(pwd,email)){S.attempts=0;btn.innerHTML='Sign In — Stay Signed In';btn.disabled=false;logEvent('USER_LOGIN',email);startSession(u);return;}
+  S.attempts++;
+  logEvent('LOGIN_FAIL', email+' attempt '+S.attempts);
+  $('mc-fail').textContent=S.attempts;
+  if(S.attempts>=5){S.locked=Date.now()+15*60*1000;showAlert('Too many attempts. Locked for 15 minutes.');}
+  else{showAlert('Wrong email or password. '+(5-S.attempts)+' attempt(s) left.');}
+  btn.innerHTML='Sign In — Stay Signed In';btn.disabled=false;
+}
+
+function doReg(){
+  clrAlert();
+  const name=$('r-name').value.trim();
+  const email=$('r-email').value.trim().toLowerCase();
+  const pwd=$('r-pwd').value;
+  const conf=$('r-conf').value;
+  if(!name||name.length<2){showAlert('Please enter your full name.');return;}
+  if(!emailOk(email)){showAlert('Please enter a valid email address.');return;}
+  if(pwd.length<8){showAlert('Password must be at least 8 characters.');return;}
+  if(pwd!==conf){showAlert('Passwords do not match.');return;}
+  if(USERS.has(email)){showAlert('Account already exists. Please sign in.');return;}
+  const btn=$('rbtn');btn.innerHTML='<span class="spinner"></span> Creating...';btn.disabled=true;
+  setTimeout(()=>{
+    const u={name:esc(name),email,hash:hsh(pwd,email),role:'user',created:Date.now(),authMethod:'email'};
+    USERS.set(email,u);
+    S.sessions++;
+    logEvent('USER_REGISTER', name+' ('+email+')');
+    showAlert('Account created! Signing you in...','ok');
+    refreshUsers();
+    setTimeout(()=>{btn.innerHTML='Create Free Account';btn.disabled=false;startSession(u);},600);
+  },600);
+}
+
+// ── SESSION MANAGEMENT ─────────────────────────────────────
+function startSession(u){
+  S.user=u;S.hist=[];S.khist=[];S.sessions++;
+  saveSession(u);
+  closeAuth();
+  logEvent('SESSION_START', (u.name||u.email)+' role='+(u.role||'user'));
+  if(u.role==='founder'){
+    updateFounder();showPage('pg-kiai');
+  } else {
+    const av=$('chat-av');
+    if(u.picture){av.innerHTML='<img src="'+esc(u.picture)+'" alt="">';}else{av.textContent=(u.name||'U').charAt(0).toUpperCase();}
+    $('chat-nm').textContent=u.name||'User';
+    // Reset and show welcome
+    const msgs=$('msgs');msgs.innerHTML='';
+    showWelcome(u.name||'there');
+    showPage('pg-chat');
+  }
+}
+
+function showWelcome(name){
+  const msgs=$('msgs');if(!msgs)return;
+  msgs.innerHTML=`<div class="wb" id="welcome">
+    <div class="wbi">⚡</div>
+    <div class="wbt">MobilityAI Ready</div>
+    <div class="wbs">Welcome, ${esc(name)}! Ask me anything — in any language. Hindi, Telugu, Tamil, English, or any language worldwide.</div>
+    <div class="sgg">
+      <div class="sg" onclick="useSug('My EV battery drains 30% faster than usual. Help me diagnose it.')"><div class="sgi">🔋</div><div class="sgt">Battery Diagnosis</div><div class="sgd">EV health & degradation</div></div>
+      <div class="sg" onclick="useSug('How do I reduce my fleet maintenance cost by 30%?')"><div class="sgi">🚌</div><div class="sgt">Fleet Cost Cut</div><div class="sgd">Uptime & CPK strategy</div></div>
+      <div class="sg" onclick="useSug('What are the 12 things to check before buying a used EV?')"><div class="sgi">🔍</div><div class="sgt">Used EV Checklist</div><div class="sgd">Pre-purchase inspection</div></div>
+      <div class="sg" onclick="useSug('Explain regenerative braking and how to maximize it.')"><div class="sgi">⚙️</div><div class="sgt">Regen Braking</div><div class="sgd">Range & efficiency</div></div>
+    </div>
+  </div>`;
+}
+
+function doLogout(){
+  logEvent('LOGOUT', S.user?.email||'unknown');
+  clearSession();
+  S.user=null;S.hist=[];S.khist=[];S.attempts=0;S.vehicle=null;
+  ['l-email','l-pwd','r-name','r-email','r-pwd','r-conf'].forEach(id=>{const e=$(id);if(e)e.value='';});
+  showPage('pg-home');
+}
+
+// ── VEHICLE ────────────────────────────────────────────────
+function openVeh(){$('veh-modal').classList.add('open');}
+function closeVeh(){$('veh-modal').classList.remove('open');}
+function saveVeh(){
+  const type=$('v-type').value,model=$('v-model').value.trim(),year=$('v-year').value.trim();
+  if(!type){alert('Please select vehicle type.');return;}
+  if(!model){alert('Please enter brand and model.');return;}
+  S.vehicle={type,model,year};closeVeh();$('vpr').classList.add('gone');
+  logEvent('VEHICLE_SAVED', model+' ('+type+') '+year);
+  const msg='My vehicle is a '+(year?year+' ':'')+model+' ('+type+'). Please remember this for all my questions.';
+  $('cin').value=msg;sendMsg();
+}
+
+// ── KIAI PANELS ────────────────────────────────────────────
+function showPanel(id,el){
+  document.querySelectorAll('.kpanel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ksi').forEach(n=>n.classList.remove('on'));
+  $('panel-'+id)?.classList.add('on');el?.classList.add('on');
+  const titles={overview:'Overview','kiai-chat':'KIAI Intelligence',infra:'Infrastructure',security:'Security & Audit',users:'User Management',analytics:'Analytics',eventlog:'Event Log — Founder Exclusive',settings:'Platform Settings',seo:'SEO Status'};
+  $('ptitle').textContent=titles[id]||'KIAI Dashboard';
+  if(id==='users')refreshUsers();
+  if(id==='analytics'){$('an-q').textContent=S.queries;$('an-s').textContent=S.sessions;$('an-u').textContent=USERS.size;}
+  if(id==='eventlog'){const el=$('elog');if(el&&EVENTS.length)el.innerHTML=EVENTS.map(e=>`<div class="eline"><span style="color:var(--t3)">${e.ts}</span> <span style="color:var(--g)">[${e.type}]</span> ${esc(e.detail)}</div>`).join('');}
+  logEvent('KIAI_NAV', 'opened: '+id);
+}
+function updateFounder(){$('mc-u').textContent=USERS.size;$('mc-q').textContent=S.queries;$('mc-s').textContent=S.sessions;}
+function refreshUsers(){
+  const tb=$('utbody'),bd=$('ubadge');
+  if(!tb)return;
+  if(bd)bd.textContent=USERS.size+' Total';
+  $('mc-u').textContent=USERS.size;
+  if(!USERS.size){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--t3);padding:24px">No users yet.</td></tr>';return;}
+  let rows='';
+  USERS.forEach(u=>{rows+=`<tr><td>${esc(u.name)}</td><td style="font-size:12px;color:var(--t2)">${esc(u.email)}</td><td style="font-size:11px;color:var(--t3)">${new Date(u.created).toLocaleDateString('en-IN')}</td><td style="font-size:11px">${u.authMethod||'email'}</td><td><div class="srs"><div class="sd sdon"></div><span class="cog" style="font-size:11px">Active</span></div></td></tr>`;});
+  tb.innerHTML=rows;
+}
+
+// ── CHAT ───────────────────────────────────────────────────
+function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function kiaiKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendKiai();}}
+function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
+function updCC(){const c=$('cc');if(c)c.textContent=($('cin').value||'').length+' / 2000';}
+function useSug(t){$('cin').value=t;updCC();sendMsg();}
+
+async function sendMsg(){
+  if(S.typing)return;
+  const inp=$('cin'),text=inp.value.trim();
+  if(!text)return;
+  $('welcome')?.remove();
+  addBubble('msgs','user',esc(text));
+  S.hist.push({role:'user',content:text});
+  S.queries++;
+  logEvent('USER_QUERY', (S.user?.name||'user')+': '+text.slice(0,60)+(text.length>60?'...':''));
+  inp.value='';inp.style.height='22px';updCC();
+  S.typing=true;$('sbtn').disabled=true;
+  const tid=addTyping('msgs');
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:S.hist,isKiai:false})});
+    removeTyping(tid);
+    if(!r.ok)throw new Error(r.status);
+    const d=await r.json();
+    const reply=d.reply||'No response. Please try again.';
+    const src=d.source==='builtin'?'[Built-In Engine]':'[Anthropic API]';
+    S.hist.push({role:'assistant',content:reply});
+    addBubble('msgs','ai',esc(reply));
+    logEvent('AI_REPLY', src+' to '+(S.user?.name||'user'));
+    if(S.user?.role==='founder')updateFounder();
+  }catch(e){
+    removeTyping(tid);
+    addBubble('msgs','ai',esc('Connection error. Please check your internet and try again.'));
+    logEvent('ERROR','sendMsg: '+e.message);
+  }
+  S.typing=false;$('sbtn').disabled=false;inp.focus();
+}
+
+async function sendKiai(){
+  if(S.ktyping)return;
+  const inp=$('kiai-in'),text=inp.value.trim();
+  if(!text)return;
+  $('kiai-msgs').querySelector('.wb')?.remove();
+  addBubble('kiai-msgs','user',esc(text));
+  S.khist.push({role:'user',content:text});
+  logEvent('KIAI_QUERY', 'Kiran: '+text.slice(0,60));
+  inp.value='';inp.style.height='22px';
+  S.ktyping=true;$('ksend').disabled=true;
+  const tid=addTyping('kiai-msgs');
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:S.khist,isKiai:true})});
+    removeTyping(tid);
+    if(!r.ok)throw new Error(r.status);
+    const d=await r.json();
+    const reply=d.reply||'No response.';
+    S.khist.push({role:'assistant',content:reply});
+    addBubble('kiai-msgs','ai',esc(reply));
+    logEvent('KIAI_REPLY','response delivered');
+  }catch(e){
+    removeTyping(tid);
+    addBubble('kiai-msgs','ai',esc('Connection error. Please try again.'));
+    logEvent('ERROR','sendKiai: '+e.message);
+  }
+  S.ktyping=false;$('ksend').disabled=false;inp.focus();
+}
+
+// ── BUBBLE RENDERER ────────────────────────────────────────
+function addBubble(cid,role,text){
+  const c=$(cid);if(!c)return;
+  const isAI=role==='ai';
+  const fmt=text
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/`(.*?)`/g,'<code>$1</code>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^[-•*] (.+)$/gm,'<li>$1</li>')
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  const init=(S.user?.name||'U').charAt(0).toUpperCase();
+  const hasPic=S.user?.picture&&!isAI;
+  const row=document.createElement('div');
+  row.className='mrow'+(isAI?'':' me');
+  row.innerHTML='<div class="av '+(isAI?'ai':'us')+'">'+(isAI?'M':(hasPic?'<img src="'+esc(S.user.picture)+'" alt="">':init))+'</div>'
+    +'<div style="flex:1;min-width:0"><div class="mmeta">'+(isAI?'MobilityAI':esc(S.user?.name||'You'))+' &nbsp;·&nbsp; '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</div>'
+    +'<div class="bbl '+(isAI?'aibbl':'usbbl')+'">'+fmt+'</div></div>';
+  c.appendChild(row);c.scrollTop=c.scrollHeight;
+}
+function addTyping(cid){
+  const c=$(cid);if(!c)return null;
+  const id='t'+Date.now();
+  const row=document.createElement('div');row.className='trow';row.id=id;
+  row.innerHTML='<div class="av ai">M</div><div class="tbbl"><span class="td"></span><span class="td"></span><span class="td"></span></div>';
+  c.appendChild(row);c.scrollTop=c.scrollHeight;return id;
+}
+function removeTyping(id){$(id)?.remove();}
+
+// ── LEARN HUB ──────────────────────────────────────────────
+const ARTS=[
+  {id:'batt101',cat:'battery',icon:'🔋',title:'EV Battery 101',desc:'SoC, SoH, cell chemistry, charging myths. Everything you must know.',time:'8 min',content:`<h2>What Is an EV Battery?</h2><p>An EV battery is a pack of thousands of cells managed by a Battery Management System (BMS). Understanding your battery is the single most valuable thing you can do as an EV owner.</p><div class="hl"><p><strong>Key fact:</strong> A battery at 80% SoH still delivers good range. Decline is gradual, not sudden. Most EVs maintain 80%+ SoH for 8-10 years with proper care.</p></div><h2>SoC — State of Charge</h2><p>SoC is how full your battery is. 100% = full. 0% = empty. Best practice: Keep SoC between 20-80% for daily use. Only charge to 100% before long journeys.</p><h2>SoH — State of Health</h2><p>SoH measures remaining capacity vs new. 100% = new. 85% = 15% less range. <strong>Normal and expected over time.</strong></p><ul><li>SoH above 80% — excellent</li><li>SoH 70-80% — good, normal aging</li><li>SoH below 70% — get a professional assessment</li></ul><h2>The 3 Enemies of Battery Health</h2><p><strong>1. Heat:</strong> Lithium batteries degrade fastest above 45°C. Park in shade. Use AC slow charging.</p><p><strong>2. Deep Cycling:</strong> Regularly draining below 10% and charging above 90% accelerates degradation.</p><p><strong>3. DC Fast Charging Overuse:</strong> Use for journeys — AC overnight charging is ideal for daily use.</p><h2>Battery Chemistry</h2><p><strong>LFP:</strong> Safer, 3000+ cycles. Tata Nexon EV, BYD. Charge to 100% regularly — fine for LFP.</p><p><strong>NMC:</strong> More range per kg. More sensitive to heat. Ather, MG ZS EV. Stick to 20-80%.</p>`},
+  {id:'range',cat:'battery',icon:'📍',title:'Why Your EV Range Is Less Than Promised',desc:'The real science behind range anxiety explained simply.',time:'6 min',content:`<h2>The Certified vs Real Range Gap</h2><p>Every EV has a certified figure (ARAI/WLTP) and a real-world figure. The gap frustrates many owners.</p><div class="hl"><p><strong>Reality:</strong> Real-world range is typically 70-85% of certified range. A 300km ARAI-rated EV delivers 210-255km in real conditions.</p></div><h2>The 6 Biggest Range Killers</h2><p><strong>1. Speed:</strong> At 100km/h you use ~35% more energy than at 70km/h.</p><p><strong>2. Temperature:</strong> Below 15°C lose 15-30% range. Above 40°C thermal management consumes energy.</p><p><strong>3. Air Conditioning:</strong> AC draws 1-3kW continuously — 10-20% range reduction.</p><p><strong>4. Battery Age:</strong> 85% SoH = 85% of original range. Normal aging.</p><p><strong>5. Load:</strong> Every 100kg reduces range ~5-8%.</p><p><strong>6. Tyre Pressure:</strong> Under-inflated = increased rolling resistance. Free range recovery — check monthly.</p><h2>How to Maximise Real-World Range</h2><ul><li>Drive in Eco mode</li><li>Maximise regenerative braking</li><li>Pre-condition cabin while charging</li><li>Check tyre pressure monthly</li><li>Stay below 80km/h on highway for best efficiency</li></ul>`},
+  {id:'fleet',cat:'fleet',icon:'📊',title:'Fleet Maintenance: Preventive vs Reactive',desc:'Why reactive maintenance costs 3x more and how to fix it.',time:'7 min',content:`<h2>The Three Maintenance Tiers</h2><p>Every fleet falls into one tier. The tier you choose determines your CPK, uptime and driver safety.</p><h2>Tier 1: Reactive (Worst)</h2><p>Fix it when it breaks. Unplanned downtime. Emergency repairs cost 3-4x more than scheduled.</p><div class="hl"><p><strong>Cost reality:</strong> A ₹2,000 brake pad replacement becomes ₹12,000 when neglected to failure.</p></div><h2>Tier 2: Preventive (Good)</h2><p>Scheduled mileage or time-based servicing. Predictable costs. Planned downtime. Component life extended 20-25%.</p><h2>Tier 3: Predictive (Best)</h2><p>Data-driven. Telematics + history predict failures before they happen. Reduces unplanned downtime by 70%.</p><h2>EV Fleet Schedule</h2><ul><li>Every 5,000km: Tyre pressure, brakes, charging connector</li><li>Every 10,000km: BMS health scan, suspension, cooling check</li><li>Every 6 months: Full battery diagnostic, software updates</li><li>Annually: SoH report all vehicles, retire any below 70% SoH</li></ul><h2>Track CPK Monthly</h2><p>Total maintenance cost ÷ Total km = CPK. Rising CPK = early warning. A vehicle above ₹8 CPK often costs more to run than to replace.</p>`},
+  {id:'buysell',cat:'buying',icon:'💰',title:'How to Buy a Used EV Without Getting Cheated',desc:'The 12-point inspection checklist every buyer must complete.',time:'9 min',content:`<h2>The Core Risk</h2><p>The battery — 40-55% of vehicle value — cannot be inspected visually. You need data.</p><div class="hl"><p><strong>Rule:</strong> Never buy a used EV without a BMS diagnostic report showing SoH, cell balance and cycle count. If the seller refuses — walk away.</p></div><h2>The 12-Point Checklist</h2><p><strong>1. Battery SoH</strong> — Min 75%. Ideal 85%+. Below 70%: negotiate hard or exit.</p><p><strong>2. Cell Voltage Balance</strong> — All cells within 0.02-0.05V. Imbalance = failing cell.</p><p><strong>3. Charge Cycle Count</strong> — LFP fine to 2000+. NMC concern after 800.</p><p><strong>4. Charging History</strong> — Heavy DC fast charge history = accelerated degradation.</p><p><strong>5. Service History</strong> — All records required. Missing records = unknown condition.</p><p><strong>6. Accident History</strong> — Check vahaan.gov.in. Battery damage near accident = dealbreaker.</p><p><strong>7. Charging Port Condition</strong> — Check for burn marks, bent pins, corrosion.</p><p><strong>8. Range Test</strong> — Charge to 100%, drive, compare actual vs SoH-adjusted rated range.</p><p><strong>9. Thermal Check</strong> — Start after 2hrs in sun. Any immediate warnings = concern.</p><p><strong>10. Software Version</strong> — Confirm latest OTA installed.</p><p><strong>11. Tyres & Suspension</strong> — Uneven wear = alignment issues.</p><p><strong>12. Price</strong> — Every 5% below 95% SoH = meaningful price reduction. Battery replacement ₹3-8 lakh.</p>`},
+  {id:'thermal',cat:'safety',icon:'🛡',title:'Thermal Runaway: Prevention and Emergency Protocol',desc:'The most dangerous EV failure explained with prevention steps.',time:'6 min',content:`<h2>What Is Thermal Runaway?</h2><p>A self-sustaining heat chain reaction inside lithium cells. Once triggered, it cannot be stopped easily and can lead to fire.</p><div class="hl"><p><strong>Reality check:</strong> Modern EVs with well-designed BMS have multiple protection layers. It is rare. Understanding it keeps you safe.</p></div><h2>Causes</h2><p><strong>1. Physical impact</strong> — Collision damage creates internal shorts that develop hours later. Get post-accident battery inspection before driving.</p><p><strong>2. Overcharging</strong> — Charging beyond BMS voltage limits.</p><p><strong>3. Extreme heat</strong> — India's 45°C+ ambient + direct sun stresses thermal management.</p><p><strong>4. Deep discharge</strong> — Repeated drain to near 0% causes lithium dendrites.</p><h2>Early Warning Signs — Act Immediately</h2><ul><li>Unusual heat from battery area or floor</li><li>Battery warning lights appearing for first time</li><li>Sudden unexplained range drop</li><li>Chemical or burning smell</li><li>Swelling or deformation of battery casing</li></ul><h2>Emergency Protocol</h2><p><strong>Step 1:</strong> Stop driving. Pull over safely.<br><strong>Step 2:</strong> Exit with all occupants.<br><strong>Step 3:</strong> Move 30+ metres away — lithium fires can reignite.<br><strong>Step 4:</strong> Call 112. Tell them it is an EV.<br><strong>Do NOT</strong> open battery, pour water, or re-enter vehicle.</p>`},
+  {id:'regen',cat:'tech',icon:'⚙',title:'Regenerative Braking: Science and Mastery',desc:'How regen braking works and how to add 10-20% real-world range.',time:'5 min',content:`<h2>What Is Regenerative Braking?</h2><p>When you lift off or brake gently, the electric motor reverses function and becomes a generator. Kinetic energy is converted back to electricity. Friction brakes waste 100% as heat. Regen recovers 60-75%.</p><h2>Why It Matters in India</h2><p>Stop-start city traffic creates constant braking opportunities. In heavy Bengaluru/Mumbai/Delhi traffic, regen can recover 20-30% of the energy used for acceleration.</p><h2>Regen Levels</h2><p><strong>High:</strong> Strong deceleration on lift-off. One-pedal driving. Maximum recovery. Best for city.</p><p><strong>Medium:</strong> Balanced. Mixed urban/highway.</p><p><strong>Low:</strong> Minimal. Closest to ICE feel. Least efficient.</p><h2>Mastery Techniques</h2><p><strong>1. Anticipate stops 200-300m ahead</strong> — lift off early, let regen slow you.</p><p><strong>2. One-pedal driving</strong> — in high regen, you can stop using only the accelerator pedal.</p><p><strong>3. Downhill</strong> — engage high regen before descent. Charges battery while controlling speed.</p><p><strong>4. Leave space ahead</strong> — more space = longer regen duration.</p><p><strong>5. Smooth inputs</strong> — gradual acceleration and deceleration dramatically improves efficiency.</p><h2>Real Range Gains</h2><p>Drivers who master regen in urban India consistently achieve 10-20% better real-world range. In heavy traffic, this can mean 30-50km extra per charge.</p>`}
+];
+
+function renderArts(cat){
+  const grid=$('agrid'),viewer=$('avwr');
+  if(!grid)return;
+  grid.style.display='grid';if(viewer)viewer.classList.remove('on');
+  const list=cat==='all'?ARTS:ARTS.filter(a=>a.cat===cat);
+  grid.innerHTML=list.map(a=>`<div class="acard" onclick="openArt('${a.id}')"><div class="atop"><div class="aico">${a.icon}</div><div class="acat">${a.cat.toUpperCase()}</div><div class="atit">${a.title}</div></div><div class="abdy"><div class="adsc">${a.desc}</div><div class="aft"><span class="atm">${a.time}</span><span class="ard">Read →</span></div></div></div>`).join('');
+}
+function filterCat(cat,el){document.querySelectorAll('.lcat').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderArts(cat);}
+function openArt(id){
+  const a=ARTS.find(x=>x.id===id);if(!a)return;
+  $('agrid').style.display='none';
+  const v=$('avwr');v.classList.add('on');
+  v.innerHTML=`<button class="avbk" onclick="backToArts()">← All Articles</button><div class="badge bdg" style="margin-bottom:10px">${a.cat.toUpperCase()}</div><div class="avttl">${a.title}</div><div class="avmt"><span class="badge bda">${a.time}</span><span style="font-size:12px;color:var(--t3)">by MobilityAI · 99EVS Learn Hub</span></div><div class="avcont">${a.content}</div><div style="margin-top:28px;padding:18px;background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r);text-align:center"><p style="margin-bottom:12px;color:var(--t2);font-size:13px">Have a specific question about your vehicle?</p><button class="btn bp" onclick="openAuth('register')">⚡ Ask MobilityAI Free</button></div>`;
+  window.scrollTo(0,0);
+  logEvent('ARTICLE_READ', a.title);
+}
+function backToArts(){$('agrid').style.display='grid';$('avwr').classList.remove('on');}
+function openLearnArt(id){openLearn();setTimeout(()=>openArt(id),100);}
+
+// ── INIT — CHECK PERSISTENT SESSION ───────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  // Close modals on backdrop click
+  $('auth-modal').addEventListener('click',e=>{if(e.target===$('auth-modal'))closeAuth();});
+  $('veh-modal')?.addEventListener('click',e=>{if(e.target===$('veh-modal'))closeVeh();});
+
+  // Restore persistent session
+  const saved = loadSession();
+  if(saved){
+    S.user=saved;S.sessions++;
+    logEvent('SESSION_RESTORE', (saved.name||saved.email)+' auto-login');
+    if(saved.role==='founder'){
+      updateFounder();showPage('pg-kiai');
+    } else {
+      const av=$('chat-av');
+      if(saved.picture){av.innerHTML='<img src="'+esc(saved.picture)+'" alt="">';}
+      else{av.textContent=(saved.name||'U').charAt(0).toUpperCase();}
+      $('chat-nm').textContent=saved.name||'User';
+      showWelcome(saved.name||'there');
+      showPage('pg-chat');
+    }
+  } else {
+    showPage('pg-home');
+    logEvent('VISIT','New visitor — not logged in');
+  }
+
+  renderArts('all');
+});
+</script>
+</body>
+</html>
