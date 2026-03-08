@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>99EVS · MobilityAI — Your Vehicle Intelligence Partner</title>
+<meta name="description" content="MobilityAI by 99EVS — free AI guide for every vehicle owner. Learn, maintain, travel safely.">
+<meta name="theme-color" content="#0B0F0D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ╔══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root{
+  --g:#00E676; --gd:#00C853; --gg:rgba(0,230,118,.12);
+  --gold:#D4AF37;
+  --bg:#0B0F0D; --bg2:#111714; --bg3:#161D19; --bg4:#1D2521;
+  --ln:rgba(255,255,255,.07); --lng:rgba(0,230,118,.14);
+  --t1:#FFFFFF; --t2:#A8BFB2; --t3:#4E6358; --t4:#2A3A30;
+  --red:#FF5252; --amber:#FFB300;
+  --r:10px; --r2:18px;
+  --ff:'Syne',sans-serif; --fb:'Inter',sans-serif;
+  --shadow:0 8px 40px rgba(0,0,0,.55);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--fb);background:var(--bg);color:var(--t1);min-height:100dvh;overflow-x:hidden;line-height:1.6}
+button,input,textarea,select{font-family:inherit;font-size:inherit}
+a{color:inherit;text-decoration:none}
+
+/* scrollbar */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--t3)}
+
+/* utils */
+.hidden{display:none!important}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,230,118,.45)}50%{box-shadow:0 0 0 9px rgba(0,230,118,0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+
+/* ══════════════════════════════════════════
+   PAGE SYSTEM
+══════════════════════════════════════════ */
+.pg{display:none;flex-direction:column;min-height:100dvh}
+.pg.on{display:flex}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.hdr{
+  position:sticky;top:0;z-index:200;
+  height:58px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;
+  background:rgba(11,15,13,.94);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--ln);
+  flex-shrink:0;
+}
+.logo{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+.logo-mark{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--g),var(--gd));
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-mark svg{width:17px;height:17px;fill:#000}
+.logo-text{display:flex;flex-direction:column;line-height:1.1}
+.logo-name{font-family:var(--ff);font-weight:800;font-size:15px;color:var(--g);letter-spacing:.4px}
+.logo-sub{font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.hdr-r{display:flex;align-items:center;gap:7px}
+.btn-ghost{
+  height:34px;padding:0 15px;border-radius:8px;
+  border:1px solid var(--ln);background:transparent;
+  color:var(--t2);font-size:13px;font-weight:500;cursor:pointer;
+  transition:all .18s;white-space:nowrap;
+}
+.btn-ghost:hover{border-color:var(--g);color:var(--g)}
+.btn-pri{
+  height:34px;padding:0 17px;border-radius:8px;border:none;
+  background:var(--g);color:#000;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.btn-pri:hover{background:#00FF8A;transform:translateY(-1px)}
+.hdr-user{display:flex;align-items:center;gap:8px}
+.hdr-av{
+  width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,var(--g),var(--gd));
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#000;cursor:pointer;
+  border:1.5px solid var(--lng);flex-shrink:0;
+}
+.hdr-uname{font-size:13px;color:var(--t2);font-weight:500;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-out{
+  height:28px;padding:0 11px;border-radius:7px;
+  border:1px solid var(--ln);background:transparent;
+  color:var(--t3);font-size:11.5px;cursor:pointer;transition:all .18s;
+}
+.btn-out:hover{border-color:var(--red);color:var(--red)}
+
+/* ══════════════════════════════════════════
+   HOME PAGE
+══════════════════════════════════════════ */
+#pg-home{
+  background:radial-gradient(ellipse 80% 55% at 50% -5%,rgba(0,230,118,.07) 0%,transparent 65%);
+}
+
+/* hero */
+.hero{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:52px 20px 44px;
+  position:relative;overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,230,118,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,230,118,.035) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse 85% 75% at 50% 50%,black 10%,transparent 80%);
+}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 13px;border-radius:100px;
+  border:1px solid var(--lng);background:rgba(0,230,118,.06);
+  font-size:10.5px;font-weight:700;color:var(--g);
+  text-transform:uppercase;letter-spacing:.9px;margin-bottom:26px;
+  animation:fadeUp .5s ease both;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 2.2s infinite}
+.hero-h1{
+  font-family:var(--ff);font-weight:800;
+  font-size:clamp(34px,7vw,70px);line-height:1.04;
+  margin-bottom:18px;animation:fadeUp .5s .08s ease both;
+}
+.hero-h1 .green{display:block;color:var(--g)}
+.hero-p{
+  font-size:clamp(14px,2.2vw,17px);color:var(--t2);
+  max-width:500px;font-weight:300;line-height:1.8;
+  margin-bottom:34px;animation:fadeUp .5s .16s ease both;
+}
+.hero-btns{
+  display:flex;flex-wrap:wrap;gap:11px;justify-content:center;
+  margin-bottom:54px;animation:fadeUp .5s .24s ease both;
+}
+.btn-lg{
+  height:50px;padding:0 26px;border-radius:12px;
+  font-size:14.5px;font-weight:700;cursor:pointer;
+  transition:all .22s;display:inline-flex;align-items:center;gap:7px;border:none;
+}
+.btn-lg.g{
+  background:linear-gradient(135deg,var(--g),var(--gd));color:#000;
+  box-shadow:0 4px 22px rgba(0,230,118,.22);
+}
+.btn-lg.g:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,230,118,.38)}
+.btn-lg.o{background:transparent;border:1px solid var(--ln);color:var(--t2)}
+.btn-lg.o:hover{border-color:var(--g);color:var(--g);background:var(--gg)}
+
+/* feature cards */
+.feat-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  max-width:700px;width:100%;animation:fadeUp .5s .32s ease both;
+}
+.feat{
+  background:var(--bg2);border:1px solid var(--ln);
+  border-radius:var(--r2);padding:18px 16px;text-align:left;
+  transition:border-color .2s;
+}
+.feat:hover{border-color:var(--lng)}
+.feat-ico{font-size:22px;margin-bottom:8px;display:block}
+.feat-t{font-family:var(--ff);font-weight:700;font-size:12.5px;color:var(--t1);margin-bottom:3px}
+.feat-d{font-size:11.5px;color:var(--t3);line-height:1.55}
+
+/* topics */
+.topics-sec{padding:44px 20px;border-top:1px solid var(--ln);background:var(--bg2)}
+.topics-inner{max-width:880px;margin:0 auto}
+.sec-tag{font-size:10.5px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
+.sec-h2{font-family:var(--ff);font-weight:700;font-size:clamp(20px,4vw,30px);margin-bottom:5px}
+.sec-p{font-size:13.5px;color:var(--t2);max-width:460px;line-height:1.7;font-weight:300;margin-bottom:28px}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.chip{
+  display:flex;align-items:center;gap:9px;padding:13px 14px;
+  border-radius:var(--r);border:1px solid var(--ln);background:var(--bg3);
+  cursor:pointer;transition:all .18s;
+}
+.chip:hover{border-color:var(--g);background:var(--gg);transform:translateY(-1px)}
+.chip-ico{font-size:19px;flex-shrink:0}
+.chip-t{font-size:12.5px;font-weight:500;color:var(--t2)}
+.chip:hover .chip-t{color:var(--g)}
+
+/* footer */
+.foot{
+  padding:20px 22px;border-top:1px solid var(--ln);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.foot-copy{font-size:11.5px;color:var(--t3)}
+.foot-links{display:flex;gap:16px}
+.foot-links button{font-size:11.5px;color:var(--t3);background:none;border:none;cursor:pointer;transition:color .18s}
+.foot-links button:hover{color:var(--g)}
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+.overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:none;align-items:center;justify-content:center;padding:18px;
+}
+.overlay.on{display:flex;animation:fadeIn .18s ease}
+.modal{
+  background:var(--bg2);border:1px solid var(--ln);border-radius:var(--r2);
+  width:100%;max-width:390px;padding:30px 26px;position:relative;
+  animation:slideUp .28s ease;
+}
+.modal-x{
+  position:absolute;top:12px;right:12px;width:28px;height:28px;
+  border-radius:7px;border:none;background:transparent;
+  color:var(--t3);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;
+}
+.modal-x:hover{background:var(--bg3);color:var(--t1)}
+.m-title{font-family:var(--ff);font-weight:700;font-size:21px;margin-bottom:3px}
+.m-sub{font-size:12.5px;color:var(--t3);font-weight:300;margin-bottom:22px}
+.f-lbl{display:block;font-size:10.5px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}
+.f-inp{
+  width:100%;height:42px;padding:0 13px;
+  background:var(--bg3);border:1px solid var(--ln);border-radius:9px;
+  color:var(--t1);font-size:13.5px;outline:none;transition:border-color .18s;
+}
+.f-inp::placeholder{color:var(--t4)}
+.f-inp:focus{border-color:var(--g)}
+.f-inp.err{border-color:var(--red)}
+.f-group{margin-bottom:13px}
+.f-btn{
+  width:100%;height:44px;border-radius:9px;border:none;
+  background:linear-gradient(135deg,var(--g),var(--gd));
+  color:#000;font-size:13.5px;font-weight:700;cursor:pointer;
+  transition:all .18s;margin-top:6px;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.f-btn:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(0,230,118,.28)}
+.f-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.f-sw{text-align:center;margin-top:17px;font-size:12.5px;color:var(--t3)}
+.f-sw a{color:var(--g);cursor:pointer;font-weight:500}
+.f-sw a:hover{text-decoration:underline}
+.f-alert{
+  padding:9px 13px;border-radius:8px;font-size:12.5px;
+  margin-bottom:13px;display:none;
+}
+.f-alert.on{display:block}
+.f-alert.ok{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.22);color:var(--g)}
+.f-alert.no{background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.22);color:var(--red)}
+.spinner{
+  width:15px;height:15px;border:2px solid rgba(0,0,0,.2);
+  border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;
+}
+
+/* ══════════════════════════════════════════
+   CHAT PAGE
+══════════════════════════════════════════ */
+#pg-chat{height:100dvh;overflow:hidden}
+#pg-chat .hdr{position:relative}
+.chat-body{display:flex;flex:1;overflow:hidden;height:calc(100dvh - 58px)}
+
+/* sidebar */
+.sb{
+  width:252px;flex-shrink:0;background:var(--bg2);
+  border-right:1px solid var(--ln);display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .28s ease;
+}
+.sb-top{padding:14px;border-bottom:1px solid var(--ln);flex-shrink:0}
+.new-btn{
+  width:100%;height:38px;border-radius:9px;
+  border:1px solid var(--lng);background:rgba(0,230,118,.06);
+  color:var(--g);font-size:12.5px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all .18s;
+}
+.new-btn:hover{background:rgba(0,230,118,.12);transform:translateY(-1px)}
+.sb-sec{
+  padding:10px 13px 3px;font-size:9.5px;font-weight:700;
+  color:var(--t4);text-transform:uppercase;letter-spacing:1px;
+}
+.sb-hist{flex:1;overflow-y:auto;padding:3px 7px 10px}
+.hi{
+  padding:7px 9px;border-radius:8px;cursor:pointer;
+  transition:all .14s;display:flex;align-items:center;gap:7px;margin-bottom:2px;
+}
+.hi:hover{background:var(--bg3)}
+.hi.act{background:var(--bg3);border:1px solid var(--lng)}
+.hi-ico{font-size:13px;flex-shrink:0;color:var(--t3)}
+.hi-txt{font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.hi.act .hi-txt{color:var(--t1)}
+.hi-del{
+  width:20px;height:20px;border-radius:5px;border:none;background:transparent;
+  color:var(--t4);font-size:11px;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;opacity:0;transition:all .14s;flex-shrink:0;
+}
+.hi:hover .hi-del{opacity:1}
+.hi-del:hover{background:rgba(255,82,82,.14);color:var(--red)}
+.sb-foot{padding:10px;border-top:1px solid var(--ln);flex-shrink:0}
+.sb-user{
+  display:flex;align-items:center;gap:9px;padding:8px;
+  border-radius:8px;cursor:pointer;transition:background .14s;
+}
+.sb-user:hover{background:var(--bg3)}
+.sb-av{
+  width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,var(--g),var(--gd));
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#000;flex-shrink:0;
+}
+.sb-ui{flex:1;min-width:0}
+.sb-uname{font-size:12.5px;font-weight:700;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-role{font-size:10px;color:var(--t3);margin-top:1px}
+.sb-toggle{
+  display:none;width:34px;height:34px;border-radius:8px;
+  border:1px solid var(--ln);background:transparent;
+  color:var(--t2);cursor:pointer;align-items:center;justify-content:center;font-size:15px;
+}
+.sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49}
+
+/* main chat */
+.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.msgs{flex:1;overflow-y:auto;padding:22px 14px;display:flex;flex-direction:column}
+.msgs-in{max-width:660px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:18px}
+
+/* welcome */
+.welcome{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;min-height:58vh;text-align:center;padding:28px 14px;
+  animation:fadeIn .35s ease;
+}
+.w-ico{
+  width:68px;height:68px;border-radius:17px;
+  background:linear-gradient(135deg,var(--g),var(--gd));
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;animation:pulse 3s infinite;
+}
+.w-ico svg{width:36px;height:36px;fill:#000}
+.w-h{font-family:var(--ff);font-weight:800;font-size:24px;margin-bottom:7px}
+.w-p{font-size:13.5px;color:var(--t2);max-width:380px;line-height:1.75;font-weight:300;margin-bottom:26px}
+.sugs{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:100%;max-width:480px}
+.sug{
+  padding:11px 13px;border-radius:11px;border:1px solid var(--ln);
+  background:var(--bg2);text-align:left;cursor:pointer;transition:all .18s;
+}
+.sug:hover{border-color:var(--g);background:var(--gg);transform:translateY(-1px)}
+.sug-ico{font-size:17px;margin-bottom:4px;display:block}
+.sug-t{font-size:12px;color:var(--t2);line-height:1.5}
+.sug:hover .sug-t{color:var(--t1)}
+
+/* message rows */
+.mrow{display:flex;gap:9px;animation:fadeUp .28s ease both}
+.mrow.u{flex-direction:row-reverse}
+.mav{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;margin-top:2px;
+}
+.mav.ai{background:linear-gradient(135deg,var(--g),var(--gd));color:#000;border:1px solid rgba(0,230,118,.28)}
+.mav.u2{background:var(--bg3);border:1px solid var(--ln);color:var(--t2)}
+.mwrap{flex:1;min-width:0;max-width:86%}
+.mrow.u .mwrap{display:flex;flex-direction:column;align-items:flex-end}
+.mmeta{font-size:10.5px;color:var(--t4);margin-bottom:3px;display:flex;align-items:center;gap:5px}
+.mrow.u .mmeta{justify-content:flex-end}
+.mbub{
+  padding:11px 15px;border-radius:13px;font-size:13.5px;
+  line-height:1.75;word-break:break-word;
+}
+.mbub.ai{
+  background:var(--bg2);border:1px solid var(--ln);
+  border-radius:2px 13px 13px 13px;color:var(--t1);
+}
+.mbub.u2{
+  background:linear-gradient(135deg,rgba(0,230,118,.13),rgba(0,200,83,.07));
+  border:1px solid var(--lng);border-radius:13px 2px 13px 13px;color:var(--t1);
+}
+/* ai bubble markdown */
+.mbub.ai strong{color:var(--g);font-weight:600}
+.mbub.ai h3,.mbub.ai h4{font-family:var(--ff);color:var(--t1);margin:9px 0 3px;font-size:13.5px}
+.mbub.ai ul,.mbub.ai ol{padding-left:17px;margin:5px 0}
+.mbub.ai li{margin-bottom:2px}
+.mbub.ai p{margin-bottom:5px}
+.mbub.ai p:last-child{margin-bottom:0}
+.mbub.ai code{background:rgba(0,0,0,.32);padding:1px 5px;border-radius:4px;font-size:12px;color:var(--g);font-family:monospace}
+.mbub.ai hr{border:none;border-top:1px solid var(--ln);margin:9px 0}
+.mbub.ai .sec-head{display:block;font-weight:700;color:var(--g);margin:8px 0 3px;font-size:12.5px}
+
+/* typing */
+.trow{display:flex;gap:9px;animation:fadeIn .2s ease}
+.tbub{
+  background:var(--bg2);border:1px solid var(--ln);
+  border-radius:2px 13px 13px 13px;padding:13px 16px;
+  display:flex;align-items:center;gap:5px;
+}
+.td{width:6px;height:6px;border-radius:50%;background:var(--t3);animation:blink 1.4s infinite}
+.td:nth-child(2){animation-delay:.2s}
+.td:nth-child(3){animation-delay:.4s}
+
+/* input area */
+.inp-area{
+  flex-shrink:0;padding:11px 14px 15px;
+  background:var(--bg);border-top:1px solid var(--ln);
+}
+.inp-inner{max-width:660px;margin:0 auto}
+.inp-box{
+  display:flex;align-items:flex-end;gap:9px;
+  background:var(--bg2);border:1px solid var(--ln);
+  border-radius:13px;padding:9px 10px 9px 15px;
+  transition:border-color .18s;
+}
+.inp-box:focus-within{border-color:rgba(0,230,118,.38)}
+.chat-inp{
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--t1);font-size:13.5px;line-height:1.6;
+  resize:none;max-height:136px;min-height:22px;overflow-y:auto;
+}
+.chat-inp::placeholder{color:var(--t4)}
+.send{
+  width:34px;height:34px;border-radius:8px;border:none;
+  background:var(--g);color:#000;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;
+}
+.send:hover:not(:disabled){background:#00FF8A;transform:scale(1.06)}
+.send:disabled{background:var(--bg4);color:var(--t4);cursor:not-allowed}
+.send svg{width:15px;height:15px}
+.inp-hint{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:7px;padding:0 2px;
+}
+.hint-l{font-size:10.5px;color:var(--t4)}
+.priv-tag{font-size:10px;color:var(--t4);display:flex;align-items:center;gap:3px}
+.priv-tag svg{width:10px;height:10px;fill:var(--t4)}
+
+/* ══════════════════════════════════════════
+   FOUNDER PAGE
+══════════════════════════════════════════ */
+#pg-founder{flex-direction:column}
+.f-top{
+  padding:22px;border-bottom:1px solid var(--ln);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+.f-top h1{font-family:var(--ff);font-size:22px;font-weight:800;display:flex;align-items:center;gap:9px}
+.gold-badge{
+  padding:3px 9px;border-radius:100px;
+  background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);
+  font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.7px;
+}
+.f-body{flex:1;padding:22px;overflow-y:auto}
+.f-in{max-width:860px;margin:0 auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:13px;margin-bottom:26px}
+.scard{background:var(--bg2);border:1px solid var(--ln);border-radius:var(--r2);padding:18px}
+.scard-lbl{font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
+.scard-val{font-family:var(--ff);font-size:30px;font-weight:800;color:var(--g);line-height:1;margin-bottom:3px}
+.scard-note{font-size:11.5px;color:var(--t3)}
+.f-sec{background:var(--bg2);border:1px solid var(--ln);border-radius:var(--r2);overflow:hidden;margin-bottom:14px}
+.f-sec-hdr{
+  padding:13px 17px;border-bottom:1px solid var(--ln);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.f-sec-title{font-size:12.5px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:7px}
+.f-sec-body{padding:14px 17px}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--ln);font-size:12.5px}
+.srow:last-child{border-bottom:none}
+.srow-lbl{color:var(--t2)}
+.srow-val{font-weight:600;color:var(--g);display:flex;align-items:center;gap:5px}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 2s infinite}
+.utbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.utbl th{text-align:left;padding:7px 9px;border-bottom:1px solid var(--ln);color:var(--t3);font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.utbl td{padding:7px 9px;border-bottom:1px solid var(--ln);color:var(--t2)}
+.utbl tr:last-child td{border-bottom:none}
+.utbl tr:hover td{background:var(--bg3)}
+.back-btn{
+  height:34px;padding:0 15px;border-radius:8px;
+  border:1px solid var(--ln);background:transparent;
+  color:var(--t2);font-size:12.5px;font-weight:500;cursor:pointer;
+  transition:all .18s;display:flex;align-items:center;gap:5px;
+}
+.back-btn:hover{border-color:var(--g);color:var(--g)}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:700px){
+  .sb{position:fixed;top:0;left:0;bottom:0;z-index:50;transform:translateX(-100%);width:272px}
+  .sb.open{transform:translateX(0);box-shadow:4px 0 22px rgba(0,0,0,.55)}
+  .sb-ov.open{display:block}
+  .sb-toggle{display:flex}
+  .feat-row{grid-template-columns:1fr}
+  .topics{grid-template-columns:1fr 1fr}
+  .sugs{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .hdr-uname{display:none}
+}
+@media(max-width:460px){
+  .hdr{padding:0 13px}
+  .hero{padding:38px 15px 30px}
+  .topics{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .msgs{padding:14px 9px}
+  .inp-area{padding:9px 9px 13px}
+  .sugs{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     PAGE: HOME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div id="pg-home" class="pg on">
+  <header class="hdr">
+    <div class="logo" onclick="goHome()">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">99EVS</span>
+        <span class="logo-sub">MobilityAI</span>
+      </div>
+    </div>
+    <div class="hdr-r" id="home-guest">
+      <button class="btn-ghost" onclick="openM('login')">Sign In</button>
+      <button class="btn-pri" onclick="openM('reg')">Create Account</button>
+    </div>
+    <div class="hdr-r hidden" id="home-authed">
+      <div class="hdr-av" id="home-av" onclick="goChat()">U</div>
+      <span class="hdr-uname" id="home-uname">User</span>
+      <button class="btn-pri" onclick="goChat()" style="height:34px;padding:0 16px;font-size:13px">Open Chat ↗</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="badge"><div class="badge-dot"></div>MobilityAI · Live &amp; Free</div>
+    <h1 class="hero-h1">
+      Your Vehicle.<br>
+      <span class="green">Understood.</span>
+    </h1>
+    <p class="hero-p">
+      MobilityAI helps you learn how vehicles work, how to maintain them safely, how electric vehicles changed the world — and everything in between. Free forever.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-lg g" id="hero-main-btn" onclick="openM('reg')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+        Start Free — No Card Needed
+      </button>
+      <button class="btn-lg o" onclick="scrollTopics()">Explore Topics ↓</button>
+    </div>
+    <div class="feat-row">
+      <div class="feat"><span class="feat-ico">⚡</span><div class="feat-t">Electric Vehicles</div><div class="feat-d">Batteries, charging, range &amp; EV care made simple.</div></div>
+      <div class="feat"><span class="feat-ico">🛵</span><div class="feat-t">Two-Wheelers</div><div class="feat-d">Scooters, bikes, electric two-wheelers — all covered.</div></div>
+      <div class="feat"><span class="feat-ico">📖</span><div class="feat-t">Mobility History</div><div class="feat-d">From steam engines to EVs — the full story.</div></div>
+    </div>
+  </section>
+
+  <section class="topics-sec" id="topics-sec">
+    <div class="topics-inner">
+      <div class="sec-tag">What You Can Learn</div>
+      <h2 class="sec-h2">Mobility Knowledge for Everyone</h2>
+      <p class="sec-p">From how an engine works to the history of electric vehicles — ask MobilityAI anything, in simple language.</p>
+      <div class="topics">
+        <div class="chip" onclick="startChat('How does an electric vehicle battery work and how do I keep it healthy?')"><span class="chip-ico">🔋</span><span class="chip-t">EV Battery Basics</span></div>
+        <div class="chip" onclick="startChat('How do I maintain my scooter to keep it safe and running well?')"><span class="chip-ico">🛵</span><span class="chip-t">Scooter Maintenance</span></div>
+        <div class="chip" onclick="startChat('What is the complete history of electric vehicles, from the beginning?')"><span class="chip-ico">📖</span><span class="chip-t">EV History</span></div>
+        <div class="chip" onclick="startChat('What is the safest way to commute in heavy city traffic?')"><span class="chip-ico">🚦</span><span class="chip-t">Safe Commuting</span></div>
+        <div class="chip" onclick="startChat('What should I check before buying a used vehicle?')"><span class="chip-ico">🔍</span><span class="chip-t">Used Vehicle Inspection</span></div>
+        <div class="chip" onclick="startChat('How do petrol and diesel car engines actually work?')"><span class="chip-ico">⚙️</span><span class="chip-t">How Engines Work</span></div>
+        <div class="chip" onclick="startChat('What is regenerative braking and how does it help EVs?')"><span class="chip-ico">⚡</span><span class="chip-t">Regenerative Braking</span></div>
+        <div class="chip" onclick="startChat('What are the latest innovations in electric mobility and transportation?')"><span class="chip-ico">🚀</span><span class="chip-t">EV Innovations</span></div>
+        <div class="chip" onclick="startChat('How can I reduce my vehicle maintenance costs?')"><span class="chip-ico">💰</span><span class="chip-t">Reduce Running Costs</span></div>
+        <div class="chip" onclick="startChat('How do hybrid vehicles work and are they better than full EVs?')"><span class="chip-ico">🌿</span><span class="chip-t">Hybrid Vehicles</span></div>
+        <div class="chip" onclick="startChat('How do I ride safely in rain and wet roads?')"><span class="chip-ico">🌧️</span><span class="chip-t">Rain Safety</span></div>
+        <div class="chip" onclick="startChat('How does tyre pressure affect safety and what should I check?')"><span class="chip-ico">🔄</span><span class="chip-t">Tyre Health &amp; Safety</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="foot-copy">© 2026 99EVS.com · Free. Simple. Safe. Forever.</div>
+    <div class="foot-links">
+      <button onclick="openM('login')">Sign In</button>
+      <button onclick="openM('reg')">Create Account</button>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     PAGE: CHAT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div id="pg-chat" class="pg">
+  <header class="hdr">
+    <div style="display:flex;align-items:center;gap:9px">
+      <button class="sb-toggle" id="sb-toggle" onclick="toggleSb()" aria-label="Menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="logo" onclick="goHome()">
+        <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></div>
+        <div class="logo-text"><span class="logo-name">99EVS</span><span class="logo-sub">MobilityAI</span></div>
+      </div>
+    </div>
+    <div class="hdr-user">
+      <span class="hdr-uname" id="chat-uname">User</span>
+      <div class="hdr-av" id="chat-av">U</div>
+      <button class="btn-out" onclick="signOut()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="chat-body">
+    <div class="sb-ov" id="sb-ov" onclick="closeSb()"></div>
+
+    <aside class="sb" id="sb">
+      <div class="sb-top">
+        <button class="new-btn" onclick="newChat()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Conversation
+        </button>
+      </div>
+      <div class="sb-sec">Conversations</div>
+      <div class="sb-hist" id="sb-hist">
+        <div style="padding:18px 9px;text-align:center;color:var(--t4);font-size:11.5px">Your conversations appear here</div>
+      </div>
+      <div class="sb-foot">
+        <div class="sb-user" id="sb-user-btn">
+          <div class="sb-av" id="sb-av">U</div>
+          <div class="sb-ui">
+            <div class="sb-uname" id="sb-uname">User</div>
+            <div class="sb-role" id="sb-role">Member</div>
+          </div>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t4)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </aside>
+
+    <main class="chat-main">
+      <div class="msgs" id="msgs">
+        <div class="msgs-in" id="msgs-in"></div>
+      </div>
+      <div class="inp-area">
+        <div class="inp-inner">
+          <div class="inp-box">
+            <textarea
+              class="chat-inp" id="chat-inp" rows="1"
+              placeholder="Ask MobilityAI anything about vehicles, safety, history..."
+              maxlength="4000"
+              onkeydown="onKey(event)"
+              oninput="autoH(this)"></textarea>
+            <button class="send" id="send-btn" onclick="send()" aria-label="Send">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </button>
+          </div>
+          <div class="inp-hint">
+            <span class="hint-l">Enter to send &nbsp;·&nbsp; Shift+Enter for new line</span>
+            <span class="priv-tag">
+              <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5z"/></svg>
+              Your conversations are private and stored only for you.
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     PAGE: FOUNDER DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div id="pg-founder" class="pg">
+  <header class="hdr">
+    <div class="logo" onclick="goHome()">
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></div>
+      <div class="logo-text"><span class="logo-name">99EVS</span><span class="logo-sub">Command</span></div>
+    </div>
+    <div style="display:flex;gap:7px;align-items:center">
+      <button class="back-btn" onclick="goChat()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+        Chat
+      </button>
+      <button class="btn-out" onclick="signOut()">Sign Out</button>
+    </div>
+  </header>
+  <div class="f-top">
+    <h1>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Founder Dashboard
+      <span class="gold-badge">Private</span>
+    </h1>
+    <div style="font-size:11.5px;color:var(--t3)" id="f-ts">—</div>
+  </div>
+  <div class="f-body">
+    <div class="f-in">
+      <div class="stats">
+        <div class="scard"><div class="scard-lbl">Total Users</div><div class="scard-val" id="f-users">0</div><div class="scard-note">Registered accounts</div></div>
+        <div class="scard"><div class="scard-lbl">Conversations</div><div class="scard-val" id="f-convos">0</div><div class="scard-note">All sessions</div></div>
+        <div class="scard"><div class="scard-lbl">Total Messages</div><div class="scard-val" id="f-msgs">0</div><div class="scard-note">User + AI combined</div></div>
+        <div class="scard"><div class="scard-lbl">Platform</div><div class="scard-val" style="font-size:18px;color:var(--g)">Live ✓</div><div class="scard-note">Phase 1 operational</div></div>
+      </div>
+      <div class="f-sec">
+        <div class="f-sec-hdr"><div class="f-sec-title">⚡ System Status</div><div class="gold-badge" style="font-size:9.5px">All Systems</div></div>
+        <div class="f-sec-body">
+          <div class="srow"><span class="srow-lbl">MobilityAI Engine</span><span class="srow-val"><div class="sdot"></div>Active</span></div>
+          <div class="srow"><span class="srow-lbl">Built-in Knowledge</span><span class="srow-val"><div class="sdot"></div>Running</span></div>
+          <div class="srow"><span class="srow-lbl">Session Storage</span><span class="srow-val"><div class="sdot"></div>localStorage</span></div>
+          <div class="srow"><span class="srow-lbl">Multi-Language</span><span class="srow-val"><div class="sdot"></div>EN · HI · TA · TE · KN · ML</span></div>
+          <div class="srow"><span class="srow-lbl">Platform Version</span><span class="srow-val" style="color:var(--t2)">Phase 1.0</span></div>
+          <div class="srow"><span class="srow-lbl">AI Endpoint</span><span class="srow-val" style="color:var(--t2)">/api/chat</span></div>
+        </div>
+      </div>
+      <div class="f-sec">
+        <div class="f-sec-hdr"><div class="f-sec-title">👥 Registered Users</div></div>
+        <div class="f-sec-body" style="padding:0">
+          <table class="utbl">
+            <thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Chats</th></tr></thead>
+            <tbody id="f-utbl"><tr><td colspan="4" style="text-align:center;color:var(--t4);padding:18px">No users yet</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     AUTH MODAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="overlay" id="overlay" onclick="ovClick(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-x" onclick="closeM()">✕</button>
+
+    <!-- LOGIN -->
+    <div id="m-login">
+      <div class="m-title">Welcome back</div>
+      <div class="m-sub">Sign in to your 99EVS account</div>
+      <div class="f-alert" id="al-login"></div>
+      <div class="f-group"><label class="f-lbl">Email</label><input type="email" class="f-inp" id="li-email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="f-group"><label class="f-lbl">Password</label><input type="password" class="f-inp" id="li-pwd" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="f-btn" id="li-btn" onclick="doLogin()"><span>Sign In</span></button>
+      <div class="f-sw">No account? <a onclick="switchM('reg')">Create one free</a></div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="m-reg" class="hidden">
+      <div class="m-title">Create your account</div>
+      <div class="m-sub">Free forever. No credit card.</div>
+      <div class="f-alert" id="al-reg"></div>
+      <div class="f-group"><label class="f-lbl">Full Name</label><input type="text" class="f-inp" id="ri-name" placeholder="Your name" autocomplete="name" maxlength="60"></div>
+      <div class="f-group"><label class="f-lbl">Email</label><input type="email" class="f-inp" id="ri-email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="f-group"><label class="f-lbl">Password</label><input type="password" class="f-inp" id="ri-pwd" placeholder="At least 8 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')doReg()"></div>
+      <button class="f-btn" id="ri-btn" onclick="doReg()"><span>Create Free Account</span></button>
+      <div class="f-sw">Already have an account? <a onclick="switchM('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     SCRIPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<script>
+'use strict';
+/* ══════════════════════
+   KEYS & STATE
+══════════════════════ */
+const FE = 'shelltwo6565@gmail.com';
+const SK = { U:'99evs_u', S:'99evs_s', C:'99evs_c' };
+const ST = { user:null, convos:[], active:null, busy:false, pend:null };
+
+/* ══════════════════════
+   STORAGE
+══════════════════════ */
+const ls  = (k,d=null) => { try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d}catch{return d} };
+const lss = (k,v) => { try{localStorage.setItem(k,JSON.stringify(v))}catch{} };
+const lsd = k => { try{localStorage.removeItem(k)}catch{} };
+
+/* ══════════════════════
+   HASH
+══════════════════════ */
+function hashP(p,e){
+  let h=0x811c9dc5;
+  const s=p+e+'99evs26';
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*0x01000193)>>>0}
+  return h.toString(16)+btoa(s.slice(0,6)).replace(/=/g,'')
+}
+
+/* ══════════════════════
+   USER DB
+══════════════════════ */
+const getUs  = ()  => ls(SK.U,{});
+const saveUs = u   => lss(SK.U,u);
+const getU   = e   => getUs()[e.toLowerCase()]||null;
+const setU   = (e,d) => { const u=getUs(); u[e.toLowerCase()]={...(u[e.toLowerCase()]||{}),...d}; saveUs(u) };
+
+/* ══════════════════════
+   SESSION
+══════════════════════ */
+const saveS  = e => lss(SK.S,{e:e.toLowerCase(),t:Date.now()});
+const clearS = () => lsd(SK.S);
+const getS   = () => {
+  const s=ls(SK.S);
+  if(!s) return null;
+  if(Date.now()-s.t > 30*864e5){clearS();return null}
+  return s
+};
+
+/* ══════════════════════
+   CONVOS
+══════════════════════ */
+const allC   = ()  => ls(SK.C,{});
+const userCs = e   => (allC()[e.toLowerCase()]||[]).sort((a,b)=>b.ca-a.ca);
+const saveCs = (e,cs) => { const a=allC(); a[e.toLowerCase()]=cs; lss(SK.C,a) };
+const gid    = ()  => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+function mkC(firstMsg){
+  const c={id:gid(),title:firstMsg.slice(0,46)+(firstMsg.length>46?'…':''),msgs:[],ca:Date.now()};
+  ST.convos.unshift(c); ST.active=c.id;
+  saveCs(ST.user.email,ST.convos);
+  rdrSb(); return c
+}
+const actC   = () => ST.convos.find(c=>c.id===ST.active)||null;
+function addMsg(role,content){
+  const c=actC(); if(!c) return;
+  c.msgs.push({role,content,ts:Date.now()});
+  saveCs(ST.user.email,ST.convos)
+}
+function delC(id){
+  ST.convos=ST.convos.filter(c=>c.id!==id);
+  saveCs(ST.user.email,ST.convos);
+  if(ST.active===id){
+    ST.active=ST.convos.length?ST.convos[0].id:null;
+    ST.active?rdrMsgs():showWelcome()
+  }
+  rdrSb()
+}
+
+/* ══════════════════════
+   PAGES
+══════════════════════ */
+const showP = id => { document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on')); document.getElementById(id).classList.add('on'); window.scrollTo(0,0) };
+function goHome(){ showP('pg-home'); updHomeNav() }
+function goChat(){ showP('pg-chat'); initChat() }
+function goFounder(){ showP('pg-founder'); rfrFounder() }
+
+/* ══════════════════════
+   HOME NAV
+══════════════════════ */
+function updHomeNav(){
+  const g=document.getElementById('home-guest');
+  const a=document.getElementById('home-authed');
+  if(ST.user){
+    g.classList.add('hidden'); a.classList.remove('hidden');
+    document.getElementById('home-av').textContent=(ST.user.name||'U')[0].toUpperCase();
+    document.getElementById('home-uname').textContent=ST.user.name||'User';
+    const b=document.getElementById('hero-main-btn');
+    b.innerHTML='✦ Continue Chatting'; b.onclick=goChat;
+  } else {
+    g.classList.remove('hidden'); a.classList.add('hidden');
+    const b=document.getElementById('hero-main-btn');
+    b.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg> Start Free — No Card Needed';
+    b.onclick=()=>openM('reg');
+  }
+}
+
+/* ══════════════════════
+   MODAL
+══════════════════════ */
+function openM(w){ document.getElementById('overlay').classList.add('on'); switchM(w) }
+function closeM(){ document.getElementById('overlay').classList.remove('on'); clearAl() }
+function ovClick(e){ if(e.target===document.getElementById('overlay'))closeM() }
+function switchM(w){
+  document.getElementById('m-login').classList.toggle('hidden',w!=='login');
+  document.getElementById('m-reg').classList.toggle('hidden',w!=='reg');
+  clearAl()
+}
+function clearAl(){
+  ['al-login','al-reg'].forEach(id=>{const e=document.getElementById(id);e.className='f-alert';e.textContent=''});
+  ['li-email','li-pwd','ri-name','ri-email','ri-pwd'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('err')})
+}
+function showAl(id,msg,t='no'){const e=document.getElementById(id);e.textContent=msg;e.className='f-alert on '+t}
+function setLoad(id,on,txt=''){
+  const b=document.getElementById(id);
+  if(on){b.disabled=true;b.innerHTML='<div class="spinner"></div>'}
+  else{b.disabled=false;b.innerHTML='<span>'+txt+'</span>'}
+}
+
+function doLogin(){
+  const email=(document.getElementById('li-email').value||'').trim().toLowerCase();
+  const pwd  =(document.getElementById('li-pwd').value||'');
+  if(!email||!pwd){showAl('al-login','Please fill in all fields.');return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showAl('al-login','Enter a valid email address.');return}
+  setLoad('li-btn',true);
+  setTimeout(()=>{
+    const u=getU(email);
+    if(!u||u.hash!==hashP(pwd,email)){showAl('al-login','Email or password is incorrect.');setLoad('li-btn',false,'Sign In');return}
+    setU(email,{lastLogin:Date.now()});
+    loginOk({...u,email})
+  },500)
+}
+
+function doReg(){
+  const name =(document.getElementById('ri-name').value||'').trim();
+  const email=(document.getElementById('ri-email').value||'').trim().toLowerCase();
+  const pwd  =(document.getElementById('ri-pwd').value||'');
+  if(!name){showAl('al-reg','Please enter your name.');return}
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showAl('al-reg','Enter a valid email address.');return}
+  if(pwd.length<8){showAl('al-reg','Password must be at least 8 characters.');return}
+  if(getU(email)){showAl('al-reg','An account with this email already exists.'); switchM('login');return}
+  setLoad('ri-btn',true);
+  setTimeout(()=>{
+    setU(email,{name,email,hash:hashP(pwd,email),createdAt:Date.now(),lastLogin:Date.now()});
+    loginOk({name,email})
+  },550)
+}
+
+function loginOk(user){
+  ST.user=user; ST.convos=userCs(user.email);
+  ST.active=ST.convos.length?ST.convos[0].id:null;
+  saveS(user.email); closeM(); updHomeNav(); updChatHdr();
+  setLoad('li-btn',false,'Sign In'); setLoad('ri-btn',false,'Create Free Account');
+  if(ST.pend){const m=ST.pend;ST.pend=null;goChat();setTimeout(()=>{document.getElementById('chat-inp').value=m;send()},180)}
+  else goChat()
+}
+
+function signOut(){
+  ST.user=null;ST.convos=[];ST.active=null;clearS();goHome()
+}
+
+/* ══════════════════════
+   CHAT INIT
+══════════════════════ */
+function initChat(){
+  if(!ST.user){openM('login');return}
+  updChatHdr(); rdrSb();
+  ST.active?rdrMsgs():showWelcome();
+  document.getElementById('chat-inp').focus()
+}
+
+function updChatHdr(){
+  if(!ST.user) return;
+  const init=(ST.user.name||'U')[0].toUpperCase();
+  ['chat-av','sb-av'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=init});
+  document.getElementById('chat-uname').textContent=ST.user.name||'User';
+  document.getElementById('sb-uname').textContent=ST.user.name||'User';
+  const isF=ST.user.email.toLowerCase()===FE;
+  document.getElementById('sb-role').textContent=isF?'★ Founder':'Member';
+  document.getElementById('sb-user-btn').onclick=isF?goFounder:null;
+}
+
+/* ══════════════════════
+   SIDEBAR
+══════════════════════ */
+function rdrSb(){
+  const h=document.getElementById('sb-hist');
+  if(!ST.convos.length){h.innerHTML='<div style="padding:18px 9px;text-align:center;color:var(--t4);font-size:11.5px">Your conversations appear here</div>';return}
+  h.innerHTML=ST.convos.map(c=>`
+    <div class="hi ${c.id===ST.active?'act':''}" onclick="loadC('${c.id}')">
+      <span class="hi-ico">💬</span>
+      <span class="hi-txt">${esc(c.title)}</span>
+      <button class="hi-del" onclick="event.stopPropagation();delC('${c.id}')" title="Delete">✕</button>
+    </div>`).join('')
+}
+
+function loadC(id){ST.active=id;rdrSb();rdrMsgs();closeSb()}
+
+function newChat(){
+  ST.active=null; showWelcome(); rdrSb(); closeSb();
+  document.getElementById('chat-inp').focus()
+}
+
+/* ══════════════════════
+   MESSAGES
+══════════════════════ */
+function showWelcome(){
+  const mi=document.getElementById('msgs-in');
+  const isF=ST.user&&ST.user.email.toLowerCase()===FE;
+  const fn=ST.user?(ST.user.name||'').split(' ')[0]:'';
+  mi.innerHTML=`
+    <div class="welcome">
+      <div class="w-ico"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></div>
+      <div class="w-h">Hello${fn?', '+esc(fn):''}!</div>
+      <div class="w-p">Ask me anything about vehicles, mobility, safety, history, or maintenance. I answer simply — so everyone can understand.</div>
+      ${isF?`<div style="margin-bottom:14px"><button onclick="goFounder()" style="height:36px;padding:0 17px;border-radius:9px;border:1px solid rgba(212,175,55,.3);background:rgba(212,175,55,.07);color:var(--gold);font-size:12.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;margin:0 auto;transition:all .18s">★ Founder Dashboard</button></div>`:''}
+      <div class="sugs">
+        <button class="sug" onclick="fillSend('How does an EV battery work and how do I keep it healthy?')">
+          <span class="sug-ico">🔋</span><span class="sug-t">How does an EV battery work?</span>
+        </button>
+        <button class="sug" onclick="fillSend('What is the history of electric vehicles from the very beginning?')">
+          <span class="sug-ico">📖</span><span class="sug-t">History of electric vehicles</span>
+        </button>
+        <button class="sug" onclick="fillSend('What is the safest way to commute daily in Bangalore city traffic?')">
+          <span class="sug-ico">🚦</span><span class="sug-t">Safe commuting guide</span>
+        </button>
+        <button class="sug" onclick="fillSend('What should I check before buying a used vehicle?')">
+          <span class="sug-ico">🔍</span><span class="sug-t">Inspect a used vehicle</span>
+        </button>
+      </div>
+    </div>`;
+}
+
+function rdrMsgs(){
+  const c=actC(); const mi=document.getElementById('msgs-in');
+  if(!c||!c.msgs.length){showWelcome();return}
+  mi.innerHTML='';
+  c.msgs.forEach(m=>addBub(m.role,m.content,false));
+  scrollBot()
+}
+
+function addBub(role,content,anim=true){
+  const mi=document.getElementById('msgs-in');
+  const ws=mi.querySelector('.welcome'); if(ws)ws.remove();
+  const isAI=role==='assistant';
+  const init=isAI?'⚡':(ST.user?(ST.user.name||'U')[0].toUpperCase():'U');
+  const label=isAI?'MobilityAI':(ST.user?ST.user.name:'You');
+  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const row=document.createElement('div');
+  row.className='mrow'+(isAI?'':' u')+(anim?' anim-up':'');
+  row.style.cssText=anim?'animation:fadeUp .28s ease both':'';
+  const bubble=isAI?fmtAI(content):esc(content).replace(/\n/g,'<br>');
+  row.innerHTML=`
+    <div class="mav ${isAI?'ai':'u2'}">${esc(init)}</div>
+    <div class="mwrap">
+      <div class="mmeta"><span>${esc(label)}</span><span>${time}</span></div>
+      <div class="mbub ${isAI?'ai':'u2'}">${bubble}</div>
+    </div>`;
+  mi.appendChild(row);
+  if(anim)scrollBot()
+}
+
+function fmtAI(t){
+  return esc(t)
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/^#{1,4} (.+)$/gm,'<h4>$1</h4>')
+    .replace(/^---$/gm,'<hr>')
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/\n[-•] (.*)/g,'<li>$1</li>')
+    .replace(/((?:<li>.*<\/li>)+)/g,'<ul>$1</ul>')
+    .replace(/\n/g,'<br>')
+    .replace(/^/,'<p>').replace(/$/,'</p>')
+}
+
+function showTyp(){
+  const mi=document.getElementById('msgs-in');
+  const ws=mi.querySelector('.welcome'); if(ws)ws.remove();
+  const r=document.createElement('div');
+  r.className='trow'; r.id='typ';
+  r.innerHTML=`<div class="mav ai">⚡</div><div class="tbub"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  mi.appendChild(r); scrollBot()
+}
+function hideTyp(){ const t=document.getElementById('typ'); if(t)t.remove() }
+function scrollBot(){ const m=document.getElementById('msgs'); m.scrollTop=m.scrollHeight }
+
+/* ══════════════════════
+   SEND
+══════════════════════ */
+function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()} }
+function autoH(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,136)+'px' }
+
+function fillSend(t){
+  const inp=document.getElementById('chat-inp');
+  inp.value=t; autoH(inp); send()
+}
+
+async function send(){
+  if(ST.busy) return;
+  const inp=document.getElementById('chat-inp');
+  const txt=inp.value.trim(); if(!txt) return;
+  if(!ST.user){ST.pend=txt;openM('reg');return}
+  if(!ST.active) mkC(txt);
+  addMsg('user',txt); addBub('user',txt);
+  inp.value=''; inp.style.height='22px';
+  ST.busy=true; document.getElementById('send-btn').disabled=true;
+  showTyp();
+  try{
+    const hist=actC().msgs.map(m=>({role:m.role,content:m.content}));
+    const reply=await callAPI(hist);
+    hideTyp(); addMsg('assistant',reply); addBub('assistant',reply); rdrSb()
+  }catch(err){
+    hideTyp();
+    const fb=fallback(txt);
+    addMsg('assistant',fb); addBub('assistant',fb)
+  }
+  ST.busy=false; document.getElementById('send-btn').disabled=false; inp.focus()
+}
+
+/* ══════════════════════
+   API
+══════════════════════ */
+async function callAPI(msgs){
+  const r=await fetch('/api/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({messages:msgs,isKiai:false,userName:(ST.user?.name||'').split(' ')[0]}),
+    signal:AbortSignal.timeout(25000)
+  });
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  const d=await r.json();
+  if(!d.reply) throw new Error('empty');
+  return d.reply
+}
+
+/* ══════════════════════
+   FALLBACKS
+══════════════════════ */
+const FB=[
+  {p:/battery|bms|soh|charge|range|ev.*power/i,r:`**EV Battery — What You Need to Know**
+
+**What is an EV battery?**
+Think of it like a very large rechargeable phone battery. It stores electricity and releases it to power the motor. The bigger the battery, the more distance you can travel on one charge.
+
+**How to keep it healthy:**
+
+- **Charge to 80% for daily use** — only go to 100% before a long trip. Staying below 80% helps the battery live longer.
+- **Don't let it drop below 10%** regularly — deep discharges are hard on batteries.
+- **Use slow AC charging at home** as your main charger. Fast DC charging is great occasionally, but every-day fast charging adds stress.
+- **Heat shortens battery life** — park in shade in summer and avoid charging in direct sun.
+
+**How long does an EV battery last?**
+Most modern EV batteries are designed to retain 80% of their capacity after 8–10 years or 150,000+ km. How you charge and store the vehicle affects this significantly.
+
+**When to get help:** If your range has dropped more than 20% in 6 months, visit your service centre for a battery health check.`},
+  {p:/history|origin|first.*car|who.*invented|steam|1800|1900|evolution/i,r:`**The History of Electric Vehicles — The Full Story**
+
+**1820s–1880s: The Very Beginning**
+Electric motors were invented before petrol engines. In 1837, Robert Davidson built one of the first electric carriages in Scotland. By the 1880s, small electric vehicles were being tested in France and England.
+
+**1890s–1900s: EVs Were Actually More Popular**
+In 1900, electric cars outsold petrol cars in the United States. They were quieter, cleaner, and easier to start — petrol cars required a hand-crank which was difficult and dangerous.
+
+**1908: Petrol Wins (For Now)**
+Henry Ford's Model T changed everything. It was cheap, had longer range, and petrol was affordable. Electric cars faded from the mainstream for decades.
+
+**1970s: The Oil Crisis Brings EVs Back**
+When oil prices spiked, governments and engineers started looking at electric vehicles again. Early experiments showed promise but battery technology was still very limited.
+
+**1997: The Hybrid Era Begins**
+Toyota launched the Prius — the first mass-market hybrid car, using both petrol and electric power. It was a turning point.
+
+**2008: Tesla Changes Everything**
+Tesla launched the Roadster — a sports car with over 300 km of range. People suddenly understood that EVs could be exciting, fast, and practical.
+
+**2010s–Now: The Revolution**
+Tata Motors, Ola Electric, Ather, and many Indian brands entered the market. Today, India is one of the fastest-growing EV markets in the world.
+
+**The Future:** Battery costs are falling every year. Solid-state batteries are coming. EVs will be the default choice within this decade.`},
+  {p:/maintain|maintenance|scooter|two.wheel|tyre|brake|service/i,r:`**Scooter & Two-Wheeler Maintenance Guide**
+
+**Check every week (takes 5 minutes):**
+- **Tyre pressure** — under-inflated tyres are the most common cause of two-wheeler accidents. Check at any petrol station.
+- **Brakes** — press firmly. The scooter should stop straight and quickly. If you hear squealing or grinding, act now.
+- **Lights** — check headlight, tail light, and both indicators.
+
+**Check every month:**
+- Engine oil level (petrol scooters) — low oil causes expensive engine damage
+- Chain condition (chain-drive models) — should feel firm with a little movement, not loose or very tight
+- Battery terminals (electric scooters) — look for corrosion or loose connections
+
+**Every 6 months or 5,000 km (whichever comes first):**
+Visit a mechanic for a full service: oil change, filter check, brake adjustment, and tyre condition assessment.
+
+**Safety first:**
+Helmet — every single time. No exceptions. Tyre pressure and brake condition are the two checks that prevent the most accidents.
+
+**When to go to a mechanic immediately:**
+- Grinding sound from brakes
+- Any warning light on dashboard
+- Scooter pulling to one side when you brake
+- Tyre showing fabric underneath the rubber`},
+  {p:/commute|traffic|bangalore|bengaluru|safe.*travel|road.*safe/i,r:`**Safe Commuting Guide**
+
+**For scooter and bike riders:**
+- Helmet every time — no exceptions, no matter how short the journey
+- Check tyre pressure weekly — this is the single most effective safety check
+- Keep one second of gap for every 10 km/h you are travelling
+- Avoid rushing in peak hour traffic — arriving 10 minutes late is always better than an accident
+- Watch for potholes, especially for 2–3 days after rain when new ones appear
+
+**For EV riders in rain:**
+- Reduce speed by 20–30% on wet roads
+- Avoid flooded roads — water and electrical connections do not mix safely
+- Double your following distance — wet brakes take longer to engage
+
+**For bus and auto passengers:**
+- Wait on the footpath, never on the road itself
+- Hold a handle when the vehicle is moving
+- Always step off to the footpath side, not into traffic
+
+**For car drivers:**
+- Keep two car-lengths of space in city traffic
+- Never enter flooded roads — even 15 cm of water can stop a car
+- Patience is your most important safety tool in city traffic
+
+**The most important rule:** Your vehicle is maintained and your mind is focused on the road. These two things prevent 90% of accidents.`},
+  {p:/buy.*used|second.hand|pre.?owned|inspect.*buy|check.*vehicle/i,r:`**How to Inspect a Used Vehicle Before Buying**
+
+This is one of the most important checks you will ever do. A ₹500 inspection can save you ₹50,000 in hidden repairs.
+
+**8 essential checks:**
+
+1. **Service history** — ask for all records. No records is a serious red flag.
+2. **Physical inspection** — look for uneven panel gaps, different paint shades, or signs of rust. These suggest the vehicle was in an accident.
+3. **Test drive** — at least 15–20 minutes. Listen for any unusual sounds at different speeds.
+4. **Brakes** — brake firmly from 40 km/h. The vehicle should stop straight and quickly with no noise.
+5. **Tyres** — check all tyres for even wear and tread depth. Worn tyres = immediate cost.
+6. **Engine or motor** — start from cold. No smoke, no unusual sounds, no warning lights.
+7. **For EVs specifically** — ask to see the battery health in the app or OEM software. Below 70% is a major negotiation point or walk-away.
+8. **Ownership documents** — check RC book matches the seller's ID. Check for any loan pending.
+
+**Best advice:** Spend ₹500–₹1,500 for a pre-purchase inspection from an independent mechanic. It is the cheapest insurance available.`},
+  {p:/engine|petrol|diesel|how.*work|motor|cylinder|combustion/i,r:`**How Vehicle Engines Work — Simply Explained**
+
+**The petrol or diesel engine:**
+Imagine a bicycle pump, but working in reverse. Instead of you pushing air in, the engine pulls in a mix of air and fuel, then explodes it to push the engine parts.
+
+Here is the process in simple steps:
+1. **Intake** — the piston moves down and pulls in air and fuel
+2. **Compression** — the piston moves back up, squeezing the air-fuel mix into a small space
+3. **Combustion** — a spark (petrol) or heat (diesel) ignites the mixture. It explodes and pushes the piston down with force
+4. **Exhaust** — the piston rises again and pushes out the burned gases through the exhaust pipe
+
+This happens hundreds of times per minute in each cylinder. A 4-cylinder engine does this 4 times per rotation.
+
+**The electric motor:**
+Much simpler. Electricity flows through coils of wire inside a magnetic field. This creates a rotating force — no explosions, no fuel, almost no moving parts. This is why EVs need so much less maintenance.
+
+**Hybrid vehicles** use both — a petrol engine for long distances and an electric motor for city driving and to recover energy during braking.`},
+  {p:/innovat|future|solid.state|hydrogen|self.driv|autonom|latest/i,r:`**Latest Innovations in Electric Mobility**
+
+**1. Solid-State Batteries**
+Today's EV batteries use liquid electrolyte. Solid-state batteries replace this with a solid material. The result: faster charging, more range, longer life, and much safer. Toyota and several startups expect these to reach production by 2027–2028.
+
+**2. Vehicle-to-Grid (V2G)**
+Your EV can send power back to your home or the electricity grid. During power cuts, your EV becomes your backup power source. Some Indian homes are already testing this.
+
+**3. Swappable Batteries**
+Instead of waiting to charge, you swap your depleted battery for a fully charged one in 3 minutes. Ola Electric and Sun Mobility are expanding this in India.
+
+**4. Solar-Integrated Vehicles**
+Small solar panels on the roof of cars and two-wheelers that add 10–20 km of range per day from sunlight alone. Lightyear and several Indian startups are working on this.
+
+**5. AI-Powered Route Planning**
+EVs that learn your driving patterns and predict exactly how much range you will have, suggest the most efficient route, and pre-condition the battery before fast charging.
+
+**6. Ultra-Fast Charging**
+350 kW chargers are now being deployed globally. These can charge an EV from 10% to 80% in under 15 minutes. India's charging network is expanding rapidly.`}
+];
+
+function fallback(msg){
+  const l=msg.toLowerCase();
+  for(const f of FB){if(f.p.test(l))return f.r}
+  return `**Thank you for your question**
+
+I want to give you the most useful answer.
+
+Could you tell me a bit more?
+- **What vehicle do you have?** (brand, type — petrol, diesel, electric)
+- **What is happening or what do you want to learn?**
+
+**Topics I can help with:**
+- 🔋 EV batteries, charging, and range
+- 🛵 Scooter and two-wheeler maintenance
+- 📖 History of vehicles and mobility
+- ⚙️ How engines and motors work
+- 🚦 Safe commuting in city traffic
+- 🔍 Inspecting a used vehicle before buying
+- 🚀 Latest innovations in electric mobility
+- 💰 Reducing vehicle running costs
+
+The more you share, the better I can help you.`
+}
+
+/* ══════════════════════
+   TOPIC START FROM HOME
+══════════════════════ */
+function startChat(msg){
+  if(!ST.user){ST.pend=msg;openM('reg');return}
+  goChat();
+  setTimeout(()=>{document.getElementById('chat-inp').value=msg;send()},120)
+}
+
+/* ══════════════════════
+   SIDEBAR MOBILE
+══════════════════════ */
+function toggleSb(){ const sb=document.getElementById('sb'),ov=document.getElementById('sb-ov'); const o=sb.classList.toggle('open'); ov.classList.toggle('open',o) }
+function closeSb(){ document.getElementById('sb').classList.remove('open'); document.getElementById('sb-ov').classList.remove('open') }
+
+/* ══════════════════════
+   SCROLL
+══════════════════════ */
+function scrollTopics(){ document.getElementById('topics-sec').scrollIntoView({behavior:'smooth'}) }
+
+/* ══════════════════════
+   FOUNDER
+══════════════════════ */
+function rfrFounder(){
+  document.getElementById('f-ts').textContent='Refreshed: '+new Date().toLocaleString();
+  const us=getUs(), emails=Object.keys(us), ac=allC();
+  let tc=0,tm=0;
+  Object.values(ac).forEach(arr=>{tc+=arr.length;arr.forEach(c=>{tm+=(c.msgs||[]).length})});
+  document.getElementById('f-users').textContent=emails.length;
+  document.getElementById('f-convos').textContent=tc;
+  document.getElementById('f-msgs').textContent=tm;
+  const tb=document.getElementById('f-utbl');
+  if(!emails.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--t4);padding:16px">No users yet</td></tr>';return}
+  tb.innerHTML=emails.map(e=>{
+    const u=us[e]; const uc=(ac[e]||[]).length;
+    const j=u.createdAt?new Date(u.createdAt).toLocaleDateString():'—';
+    return`<tr><td>${esc(u.name||'—')}</td><td style="color:var(--t3)">${esc(e)}</td><td style="color:var(--t3)">${j}</td><td>${uc}</td></tr>`
+  }).join('')
+}
+
+/* ══════════════════════
+   UTIL
+══════════════════════ */
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;')}
+
+/* ══════════════════════
+   KEYBOARD
+══════════════════════ */
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){closeM();closeSb()} });
+
+/* ══════════════════════
+   INIT
+══════════════════════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  const s=getS();
+  if(s){
+    const u=getU(s.e);
+    if(u){ST.user={...u,email:s.e};ST.convos=userCs(s.e);ST.active=ST.convos.length?ST.convos[0].id:null}
+  }
+  updHomeNav(); showP('pg-home')
+});
+</script>
+</body>
+</html>
