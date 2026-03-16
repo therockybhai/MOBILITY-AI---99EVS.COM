@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>99EVS MobilityAI — World's Most Trusted Mobility Knowledge System</title>
+<meta name="description" content="Diagnose vehicle problems, understand mobility systems, and prevent failures with MobilityAI. Free forever. Built for India, designed for the world.">
+<meta name="theme-color" content="#040B09">
+<meta property="og:title" content="99EVS MobilityAI — Mobility Intelligence Platform">
+<meta property="og:description" content="AI-powered vehicle diagnostics, knowledge library, and vehicle intelligence profiles. Free forever tier.">
+<meta property="og:url" content="https://www.99evs.com">
+<link rel="canonical" href="https://www.99evs.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   99EVS MobilityAI — Phase 1 Launch
+   Design System: Precision Industrial Intelligence
+   Dark base · Teal-green accent · Barlow type system
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg:  #040B09;
+  --bg2: #071310;
+  --bg3: #0B1C18;
+  --bg4: #0F2420;
+  --g:   #00E5B0;
+  --g2:  #00C89A;
+  --g3:  rgba(0,229,176,.09);
+  --g4:  rgba(0,229,176,.18);
+  --g5:  rgba(0,229,176,.04);
+  --amb: #F59E0B;
+  --red: #EF4444;
+  --blu: #38BDF8;
+  --t1:  #F0FAF8;
+  --t2:  #7ABFB3;
+  --t3:  #4A8A80;
+  --t4:  #2C5A54;
+  --bd:  rgba(0,229,176,.10);
+  --bd2: rgba(0,229,176,.22);
+  --r:   6px;
+  --r2:  10px;
+  --r3:  14px;
+  --ff:  'Barlow Condensed', sans-serif;
+  --fb:  'Barlow', sans-serif;
+  --sh:  0 4px 24px rgba(0,0,0,.35);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+body {
+  font-family: var(--fb);
+  background: var(--bg);
+  color: var(--t1);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button { cursor: pointer; font-family: inherit; }
+input, textarea, select { font-family: inherit; }
+a { color: var(--g); text-decoration: none; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--bd2); border-radius: 4px; }
+
+/* ── PAGE SYSTEM ─────────────────────────────────────────────────── */
+.pg { display: none; }
+.pg.on { display: block; }
+#pg-chat.on { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+#pg-profile.on { display: block; }
+
+/* ── ANIMATIONS ─────────────────────────────────────────────────── */
+@keyframes fadeUp   { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+@keyframes rise     { from { opacity:0; transform:translateY(22px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes pulse    { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.4; transform:scale(1.6); } }
+@keyframes scanLine { 0% { transform:translateY(-100%); } 100% { transform:translateY(500%); } }
+@keyframes spin     { to { transform:rotate(360deg); } }
+
+/* ══════════════════════════════════════════
+   TOP NAVIGATION
+══════════════════════════════════════════ */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  height: 58px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  background: rgba(4,11,9,.97);
+  border-bottom: 1px solid var(--bd);
+  backdrop-filter: blur(22px);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  flex-shrink: 0;
+}
+.nav-mark {
+  width: 36px; height: 36px; border-radius: var(--r);
+  background: var(--g); color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff); font-weight: 900; font-size: 14px; letter-spacing: -.5px;
+}
+.nav-brand {
+  font-family: var(--ff); font-weight: 800; font-size: 18px;
+  letter-spacing: .5px; line-height: 1;
+}
+.nav-brand em { font-style: normal; color: var(--g); }
+.nav-links {
+  display: flex; align-items: center; gap: 2px;
+  flex: 1; justify-content: center;
+}
+.nav-link {
+  background: none; border: none;
+  color: var(--t2); font-size: 13px; font-weight: 500;
+  padding: 7px 13px; border-radius: var(--r);
+  transition: all .18s; white-space: nowrap;
+}
+.nav-link:hover, .nav-link.active { color: var(--g); background: var(--g3); }
+.nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.nav-signin {
+  background: none; border: 1px solid var(--bd2);
+  color: var(--t2); font-size: 13px;
+  padding: 7px 16px; border-radius: 20px;
+  transition: all .18s;
+}
+.nav-signin:hover { border-color: var(--g); color: var(--g); }
+.nav-cta {
+  background: var(--g); color: var(--bg);
+  font-family: var(--ff); font-weight: 700; font-size: 13px; letter-spacing: .5px;
+  padding: 8px 18px; border-radius: 20px; border: none;
+  transition: all .2s;
+}
+.nav-cta:hover { background: var(--g2); transform: translateY(-1px); }
+.nav-mobile-toggle {
+  display: none; background: none; border: 1px solid var(--bd);
+  color: var(--t2); width: 36px; height: 36px; border-radius: var(--r);
+  font-size: 17px; align-items: center; justify-content: center;
+}
+
+/* ══════════════════════════════════════════
+   HOME PAGE — SECTIONS
+══════════════════════════════════════════ */
+#pg-home { background: var(--bg); }
+
+/* ── S1: HERO ── */
+.hero {
+  position: relative; overflow: hidden;
+  padding: 88px 28px 72px;
+  text-align: center;
+}
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--bd) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bd) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 10%, transparent 70%);
+  opacity: .4;
+}
+.hero-glow {
+  position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 500px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0,229,176,.055) 0%, transparent 68%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--bd2); background: var(--g3);
+  padding: 6px 16px; border-radius: 24px;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 600; color: var(--g);
+  margin-bottom: 28px;
+  animation: fadeUp .5s ease both;
+}
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--g); animation: pulse 2.2s ease infinite;
+}
+.hero h1 {
+  font-family: var(--ff); font-weight: 900;
+  font-size: clamp(36px, 7vw, 80px);
+  line-height: 1.0; letter-spacing: -.5px;
+  max-width: 820px; margin: 0 auto 20px;
+  animation: fadeUp .5s .08s ease both;
+}
+.hero h1 em { font-style: normal; color: var(--g); }
+.hero-sub {
+  font-size: clamp(15px, 2.5vw, 18px); font-weight: 300;
+  color: var(--t2); max-width: 580px; margin: 0 auto 36px;
+  line-height: 1.75;
+  animation: fadeUp .5s .16s ease both;
+}
+.hero-sub strong { color: var(--t1); font-weight: 500; }
+.hero-btns {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  justify-content: center; margin-bottom: 40px;
+  animation: fadeUp .5s .24s ease both;
+}
+.btn-hero-primary {
+  background: var(--g); color: var(--bg);
+  font-family: var(--ff); font-weight: 700; font-size: 15px; letter-spacing: .5px;
+  padding: 13px 28px; border-radius: var(--r2); border: none;
+  transition: all .22s;
+}
+.btn-hero-primary:hover { background: var(--g2); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,229,176,.24); }
+.btn-hero-outline {
+  background: var(--g3); color: var(--t1); border: 1px solid var(--bd2);
+  font-size: 14px; font-weight: 500;
+  padding: 12px 24px; border-radius: var(--r2);
+  transition: all .22s;
+}
+.btn-hero-outline:hover { border-color: var(--g); color: var(--g); }
+.btn-hero-ghost {
+  background: transparent; color: var(--t2); border: 1px solid var(--bd);
+  font-size: 14px;
+  padding: 12px 22px; border-radius: var(--r2);
+  transition: all .22s;
+}
+.btn-hero-ghost:hover { border-color: var(--bd2); color: var(--t1); }
+.hero-trust {
+  display: flex; flex-wrap: wrap; gap: 20px;
+  justify-content: center; align-items: center;
+  animation: fadeUp .5s .32s ease both;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; color: var(--t3); font-weight: 500;
+}
+.trust-item em { font-style: normal; color: var(--g); }
+
+/* ── S2: START HERE ── */
+.start-sec {
+  padding: 80px 28px;
+  background: var(--bg2);
+  border-top: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+}
+.sec-header { text-align: center; margin-bottom: 48px; }
+.sec-eyebrow {
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--t3); font-weight: 600; margin-bottom: 10px;
+}
+.sec h2 {
+  font-family: var(--ff); font-weight: 800;
+  font-size: clamp(26px, 5vw, 42px); letter-spacing: -.3px;
+  margin-bottom: 10px;
+}
+.sec-desc { color: var(--t2); font-size: 15px; max-width: 520px; margin: 0 auto; }
+
+.action-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; max-width: 1000px; margin: 0 auto;
+}
+.action-card {
+  background: var(--bg3); border: 1px solid var(--bd);
+  border-radius: var(--r3); padding: 32px 28px 28px;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: all .25s;
+  display: flex; flex-direction: column;
+}
+.action-card:hover {
+  border-color: var(--g);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,229,176,.10);
+}
+.action-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--g), transparent);
+  opacity: 0; transition: opacity .25s;
+}
+.action-card:hover::before { opacity: 1; }
+.action-card-num {
+  font-family: var(--ff); font-weight: 900; font-size: 11px;
+  letter-spacing: .15em; color: var(--g); margin-bottom: 16px;
+}
+.action-card-ico {
+  font-size: 38px; margin-bottom: 16px; display: block; line-height: 1;
+}
+.action-card h3 {
+  font-family: var(--ff); font-weight: 800; font-size: 22px;
+  letter-spacing: -.2px; margin-bottom: 10px;
+}
+.action-card p { font-size: 14px; color: var(--t2); line-height: 1.65; flex: 1; margin-bottom: 24px; }
+.action-card-cta {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--ff); font-weight: 700; font-size: 14px; letter-spacing: .5px;
+  color: var(--g); transition: gap .2s;
+}
+.action-card:hover .action-card-cta { gap: 11px; }
+
+/* ── S3: ECOSYSTEM ── */
+.eco-sec { padding: 80px 28px; background: var(--bg); }
+.eco-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; max-width: 1000px; margin: 0 auto;
+}
+.eco-card {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 22px 20px;
+  transition: all .22s;
+}
+.eco-card:hover { border-color: var(--bd2); transform: translateY(-2px); }
+.eco-card-ico { font-size: 28px; margin-bottom: 12px; display: block; }
+.eco-card h4 {
+  font-family: var(--ff); font-weight: 700; font-size: 16px;
+  margin-bottom: 7px;
+}
+.eco-card p { font-size: 12.5px; color: var(--t2); line-height: 1.6; }
+.eco-badge {
+  display: inline-block; margin-top: 10px;
+  background: var(--g3); border: 1px solid var(--bd2);
+  padding: 3px 10px; border-radius: 12px;
+  font-size: 10px; font-weight: 700; letter-spacing: .06em;
+  color: var(--g); text-transform: uppercase;
+}
+
+/* ── S4: WHY EXISTS ── */
+.why-sec {
+  padding: 88px 28px;
+  background: var(--bg2);
+  border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);
+}
+.why-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.why-text h2 { font-family: var(--ff); font-weight: 900; font-size: clamp(28px, 4.5vw, 44px); letter-spacing: -.5px; margin-bottom: 20px; line-height: 1.05; }
+.why-text h2 em { font-style: normal; color: var(--g); }
+.why-text p { font-size: 15px; color: var(--t2); line-height: 1.75; margin-bottom: 14px; }
+.why-text p strong { color: var(--t1); font-weight: 500; }
+.why-principles { list-style: none; margin-top: 28px; display: flex; flex-direction: column; gap: 11px; }
+.why-principles li {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; color: var(--t1); font-weight: 500;
+}
+.why-principles li::before {
+  content: ''; width: 20px; height: 20px; flex-shrink: 0;
+  border-radius: 50%; background: var(--g4);
+  border: 1px solid var(--g); display: flex; align-items: center; justify-content: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 5l2.5 2.5L8 2' stroke='%2300E5B0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: center;
+}
+.why-visual {
+  background: var(--bg3); border: 1px solid var(--bd);
+  border-radius: var(--r3); padding: 32px;
+  position: relative; overflow: hidden;
+}
+.why-visual::before {
+  content: ''; position: absolute; top: 0; right: 0; width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,229,176,.06) 0%, transparent 70%);
+}
+.stat-block { display: flex; flex-direction: column; gap: 18px; }
+.stat-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 16px; border-radius: var(--r2);
+  background: var(--bg4); border: 1px solid var(--bd);
+}
+.stat-num {
+  font-family: var(--ff); font-weight: 900; font-size: 32px;
+  color: var(--g); line-height: 1; flex-shrink: 0; min-width: 70px;
+}
+.stat-info { display: flex; flex-direction: column; }
+.stat-label { font-size: 13px; font-weight: 600; color: var(--t1); }
+.stat-sub { font-size: 11px; color: var(--t3); margin-top: 2px; }
+
+/* ── S5: KNOWLEDGE & TOOLS ── */
+.kt-sec { padding: 80px 28px; background: var(--bg); }
+.kt-tabs {
+  display: flex; gap: 8px; justify-content: center;
+  margin-bottom: 40px; flex-wrap: wrap;
+}
+.kt-tab {
+  background: var(--bg2); border: 1px solid var(--bd);
+  color: var(--t2); font-family: var(--ff); font-weight: 700;
+  font-size: 14px; letter-spacing: .5px;
+  padding: 10px 24px; border-radius: 24px; cursor: pointer;
+  transition: all .2s;
+}
+.kt-tab:hover, .kt-tab.active {
+  background: var(--g); color: var(--bg); border-color: var(--g);
+}
+.kt-panel { display: none; }
+.kt-panel.on { display: block; }
+.kt-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px; max-width: 1000px; margin: 0 auto;
+}
+.kt-card {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 18px 16px 14px;
+  cursor: pointer; transition: all .2s;
+  display: flex; flex-direction: column;
+}
+.kt-card:hover { border-color: var(--g); transform: translateY(-2px); background: var(--bg3); }
+.kt-card-ico { font-size: 26px; margin-bottom: 10px; display: block; }
+.kt-card-name { font-family: var(--ff); font-weight: 700; font-size: 14px; margin-bottom: 5px; }
+.kt-card-desc { font-size: 12px; color: var(--t2); line-height: 1.5; }
+.kt-card-arr { margin-top: auto; padding-top: 12px; font-size: 13px; color: var(--t4); transition: color .2s; }
+.kt-card:hover .kt-card-arr { color: var(--g); }
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; max-width: 1000px; margin: 0 auto; }
+.tool-card {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 22px 20px;
+  cursor: pointer; transition: all .22s;
+}
+.tool-card:hover { border-color: var(--bd2); transform: translateY(-2px); }
+.tool-card-ico { font-size: 30px; margin-bottom: 12px; display: block; }
+.tool-card h4 { font-family: var(--ff); font-weight: 700; font-size: 17px; margin-bottom: 7px; }
+.tool-card p { font-size: 12.5px; color: var(--t2); line-height: 1.6; }
+.tool-badge {
+  display: inline-block; margin-top: 10px;
+  background: var(--g3); border: 1px solid var(--bd2);
+  padding: 3px 10px; border-radius: 12px;
+  font-size: 10px; font-weight: 700; letter-spacing: .06em;
+  color: var(--g); text-transform: uppercase;
+}
+
+/* ── S6: FIVE REASONS ── */
+.reasons-sec {
+  padding: 80px 28px;
+  background: var(--bg2);
+  border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);
+}
+.reasons-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 12px; max-width: 1000px; margin: 0 auto;
+}
+.reason-card {
+  background: var(--bg3); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 24px 18px;
+  text-align: center; transition: all .22s;
+}
+.reason-card:hover { border-color: var(--bd2); transform: translateY(-3px); }
+.reason-ico { font-size: 32px; margin-bottom: 14px; display: block; }
+.reason-num {
+  font-family: var(--ff); font-weight: 900; font-size: 11px;
+  color: var(--t3); letter-spacing: .1em; margin-bottom: 8px;
+}
+.reason-card h4 { font-family: var(--ff); font-weight: 700; font-size: 15px; margin-bottom: 8px; line-height: 1.3; }
+.reason-card p { font-size: 12px; color: var(--t2); line-height: 1.6; }
+
+/* ── S7: PRICING ── */
+.pricing-sec { padding: 80px 28px; background: var(--bg); }
+.pricing-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px; max-width: 720px; margin: 0 auto;
+}
+.price-card {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: var(--r3); padding: 32px 28px;
+  position: relative; overflow: hidden;
+}
+.price-card.featured {
+  border-color: var(--g);
+  background: linear-gradient(135deg, var(--bg3), var(--bg2));
+}
+.price-card.featured::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--g), transparent);
+}
+.price-label {
+  font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+  font-weight: 700; color: var(--t3); margin-bottom: 16px;
+}
+.price-card.featured .price-label { color: var(--g); }
+.price-amount {
+  display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px;
+}
+.price-num {
+  font-family: var(--ff); font-weight: 900;
+  font-size: 52px; color: var(--t1); line-height: 1;
+}
+.price-cur { font-size: 22px; color: var(--t2); align-self: flex-start; margin-top: 10px; }
+.price-per { font-size: 13px; color: var(--t3); }
+.price-desc { font-size: 13px; color: var(--t2); margin-bottom: 24px; line-height: 1.6; }
+.price-features { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 9px; }
+.price-features li {
+  font-size: 13px; color: var(--t2);
+  display: flex; align-items: center; gap: 10px;
+}
+.price-features li::before {
+  content: '✓'; width: 18px; height: 18px; flex-shrink: 0;
+  background: var(--g3); border: 1px solid var(--bd2);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--g); font-weight: 700;
+}
+.price-features li.dim { color: var(--t4); }
+.price-features li.dim::before { background: var(--bg); border-color: var(--bd); color: var(--t4); }
+.price-btn {
+  width: 100%; padding: 13px;
+  border-radius: var(--r2); border: none;
+  font-family: var(--ff); font-weight: 700; font-size: 15px; letter-spacing: .5px;
+  transition: all .2s; cursor: pointer;
+}
+.price-btn.ghost {
+  background: var(--bg3); border: 1px solid var(--bd2); color: var(--t1);
+}
+.price-btn.ghost:hover { border-color: var(--g); color: var(--g); }
+.price-btn.solid { background: var(--g); color: var(--bg); }
+.price-btn.solid:hover { background: var(--g2); transform: translateY(-1px); }
+.price-note { text-align: center; font-size: 12px; color: var(--t4); margin-top: 20px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* ── S8: SAFETY NOTICE ── */
+.safety-sec {
+  padding: 40px 28px;
+  background: var(--bg2); border-top: 1px solid var(--bd);
+}
+.safety-box {
+  max-width: 800px; margin: 0 auto;
+  background: rgba(245,158,11,.05); border: 1px solid rgba(245,158,11,.25);
+  border-radius: var(--r2); padding: 24px 28px;
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.safety-ico { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.safety-box h4 { font-family: var(--ff); font-weight: 700; font-size: 16px; color: var(--amb); margin-bottom: 8px; }
+.safety-box p { font-size: 13px; color: var(--t2); line-height: 1.65; }
+.safety-box p strong { color: var(--t1); font-weight: 600; }
+
+/* ── FOOTER ── */
+.footer {
+  padding: 36px 28px;
+  background: var(--bg); border-top: 1px solid var(--bd);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.footer-brand { display: flex; align-items: center; gap: 10px; }
+.footer-info { font-size: 13px; color: var(--t3); }
+.footer-info a { color: var(--t2); }
+.footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.footer-links a { font-size: 13px; color: var(--t3); transition: color .2s; }
+.footer-links a:hover { color: var(--g); }
+
+/* ══════════════════════════════════════════
+   DOMAIN / KNOWLEDGE MODAL
+══════════════════════════════════════════ */
+.overlay {
+  display: none; position: fixed; inset: 0; z-index: 400;
+  background: rgba(0,0,0,.84); backdrop-filter: blur(12px);
+  overflow-y: auto; align-items: flex-start; justify-content: center;
+  padding: 20px 16px;
+}
+.overlay.open { display: flex; }
+.modal {
+  width: 100%; max-width: 800px; margin: auto;
+  background: var(--bg2); border: 1px solid var(--bd2);
+  border-radius: var(--r3); overflow: hidden;
+  animation: rise .28s ease;
+}
+.modal-hdr {
+  padding: 26px 30px 22px;
+  border-bottom: 1px solid var(--bd);
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.modal-icon { font-size: 42px; line-height: 1; flex-shrink: 0; }
+.modal-hdr-info { flex: 1; min-width: 0; }
+.modal-hdr-info h2 { font-family: var(--ff); font-weight: 800; font-size: 24px; letter-spacing: -.3px; margin-bottom: 5px; }
+.modal-hdr-info p { font-size: 13px; color: var(--t2); line-height: 1.5; }
+.modal-close {
+  background: none; border: 1px solid var(--bd);
+  color: var(--t2); width: 34px; height: 34px;
+  border-radius: 50%; font-size: 15px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; transition: all .2s;
+}
+.modal-close:hover { border-color: var(--red); color: var(--red); }
+.modal-body { padding: 26px 30px; }
+.modal-sec { margin-bottom: 22px; }
+.modal-sec-lbl {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--g); font-weight: 700; margin-bottom: 9px;
+}
+.modal-sec-body { font-size: 14px; color: var(--t2); line-height: 1.7; }
+.modal-sec-body ul { padding-left: 18px; }
+.modal-sec-body li { margin-bottom: 5px; }
+.modal-sec-body strong { color: var(--t1); }
+.modal-chips { padding: 0 30px 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+.mchip {
+  background: var(--bg3); border: 1px solid var(--bd);
+  padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; color: var(--t2); cursor: pointer;
+  transition: all .2s;
+}
+.mchip:hover { border-color: var(--g); color: var(--g); background: var(--g3); }
+.modal-foot {
+  padding: 18px 30px 26px;
+  border-top: 1px solid var(--bd);
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.btn-modal-back {
+  background: var(--bg3); border: 1px solid var(--bd2);
+  color: var(--t2); font-size: 13px; font-weight: 600;
+  padding: 10px 20px; border-radius: var(--r2);
+  transition: all .2s;
+}
+.btn-modal-back:hover { border-color: var(--g); color: var(--g); }
+.btn-modal-chat {
+  flex: 1;
+  background: var(--g); color: var(--bg);
+  font-family: var(--ff); font-weight: 700; font-size: 14px; letter-spacing: .5px;
+  padding: 11px 22px; border-radius: var(--r2); border: none;
+  transition: all .22s; text-align: center;
+}
+.btn-modal-chat:hover { background: var(--g2); transform: translateY(-1px); }
+
+/* ── AUTH MODAL ── */
+.auth-ov {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.92); backdrop-filter: blur(16px);
+  align-items: center; justify-content: center; padding: 16px;
+}
+.auth-ov.open { display: flex; }
+.auth-box {
+  width: 100%; max-width: 400px;
+  background: var(--bg2); border: 1px solid var(--bd2);
+  border-radius: var(--r3); padding: 36px 30px;
+  animation: rise .28s ease;
+}
+.auth-box h2 { font-family: var(--ff); font-weight: 800; font-size: 24px; margin-bottom: 6px; }
+.auth-box .auth-sub { font-size: 13px; color: var(--t2); margin-bottom: 26px; line-height: 1.5; }
+.fld label { display: block; font-size: 11px; color: var(--t3); letter-spacing: .07em; text-transform: uppercase; font-weight: 600; margin-bottom: 7px; }
+.fld { margin-bottom: 14px; }
+.fld input {
+  width: 100%; padding: 12px 14px;
+  background: var(--bg3); border: 1px solid var(--bd);
+  border-radius: var(--r); color: var(--t1); font-size: 14px; outline: none;
+  transition: border-color .2s;
+}
+.fld input:focus { border-color: var(--g); }
+.fld input::placeholder { color: var(--t3); opacity: .6; }
+.auth-err { font-size: 12px; color: var(--red); min-height: 17px; margin: 2px 0 8px; }
+.auth-submit {
+  width: 100%; padding: 13px;
+  background: var(--g); color: var(--bg);
+  font-family: var(--ff); font-weight: 700; font-size: 15px; letter-spacing: .5px;
+  border: none; border-radius: var(--r2); margin-top: 4px; transition: all .2s;
+}
+.auth-submit:hover { background: var(--g2); }
+.auth-skip { text-align: center; margin-top: 14px; font-size: 13px; color: var(--t2); }
+.auth-skip a { color: var(--g); cursor: pointer; }
+
+/* ══════════════════════════════════════════
+   VEHICLE PROFILE PAGE
+══════════════════════════════════════════ */
+#pg-profile { background: var(--bg); min-height: 100dvh; }
+.profile-wrap { max-width: 700px; margin: 0 auto; padding: 40px 24px 80px; }
+.profile-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
+.back-btn {
+  background: var(--bg2); border: 1px solid var(--bd);
+  color: var(--t2); width: 38px; height: 38px;
+  border-radius: var(--r); font-size: 17px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .18s;
+}
+.back-btn:hover { border-color: var(--g); color: var(--g); }
+.profile-title { font-family: var(--ff); font-weight: 800; font-size: 28px; }
+.profile-form { display: flex; flex-direction: column; gap: 18px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-fld label { display: block; font-size: 11px; color: var(--t3); letter-spacing: .07em; text-transform: uppercase; font-weight: 600; margin-bottom: 7px; }
+.form-fld input, .form-fld select {
+  width: 100%; padding: 12px 14px;
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: var(--r); color: var(--t1); font-size: 14px; outline: none;
+  transition: border-color .2s;
+}
+.form-fld input:focus, .form-fld select:focus { border-color: var(--g); }
+.form-fld select option { background: var(--bg2); }
+.form-section-title { font-family: var(--ff); font-weight: 700; font-size: 16px; color: var(--g); letter-spacing: .05em; text-transform: uppercase; padding-top: 8px; border-top: 1px solid var(--bd); }
+.vehicle-type-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.vt-chip {
+  background: var(--bg2); border: 1px solid var(--bd);
+  padding: 8px 16px; border-radius: 20px;
+  font-size: 13px; color: var(--t2); cursor: pointer; transition: all .18s;
+  display: flex; align-items: center; gap: 6px;
+}
+.vt-chip:hover, .vt-chip.sel { border-color: var(--g); color: var(--g); background: var(--g3); }
+.save-profile-btn {
+  padding: 14px; background: var(--g); color: var(--bg);
+  font-family: var(--ff); font-weight: 700; font-size: 16px; letter-spacing: .5px;
+  border: none; border-radius: var(--r2); cursor: pointer; transition: all .2s;
+}
+.save-profile-btn:hover { background: var(--g2); transform: translateY(-1px); }
+.profile-saved {
+  background: var(--g3); border: 1px solid var(--bd2);
+  border-radius: var(--r2); padding: 16px 20px;
+  display: none; align-items: center; gap: 12px;
+  font-size: 14px; color: var(--t1);
+}
+.profile-saved.show { display: flex; }
+.profile-saved-ico { font-size: 22px; }
+.saved-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.saved-vehicle {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 16px 18px;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+.sv-info h4 { font-family: var(--ff); font-weight: 700; font-size: 17px; }
+.sv-info p { font-size: 12px; color: var(--t2); margin-top: 3px; }
+.sv-btns { display: flex; gap: 8px; flex-shrink: 0; }
+.sv-btn {
+  background: none; border: 1px solid var(--bd);
+  color: var(--t2); font-size: 12px; padding: 6px 12px; border-radius: 16px; transition: all .18s;
+}
+.sv-btn:hover { border-color: var(--g); color: var(--g); }
+
+/* ══════════════════════════════════════════
+   CHAT PAGE
+══════════════════════════════════════════ */
+#pg-chat { background: var(--bg); }
+.chat-bar {
+  height: 52px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  background: rgba(4,11,9,.97); border-bottom: 1px solid var(--bd);
+}
+.chat-bar-left { display: flex; align-items: center; gap: 10px; }
+.chat-bar-info { display: flex; flex-direction: column; }
+.chat-bar-title { font-family: var(--ff); font-weight: 700; font-size: 15px; }
+.chat-mode-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  padding: 2px 8px; border-radius: 10px; text-transform: uppercase;
+}
+.badge-solver { background: rgba(0,229,176,.12); border: 1px solid var(--bd2); color: var(--g); }
+.badge-tech   { background: rgba(56,189,248,.10); border: 1px solid rgba(56,189,248,.22); color: var(--blu); }
+.badge-general { background: var(--g3); border: 1px solid var(--bd2); color: var(--g); }
+.chat-bar-right { display: flex; align-items: center; gap: 8px; }
+.new-chat-btn {
+  background: var(--g3); border: 1px solid var(--bd2);
+  color: var(--g); font-size: 12px; font-weight: 600;
+  padding: 6px 14px; border-radius: 16px; transition: all .18s;
+}
+.new-chat-btn:hover { background: var(--g); color: var(--bg); }
+
+/* Quick topic chips */
+.topic-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; flex-shrink: 0;
+  background: var(--bg); border-bottom: 1px solid var(--bd);
+  overflow-x: auto; scrollbar-width: none;
+}
+.topic-bar::-webkit-scrollbar { display: none; }
+.topic-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--bg2); border: 1px solid var(--bd);
+  padding: 5px 12px; border-radius: 14px;
+  font-size: 12px; color: var(--t2); cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: all .18s;
+}
+.topic-chip:hover, .topic-chip.act { border-color: var(--g); color: var(--g); background: var(--g3); }
+
+/* Messages */
+.msgs { flex: 1; overflow-y: auto; padding: 16px 16px 8px; display: flex; flex-direction: column; }
+.mrow { display: flex; margin-bottom: 3px; }
+.mrow.user { justify-content: flex-end; }
+.mrow.ai   { justify-content: flex-start; }
+.mrow.ai  + .mrow.user { margin-top: 16px; }
+.mrow.user + .mrow.ai  { margin-top: 16px; }
+.mbub {
+  max-width: min(580px, 88%);
+  padding: 10px 14px;
+  font-size: 14px; line-height: 1.65;
+}
+.mrow.user .mbub {
+  background: var(--g); color: var(--bg);
+  border-radius: 14px 14px 3px 14px; font-weight: 500;
+}
+.mrow.ai .mbub {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: 3px 14px 14px 14px; color: var(--t1);
+}
+.mrow.ai.tech .mbub { border-color: rgba(56,189,248,.22); }
+.mbub h1,.mbub h2,.mbub h3 { font-family: var(--ff); font-weight: 700; margin: 14px 0 7px; color: var(--g); }
+.mbub h1 { font-size: 17px; } .mbub h2 { font-size: 15px; } .mbub h3 { font-size: 14px; }
+.mbub p { margin-bottom: 8px; } .mbub p:last-child { margin: 0; }
+.mbub ul,.mbub ol { padding-left: 20px; margin-bottom: 8px; }
+.mbub li { margin-bottom: 4px; }
+.mbub strong { color: var(--t1); font-weight: 600; }
+.mbub em { color: var(--t2); }
+.mbub code { background: var(--bg3); padding: 1px 6px; border-radius: 3px; font-size: 12px; color: var(--amb); }
+.mbub table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
+.mbub th { background: var(--bg3); color: var(--g); font-size: 11px; padding: 6px 10px; border: 1px solid var(--bd); text-align: left; }
+.mbub td { padding: 6px 10px; border: 1px solid var(--bd); }
+.mbub blockquote { border-left: 3px solid var(--g); padding: 6px 12px; margin: 8px 0; color: var(--t2); font-style: italic; background: var(--g3); border-radius: 0 6px 6px 0; }
+.mbub hr { border: none; border-top: 1px solid var(--bd); margin: 10px 0; }
+.mrow.user .mbub strong { color: var(--bg); }
+.mrow.ai.tech .mbub { font-size: 13px; }
+
+/* Typing dots */
+.typing-row { display: flex; margin-bottom: 3px; }
+.typing-bub { background: var(--bg2); border: 1px solid var(--bd); border-radius: 3px 14px 14px 14px; padding: 12px 14px; display: flex; align-items: center; gap: 4px; }
+.td { width: 6px; height: 6px; border-radius: 50%; background: var(--t2); animation: tdot 1.4s ease infinite; }
+.td:nth-child(1){animation-delay:0s} .td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
+@keyframes tdot { 0%,80%,100%{transform:translateY(0);opacity:.3} 40%{transform:translateY(-7px);opacity:1} }
+
+/* Empty state */
+.chat-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:28px 20px; }
+.ce-ico { font-size:54px; margin-bottom:18px; display:block; }
+.chat-empty h3 { font-family:var(--ff); font-weight:800; font-size:22px; margin-bottom:8px; }
+.chat-empty p { color:var(--t2); font-size:14px; max-width:380px; margin-bottom:24px; line-height:1.65; }
+.starter-grid { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:540px; }
+.starter { background:var(--bg2); border:1px solid var(--bd); padding:9px 16px; border-radius:20px; font-size:13px; color:var(--t2); cursor:pointer; transition:all .18s; text-align:left; }
+.starter:hover { border-color:var(--g); color:var(--g); }
+
+/* Input */
+.inp-wrap { padding:12px 16px; flex-shrink:0; background:var(--bg2); border-top:1px solid var(--bd); }
+.inp-row { display:flex; align-items:flex-end; gap:8px; background:var(--bg3); border:1px solid var(--bd); border-radius:var(--r2); padding:10px 12px; transition:border-color .2s; }
+.inp-row:focus-within { border-color:var(--g); }
+#chat-input { flex:1; background:none; border:none; outline:none; color:var(--t1); font-size:14px; line-height:1.5; resize:none; max-height:140px; min-height:22px; font-family:var(--fb); }
+#chat-input::placeholder { color:var(--t3); opacity:.55; }
+.send-btn { background:var(--g); color:var(--bg); border:none; border-radius:var(--r); width:38px; height:38px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px; transition:all .18s; }
+.send-btn:hover:not(:disabled) { background:var(--g2); }
+.send-btn:disabled { background:var(--bd); color:var(--bd2); cursor:not-allowed; }
+.inp-meta { display:flex; justify-content:space-between; align-items:center; padding:5px 2px 0; font-size:11px; color:var(--t3); }
+
+/* Toast */
+.toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%); background:var(--bg2); border:1px solid var(--red); color:var(--red); padding:10px 20px; border-radius:var(--r2); font-size:13px; z-index:600; animation:fadeUp .3s ease; pointer-events:none; white-space:nowrap; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:900px) {
+  .action-grid { grid-template-columns:1fr; max-width:480px; }
+  .eco-grid { grid-template-columns:1fr 1fr; }
+  .why-inner { grid-template-columns:1fr; gap:36px; }
+  .reasons-grid { grid-template-columns:repeat(2,1fr); }
+  .reasons-grid .reason-card:last-child { grid-column:span 2; }
+}
+@media(max-width:768px) {
+  .nav { padding:0 14px; }
+  .nav-links { display:none; }
+  .nav-signin { display:none; }
+  .nav-mobile-toggle { display:flex; }
+  .hero { padding:64px 16px 52px; }
+  .start-sec,.eco-sec,.why-sec,.kt-sec,.reasons-sec,.pricing-sec { padding:56px 16px; }
+  .eco-grid { grid-template-columns:1fr; }
+  .pricing-grid { grid-template-columns:1fr; max-width:380px; }
+  .reasons-grid { grid-template-columns:1fr 1fr; }
+  .reasons-grid .reason-card:last-child { grid-column:auto; }
+  .form-grid { grid-template-columns:1fr; }
+  .modal-hdr,.modal-body,.modal-chips,.modal-foot { padding-left:18px; padding-right:18px; }
+  .footer { flex-direction:column; text-align:center; }
+  .footer-links { justify-content:center; }
+  .kt-grid { grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:480px) {
+  .hero-btns { flex-direction:column; align-items:center; }
+  .hero-btns button { width:100%; max-width:300px; }
+  .kt-grid { grid-template-columns:1fr 1fr; }
+  .reasons-grid { grid-template-columns:1fr; }
+  .reasons-grid .reason-card:last-child { grid-column:auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ AUTH MODAL ═══════════════════ -->
+<div class="auth-ov" id="auth-ov">
+  <div class="auth-box">
+    <h2>Welcome to MobilityAI</h2>
+    <p class="auth-sub">Enter your name to start. Free, private, no account required.</p>
+    <div class="fld">
+      <label>Your Name</label>
+      <input type="text" id="auth-name" placeholder="e.g. Rajan, Priya…" maxlength="40" autocomplete="given-name">
+    </div>
+    <div class="auth-err" id="auth-err"></div>
+    <button class="auth-submit" onclick="authDo()">Continue →</button>
+    <div class="auth-skip"><a onclick="authSkip()">Continue without name</a></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ KNOWLEDGE MODAL ═══════════════════ -->
+<div class="overlay" id="km-overlay" onclick="closeKModal(event)">
+  <div class="modal" id="km-modal">
+    <div class="modal-hdr">
+      <div class="modal-icon" id="km-ico"></div>
+      <div class="modal-hdr-info">
+        <h2 id="km-title"></h2>
+        <p id="km-sub"></p>
+      </div>
+      <button class="modal-close" onclick="closeKModal()">✕</button>
+    </div>
+    <div class="modal-body" id="km-body"></div>
+    <div class="modal-chips" id="km-chips"></div>
+    <div class="modal-foot">
+      <button class="btn-modal-back" onclick="closeKModal()">← Back</button>
+      <button class="btn-modal-chat" id="km-chat-btn">Discuss This Topic →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ HOME PAGE ═══════════════════ -->
+<div class="pg on" id="pg-home">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo" onclick="goHome()">
+      <div class="nav-mark">99</div>
+      <div class="nav-brand">99EVS <em>MobilityAI</em></div>
+    </div>
+    <div class="nav-links">
+      <button class="nav-link" onclick="openChat('solver',null)">Problem Solver</button>
+      <button class="nav-link" onclick="goProfile()">Vehicle Profile</button>
+      <button class="nav-link" onclick="openChat('tech',null)">Technical Mode</button>
+      <button class="nav-link" onclick="scrollToKT()">Knowledge</button>
+      <button class="nav-link" onclick="scrollToKT('tools')">Tools</button>
+      <button class="nav-link" onclick="scrollToEco()">Marketplace</button>
+    </div>
+    <div class="nav-right">
+      <button class="nav-signin" onclick="goProfile()">My Vehicles</button>
+      <button class="nav-cta" onclick="openChat('solver',null)">GET STARTED FREE</button>
+      <button class="nav-mobile-toggle" id="mob-toggle" onclick="toggleMobMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- SECTION 1: HERO -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-eyebrow">
+      <div class="live-dot"></div>
+      Live · Free Forever · Phase 1 Launch
+    </div>
+
+    <h1>The World's Most Trusted<br><em>Mobility Knowledge System</em></h1>
+
+    <p class="hero-sub">
+      Diagnose vehicle problems, understand mobility systems, and prevent failures with MobilityAI.<br>
+      <strong>Built for India. Designed for the world.</strong>
+    </p>
+
+    <div class="hero-btns">
+      <button class="btn-hero-primary" onclick="openChat('solver',null)">🔍 Solve a Vehicle Problem</button>
+      <button class="btn-hero-outline" onclick="goProfile()">📋 Create Vehicle Profile</button>
+      <button class="btn-hero-ghost" onclick="openChat('tech',null)">⚙️ Professional Diagnostic Mode</button>
+    </div>
+
+    <div class="hero-trust">
+      <div class="trust-item"><em>16+</em> Mobility Knowledge Domains</div>
+      <div class="trust-item"><em>AI</em> Diagnostic Engine</div>
+      <div class="trust-item"><em>Safety-First</em> Analysis</div>
+      <div class="trust-item"><em>Free</em> Forever Tier</div>
+      <div class="trust-item"><em>0</em> Ads · Private</div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: START HERE -->
+  <section class="start-sec sec">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Start Here</div>
+      <h2>Choose What You Want To Do</h2>
+      <p class="sec-desc">Three clear entry points — pick the one that matches your need right now.</p>
+    </div>
+    <div class="action-grid">
+      <div class="action-card" onclick="openChat('solver',null)">
+        <div class="action-card-num">01 — PROBLEM SOLVER</div>
+        <span class="action-card-ico">🔍</span>
+        <h3>Vehicle Problem Solver</h3>
+        <p>Describe a vehicle problem — noise, warning light, behaviour change — and get structured AI diagnostic analysis with cause, severity, and recommended action.</p>
+        <div class="action-card-cta">Diagnose Now →</div>
+      </div>
+      <div class="action-card" onclick="goProfile()">
+        <div class="action-card-num">02 — VEHICLE INTELLIGENCE</div>
+        <span class="action-card-ico">📋</span>
+        <h3>Vehicle Intelligence Profile</h3>
+        <p>Create a digital profile for your vehicle. Track health insights, service history, and get personalised maintenance guidance based on your exact vehicle.</p>
+        <div class="action-card-cta">Create Profile →</div>
+      </div>
+      <div class="action-card" onclick="openChat('tech',null)">
+        <div class="action-card-num">03 — TECHNICAL MODE</div>
+        <span class="action-card-ico">⚙️</span>
+        <h3>Technical Diagnostic Assistant</h3>
+        <p>Advanced diagnostic mode for technicians, mechanics, and workshops. Structured technical output, OBD code analysis, component-level fault trees.</p>
+        <div class="action-card-cta">Enter Technical Mode →</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: ECOSYSTEM -->
+  <section class="eco-sec sec" id="eco-section">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Mobility Ecosystem</div>
+      <h2>Beyond Diagnostics — A Complete Mobility Platform</h2>
+      <p class="sec-desc">Everything a vehicle owner needs in one place. Phase 1 live. More launching in Phase 2.</p>
+    </div>
+    <div class="eco-grid">
+      <div class="eco-card">
+        <span class="eco-card-ico">🚗</span>
+        <h4>Sell Your Vehicle</h4>
+        <p>Get a MobilityAI-powered vehicle assessment to understand true resale value before you list.</p>
+        <span class="eco-badge">Phase 2</span>
+      </div>
+      <div class="eco-card">
+        <span class="eco-card-ico">💰</span>
+        <h4>Finance Your Vehicle</h4>
+        <p>Compare financing options with neutral analysis — EMI calculator, lender comparison, affordability check.</p>
+        <span class="eco-badge">Phase 2</span>
+      </div>
+      <div class="eco-card" onclick="openChat('solver','Generate a vehicle inspection report')">
+        <span class="eco-card-ico">📄</span>
+        <h4>Generate Inspection Report</h4>
+        <p>AI-structured inspection report covering all critical systems. Share with buyers, insurers, or service centres.</p>
+        <span class="eco-badge">Phase 1 · AI Assisted</span>
+      </div>
+      <div class="eco-card" onclick="openChat('solver','Create a service and maintenance guidance plan')">
+        <span class="eco-card-ico">🛠️</span>
+        <h4>Service & Maintenance Guidance</h4>
+        <p>Personalised maintenance schedules based on your vehicle type, age, and usage patterns.</p>
+        <span class="eco-badge">Phase 1 · Live</span>
+      </div>
+      <div class="eco-card" onclick="openChat('solver','Analyse battery health for my EV')">
+        <span class="eco-card-ico">🔋</span>
+        <h4>Battery Health Insights</h4>
+        <p>EV-specific battery analysis — State of Health estimation, degradation factors, longevity recommendations.</p>
+        <span class="eco-badge">Phase 1 · Live</span>
+      </div>
+      <div class="eco-card" onclick="openChat('solver','Run a vehicle risk assessment')">
+        <span class="eco-card-ico">🛡️</span>
+        <h4>Vehicle Risk Assessment</h4>
+        <p>Identify safety risks, upcoming failure probabilities, and prioritised action list for your vehicle.</p>
+        <span class="eco-badge">Phase 1 · AI Assisted</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: WHY 99EVS EXISTS -->
+  <section class="why-sec sec">
+    <div class="why-inner">
+      <div class="why-text">
+        <div class="sec-eyebrow" style="text-align:left">Our Mission</div>
+        <h2>Building a Global Mobility<br><em>Knowledge Ecosystem</em></h2>
+        <p>Transportation powers modern civilisation. <strong>Yet most people cannot understand how vehicles work</strong> or how to detect early failures before they become expensive or dangerous.</p>
+        <p>99EVS was built to change that — making mobility knowledge accessible to everyone, regardless of background or budget. MobilityAI helps people diagnose, understand and manage the machines that move humanity.</p>
+        <ul class="why-principles">
+          <li>Evidence-Based Knowledge</li>
+          <li>Safety First — Always</li>
+          <li>Completely Neutral — No Brand Advocacy</li>
+          <li>Privacy by Design</li>
+          <li>Free Access to Core Knowledge</li>
+        </ul>
+      </div>
+      <div class="why-visual">
+        <div class="stat-block">
+          <div class="stat-row">
+            <span class="stat-num">16+</span>
+            <div class="stat-info">
+              <span class="stat-label">Knowledge Domains</span>
+              <span class="stat-sub">EV, ICE, Hybrid, Safety, Fleet, Research…</span>
+            </div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-num">9</span>
+            <div class="stat-info">
+              <span class="stat-label">Indian Languages</span>
+              <span class="stat-sub">Hindi, Tamil, Telugu, Kannada, and more</span>
+            </div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-num">0</span>
+            <div class="stat-info">
+              <span class="stat-label">Ads, Promotions, Bias</span>
+              <span class="stat-sub">Free forever · No sponsored content</span>
+            </div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-num">∞</span>
+            <div class="stat-info">
+              <span class="stat-label">Vehicle Types Covered</span>
+              <span class="stat-sub">2-wheeler to aircraft — all mobility</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: KNOWLEDGE & TOOLS -->
+  <section class="kt-sec sec" id="kt-section">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Platform Capabilities</div>
+      <h2>Knowledge &amp; Tools</h2>
+      <p class="sec-desc">Explore our structured knowledge library or use one of our diagnostic and analysis tools.</p>
+    </div>
+    <div class="kt-tabs">
+      <button class="kt-tab active" onclick="switchKT('library',this)">📚 Mobility Knowledge Library</button>
+      <button class="kt-tab" onclick="switchKT('tools',this)">⚙️ Professional Mobility Tools</button>
+    </div>
+    <div class="kt-panel on" id="kt-library">
+      <div class="kt-grid" id="kt-grid"></div>
+    </div>
+    <div class="kt-panel" id="kt-tools">
+      <div class="tools-grid">
+        <div class="tool-card" onclick="openChat('solver','Help me diagnose a vehicle problem step by step')">
+          <span class="tool-card-ico">🔍</span>
+          <h4>AI Diagnostic Engine</h4>
+          <p>Describe a symptom. Get structured fault analysis with cause, probability, and recommended action.</p>
+          <span class="tool-badge">Live</span>
+        </div>
+        <div class="tool-card" onclick="openChat('tech','Generate a structured OBD fault code analysis')">
+          <span class="tool-card-ico">🖥️</span>
+          <h4>OBD Code Analyser</h4>
+          <p>Enter your DTC fault code and get a full technical breakdown — cause, component, and fix path.</p>
+          <span class="tool-badge">Live</span>
+        </div>
+        <div class="tool-card" onclick="openChat('solver','Create a preventive maintenance schedule for my vehicle')">
+          <span class="tool-card-ico">📅</span>
+          <h4>Maintenance Planner</h4>
+          <p>Generate a personalised service schedule based on vehicle type, mileage, and Indian road conditions.</p>
+          <span class="tool-badge">Live</span>
+        </div>
+        <div class="tool-card" onclick="openChat('solver','Perform a battery health analysis for my EV')">
+          <span class="tool-card-ico">⚡</span>
+          <h4>EV Battery Analyser</h4>
+          <p>Deep-dive battery analysis: SoH estimation, degradation factors, longevity optimisation tips.</p>
+          <span class="tool-badge">Live</span>
+        </div>
+        <div class="tool-card" onclick="openChat('solver','Calculate total cost of ownership for my vehicle options')">
+          <span class="tool-card-ico">💹</span>
+          <h4>TCO Calculator</h4>
+          <p>Total Cost of Ownership comparison — petrol vs EV vs CNG — with India-specific fuel and energy prices.</p>
+          <span class="tool-badge">AI Assisted</span>
+        </div>
+        <div class="tool-card" onclick="openChat('solver','Help me inspect a used vehicle — give me the complete checklist')">
+          <span class="tool-card-ico">📋</span>
+          <h4>Used Vehicle Inspector</h4>
+          <p>Step-by-step inspection guide covering documents, mechanical, EV-specific checks, and red flags.</p>
+          <span class="tool-badge">Live</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: FIVE REASONS -->
+  <section class="reasons-sec sec">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Why Use MobilityAI</div>
+      <h2>Five Reasons To Start Today</h2>
+    </div>
+    <div class="reasons-grid">
+      <div class="reason-card">
+        <span class="reason-ico">🚨</span>
+        <div class="reason-num">01</div>
+        <h4>Understand Failures Before They Happen</h4>
+        <p>Detect early warning signs before a small problem becomes an expensive breakdown.</p>
+      </div>
+      <div class="reason-card">
+        <span class="reason-ico">💸</span>
+        <div class="reason-num">02</div>
+        <h4>Prevent Costly Repairs Through Early Detection</h4>
+        <p>A timing belt service costs ₹5,000. Missing it costs ₹2,00,000. Prevention always wins.</p>
+      </div>
+      <div class="reason-card">
+        <span class="reason-ico">🧠</span>
+        <div class="reason-num">03</div>
+        <h4>Learn How Mobility Systems Work</h4>
+        <p>16+ knowledge domains explain every vehicle system in clear, accessible language.</p>
+      </div>
+      <div class="reason-card">
+        <span class="reason-ico">⚡</span>
+        <div class="reason-num">04</div>
+        <h4>Diagnose Problems Faster With AI</h4>
+        <p>Get structured diagnostic analysis in seconds — not days waiting for a workshop appointment.</p>
+      </div>
+      <div class="reason-card">
+        <span class="reason-ico">🛡️</span>
+        <div class="reason-num">05</div>
+        <h4>Improve Vehicle Safety Awareness</h4>
+        <p>Know which symptoms are urgent, which are minor, and when to seek a professional immediately.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: PRICING -->
+  <section class="pricing-sec sec">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Pricing</div>
+      <h2>Start Free. Upgrade When You Need More.</h2>
+      <p class="sec-desc">Core knowledge and diagnostics are free forever. Pro unlocks advanced capabilities.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-label">FREE PLAN · ALWAYS</div>
+        <div class="price-amount">
+          <span class="price-num">₹0</span>
+          <span class="price-per">/month</span>
+        </div>
+        <p class="price-desc">Everything you need to diagnose, learn, and maintain your vehicle — completely free.</p>
+        <ul class="price-features">
+          <li>AI Vehicle Diagnostics</li>
+          <li>16+ Knowledge Domain Library</li>
+          <li>Vehicle Profile Creation</li>
+          <li>Maintenance Guidance</li>
+          <li>9-Language Support</li>
+          <li class="dim">Advanced Technical Mode</li>
+          <li class="dim">Fleet Analysis Tools</li>
+          <li class="dim">Priority AI Processing</li>
+        </ul>
+        <button class="price-btn ghost" onclick="openChat('solver',null)">Start Free →</button>
+      </div>
+      <div class="price-card featured">
+        <div class="price-label">PRO PLAN · PHASE 2</div>
+        <div class="price-amount">
+          <span class="price-cur">₹</span>
+          <span class="price-num">99</span>
+          <span class="price-per">/month</span>
+        </div>
+        <p class="price-desc">For professionals, fleet operators, and power users who need deeper capabilities.</p>
+        <ul class="price-features">
+          <li>Everything in Free</li>
+          <li>Unlimited AI Diagnostics</li>
+          <li>Full Technical Diagnostic Mode</li>
+          <li>Fleet Analysis Tools</li>
+          <li>Priority AI Processing</li>
+          <li>Downloadable Inspection Reports</li>
+          <li>Early Access to Phase-2 Features</li>
+          <li>API Access (coming Phase 2)</li>
+        </ul>
+        <button class="price-btn solid" onclick="openChat('solver',null)">Coming in Phase 2 →</button>
+      </div>
+    </div>
+    <p class="price-note">Free plan includes full knowledge library and AI diagnostic assistance. No credit card required. No hidden fees. No ads — ever.</p>
+  </section>
+
+  <!-- SECTION 8: SAFETY NOTICE -->
+  <section class="safety-sec sec">
+    <div class="safety-box">
+      <span class="safety-ico">⚠️</span>
+      <div>
+        <h4>Important Safety Disclaimer</h4>
+        <p>MobilityAI provides <strong>educational insights and diagnostic guidance</strong>. It does not replace professional mechanical inspection or manufacturer service recommendations. Diagnostic outputs are AI-assisted analysis based on provided information — they are not definitive mechanical assessments. <strong>For safety-critical repairs — brakes, steering, high-voltage EV systems, fuel systems — always consult a qualified and certified technician.</strong> Never attempt repairs beyond your skill level based solely on AI guidance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <div class="nav-mark" style="width:30px;height:30px;font-size:12px">99</div>
+      <div class="nav-brand" style="font-size:15px">99EVS <em>MobilityAI</em></div>
+    </div>
+    <p class="footer-info">
+      The World's Most Trusted Mobility Knowledge System ·
+      <a href="#">www.99evs.com</a> ·
+      Free Forever · No Ads · Private
+    </p>
+    <div class="footer-links">
+      <a href="#" onclick="scrollToKT();return false">Knowledge</a>
+      <a href="#" onclick="goProfile();return false">Vehicle Profile</a>
+      <a href="#" onclick="openChat('solver',null);return false">Diagnose</a>
+      <a href="#" onclick="scrollToEco();return false">Marketplace</a>
+    </div>
+  </footer>
+</div><!-- /pg-home -->
+
+<!-- ═══════════════════ VEHICLE PROFILE PAGE ═══════════════════ -->
+<div class="pg" id="pg-profile">
+  <nav class="nav">
+    <div class="nav-logo" onclick="goHome()">
+      <div class="nav-mark">99</div>
+      <div class="nav-brand">99EVS <em>MobilityAI</em></div>
+    </div>
+    <div class="nav-right">
+      <button class="nav-signin" onclick="goHome()">← Home</button>
+      <button class="nav-cta" onclick="openChat('solver',null)">Diagnose →</button>
+    </div>
+  </nav>
+  <div class="profile-wrap">
+    <div class="profile-hdr">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <div>
+        <div class="profile-title">📋 Vehicle Intelligence Profile</div>
+        <div style="font-size:13px;color:var(--t2);margin-top:3px">Store your vehicle details for personalised AI guidance</div>
+      </div>
+    </div>
+
+    <!-- Saved vehicles -->
+    <div id="saved-vehicles-wrap" style="margin-bottom:28px;display:none">
+      <div style="font-family:var(--ff);font-weight:700;font-size:16px;color:var(--g);letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px">Your Vehicles</div>
+      <div class="saved-cards" id="saved-cards"></div>
+    </div>
+
+    <div style="font-family:var(--ff);font-weight:700;font-size:16px;color:var(--g);letter-spacing:.05em;text-transform:uppercase;margin-bottom:16px" id="form-title-lbl">Add New Vehicle</div>
+
+    <div class="profile-form" id="profile-form">
+      <div class="vehicle-type-row" id="vt-row">
+        <span class="vt-chip" data-v="2-wheeler" onclick="selVT(this)">🏍️ Two-Wheeler</span>
+        <span class="vt-chip" data-v="three-wheeler" onclick="selVT(this)">🛺 Three-Wheeler</span>
+        <span class="vt-chip sel" data-v="car" onclick="selVT(this)">🚗 Car / SUV</span>
+        <span class="vt-chip" data-v="truck" onclick="selVT(this)">🚛 Truck / LCV</span>
+        <span class="vt-chip" data-v="bus" onclick="selVT(this)">🚌 Bus</span>
+        <span class="vt-chip" data-v="electric" onclick="selVT(this)">⚡ Electric Vehicle</span>
+      </div>
+
+      <div class="form-section-title">Vehicle Details</div>
+      <div class="form-grid">
+        <div class="form-fld"><label>Make / Brand</label><input type="text" id="vp-make" placeholder="e.g. Tata, Honda, Maruti…"></div>
+        <div class="form-fld"><label>Model</label><input type="text" id="vp-model" placeholder="e.g. Nexon EV, Activa 6G…"></div>
+        <div class="form-fld"><label>Year</label><input type="number" id="vp-year" placeholder="e.g. 2022" min="1990" max="2026"></div>
+        <div class="form-fld">
+          <label>Fuel / Power Type</label>
+          <select id="vp-fuel">
+            <option value="">Select fuel type</option>
+            <option>Petrol</option>
+            <option>Diesel</option>
+            <option>CNG</option>
+            <option>LPG</option>
+            <option>Electric (BEV)</option>
+            <option>Hybrid (HEV)</option>
+            <option>Plug-in Hybrid (PHEV)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section-title">Usage & Condition</div>
+      <div class="form-grid">
+        <div class="form-fld"><label>Odometer / KM Reading</label><input type="number" id="vp-km" placeholder="e.g. 45000"></div>
+        <div class="form-fld">
+          <label>Primary Use</label>
+          <select id="vp-use">
+            <option value="">Select use</option>
+            <option>Daily City Commute</option>
+            <option>Highway / Intercity</option>
+            <option>Mixed (City + Highway)</option>
+            <option>Commercial / Fleet</option>
+            <option>Occasional / Weekend</option>
+          </select>
+        </div>
+        <div class="form-fld"><label>Location / City</label><input type="text" id="vp-city" placeholder="e.g. Bengaluru, Mumbai…"></div>
+        <div class="form-fld">
+          <label>Known Issues (if any)</label>
+          <input type="text" id="vp-issues" placeholder="e.g. Brake noise, AC weak…">
+        </div>
+      </div>
+
+      <div class="profile-saved" id="profile-success">
+        <span class="profile-saved-ico">✅</span>
+        <span>Vehicle profile saved! AI will now personalise diagnostics for your vehicle.</span>
+      </div>
+
+      <button class="save-profile-btn" onclick="saveProfile()">Save Vehicle Profile →</button>
+    </div>
+  </div>
+</div><!-- /pg-profile -->
+
+<!-- ═══════════════════ CHAT PAGE ═══════════════════ -->
+<div class="pg" id="pg-chat">
+  <div class="chat-bar">
+    <div class="chat-bar-left">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <div class="chat-bar-info">
+        <div class="chat-bar-title">
+          MobilityAI
+          <span class="chat-mode-badge badge-solver" id="mode-badge">Problem Solver</span>
+        </div>
+        <div style="font-size:11px;color:var(--t3)" id="chat-sub-lbl">Describe your vehicle problem</div>
+      </div>
+    </div>
+    <div class="chat-bar-right">
+      <span style="font-size:12px;color:var(--t3)" id="chat-user-lbl"></span>
+      <button class="new-chat-btn" onclick="newChat()">+ New</button>
+    </div>
+  </div>
+
+  <div class="topic-bar" id="topic-bar"></div>
+
+  <div class="msgs" id="msgs" style="display:none"></div>
+  <div class="chat-empty" id="chat-empty">
+    <span class="ce-ico" id="ce-ico">🔍</span>
+    <h3 id="ce-title">Vehicle Problem Solver</h3>
+    <p id="ce-desc">Describe any vehicle problem — a noise, warning light, unusual behaviour — and get structured AI diagnostic analysis.</p>
+    <div class="starter-grid" id="starters"></div>
+  </div>
+
+  <div class="inp-wrap">
+    <div class="inp-row">
+      <textarea id="chat-input" rows="1" placeholder="Describe your vehicle problem… e.g. Activa brake is spongy, what should I check?" maxlength="3000"></textarea>
+      <button class="send-btn" id="send-btn" onclick="send()">➤</button>
+    </div>
+    <div class="inp-meta">
+      <span>Free · Private · Secure</span>
+      <span id="char-count"></span>
+    </div>
+  </div>
+</div><!-- /pg-chat -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   99EVS MobilityAI — Phase 1 Client Engine
+   All AI: → /api/chat (server-side, secure, no keys in browser)
+   ═══════════════════════════════════════════════════════════════ */
+
+const SK = {
+  name:     '99evs_name',
+  convos:   '99evs_convos',
+  active:   '99evs_active',
+  vehicles: '99evs_vehicles'
+};
+
+const S = {
+  name:     '',
+  convos:   [],
+  activeId: null,
+  busy:     false,
+  mode:     'solver',  // 'solver' | 'tech' | 'general'
+  domain:   null,
+  vehicles: [],
+  _pendingMode:  null,
+  _pendingQuery: null,
+  get msgs() {
+    const c = S.convos.find(x => x.id === S.activeId);
+    return c ? c.msgs : [];
+  }
+};
+
+/* ── STORAGE ── */
+function persist() {
+  try {
+    localStorage.setItem(SK.name,     S.name);
+    localStorage.setItem(SK.convos,   JSON.stringify(S.convos.slice(0, 20)));
+    localStorage.setItem(SK.active,   S.activeId || '');
+    localStorage.setItem(SK.vehicles, JSON.stringify(S.vehicles));
+  } catch(e) {}
+}
+function restore() {
+  try {
+    S.name     = localStorage.getItem(SK.name)     || '';
+    S.convos   = JSON.parse(localStorage.getItem(SK.convos)   || '[]');
+    S.activeId = localStorage.getItem(SK.active)   || null;
+    S.vehicles = JSON.parse(localStorage.getItem(SK.vehicles) || '[]');
+    if (S.activeId && !S.convos.find(c => c.id === S.activeId)) S.activeId = null;
+  } catch(e) { S.convos = []; S.vehicles = []; }
+}
+
+/* ══════════════════════════════════════════
+   KNOWLEDGE DOMAINS DATA
+══════════════════════════════════════════ */
+const DOMAINS = [
+  {
+    id:'ev_systems', icon:'⚡', name:'Electric Vehicles',
+    desc:'EV architecture, motors, charging systems, range, and India\'s EV landscape.',
+    sub:'Complete EV knowledge — from cell chemistry to charging infrastructure.',
+    sections:[
+      { lbl:'Overview', html:'<p>Electric vehicles replace combustion engines with electric motors powered by high-voltage battery packs. India is the world\'s 3rd largest auto market and is targeting 30% EV penetration by 2030 under FAME-II and PM e-DRIVE schemes.</p>' },
+      { lbl:'Key EV Types in India', html:'<ul><li><strong>Two-Wheeler EVs</strong> — Ola S1, Ather 450X, TVS iQube, Bajaj Chetak — leading India\'s transition</li><li><strong>Car EVs</strong> — Tata Nexon EV (best-selling), Tata Tiago EV, MG ZS EV, Hyundai Ioniq 5</li><li><strong>Three-Wheeler EVs</strong> — Mahindra e-Alfa, Piaggio Ape E-City — transforming last-mile mobility</li></ul>' },
+      { lbl:'India EV Challenge', html:'<ul><li>Urban charging infrastructure growing rapidly — gaps in Tier 2/3 cities</li><li>Heat management critical — Indian summers reduce range 10–20%</li><li>Government target: 1 fast charger every 25 km on national highways by 2030</li></ul>' }
+    ],
+    chips:['Which EV should I buy in India?','How does EV charging work?','EV vs petrol for Bengaluru commute','FAME-II subsidy — am I eligible?']
+  },
+  {
+    id:'ice_engines', icon:'⚙️', name:'Internal Combustion Engines',
+    desc:'4-stroke petrol, diesel, CNG — how engines work, fail, and are maintained.',
+    sub:'Petrol, diesel, CNG engine principles, components, maintenance, and fault diagnosis.',
+    sections:[
+      { lbl:'How a 4-Stroke Engine Works', html:'<ol><li><strong>Intake</strong> — piston down, fuel+air enters</li><li><strong>Compression</strong> — piston rises, mixture compressed 10:1</li><li><strong>Power</strong> — spark fires, expansion pushes piston</li><li><strong>Exhaust</strong> — burned gases expelled</li></ol>' },
+      { lbl:'Critical Warning Signs', html:'<ul><li>🔴 <strong>Oil pressure light</strong> → STOP IMMEDIATELY. Engine damage in seconds.</li><li>🔴 <strong>Red temperature gauge</strong> → Pull over, engine overheating</li><li>🟠 <strong>Knocking/tapping</strong> → Bearing wear, service urgently</li><li>🟠 <strong>Blue exhaust smoke</strong> → Oil burning</li></ul>' },
+      { lbl:'India Popular Engines', html:'<ul><li>1.2L/1.5L petrol — Swift, i20, Tata Nexon</li><li>1.0L turbopetrol — Venue, Sonet, Grand Vitara</li><li>1.5L diesel — Creta, Seltos, Scorpio-N</li><li>CNG — WagonR, Ertiga, Activa — strong in Delhi, Mumbai, Ahmedabad</li></ul>' }
+    ],
+    chips:['How does a 4-stroke petrol engine work?','What causes engine knocking?','Petrol vs diesel — which is better for me?','Engine oil warning light — what do I do?']
+  },
+  {
+    id:'hybrid', icon:'🔄', name:'Hybrid Systems',
+    desc:'Mild hybrid, full hybrid, PHEV — how combined power systems work.',
+    sub:'How HEV, MHEV, and PHEV systems blend combustion and electric power.',
+    sections:[
+      { lbl:'Hybrid Types Explained', html:'<ul><li><strong>MHEV (Mild Hybrid)</strong> — 48V system assists engine, small fuel saving. Maruti Suzuki\'s Smart Hybrid.</li><li><strong>HEV (Full Hybrid)</strong> — Can run on electric at low speeds. Toyota Innova Hycross, Vellfire.</li><li><strong>PHEV</strong> — Larger battery, can be charged externally. Very limited in India currently.</li></ul>' },
+      { lbl:'Why Hybrid Makes Sense in India', html:'<ul><li>No range anxiety — petrol backup always available</li><li>Best fuel efficiency in city stop-start traffic — 20–40% better than pure ICE</li><li>No charging infrastructure dependency</li><li>Toyota\'s strong self-charging hybrid sold in India: Camry, Vellfire, Innova Hycross</li></ul>' }
+    ],
+    chips:['What is the difference between HEV and PHEV?','Is Toyota self-charging hybrid worth it in India?','How does regenerative braking work in hybrids?']
+  },
+  {
+    id:'battery_bms', icon:'🔋', name:'Batteries & BMS',
+    desc:'Li-ion chemistry, BMS functions, charging protocols, thermal management.',
+    sub:'EV battery chemistry, BMS, charging best practices, degradation, and safety.',
+    sections:[
+      { lbl:'Battery Chemistry', html:'<ul><li><strong>NMC</strong> — High energy density (~250 Wh/kg) — most EVs globally</li><li><strong>LFP</strong> — Safer, longer cycle life, better heat tolerance — Tata EVs, ideal for India</li><li><strong>Solid-State</strong> — Next gen, targeting 500 Wh/kg — commercial 2027–2028</li></ul>' },
+      { lbl:'Charging Best Practices', html:'<ul><li>Daily limit: charge to 80% — extends battery life significantly</li><li>Avoid full 100% except for long trips</li><li>Prefer slow AC overnight charging over DC fast charging for daily use</li><li>Park in shade — Indian heat above 40°C is the #1 battery degradation factor</li></ul>' },
+      { lbl:'⚠️ Battery Safety', html:'<p><strong>NEVER</strong> open, puncture, or DIY repair a battery pack. Orange cables carry 200–800V. If battery swells or smells unusual — stop using vehicle, seek certified service immediately.</p>' }
+    ],
+    chips:['How do I maximise EV battery life?','What is BMS and why does it matter?','Why does my EV range reduce in Indian summer?','LFP vs NMC — which is better for India?']
+  },
+  {
+    id:'motors', icon:'🌀', name:'Motors & Controllers',
+    desc:'PMSM, induction motors, inverters, and how electric drivetrains work.',
+    sub:'Electric motor types, inverter operation, regenerative braking, drivetrain architecture.',
+    sections:[
+      { lbl:'Electric Motor Types', html:'<ul><li><strong>PMSM (Permanent Magnet Synchronous Motor)</strong> — Most EVs, high efficiency, compact</li><li><strong>Induction Motor</strong> — Tesla (some models), robust, no permanent magnets</li><li><strong>Hub Motor</strong> — E-bikes, many Indian 2-wheeler EVs — motor inside the wheel</li></ul>' },
+      { lbl:'How EV Drivetrain Works', html:'<ol><li>Battery DC → Inverter converts to 3-phase AC</li><li>AC powers stator windings → rotating magnetic field</li><li>Rotor follows field → shaft rotation → wheels</li><li>Braking: shaft rotation → motor as generator → AC → inverter → DC → battery recharge (regeneration)</li></ol>' }
+    ],
+    chips:['What type of motor does Ola S1 use?','How does regenerative braking work?','What is an inverter in an EV?']
+  },
+  {
+    id:'vehicle_electronics', icon:'💻', name:'Vehicle Electronics',
+    desc:'ECUs, CAN bus, OBD diagnostics, warning lights, and fault code reading.',
+    sub:'ECU networks, CAN bus, OBD-II diagnostics, warning lights, and fault code interpretation.',
+    sections:[
+      { lbl:'Modern Vehicle Electronics', html:'<p>Modern vehicles run 30–100 ECUs (Electronic Control Units) on a shared CAN bus network. All vehicles have a 12V system. EVs additionally have 200–800V high-voltage systems.</p>' },
+      { lbl:'Warning Lights — India Guide', html:'<ul><li>🔴 <strong>Oil pressure</strong> → STOP ENGINE NOW</li><li>🔴 <strong>Temperature gauge red</strong> → Stop immediately</li><li>🔴 <strong>Battery warning</strong> → Alternator failing</li><li>🟠 <strong>Check Engine (CEL)</strong> → Read OBD code</li><li>🟠 <strong>ABS light</strong> → Normal braking works, ABS compromised</li></ul>' },
+      { lbl:'OBD Diagnostics in India', html:'<ul><li>All vehicles post-2005 have OBD-II port under dashboard</li><li>ELM327 Bluetooth adapter (₹300–800 on Amazon) + free app reads fault codes</li><li>Code format: P=Powertrain, B=Body, C=Chassis, U=Network</li><li>Always read the code BEFORE replacing any component</li></ul>' }
+    ],
+    chips:['How do I read OBD fault codes?','What does check engine light mean?','What is a CAN bus fault?','ELM327 scanner — how to use it?']
+  },
+  {
+    id:'charging', icon:'🔌', name:'Charging Systems',
+    desc:'AC charging, DC fast charging, charging protocols, India infrastructure.',
+    sub:'EV charging types, standards, OCPP, India charging network, and home charging setup.',
+    sections:[
+      { lbl:'Charging Levels', html:'<ul><li><strong>AC Level 1 (3.3 kW)</strong> — Standard 15A socket, adds ~20 km/hour. Enough for overnight home charging of 2-wheelers.</li><li><strong>AC Level 2 (7–22 kW)</strong> — Dedicated home charger (wallbox). Adds 40–100 km/hour. Recommended for car EVs.</li><li><strong>DC Fast Charge (50–350 kW)</strong> — Commercial stations. Charges 20–80% in 20–45 minutes. Generates more heat.</li></ul>' },
+      { lbl:'India Charging Network 2025', html:'<ul><li>TATA Power, ChargeZone, Zeon, Statiq — major Indian network operators</li><li>NHAI installing fast chargers on national highways</li><li>Cities: Bengaluru, Mumbai, Delhi, Hyderabad — growing dense networks</li><li>Gap: Tier 2/3 cities and rural India still limited</li></ul>' },
+      { lbl:'CC-CV Charging Cycle', html:'<p><strong>CC (Constant Current)</strong> phase — rapid charge to ~80%. <strong>CV (Constant Voltage)</strong> phase — slow trickle to 100%. This is why charging 0→80% takes much less time than 80→100%.</p>' }
+    ],
+    chips:['How do I set up home charging for my EV?','What is DC fast charging?','How long does it take to charge Tata Nexon EV?','Which charging network is best in India?']
+  },
+  {
+    id:'safety_systems', icon:'🛡️', name:'Safety Systems',
+    desc:'Brakes, ABS, airbags, structural safety, ADAS — vehicle safety explained.',
+    sub:'Braking physics, ABS, airbags, ADAS, and structural safety for Indian road conditions.',
+    sections:[
+      { lbl:'Braking Physics', html:'<p>Speed doubles → stopping distance quadruples. At 80 km/h: ~64 metres to stop. At 60 km/h in monsoon: 90+ metres. <strong>Brakes are the most safety-critical system on any vehicle.</strong></p>' },
+      { lbl:'Warning Signs — Act Immediately', html:'<ul><li><strong>Spongy brake pedal</strong> → Air in lines or fluid leak — DO NOT DRIVE</li><li><strong>Grinding when braking</strong> → Pads gone, metal on metal — service immediately</li><li><strong>Brake fade on hills</strong> → Fluid overheated — rest, cool, service</li><li><strong>ABS warning light</strong> → Investigate before next trip</li></ul>' },
+      { lbl:'Airbag & SRS Safety', html:'<ul><li>SRS (Supplemental Restraint System) — airbags + seatbelt pretensioners work together</li><li>Airbag deploys in 30 milliseconds — always wear seatbelt for airbag to be effective</li><li>If airbag light stays on → inspect before driving</li><li><strong>Never tamper with airbag wiring or SRS system</strong></li></ul>' }
+    ],
+    chips:['My brake pedal is soft — what should I do?','How does ABS work?','How often should I change brake fluid?','What is ADAS and do Indian cars have it?']
+  },
+  {
+    id:'maintenance', icon:'🛠️', name:'Maintenance Systems',
+    desc:'Service intervals, oil changes, timing belt, India seasonal checklists.',
+    sub:'Universal service schedules, India-specific intervals, and seasonal maintenance.',
+    sections:[
+      { lbl:'Core Service Intervals', html:'<ul><li><strong>Engine oil + filter</strong> — Every 5,000–7,500 km (petrol), 7,500–10,000 km (diesel)</li><li><strong>Timing belt</strong> — CHECK YOUR MANUAL. Missing it destroys the engine (₹80,000–3,00,000 repair)</li><li><strong>Brake fluid</strong> — Every 2 years. India humidity accelerates degradation.</li><li><strong>Coolant flush</strong> — Every 2 years. India heat degrades faster.</li><li><strong>Tyres</strong> — Rotate every 8,000–10,000 km. Replace at 5 years regardless of tread.</li></ul>' },
+      { lbl:'India Seasonal Checklist', html:'<ul><li><strong>Pre-Monsoon (May)</strong> — Tyre tread (min 3mm), wipers, all lights, brake response</li><li><strong>Summer (Mar–Jun)</strong> — Coolant level, battery load test, tyre pressure (rises with heat)</li><li><strong>Post-Monsoon</strong> — Underside rust inspection, especially coastal cities</li></ul>' },
+      { lbl:'EV Maintenance', html:'<ul><li>No engine oil — biggest ICE cost eliminated</li><li><strong>Still needed:</strong> Brake fluid (2 years), tyre rotation, cabin air filter, 12V auxiliary battery (4–6 years)</li><li>Software updates via OTA — keep current for battery management improvements</li></ul>' }
+    ],
+    chips:['When should I change engine oil in India?','What is a timing belt and when to replace?','Pre-monsoon vehicle checklist','What maintenance does an EV need?']
+  },
+  {
+    id:'diagnostics', icon:'🔬', name:'Diagnostic Methods',
+    desc:'Systematic fault diagnosis, OBD codes, symptom analysis, professional methods.',
+    sub:'Structured diagnostic methodology, OBD analysis, fault trees, and professional tools.',
+    sections:[
+      { lbl:'Systematic Diagnosis Process', html:'<ol><li><strong>Gather symptoms</strong> — When does it occur? Frequency? Associated conditions?</li><li><strong>Read OBD codes</strong> — Never replace parts before reading codes</li><li><strong>Visual inspection</strong> — Fluid levels, leaks, unusual wear</li><li><strong>Component test</strong> — Test suspect components in isolation</li><li><strong>Verify repair</strong> — Confirm fault eliminated, codes cleared</li></ol>' },
+      { lbl:'Common Diagnostic Tools', html:'<ul><li><strong>OBD-II scanner</strong> — ELM327 (₹300 basic) to advanced bi-directional scanners</li><li><strong>Multimeter</strong> — Test circuits, sensors, actuators</li><li><strong>Oscilloscope</strong> — Signal waveform analysis for sensors</li><li><strong>Smoke machine</strong> — Detect intake or exhaust leaks</li></ul>' }
+    ],
+    chips:['How to diagnose a car that won\'t start','What does P0300 fault code mean?','Systematic approach to finding an engine misfire','How to use an OBD scanner in India']
+  },
+  {
+    id:'fleet', icon:'🏭', name:'Fleet Operations',
+    desc:'CPK analysis, PM scheduling, driver training, EV fleet transition for India.',
+    sub:'Cost-per-km analysis, preventive maintenance at scale, and EV fleet strategy.',
+    sections:[
+      { lbl:'Core Fleet Metric: CPK', html:'<p>Cost Per Kilometre (CPK) = Total Annual Cost ÷ Annual Km. Includes fuel/energy + maintenance + tyres + depreciation + insurance. CPK drives every fleet decision — when to service, when to retire, which technology to invest in.</p>' },
+      { lbl:'India Fleet EV Case', html:'<ul><li>EV auto-rickshaw: ₹1.5–2.5/km vs petrol ₹7–9/km → saving ₹3–4 lakh/vehicle/year</li><li>EV delivery bike: ₹1–1.5/km vs petrol ₹5–7/km → 80%+ operational cost saving</li><li>FAME-II + PM e-DRIVE scheme 2024 subsidise commercial EV adoption</li></ul>' },
+      { lbl:'Prevention Economics', html:'<p>Industry data: ₹1 in prevention saves ₹10 in repair. Document every service event — essential for CPK analysis and vehicle resale value.</p>' }
+    ],
+    chips:['How to calculate fleet CPK?','Should I convert my delivery fleet to EVs?','Fleet maintenance schedule template','Which EVs are best for fleet use in India?']
+  },
+  {
+    id:'infrastructure', icon:'🏙️', name:'Mobility Infrastructure',
+    desc:'Road safety, urban mobility, BRT, metro systems, smart city transport.',
+    sub:'Urban mobility solutions, mass transit, cycling infrastructure, and India\'s smart cities.',
+    sections:[
+      { lbl:'India\'s Urban Mobility Challenge', html:'<p>Bengaluru drivers lost 71 hours to congestion in 2023. Mumbai, Delhi follow closely. 99% of urban Indians breathe unsafe air (WHO). 4.4 lakh road accidents annually — most preventable. The solutions exist; implementation is the challenge.</p>' },
+      { lbl:'What Works — Evidence', html:'<ul><li><strong>BRT</strong> — Ahmedabad Janmarg: 45,000 passengers/day at 1/10th metro cost</li><li><strong>Metro</strong> — Delhi (390 km), Mumbai, Bengaluru — regenerative braking recovers 20–40% of energy</li><li><strong>Protected cycling</strong> — Physical separation (not paint) shifts cycling from 1–2% to 15–20% modal share</li></ul>' }
+    ],
+    chips:['How does the metro regenerative braking work?','What is BRT and why is it efficient?','Best solution for Bengaluru traffic?','India smart city transport progress']
+  }
+];
+
+/* ── CHAT STARTERS BY MODE ── */
+const STARTERS = {
+  solver: [
+    'My Activa brake pedal is spongy — what should I check?',
+    'Engine oil warning light came on while driving',
+    'My Nexon EV range has dropped significantly',
+    'Car pulling to one side when braking — cause?',
+    'Grinding noise from front wheel when braking',
+    'Air conditioning not cooling properly',
+    'Engine making knocking sound at idle',
+    'Battery warning light on dashboard'
+  ],
+  tech: [
+    'P0300 fault code — complete diagnosis',
+    'Intermittent misfire — systematic fault tree',
+    'Injector balance rate analysis methodology',
+    'CAN bus communication fault diagnosis',
+    'EV high-voltage isolation fault — diagnosis protocol',
+    'ABS module fault — hydraulic modulator test procedure'
+  ],
+  general: [
+    'Which EV is best for Mumbai commuting?',
+    'How do I check used car on Vahan portal?',
+    'Pre-monsoon vehicle safety checklist',
+    'Should I buy petrol or EV in India 2025?',
+    'How to maximise EV battery life in Indian heat?',
+    'What documents do I need when buying used vehicle?'
+  ]
+};
+
+/* ── AUTH ── */
+function authDo() {
+  const n = document.getElementById('auth-name').value.trim();
+  const err = document.getElementById('auth-err');
+  if (!n || n.length < 2) { err.textContent = 'Please enter at least 2 characters.'; return; }
+  S.name = n; persist();
+  document.getElementById('auth-ov').classList.remove('open');
+  afterAuth();
+}
+function authSkip() {
+  S.name = ''; localStorage.setItem(SK.name + '_seen', '1');
+  document.getElementById('auth-ov').classList.remove('open');
+  afterAuth();
+}
+function afterAuth() {
+  openChat(S._pendingMode || 'solver', S._pendingQuery);
+  S._pendingMode = null; S._pendingQuery = null;
+}
+document.getElementById('auth-name').addEventListener('keydown', e => { if (e.key === 'Enter') authDo(); });
+
+/* ── NAVIGATION ── */
+function showPage(id) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.getElementById(id)?.classList.add('on');
+  window.scrollTo(0, 0);
+}
+function goHome() { showPage('pg-home'); updateNav(); }
+function goProfile() { showPage('pg-profile'); loadSavedVehicles(); }
+function scrollToKT(tab) {
+  const el = document.getElementById('kt-section');
+  el?.scrollIntoView({ behavior: 'smooth' });
+  if (tab === 'tools') setTimeout(() => switchKT('tools', document.querySelectorAll('.kt-tab')[1]), 400);
+}
+function scrollToEco() {
+  document.getElementById('eco-section')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function openChat(mode, query) {
+  const seen = localStorage.getItem(SK.name + '_seen');
+  if (!S.name && !seen) {
+    S._pendingMode = mode; S._pendingQuery = query;
+    localStorage.setItem(SK.name + '_seen', '1');
+    document.getElementById('auth-ov').classList.add('open');
+    setTimeout(() => document.getElementById('auth-name').focus(), 120);
+    return;
+  }
+  S.mode = mode || 'solver';
+  showPage('pg-chat');
+  initChat(query);
+}
+
+function updateNav() {
+  const lbl = document.getElementById('chat-user-lbl');
+  if (lbl) lbl.textContent = S.name ? 'Hi, ' + S.name : '';
+}
+
+/* ── KT TABS ── */
+function switchKT(panel, btn) {
+  document.querySelectorAll('.kt-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.kt-panel').forEach(p => p.classList.remove('on'));
+  btn?.classList.add('active');
+  const el = document.getElementById('kt-' + panel);
+  if (el) el.classList.add('on');
+}
+
+/* ── DOMAIN GRID ── */
+function buildKTGrid() {
+  const grid = document.getElementById('kt-grid');
+  if (!grid) return;
+  grid.innerHTML = DOMAINS.map(d => `
+    <div class="kt-card" onclick="openKModal('${d.id}')">
+      <span class="kt-card-ico">${d.icon}</span>
+      <div class="kt-card-name">${d.name}</div>
+      <div class="kt-card-desc">${d.desc}</div>
+      <div class="kt-card-arr">→ Explore</div>
+    </div>`).join('');
+}
+
+/* ── KNOWLEDGE MODAL ── */
+let _kmDomainId = null;
+function openKModal(id) {
+  const d = DOMAINS.find(x => x.id === id);
+  if (!d) return;
+  _kmDomainId = id;
+  document.getElementById('km-ico').textContent = d.icon;
+  document.getElementById('km-title').textContent = d.name;
+  document.getElementById('km-sub').textContent = d.sub;
+  document.getElementById('km-body').innerHTML = d.sections.map(s =>
+    `<div class="modal-sec"><div class="modal-sec-lbl">${s.lbl}</div><div class="modal-sec-body">${s.html}</div></div>`
+  ).join('');
+  document.getElementById('km-chips').innerHTML =
+    '<div class="modal-sec-lbl" style="margin-bottom:8px">Try Asking:</div>' +
+    d.chips.map(c => `<span class="mchip" onclick="chatFromKnowledge('${id}','${c.replace(/'/g,"\\'")}')"> ${c}</span>`).join('');
+  document.getElementById('km-chat-btn').onclick = () => chatFromKnowledge(id, null);
+  document.getElementById('km-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeKModal(e) {
+  if (e && e.target !== document.getElementById('km-overlay')) return;
+  document.getElementById('km-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  _kmDomainId = null;
+}
+function chatFromKnowledge(domainId, query) {
+  closeKModal();
+  S.domain = domainId;
+  openChat('general', query);
+}
+
+/* ── VEHICLE PROFILE ── */
+function selVT(el) {
+  document.querySelectorAll('.vt-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function saveProfile() {
+  const type = document.querySelector('.vt-chip.sel')?.dataset.v || 'car';
+  const make  = document.getElementById('vp-make').value.trim();
+  const model = document.getElementById('vp-model').value.trim();
+  const year  = document.getElementById('vp-year').value.trim();
+  const fuel  = document.getElementById('vp-fuel').value;
+  const km    = document.getElementById('vp-km').value.trim();
+  const use   = document.getElementById('vp-use').value;
+  const city  = document.getElementById('vp-city').value.trim();
+  const issues = document.getElementById('vp-issues').value.trim();
+
+  if (!make || !model) {
+    alert('Please enter at least the vehicle make and model.'); return;
+  }
+  const vp = { id: 'v_' + Date.now(), type, make, model, year, fuel, km, use, city, issues, ts: Date.now() };
+  S.vehicles.unshift(vp);
+  if (S.vehicles.length > 10) S.vehicles = S.vehicles.slice(0, 10);
+  persist();
+  document.getElementById('profile-success').classList.add('show');
+  setTimeout(() => document.getElementById('profile-success').classList.remove('show'), 3500);
+  loadSavedVehicles();
+  // Clear form
+  ['vp-make','vp-model','vp-year','vp-km','vp-city','vp-issues'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('vp-fuel').value = '';
+  document.getElementById('vp-use').value = '';
+}
+function loadSavedVehicles() {
+  const wrap = document.getElementById('saved-vehicles-wrap');
+  const cards = document.getElementById('saved-cards');
+  if (!S.vehicles.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  cards.innerHTML = S.vehicles.map(v => `
+    <div class="saved-vehicle">
+      <div class="sv-info">
+        <h4>${v.make} ${v.model} ${v.year ? '('+v.year+')' : ''}</h4>
+        <p>${v.type} · ${v.fuel || 'Unknown fuel'} · ${v.km ? v.km+'km' : ''} · ${v.city || ''}</p>
+      </div>
+      <div class="sv-btns">
+        <button class="sv-btn" onclick="diagnoseVehicle('${v.id}')">Diagnose</button>
+        <button class="sv-btn" onclick="deleteVehicle('${v.id}')">✕</button>
+      </div>
+    </div>`).join('');
+}
+function diagnoseVehicle(id) {
+  const v = S.vehicles.find(x => x.id === id);
+  if (!v) return;
+  const q = `My vehicle: ${v.make} ${v.model} ${v.year ? '(' + v.year + ')' : ''}, ${v.fuel || ''}, ${v.km ? v.km + ' km' : ''}${v.issues ? '. Known issues: ' + v.issues : ''}. Please give me a health overview and key things to check.`;
+  openChat('solver', q);
+}
+function deleteVehicle(id) {
+  S.vehicles = S.vehicles.filter(v => v.id !== id);
+  persist(); loadSavedVehicles();
+}
+
+/* ── CHAT INIT ── */
+function initChat(query) {
+  // Update header badge
+  const badge = document.getElementById('mode-badge');
+  const subLbl = document.getElementById('chat-sub-lbl');
+  const ceIco  = document.getElementById('ce-ico');
+  const ceTitle = document.getElementById('ce-title');
+  const ceDesc  = document.getElementById('ce-desc');
+
+  if (S.mode === 'tech') {
+    badge.textContent = '⚙️ Technical Mode';
+    badge.className = 'chat-mode-badge badge-tech';
+    subLbl.textContent = 'Advanced diagnostic — structured technical output';
+    ceIco.textContent = '⚙️';
+    ceTitle.textContent = 'Technical Diagnostic Assistant';
+    ceDesc.textContent = 'Professional-grade diagnostic mode. Enter fault codes, symptoms, or component queries for structured technical analysis.';
+  } else if (S.mode === 'solver') {
+    badge.textContent = '🔍 Problem Solver';
+    badge.className = 'chat-mode-badge badge-solver';
+    subLbl.textContent = 'Describe your vehicle problem';
+    ceIco.textContent = '🔍';
+    ceTitle.textContent = 'Vehicle Problem Solver';
+    ceDesc.textContent = 'Describe any vehicle problem — a noise, warning light, or unusual behaviour — and get structured AI diagnostic analysis.';
+  } else {
+    badge.textContent = '🧠 Knowledge Mode';
+    badge.className = 'chat-mode-badge badge-general';
+    subLbl.textContent = 'Ask anything about mobility';
+    ceIco.textContent = '🧠';
+    ceTitle.textContent = 'Mobility Knowledge Assistant';
+    ceDesc.textContent = 'Ask anything about vehicles, EV technology, safety, buying guidance, or maintenance.';
+  }
+
+  const lbl = document.getElementById('chat-user-lbl');
+  if (lbl) lbl.textContent = S.name ? 'Hi, ' + S.name : '';
+
+  buildTopicBar();
+
+  // Find or create convo
+  if (!S.activeId) createConvo();
+  renderChat();
+  buildStarters();
+
+  if (query) setTimeout(() => { document.getElementById('chat-input').value = query; send(); }, 200);
+  else setTimeout(() => document.getElementById('chat-input')?.focus(), 100);
+}
+
+function createConvo() {
+  const id = 'c_' + Date.now();
+  S.convos.unshift({ id, title: 'New Chat', msgs: [], mode: S.mode, domain: S.domain, ts: Date.now() });
+  S.activeId = id;
+  if (S.convos.length > 20) S.convos = S.convos.slice(0, 20);
+  persist();
+}
+
+function newChat() { createConvo(); renderChat(); buildStarters(); document.getElementById('chat-input')?.focus(); }
+
+function buildTopicBar() {
+  const bar = document.getElementById('topic-bar');
+  if (!bar) return;
+  const topics = [
+    { icon:'🔍', label:'Problem Solver', mode:'solver' },
+    { icon:'⚙️', label:'Technical Mode', mode:'tech' },
+    { icon:'🔋', label:'Battery & EV', domain:'battery_bms' },
+    { icon:'⚙️', label:'Engine', domain:'ice_engines' },
+    { icon:'🛡️', label:'Brakes & Safety', domain:'safety_systems' },
+    { icon:'🛠️', label:'Maintenance', domain:'maintenance' },
+    { icon:'🔍', label:'Buy Used', domain:'diagnostics' },
+    { icon:'⚡', label:'EV Guide', domain:'ev_systems' }
+  ];
+  bar.innerHTML = topics.map(t => {
+    const act = (t.mode && t.mode === S.mode) || (t.domain && t.domain === S.domain);
+    return `<span class="topic-chip ${act?'act':''}" onclick="${t.mode ? 'switchMode(\''+t.mode+'\')' : 'switchDomain(\''+t.domain+'\')'}">${t.icon} ${t.label}</span>`;
+  }).join('');
+}
+
+function switchMode(mode) {
+  S.mode = mode; S.domain = null;
+  createConvo(); renderChat(); buildStarters(); buildTopicBar();
+  initChat(null);
+}
+function switchDomain(domain) {
+  S.mode = 'general'; S.domain = domain;
+  createConvo(); renderChat(); buildStarters(); buildTopicBar();
+  initChat(null);
+}
+
+function buildStarters() {
+  const el = document.getElementById('starters');
+  if (!el) return;
+  const list = S.mode === 'tech' ? STARTERS.tech : S.mode === 'solver' ? STARTERS.solver : STARTERS.general;
+  el.innerHTML = list.slice(0, 6).map(q => `<button class="starter" onclick="quickSend(this.textContent)">${q}</button>`).join('');
+}
+
+/* ── RENDER ── */
+function renderChat() {
+  const msgs = S.msgs;
+  const msgsEl = document.getElementById('msgs');
+  const empty  = document.getElementById('chat-empty');
+  if (!msgs.length) {
+    msgsEl.style.display = 'none';
+    empty.style.display = 'flex';
+  } else {
+    msgsEl.style.display = 'flex';
+    empty.style.display = 'none';
+    msgsEl.innerHTML = msgs.map(m => msgHTML(m)).join('');
+    scrollBottom();
+  }
+}
+
+function msgHTML(m) {
+  const isTech = S.mode === 'tech';
+  const cls = m.role === 'user' ? 'user' : ('ai' + (isTech ? ' tech' : ''));
+  const body = m.role === 'user' ? escHTML(m.content) : renderMD(m.content);
+  return `<div class="mrow ${cls}"><div class="mbub">${body}</div></div>`;
+}
+
+function escHTML(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function renderMD(s) {
+  let h = s
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/^---+$/gm,'<hr>')
+    .replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>');
+
+  // Tables
+  h = h.replace(/(\|.+\|\n?)+/g, blk => {
+    const rows = blk.trim().split('\n').filter(r => !/^\|[\s\-:]+\|/.test(r));
+    if (rows.length < 2) return blk;
+    const hdr = rows[0].split('|').filter(c=>c.trim()).map(c=>`<th>${c.trim()}</th>`).join('');
+    const bdy = rows.slice(1).map(r=>'<tr>'+r.split('|').filter(c=>c.trim()).map(c=>`<td>${c.trim()}</td>`).join('')+'</tr>').join('');
+    return `<table><thead><tr>${hdr}</tr></thead><tbody>${bdy}</tbody></table>`;
+  });
+
+  // Lists
+  h = h.replace(/(^[\-\*] .+\n?)+/gm, blk => {
+    const items = blk.trim().split('\n').map(l=>`<li>${l.replace(/^[\-\*] /,'')}</li>`).join('');
+    return `<ul>${items}</ul>`;
+  });
+  h = h.replace(/(^\d+\. .+\n?)+/gm, blk => {
+    const items = blk.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /,'')}</li>`).join('');
+    return `<ol>${items}</ol>`;
+  });
+
+  // Paragraphs
+  const lines = h.split('\n');
+  let out = '', inP = false;
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) { if(inP){out+='</p>';inP=false;} }
+    else if (/^<(h[1-6]|ul|ol|table|blockquote|hr|pre)/.test(t)) { if(inP){out+='</p>';inP=false;} out+=t; }
+    else { if(!inP){out+='<p>';inP=true;} else out+=' '; out+=t; }
+  }
+  if (inP) out += '</p>';
+  return out;
+}
+
+/* ── SEND ── */
+function quickSend(text) {
+  document.getElementById('chat-input').value = text; send();
+}
+function send() {
+  if (S.busy) return;
+  const inp = document.getElementById('chat-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = ''; autoH(inp);
+
+  if (!S.activeId) createConvo();
+  const convo = S.convos.find(c => c.id === S.activeId);
+  if (!convo) return;
+
+  convo.msgs.push({ role:'user', content:text });
+  if (!convo.title || convo.title === 'New Chat') convo.title = text.slice(0, 44) + (text.length > 44 ? '…' : '');
+  persist();
+
+  const msgsEl = document.getElementById('msgs');
+  document.getElementById('chat-empty').style.display = 'none';
+  msgsEl.style.display = 'flex';
+  msgsEl.innerHTML += msgHTML({ role:'user', content:text });
+  showTyping(); scrollBottom();
+  S.busy = true;
+  document.getElementById('send-btn').disabled = true;
+
+  // Build vehicle context prefix
+  const activeVehicle = S.vehicles[0];
+  const vehicleCtx = activeVehicle
+    ? `[User's vehicle: ${activeVehicle.make} ${activeVehicle.model} ${activeVehicle.year||''} ${activeVehicle.fuel||''} ${activeVehicle.km?activeVehicle.km+'km':''} ${activeVehicle.city||''}] `
+    : '';
+
+  callAPI(text, convo, vehicleCtx)
+    .then(reply => {
+      convo.msgs.push({ role:'assistant', content:reply }); persist();
+      hideTyping();
+      msgsEl.innerHTML += msgHTML({ role:'assistant', content:reply });
+      scrollBottom();
+    })
+    .catch(() => {
+      const err = 'Unable to connect to MobilityAI right now. Please check your connection and try again.';
+      convo.msgs.push({ role:'assistant', content:err }); persist();
+      hideTyping();
+      msgsEl.innerHTML += msgHTML({ role:'assistant', content:err });
+      scrollBottom();
+      toast('Connection error — please retry');
+    })
+    .finally(() => {
+      S.busy = false;
+      document.getElementById('send-btn').disabled = false;
+      document.getElementById('chat-input')?.focus();
+    });
+}
+
+/* ── SECURE API (all calls go through /api/chat) ── */
+async function callAPI(userText, convo, vehicleCtx) {
+  // Build valid alternating history
+  const history = convo.msgs
+    .filter(m => m.content?.trim())
+    .slice(-12)
+    .map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content.trim() }));
+
+  const valid = [];
+  let last = null;
+  for (const m of history) {
+    if (m.role !== last) { valid.push(m); last = m.role; }
+    else { valid[valid.length - 1] = m; }
+  }
+
+  // Inject vehicle context into last user message if present
+  if (vehicleCtx && valid.length && valid[valid.length - 1].role === 'user') {
+    valid[valid.length - 1] = {
+      role: 'user',
+      content: vehicleCtx + valid[valid.length - 1].content
+    };
+  }
+
+  if (!valid.length || valid[0].role !== 'user') return 'Please type your question.';
+
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messages:  valid,
+      userName:  S.name || '',
+      mode:      S.mode,
+      domain:    S.domain || null
+    }),
+    signal: AbortSignal.timeout(45000)
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const d = await res.json();
+  if (!d.reply) throw new Error('Empty');
+  return d.reply;
+}
+
+/* ── UI HELPERS ── */
+function showTyping() {
+  const el = document.createElement('div');
+  el.className = 'typing-row'; el.id = 'typing-ind';
+  el.innerHTML = '<div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  document.getElementById('msgs')?.appendChild(el);
+  scrollBottom();
+}
+function hideTyping() { document.getElementById('typing-ind')?.remove(); }
+function scrollBottom() {
+  const el = document.getElementById('msgs');
+  if (el) requestAnimationFrame(() => { el.scrollTop = el.scrollHeight; });
+}
+function autoH(ta) { ta.style.height = '22px'; ta.style.height = Math.min(ta.scrollHeight, 140) + 'px'; }
+function toast(msg) {
+  document.getElementById('__toast')?.remove();
+  const t = document.createElement('div'); t.className = 'toast'; t.id = '__toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3200);
+}
+
+/* ── MOBILE NAV TOGGLE ── */
+let _mobOpen = false;
+function toggleMobMenu() {
+  _mobOpen = !_mobOpen;
+  const links = document.querySelector('.nav-links');
+  if (!links) return;
+  if (_mobOpen) {
+    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:58px;left:0;right:0;background:rgba(4,11,9,.99);border-bottom:1px solid var(--bd);padding:10px 16px;gap:4px;z-index:199';
+    document.getElementById('mob-toggle').textContent = '✕';
+  } else {
+    links.style.cssText = ''; document.getElementById('mob-toggle').textContent = '☰';
+  }
+}
+
+/* ── INIT ── */
+function init() {
+  restore();
+  buildKTGrid();
+  updateNav();
+
+  const inp = document.getElementById('chat-input');
+  if (inp) {
+    inp.addEventListener('input', () => {
+      autoH(inp);
+      const len = inp.value.length;
+      const cc = document.getElementById('char-count');
+      if (cc) { cc.textContent = len > 2800 ? `${len}/3000` : ''; cc.style.color = len > 2800 ? 'var(--red)' : ''; }
+    });
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('km-overlay').classList.remove('open');
+      document.getElementById('auth-ov').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+
+  loadSavedVehicles();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
