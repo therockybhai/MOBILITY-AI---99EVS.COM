@@ -845,6 +845,193 @@ a { color: var(--g); text-decoration: none; }
   .reasons-grid { grid-template-columns:1fr; }
   .reasons-grid .reason-card:last-child { grid-column:auto; }
 }
+
+/* ══════════════════════════════════════════
+   REFINEMENT ADDITIONS — Beta Launch
+══════════════════════════════════════════ */
+
+/* Hero supporting tagline */
+.hero-support {
+  font-size: clamp(14px, 2vw, 16px);
+  color: var(--t2); font-weight: 500;
+  letter-spacing: .02em; margin-bottom: 10px;
+  animation: fadeUp .5s .04s ease both;
+}
+
+/* Hero diagnostic examples */
+.hero-examples {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center; align-items: center;
+  margin-top: 18px;
+  animation: fadeUp .5s .38s ease both;
+}
+.hero-eg-label {
+  font-size: 11px; color: var(--t3); font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; flex-basis: 100%; text-align: center; margin-bottom: 4px;
+}
+.hero-eg {
+  background: none; border: 1px solid var(--bd);
+  color: var(--t2); font-size: 12px;
+  padding: 6px 14px; border-radius: 20px;
+  transition: all .18s; cursor: pointer;
+}
+.hero-eg:hover { border-color: var(--g); color: var(--g); background: var(--g3); }
+
+/* How MobilityAI Works */
+.how-sec {
+  background: var(--bg2);
+  border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);
+  padding: 56px 28px;
+}
+.how-inner { max-width: 1100px; margin: 0 auto; }
+.how-hdr { text-align: center; margin-bottom: 36px; }
+.how-steps {
+  display: flex; align-items: flex-start; gap: 0;
+  flex-wrap: wrap; justify-content: center;
+}
+.how-step {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  flex: 1; min-width: 140px; max-width: 180px; padding: 0 8px;
+}
+.how-num {
+  font-family: var(--ff); font-weight: 900; font-size: 11px;
+  color: var(--t3); letter-spacing: .1em; margin-bottom: 8px;
+}
+.how-ico {
+  font-size: 30px; margin-bottom: 10px;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--bd2);
+  display: flex; align-items: center; justify-content: center;
+}
+.how-text strong { display: block; font-size: 13px; font-weight: 600; color: var(--t1); margin-bottom: 5px; }
+.how-text span { font-size: 11.5px; color: var(--t2); line-height: 1.6; }
+.how-arrow {
+  font-size: 18px; color: var(--t4); padding-top: 42px; flex-shrink: 0;
+  display: flex; align-items: flex-start;
+}
+
+/* Vehicle Types Supported */
+.vt-sec {
+  background: var(--bg); padding: 72px 28px;
+  border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);
+}
+.vt-inner { max-width: 1000px; margin: 0 auto; }
+.vt-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.vt-card {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 20px 18px;
+  cursor: pointer; transition: all .22s; text-align: center;
+}
+.vt-card:hover { border-color: var(--g); transform: translateY(-3px); background: var(--bg3); }
+.vt-ico { font-size: 32px; display: block; margin-bottom: 10px; }
+.vt-name { font-family: var(--ff); font-weight: 700; font-size: 17px; margin-bottom: 6px; }
+.vt-detail { font-size: 11.5px; color: var(--t2); line-height: 1.5; }
+
+/* Trust Badges */
+.trust-sec {
+  background: var(--bg2); padding: 72px 28px;
+  border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);
+}
+.trust-inner { max-width: 1000px; margin: 0 auto; }
+.trust-badges { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.tbadge {
+  background: var(--bg3); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 22px 20px;
+  flex: 1; min-width: 180px; max-width: 220px;
+  text-align: center; transition: all .2s;
+}
+.tbadge:hover { border-color: var(--bd2); transform: translateY(-2px); }
+.tbadge-ico { font-size: 28px; display: block; margin-bottom: 10px; }
+.tbadge-label { font-family: var(--ff); font-weight: 700; font-size: 14px; color: var(--g); margin-bottom: 7px; }
+.tbadge-desc { font-size: 12px; color: var(--t2); line-height: 1.6; }
+
+/* Pricing micro line */
+.price-micro {
+  font-size: 12px; color: var(--g); font-weight: 600;
+  margin-bottom: 12px; letter-spacing: .03em;
+}
+
+/* SEO Diagnostic Cards */
+.seo-sec { padding: 72px 28px; background: var(--bg2); border-top: 1px solid var(--bd); }
+.seo-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; max-width: 1000px; margin: 0 auto;
+}
+.seo-card {
+  background: var(--bg3); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 20px 18px;
+  cursor: pointer; transition: all .22s; position: relative; overflow: hidden;
+}
+.seo-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--g), transparent);
+  opacity: 0; transition: opacity .22s;
+}
+.seo-card:hover { border-color: var(--g); transform: translateY(-3px); }
+.seo-card:hover::before { opacity: 1; }
+.seo-card-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--t3); margin-bottom: 8px;
+}
+.seo-card h4 { font-family: var(--ff); font-weight: 700; font-size: 18px; margin-bottom: 8px; }
+.seo-card p { font-size: 12.5px; color: var(--t2); line-height: 1.6; margin-bottom: 12px; }
+.seo-risk { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 10px; }
+.seo-risk-mod  { background: rgba(245,158,11,.10); border: 1px solid rgba(245,158,11,.25); color: var(--amb); }
+.seo-risk-high { background: rgba(239,68,68,.10);  border: 1px solid rgba(239,68,68,.25);  color: var(--red); }
+.seo-risk-crit { background: rgba(239,68,68,.18);  border: 1px solid rgba(239,68,68,.40);  color: var(--red); font-size: 12px; }
+.seo-action { font-size: 12px; color: var(--g); font-weight: 600; }
+
+/* Expanded footer */
+.footer-full {
+  background: var(--bg2); border-top: 1px solid var(--bd);
+  padding: 48px 28px 0;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px; max-width: 1100px; margin: 0 auto; padding-bottom: 40px;
+}
+.footer-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-col-brand { gap: 14px; }
+.footer-col-title {
+  font-family: var(--ff); font-weight: 700; font-size: 13px;
+  color: var(--g); letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.footer-col a { font-size: 13px; color: var(--t3); transition: color .18s; }
+.footer-col a:hover { color: var(--g); }
+.footer-mission { font-size: 13px; color: var(--t2); line-height: 1.7; }
+.footer-meta { font-size: 12px; color: var(--t3); line-height: 1.7; }
+.footer-meta a { color: var(--t2); }
+.footer-bottom {
+  border-top: 1px solid var(--bd);
+  padding: 16px 0; margin: 0;
+  max-width: 1100px; margin-left: auto; margin-right: auto;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  font-size: 11px; color: var(--t4);
+}
+
+/* ── RESPONSIVE ADDITIONS ── */
+@media(max-width:900px) {
+  .how-steps { flex-direction: column; align-items: center; gap: 16px; }
+  .how-arrow { transform: rotate(90deg); padding: 0; }
+  .how-step { max-width: 100%; flex-direction: row; text-align: left; gap: 16px; width: 100%; max-width: 420px; }
+  .how-ico { flex-shrink: 0; }
+  .vt-grid { grid-template-columns: repeat(2, 1fr); }
+  .seo-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:640px) {
+  .vt-grid { grid-template-columns: repeat(2, 1fr); }
+  .seo-grid { grid-template-columns: 1fr; }
+  .trust-badges { flex-direction: column; align-items: center; }
+  .tbadge { max-width: 100%; width: 100%; }
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .how-sec,.vt-sec,.trust-sec,.seo-sec { padding: 48px 16px; }
+  .hero-eg-label { display: none; }
+}
 </style>
 </head>
 <body>
@@ -920,6 +1107,8 @@ a { color: var(--g); text-decoration: none; }
 
     <h1>The World's Most Trusted<br><em>Mobility Knowledge System</em></h1>
 
+    <p class="hero-support">AI-powered diagnostics and mobility knowledge for vehicles of every type.</p>
+
     <p class="hero-sub">
       Diagnose vehicle problems, understand mobility systems, and prevent failures with MobilityAI.<br>
       <strong>Built for India. Designed for the world.</strong>
@@ -929,6 +1118,15 @@ a { color: var(--g); text-decoration: none; }
       <button class="btn-hero-primary" onclick="openChat('solver',null)">🔍 Solve a Vehicle Problem</button>
       <button class="btn-hero-outline" onclick="goProfile()">📋 Create Vehicle Profile</button>
       <button class="btn-hero-ghost" onclick="openChat('tech',null)">⚙️ Professional Diagnostic Mode</button>
+    </div>
+
+    <div class="hero-examples">
+      <span class="hero-eg-label">Try diagnosing:</span>
+      <button class="hero-eg" onclick="openChat('solver','EV not charging')">EV not charging</button>
+      <button class="hero-eg" onclick="openChat('solver','Bike engine making knocking noise')">Bike engine noise</button>
+      <button class="hero-eg" onclick="openChat('solver','Car battery draining quickly')">Battery drain fast</button>
+      <button class="hero-eg" onclick="openChat('solver','Vehicle not starting')">Vehicle won't start</button>
+      <button class="hero-eg" onclick="openChat('solver','Sudden power loss while driving')">Sudden power loss</button>
     </div>
 
     <div class="hero-trust">
@@ -968,6 +1166,62 @@ a { color: var(--g); text-decoration: none; }
         <h3>Technical Diagnostic Assistant</h3>
         <p>Advanced diagnostic mode for technicians, mechanics, and workshops. Structured technical output, OBD code analysis, component-level fault trees.</p>
         <div class="action-card-cta">Enter Technical Mode →</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-sec">
+    <div class="how-inner">
+      <div class="how-hdr">
+        <div class="sec-eyebrow">The Process</div>
+        <h2 style="font-family:var(--ff);font-weight:800;font-size:clamp(22px,4vw,32px);letter-spacing:-.3px">How MobilityAI Works</h2>
+      </div>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-num">01</div>
+          <div class="how-ico">💬</div>
+          <div class="how-text">
+            <strong>Describe your vehicle problem</strong>
+            <span>Tell MobilityAI what you're experiencing — any symptom, in plain language.</span>
+          </div>
+        </div>
+        <div class="how-arrow">→</div>
+        <div class="how-step">
+          <div class="how-num">02</div>
+          <div class="how-ico">🧠</div>
+          <div class="how-text">
+            <strong>AI analyses symptoms</strong>
+            <span>The Knowledge Graph maps your symptom to the most likely vehicle system and failure patterns.</span>
+          </div>
+        </div>
+        <div class="how-arrow">→</div>
+        <div class="how-step">
+          <div class="how-num">03</div>
+          <div class="how-ico">📊</div>
+          <div class="how-text">
+            <strong>Causes ranked by probability</strong>
+            <span>High, Moderate, and Low probability causes are listed so you know where to focus first.</span>
+          </div>
+        </div>
+        <div class="how-arrow">→</div>
+        <div class="how-step">
+          <div class="how-num">04</div>
+          <div class="how-ico">🛡️</div>
+          <div class="how-text">
+            <strong>Safety risks identified</strong>
+            <span>Every result includes a risk level — LOW / MODERATE / HIGH / CRITICAL — so you know when to act immediately.</span>
+          </div>
+        </div>
+        <div class="how-arrow">→</div>
+        <div class="how-step">
+          <div class="how-num">05</div>
+          <div class="how-ico">✅</div>
+          <div class="how-text">
+            <strong>Recommended actions provided</strong>
+            <span>Practical next steps — what to check, when to visit a workshop, and estimated costs in ₹.</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1020,6 +1274,49 @@ a { color: var(--g); text-decoration: none; }
   </section>
 
   <!-- SECTION 4: WHY 99EVS EXISTS -->
+  <!-- VEHICLE TYPES SUPPORTED -->
+  <section class="vt-sec">
+    <div class="vt-inner">
+      <div class="sec-header" style="margin-bottom:32px">
+        <div class="sec-eyebrow">Compatibility</div>
+        <h2 style="font-family:var(--ff);font-weight:800;font-size:clamp(22px,4vw,32px);letter-spacing:-.3px">Vehicles Supported by MobilityAI</h2>
+        <p class="sec-desc">Complete diagnostic and knowledge coverage across all major vehicle types on Indian roads.</p>
+      </div>
+      <div class="vt-grid">
+        <div class="vt-card" onclick="openChat('solver','Tell me about electric vehicle diagnostics')">
+          <span class="vt-ico">⚡</span>
+          <div class="vt-name">Electric Vehicles</div>
+          <div class="vt-detail">2W · 3W · 4W · BMS · Battery · Charging · Motor</div>
+        </div>
+        <div class="vt-card" onclick="openChat('solver','Tell me about petrol vehicle diagnostics')">
+          <span class="vt-ico">⛽</span>
+          <div class="vt-name">Petrol Vehicles</div>
+          <div class="vt-detail">Cars · Bikes · Scooters · 4-Stroke · Multi-cylinder</div>
+        </div>
+        <div class="vt-card" onclick="openChat('solver','Tell me about diesel vehicle diagnostics')">
+          <span class="vt-ico">🔵</span>
+          <div class="vt-name">Diesel Vehicles</div>
+          <div class="vt-detail">Cars · Trucks · SUVs · BSVI · Common Rail · DPF</div>
+        </div>
+        <div class="vt-card" onclick="openChat('solver','Tell me about hybrid vehicle diagnostics')">
+          <span class="vt-ico">🔄</span>
+          <div class="vt-name">Hybrid Vehicles</div>
+          <div class="vt-detail">HEV · MHEV · PHEV · Self-Charging · Regenerative</div>
+        </div>
+        <div class="vt-card" onclick="openChat('solver','Tell me about CNG vehicle diagnostics')">
+          <span class="vt-ico">💨</span>
+          <div class="vt-name">CNG Vehicles</div>
+          <div class="vt-detail">Cars · Buses · Autos · LPG · Factory-fit · Retrofit</div>
+        </div>
+        <div class="vt-card" onclick="openChat('solver','Tell me about fleet vehicle diagnostics')">
+          <span class="vt-ico">🏭</span>
+          <div class="vt-name">Fleet Vehicles</div>
+          <div class="vt-detail">LCV · Delivery · Taxi · Commercial · CPK Analysis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="why-sec sec">
     <div class="why-inner">
       <div class="why-text">
@@ -1127,6 +1424,43 @@ a { color: var(--g); text-decoration: none; }
   </section>
 
   <!-- SECTION 6: FIVE REASONS -->
+  <!-- TRUST BADGES -->
+  <section class="trust-sec">
+    <div class="trust-inner">
+      <div class="sec-header" style="margin-bottom:28px">
+        <div class="sec-eyebrow">Platform Integrity</div>
+        <h2 style="font-family:var(--ff);font-weight:800;font-size:clamp(22px,4vw,32px);letter-spacing:-.3px">What MobilityAI Stands For</h2>
+      </div>
+      <div class="trust-badges">
+        <div class="tbadge">
+          <span class="tbadge-ico">🔬</span>
+          <div class="tbadge-label">Evidence-Based Knowledge</div>
+          <div class="tbadge-desc">Every answer grounded in established engineering principles — not opinion or guesswork.</div>
+        </div>
+        <div class="tbadge">
+          <span class="tbadge-ico">🛡️</span>
+          <div class="tbadge-label">Safety-First Diagnostics</div>
+          <div class="tbadge-desc">Every diagnostic includes risk level and mandatory safety guidance before any other action.</div>
+        </div>
+        <div class="tbadge">
+          <span class="tbadge-ico">⚖️</span>
+          <div class="tbadge-label">Completely Neutral Analysis</div>
+          <div class="tbadge-desc">No brand is promoted. No technology is favoured. Facts and tradeoffs only.</div>
+        </div>
+        <div class="tbadge">
+          <span class="tbadge-ico">🔒</span>
+          <div class="tbadge-label">Privacy by Design</div>
+          <div class="tbadge-desc">No user data sold. No tracking. Conversations are private. Zero ads, ever.</div>
+        </div>
+        <div class="tbadge">
+          <span class="tbadge-ico">🌍</span>
+          <div class="tbadge-label">Free Access to Core Knowledge</div>
+          <div class="tbadge-desc">The full knowledge library and diagnostic engine are free forever — no paywall on safety.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="reasons-sec sec">
     <div class="sec-header">
       <div class="sec-eyebrow">Why Use MobilityAI</div>
@@ -1200,6 +1534,7 @@ a { color: var(--g); text-decoration: none; }
           <span class="price-num">99</span>
           <span class="price-per">/month</span>
         </div>
+        <div class="price-micro">Less than ₹4 per day — less than a cup of chai.</div>
         <p class="price-desc">For professionals, fleet operators, and power users who need deeper capabilities.</p>
         <ul class="price-features">
           <li>Everything in Free</li>
@@ -1228,22 +1563,105 @@ a { color: var(--g); text-decoration: none; }
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-brand">
-      <div class="nav-mark" style="width:30px;height:30px;font-size:12px">99</div>
-      <div class="nav-brand" style="font-size:15px">99EVS <em>MobilityAI</em></div>
+  <!-- SEO: COMMON DIAGNOSTIC PROBLEMS -->
+  <section class="seo-sec sec">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Common Vehicle Problems</div>
+      <h2 style="font-family:var(--ff);font-weight:800;font-size:clamp(22px,4vw,32px);letter-spacing:-.3px">Diagnose These Common Problems</h2>
+      <p class="sec-desc">Tap any problem to start a structured AI diagnostic analysis instantly.</p>
     </div>
-    <p class="footer-info">
-      The World's Most Trusted Mobility Knowledge System ·
-      <a href="#">www.99evs.com</a> ·
-      Free Forever · No Ads · Private
-    </p>
-    <div class="footer-links">
-      <a href="#" onclick="scrollToKT();return false">Knowledge</a>
-      <a href="#" onclick="goProfile();return false">Vehicle Profile</a>
-      <a href="#" onclick="openChat('solver',null);return false">Diagnose</a>
-      <a href="#" onclick="scrollToEco();return false">Marketplace</a>
+    <div class="seo-grid" id="seo-grid">
+      <div class="seo-card" onclick="openChat('solver','EV not charging — diagnose this problem')">
+        <div class="seo-card-tag">Electric Vehicle</div>
+        <h4>EV Not Charging</h4>
+        <p>Charging port, OBC fault, BMS protection trigger, EVSE communication error, or cable fault.</p>
+        <div class="seo-risk seo-risk-mod">⚠️ Moderate Risk</div>
+        <div class="seo-action">Diagnose Now →</div>
+      </div>
+      <div class="seo-card" onclick="openChat('solver','Car battery draining quickly — diagnose this problem')">
+        <div class="seo-card-tag">Electrical</div>
+        <h4>Battery Draining Fast</h4>
+        <p>Parasitic drain, failing alternator, aged 12V battery, or accessory drawing current when parked.</p>
+        <div class="seo-risk seo-risk-mod">⚠️ Moderate Risk</div>
+        <div class="seo-action">Diagnose Now →</div>
+      </div>
+      <div class="seo-card" onclick="openChat('solver','Bike engine making knocking sound — diagnose this problem')">
+        <div class="seo-card-tag">Engine</div>
+        <h4>Engine Knocking Sound</h4>
+        <p>Low engine oil, bearing wear, carbon deposits, incorrect fuel octane, or valve clearance issue.</p>
+        <div class="seo-risk seo-risk-high">🔴 High Risk — Act Soon</div>
+        <div class="seo-action">Diagnose Now →</div>
+      </div>
+      <div class="seo-card" onclick="openChat('solver','Vehicle not starting at all — diagnose this problem')">
+        <div class="seo-card-tag">Starting System</div>
+        <h4>Vehicle Not Starting</h4>
+        <p>Dead battery, starter motor failure, fuel pump fault, immobiliser trigger, or ignition system fault.</p>
+        <div class="seo-risk seo-risk-mod">⚠️ Moderate Risk</div>
+        <div class="seo-action">Diagnose Now →</div>
+      </div>
+      <div class="seo-card" onclick="openChat('solver','Sudden power loss while driving — diagnose this problem')">
+        <div class="seo-card-tag">Powertrain</div>
+        <h4>Sudden Power Loss</h4>
+        <p>Fuel delivery failure, clogged air filter, EV battery protection cutoff, or turbo boost leak.</p>
+        <div class="seo-risk seo-risk-high">🔴 High Risk — Act Soon</div>
+        <div class="seo-action">Diagnose Now →</div>
+      </div>
+      <div class="seo-card" onclick="openChat('solver','Motor overheating in my electric vehicle — diagnose this')">
+        <div class="seo-card-tag">Electric Vehicle</div>
+        <h4>EV Motor Overheating</h4>
+        <p>Coolant system fault, blocked heat exchanger, inverter thermal issue, or abnormal load pattern.</p>
+        <div class="seo-risk seo-risk-crit">🚨 Critical — Stop Driving</div>
+        <div class="seo-action">Diagnose Now →</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <button class="btn-hero-outline" onclick="openChat('solver',null)" style="display:inline-flex;align-items:center;gap:8px">
+        Describe Your Own Problem → Full AI Diagnosis
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer-full">
+    <div class="footer-grid">
+      <div class="footer-col footer-col-brand">
+        <div class="footer-brand">
+          <div class="nav-mark" style="width:32px;height:32px;font-size:13px">99</div>
+          <div class="nav-brand" style="font-size:16px">99EVS <em>MobilityAI</em></div>
+        </div>
+        <p class="footer-mission">Helping people understand and safely manage the machines that move humanity.</p>
+        <p class="footer-meta">Free Forever · No Ads · No Tracking · Private<br><a href="#">www.99evs.com</a> · © 2025 99EVS</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Diagnose</div>
+        <a href="#" onclick="openChat('solver',null);return false">Vehicle Problem Solver</a>
+        <a href="#" onclick="openChat('tech',null);return false">Technical Mode</a>
+        <a href="#" onclick="openChat('solver','EV not charging');return false">EV Not Charging</a>
+        <a href="#" onclick="openChat('solver','Car battery draining');return false">Battery Drain</a>
+        <a href="#" onclick="openChat('solver','Engine knocking sound');return false">Engine Knocking</a>
+        <a href="#" onclick="openChat('solver','Vehicle not starting');return false">Vehicle Not Starting</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Knowledge</div>
+        <a href="#" onclick="scrollToKT();return false">Knowledge Domains</a>
+        <a href="#" onclick="switchKT('library',document.querySelectorAll('.kt-tab')[0]);scrollToKT();return false">Electric Vehicles</a>
+        <a href="#" onclick="switchKT('library',document.querySelectorAll('.kt-tab')[0]);scrollToKT();return false">Battery & BMS</a>
+        <a href="#" onclick="switchKT('library',document.querySelectorAll('.kt-tab')[0]);scrollToKT();return false">Brakes & Safety</a>
+        <a href="#" onclick="switchKT('library',document.querySelectorAll('.kt-tab')[0]);scrollToKT();return false">Maintenance</a>
+        <a href="#" onclick="switchKT('tools',document.querySelectorAll('.kt-tab')[1]);scrollToKT();return false">Diagnostic Tools</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Platform</div>
+        <a href="#" onclick="goProfile();return false">Vehicle Profile</a>
+        <a href="#" onclick="scrollToEco();return false">Marketplace</a>
+        <a href="#" onclick="document.getElementById('safety-section')?.scrollIntoView({behavior:'smooth'});return false">Safety Guidelines</a>
+        <a href="#" onclick="scrollToKT('tools');return false">Documentation</a>
+        <a href="#" onclick="document.getElementById('seo-grid')?.scrollIntoView({behavior:'smooth'});return false">Diagnostic Examples</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>MobilityAI provides educational insights only — not a substitute for professional mechanical inspection.</span>
+      <span>Built for India · Free Forever · No Ads · No Bias</span>
     </div>
   </footer>
 </div><!-- /pg-home -->
