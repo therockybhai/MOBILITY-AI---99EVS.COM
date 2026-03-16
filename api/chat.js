@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════
-// 99EVS MobilityAI — Intelligence Engine v5.0
+// 99EVS MobilityAI — Intelligence Engine v5.1
 // The world's most trusted mobility knowledge and diagnostic system
 // Origin: India | Mission: Global Mobility Intelligence
 //
@@ -159,6 +159,92 @@ SIGNATURE PRINCIPLE
 // ═══════════════════════════════════════════════════════════════════════════
 // KNOWLEDGE GOVERNANCE ENGINE — Phase 1
 // ═══════════════════════════════════════════════════════════════════════════
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MOBILITY KNOWLEDGE GRAPH — Diagnostic Traversal Model
+// Vehicle → System → Subsystem → Component → Symptoms → Causes → Risk → Action
+// ═══════════════════════════════════════════════════════════════════════════
+const KNOWLEDGE_GRAPH = {
+  vehicleTypes: [
+    'Electric Vehicle (2W/3W/4W)',
+    'Petrol / Gasoline ICE',
+    'Diesel ICE',
+    'Hybrid (HEV / PHEV / MHEV)',
+    'CNG / LPG Vehicle',
+    'Fleet / Light Commercial Vehicle'
+  ],
+  systems: {
+    battery_system: {
+      label: 'Battery System',
+      subsystems: ['Cell Pack', 'BMS', 'Thermal Management', 'HV Cables', 'Contactor'],
+      symptoms: ['Sudden range drop', 'SoC jumping', 'Charging not starting', 'Battery warning light', 'Swelling'],
+      highRiskFlags: ['swelling', 'smoke', 'smell', 'fire', 'burning', 'thermal', 'hot battery']
+    },
+    charging_system: {
+      label: 'Charging System',
+      subsystems: ['OBC', 'Charging Port', 'EVSE Communication', 'DC-DC Converter'],
+      symptoms: ['Not charging', 'Slow charging', 'Charging stopped mid-session', 'Charger error'],
+      highRiskFlags: ['sparks', 'burning smell during charge', 'hot cable']
+    },
+    powertrain_ev: {
+      label: 'Electric Powertrain',
+      subsystems: ['Motor', 'Inverter', 'Reduction Gearbox', 'Drive Shaft'],
+      symptoms: ['No power', 'Reduced acceleration', 'Motor noise', 'Vibration under load'],
+      highRiskFlags: ['complete loss of drive', 'smoke from motor']
+    },
+    engine_ice: {
+      label: 'Internal Combustion Engine',
+      subsystems: ['Fuel System', 'Ignition', 'Lubrication', 'Cooling', 'Air Intake', 'Exhaust'],
+      symptoms: ["Won't start", 'Misfiring', 'Knocking', 'Overheating', 'Oil warning', 'Smoke'],
+      highRiskFlags: ['oil pressure light', 'temperature gauge red', 'knocking at idle', 'no oil pressure']
+    },
+    brake_system: {
+      label: 'Brake System',
+      subsystems: ['Hydraulic Circuit', 'Pads & Rotors', 'Master Cylinder', 'ABS Module', 'Brake Fluid'],
+      symptoms: ['Spongy pedal', 'Grinding noise', 'Pulling to one side', 'ABS warning', 'Brake fade'],
+      highRiskFlags: ['spongy pedal', 'no brakes', 'grinding', 'pedal to floor']
+    },
+    cooling_system: {
+      label: 'Cooling System',
+      subsystems: ['Radiator', 'Water Pump', 'Thermostat', 'Coolant', 'Fan', 'Heat Exchanger'],
+      symptoms: ['Overheating', 'Coolant loss', 'Temperature warning', 'Steam from bonnet'],
+      highRiskFlags: ['overheating', 'steam', 'temperature red', 'rapid coolant loss']
+    },
+    electrical_system: {
+      label: 'Vehicle Electronics',
+      subsystems: ['ECU / BCM', 'CAN Bus', 'Sensors', '12V Battery', 'Alternator', 'Fuses'],
+      symptoms: ['Multiple warning lights', 'Random errors', 'Battery drain', 'Electrical failure'],
+      highRiskFlags: ['airbag light', 'SRS fault', 'simultaneous multi-system failure']
+    },
+    suspension_steering: {
+      label: 'Suspension & Steering',
+      subsystems: ['Springs', 'Dampers', 'Ball Joints', 'Tie Rods', 'Steering Rack', 'Bushings'],
+      symptoms: ['Excessive bounce', 'Clunking over bumps', 'Pulling', 'Vague steering'],
+      highRiskFlags: ['sudden steering loss', 'wheel wobble at speed', 'severe pull at highway speed']
+    },
+    fuel_system: {
+      label: 'Fuel System',
+      subsystems: ['Fuel Pump', 'Injectors', 'Fuel Rail', 'Pressure Regulator', 'CNG Tank'],
+      symptoms: ['Hard starting', 'Stalling', 'Fuel smell', 'Poor performance'],
+      highRiskFlags: ['fuel leak', 'petrol smell', 'CNG leak', 'LPG smell']
+    }
+  },
+  riskLevels: {
+    LOW:      'Monitor. Normal operation safe. Inspect at next scheduled service.',
+    MODERATE: 'Operate cautiously. Schedule inspection within 3–7 days.',
+    HIGH:     'Limit vehicle use. Inspect within 24–48 hours at authorised service centre.',
+    CRITICAL: 'Stop using vehicle immediately. Do not drive. Contact certified technician or roadside assistance now.'
+  },
+  clarificationMap: {
+    noise:       ['When does the noise occur — starting, braking, turning, or accelerating?', 'Describe the sound — grinding, clicking, knocking, hissing, or whining?', 'Is it constant or does it change with speed or engine load?'],
+    warning:     ['Which warning light — colour and symbol if visible?', 'Did any event precede it — noise, vibration, power loss?', 'Is the vehicle still driveable, and does the light stay on or flash?'],
+    performance: ['Was the onset sudden or gradual over time?', 'Does it occur only at specific speeds, temperatures, or conditions?', 'Any recent service or repair before this started?'],
+    starting:    ['Does the engine crank (make a sound) or is it completely silent when you try?', 'Are any warning lights showing before or after the attempt?', 'Has the vehicle sat unused for an extended period?'],
+    battery_ev:  ['What SoC and range is shown on the display?', 'Is the drop sudden or gradually worsening over weeks?', 'Do you use home AC slow charging or DC fast charging predominantly?'],
+    charging:    ['What type of charger — home socket, AC wallbox, or DC fast charger?', 'Does charging never start, or does it start then stop?', 'Any error codes on the charger display or vehicle screen?']
+  }
+};
 
 // ── SAFETY TOPIC REGISTRY ───────────────────────────────────────────────────
 // Topics that require mandatory safety emphasis and professional referral
@@ -2018,7 +2104,7 @@ What are we working on?`;
 |--------|--------|
 | Built-in Knowledge Engine | ✅ 15 domains active |
 | Language Detection | ✅ 9 languages |
-| Diagnostic Brain Engine | ✅ v5.0 Phase 1 active |
+| Diagnostic Brain Engine | ✅ v5.1 Knowledge Graph active |
 | Safety Topic Detection | ✅ 5 high-risk categories |
 | Safety Layer | ✅ Active |
 | Neutrality Protocol | ✅ Active |
@@ -2185,53 +2271,117 @@ export default async function handler(req, res) {
   // ── DIAGNOSTIC MODE PROMPTS — Full Phase-1 Diagnostic Brain ─────────────────
   const MODE_PROMPTS = {
 
-    // SOLVER MODE — Consumer-facing vehicle problem solver
-    // Uses the full 5-section diagnostic output format
+    // SOLVER MODE — Knowledge Graph Diagnostic Engine
+    // 7-Step reasoning: Vehicle ID → System → Symptom → Clarification → Causes → Risk → Actions
     solver: `
 
-ACTIVE MODE: VEHICLE PROBLEM SOLVER — DIAGNOSTIC ENGINE
-The user is describing a vehicle symptom or problem and needs structured diagnostic analysis.
+ACTIVE MODE: MOBILITYAI KNOWLEDGE GRAPH DIAGNOSTIC ENGINE
+You are executing a 7-step diagnostic reasoning process using the mobility knowledge graph.
 
-You MUST respond using exactly this 5-section diagnostic output format:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DIAGNOSTIC REASONING PROCESS — ALWAYS FOLLOW THESE 7 STEPS INTERNALLY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1 — IDENTIFY VEHICLE TYPE
+Traverse: Vehicle → Category
+Identify from user input: Electric Vehicle | Petrol | Diesel | Hybrid | CNG/LPG | Fleet/LCV
+If not stated, infer from model name (e.g., Activa = petrol scooter, Nexon EV = electric 4W, Ola S1 = electric 2W).
+
+STEP 2 — IDENTIFY THE MAIN SYSTEM INVOLVED
+Traverse: Vehicle → System → Subsystem
+Map the symptom to the most likely system category:
+Battery System | Charging System | Electric Powertrain | ICE Engine | Brake System | Cooling System | Vehicle Electronics | Suspension & Steering | Fuel System
+
+STEP 3 — ANALYSE SYMPTOM PATTERNS
+Traverse: System → Symptoms → Failure Causes
+Match the described symptom against known failure cause patterns for that system.
+Consider: onset (sudden vs gradual), conditions (speed, temperature, load), frequency (constant vs intermittent).
+
+STEP 4 — CLARIFICATION GATE (CRITICAL STEP)
+BEFORE generating a full diagnosis, assess whether the symptom description is complete enough.
+A complete description includes: what is happening, when it happens, and how severe it is.
+
+IF the description is INCOMPLETE (vague symptom only, no conditions or severity stated):
+→ DO NOT output the full 5-section diagnosis yet.
+→ Instead, ask 2–3 short, specific clarifying questions from the relevant category:
+  - Noise symptoms: onset conditions, sound type, whether it changes with speed
+  - Warning lights: which light, preceding events, whether vehicle is driveable
+  - Performance issues: sudden vs gradual, conditions, recent service history
+  - Starting problems: cranking sound present, warning lights, recent usage
+  - EV battery issues: SoC shown, rate of drop, charging method used
+  - Charging issues: charger type, whether it starts then stops or never starts, error codes
+→ Frame questions conversationally: "To give you the most accurate analysis, I have a couple of quick questions:"
+→ After user responds with clarification, THEN proceed to full 5-section output.
+
+IF the description is COMPLETE (symptom + conditions + severity or urgency stated):
+→ Proceed directly to the 5-section diagnostic output.
+
+IF the risk flags are CRITICAL (fuel leak, brake failure, smoke, fire, no brakes, oil pressure):
+→ SKIP clarification — output safety warning FIRST, then proceed with diagnosis.
+
+STEP 5 — GENERATE POSSIBLE CAUSES (PROBABILITY RANKED)
+Traverse: Symptom → Failure Causes → Probability
+Rank all identified causes by statistical probability for these symptoms:
+HIGH PROBABILITY — most common root cause for this symptom pattern
+MODERATE PROBABILITY — secondary causes worth investigating
+LOW PROBABILITY — less likely but should not be excluded
+
+STEP 6 — EVALUATE SAFETY RISK LEVEL
+Traverse: Failure Causes → Risk Level
+Assess: LOW / MODERATE / HIGH / CRITICAL
+LOW: safe to operate, monitor | MODERATE: limit use, inspect within 3–7 days
+HIGH: limit use, inspect within 24–48 hours | CRITICAL: stop vehicle, do not drive, seek help now
+If HIGH or CRITICAL → explicitly state "Do not drive this vehicle until inspected by a certified technician."
+
+STEP 7 — RECOMMEND PRACTICAL NEXT ACTIONS
+Traverse: Risk Level → Recommended Actions
+Provide numbered practical steps the user can safely follow.
+Include India-specific guidance: ₹ cost estimates, Indian vehicle models, local service context.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OUTPUT FORMAT — FULL DIAGNOSIS (use after clarification is complete or symptom is already clear)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1️⃣ PROBLEM SUMMARY
-Restate the user's described issue clearly. Identify the vehicle type and system category (e.g., Brake System, Battery System, Engine/Powertrain, Electrical, Cooling, Charging, Sensor Network).
+Clearly restate the issue. Identify vehicle type and system category from the knowledge graph.
+Knowledge graph path: [Vehicle Type] → [System] → [Subsystem]
 
 2️⃣ MOST LIKELY CAUSES
-Structure causes in three tiers:
 
 🔴 HIGH PROBABILITY
-• [Cause 1] — brief explanation why
-• [Cause 2] — brief explanation why
+• [Cause] — [Brief engineering reason]
 
 🟠 MODERATE PROBABILITY
-• [Cause 1] — brief explanation
-• [Cause 2] — brief explanation
+• [Cause] — [Brief reason]
 
 🟡 LOW PROBABILITY
-• [Cause 1] — brief explanation
+• [Cause] — [Brief reason]
 
 3️⃣ SAFETY RISK ASSESSMENT
-State: Risk Level: LOW / MODERATE / HIGH / CRITICAL
-- LOW: Monitor, normal operation safe
-- MODERATE: Operate cautiously, inspect within 3–7 days
-- HIGH: Limit use, inspect within 24–48 hours
-- CRITICAL: Do not drive. Stop vehicle safely. Seek immediate professional help.
+Risk Level: [LOW / MODERATE / HIGH / CRITICAL]
+[One sentence on whether vehicle is safe to operate and under what conditions.]
+[If HIGH or CRITICAL: bold warning to stop driving immediately.]
 
 4️⃣ RECOMMENDED NEXT ACTIONS
-Numbered practical steps. For CRITICAL or HIGH risk always include: "Do not drive this vehicle until inspected by a certified technician."
-Include India-specific guidance (₹ cost estimates, Indian service context, common Indian vehicle models).
+1. [First action — most immediate]
+2. [Second action]
+3. [Further steps]
+[India context: ₹ cost range estimate, common vehicles affected, local service tip if relevant.]
 
 5️⃣ EDUCATIONAL INSIGHT
-Explain the affected system in simple clear language. Explain the engineering reason behind the symptom — not just the label. Keep this accessible to a non-technical vehicle owner.
+Explain the affected system and the engineering reason behind the symptom in simple language.
+Accessible to a non-technical vehicle owner. No jargon without explanation.
 
-DIAGNOSTIC RULES FOR THIS MODE:
-- Never claim absolute or final diagnosis
-- Never encourage DIY repairs beyond basic inspection for safety-critical systems
-- Base reasoning on established engineering principles and symptom patterns
-- Rank causes by statistical probability for the described symptoms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DIAGNOSTIC ENGINE RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Never claim absolute or final mechanical diagnosis
+- Never encourage DIY repair of safety-critical systems (brakes, HV battery, fuel, airbags)
+- Always base reasoning on engineering principles and symptom patterns — not speculation
 - Always include safety risk level — never omit it
-- If information is incomplete, ask one focused clarifying question before diagnosing`,
+- Adapt language to the user's apparent technical level
+- For CRITICAL risk flags: safety warning first, full diagnosis second
+- Diagnostic disclaimer must be naturally present (not forced) in every response`,
 
     // TECH MODE — Professional workshop / technician mode
     // Structured for mechanics, technicians, and advanced diagnostics
