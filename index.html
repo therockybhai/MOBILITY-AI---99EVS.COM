@@ -2170,6 +2170,328 @@ button,
 .oem-tag.commercial{background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2);color:#FB923C}
 .oem-tag.lpg{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.2);color:#FB7185}
 @media(max-width:600px){.seg-parts{grid-template-columns:1fr 1fr}.service-eco-grid{grid-template-columns:1fr 1fr}}
+
+/* ══════════════════════════════════════════════════════════════
+   BETA LAUNCH REFINEMENTS — All 9 Fixes
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── FIX 2: DIAGNOSTIC PROOF SECTION ── */
+.proof-sec {
+  background: var(--bg2);
+  border-top: 1px solid var(--lng);
+  border-bottom: 1px solid var(--lng);
+  padding: 72px 24px;
+}
+.proof-card {
+  background: var(--bg);
+  border: 1px solid rgba(0,255,160,.22);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,255,160,.06);
+}
+.proof-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px;
+  background: rgba(0,255,160,.04);
+  border-bottom: 1px solid var(--lng);
+}
+.proof-problem-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--t3);
+}
+.proof-vehicle-tag {
+  font-size: 11px; font-weight: 700;
+  background: rgba(0,255,160,.1); border: 1px solid rgba(0,255,160,.25);
+  color: var(--g); padding: 3px 12px; border-radius: 20px;
+}
+.proof-query {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--lng);
+  background: rgba(255,255,255,.015);
+}
+.proof-query-ico { font-size: 18px; flex-shrink: 0; padding-top: 1px; }
+.proof-query-text {
+  font-size: 14px; color: var(--t1); font-style: italic; line-height: 1.6;
+}
+.proof-output { padding: 20px 22px; }
+.proof-section-label {
+  font-family: var(--ff); font-weight: 700; font-size: 15px;
+  margin-bottom: 14px; color: var(--t1);
+}
+.proof-causes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.proof-cause {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px; padding: 12px 14px; border-radius: 8px;
+}
+.proof-cause.high   { background: rgba(239,68,68,.06);  border: 1px solid rgba(239,68,68,.18); }
+.proof-cause.mod    { background: rgba(245,158,11,.06); border: 1px solid rgba(245,158,11,.18); }
+.proof-cause.low    { background: rgba(234,179,8,.05);  border: 1px solid rgba(234,179,8,.15); }
+.proof-cause-left   { display: flex; align-items: flex-start; gap: 10px; flex: 1; }
+.proof-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;
+}
+.proof-dot.red    { background: #EF4444; }
+.proof-dot.amber  { background: #F59E0B; }
+.proof-dot.yellow { background: #EAB308; }
+.proof-cause-name {
+  font-weight: 600; font-size: 13px; color: var(--t1); margin-bottom: 3px;
+}
+.proof-cause-reason { font-size: 12px; color: var(--t2); line-height: 1.5; }
+.proof-pct {
+  font-family: var(--ff); font-weight: 900; font-size: 22px;
+  color: var(--g); flex-shrink: 0; min-width: 48px; text-align: right;
+}
+.proof-risk-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  padding: 14px; background: rgba(255,255,255,.025);
+  border-radius: 8px; margin-bottom: 14px;
+}
+.proof-risk-block, .proof-confidence-block, .proof-kg-block { flex: 1; min-width: 140px; }
+.proof-risk-label {
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--t3); font-weight: 700; margin-bottom: 5px;
+}
+.proof-risk-val {
+  font-family: var(--ff); font-weight: 800; font-size: 16px;
+}
+.proof-risk-val.moderate { color: #F59E0B; }
+.proof-risk-val.green    { color: var(--g); }
+.proof-kg-path {
+  font-size: 12px; color: var(--t2); font-family: monospace;
+  background: rgba(0,0,0,.2); padding: 4px 8px; border-radius: 4px;
+}
+.proof-insight, .proof-action {
+  font-size: 13px; color: var(--t2); line-height: 1.7;
+  margin-bottom: 10px; padding: 10px 14px;
+  background: rgba(255,255,255,.02); border-radius: 6px;
+}
+.proof-insight strong, .proof-action strong { color: var(--t1); }
+.proof-cta-row {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 16px 22px;
+  border-top: 1px solid var(--lng);
+  background: rgba(0,255,160,.03);
+}
+.proof-cta-note { font-size: 12px; color: var(--t3); }
+
+/* ── FIX 5: TRUST SIGNAL SECTION ── */
+.trust-sig-sec {
+  background: var(--bg);
+  border-top: 1px solid var(--lng);
+  border-bottom: 1px solid var(--lng);
+  padding: 72px 24px;
+}
+.trust-sig-grid {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  justify-content: center; margin-bottom: 24px;
+}
+.trust-sig-card {
+  background: var(--bg2); border: 1px solid var(--lng);
+  border-radius: 10px; padding: 22px 18px;
+  flex: 1; min-width: 170px; max-width: 210px;
+  text-align: center; transition: all .2s;
+}
+.trust-sig-card:hover {
+  border-color: rgba(0,255,160,.35);
+  transform: translateY(-2px);
+}
+.trust-sig-ico { font-size: 26px; display: block; margin-bottom: 10px; }
+.trust-sig-label {
+  font-family: var(--ff); font-weight: 700; font-size: 14px;
+  color: var(--g); margin-bottom: 7px; line-height: 1.3;
+}
+.trust-sig-desc { font-size: 12px; color: var(--t2); line-height: 1.6; }
+.trust-sig-disclaimer {
+  text-align: center; font-size: 13px; color: var(--t3);
+  max-width: 500px; margin: 0 auto;
+  padding: 14px 20px;
+  border: 1px solid var(--lng); border-radius: 8px;
+  background: rgba(255,255,255,.02);
+}
+
+/* ── FIX 6: SAVE REPORT CTA ── */
+.save-report-cta {
+  background: linear-gradient(135deg, rgba(0,255,160,.06), rgba(0,255,160,.02));
+  border: 1px solid rgba(0,255,160,.22);
+  border-radius: 10px; padding: 20px 22px; margin-top: 16px; margin-bottom: 8px;
+}
+.save-report-title {
+  font-family: var(--ff); font-weight: 800; font-size: 18px;
+  margin-bottom: 6px; color: var(--t1);
+}
+.save-report-desc { font-size: 13px; color: var(--t2); margin-bottom: 12px; }
+.save-report-features { margin-bottom: 16px; display: flex; flex-direction: column; gap: 7px; }
+.save-report-feat {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--t2);
+}
+.save-feat-check { color: var(--g); font-weight: 700; font-size: 13px; }
+.save-report-btn { width: 100%; margin-top: 4px; }
+
+/* ── MARKETPLACE TRUST LINE ── */
+.marketplace-trust-line {
+  font-size: 13px; font-weight: 600; color: var(--g);
+  margin-bottom: 24px; text-align: center;
+  padding: 8px 16px;
+  background: rgba(0,255,160,.06); border: 1px solid rgba(0,255,160,.18);
+  border-radius: 20px; display: inline-block;
+}
+.marketplace-trust-banner {
+  background: rgba(0,255,160,.08); border: 1px solid rgba(0,255,160,.22);
+  border-radius: 8px; padding: 10px 18px;
+  font-size: 13px; font-weight: 600; color: var(--g);
+  margin-bottom: 20px; text-align: center;
+}
+
+/* ── PROOF RESPONSIVE ── */
+@media(max-width:700px) {
+  .proof-risk-row { flex-direction: column; gap: 10px; }
+  .proof-cta-row { flex-direction: column; align-items: flex-start; }
+  .trust-sig-card { min-width: 140px; }
+  .proof-cause { flex-direction: column; }
+  .proof-pct { font-size: 18px; }
+}
+@media(max-width:500px) {
+  .trust-sig-card { max-width: 100%; flex-basis: 100%; }
+}
+
+
+/* ── SEO LANDING PAGES ── */
+.seo-lp-wrap{max-width:700px;margin:0 auto;padding:0 0 48px}
+.seo-lp-title{font-family:var(--ff);font-weight:800;font-size:clamp(22px,4vw,30px);color:var(--t1);margin-bottom:8px;letter-spacing:-.3px}
+.seo-lp-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.6}
+.seo-lp-section{margin-bottom:22px;padding:16px 18px;background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:12px}
+.seo-lp-sect-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--g);font-weight:700;margin-bottom:10px}
+.seo-lp-body{font-size:14px;color:var(--t2);line-height:1.7}
+.seo-lp-causes{display:flex;flex-direction:column;gap:10px}
+.seo-lp-cause{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px 14px}
+.seo-lp-cause-top{display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.seo-lp-prob{font-size:16px}
+.seo-lp-label{font-size:13px;font-weight:600;color:var(--t1);flex:1}
+.seo-lp-pct{font-family:var(--ff);font-weight:800;font-size:16px;color:var(--g)}
+.seo-lp-cause-detail{font-size:12px;color:var(--t3);line-height:1.55}
+.seo-lp-risk{font-size:14px;font-weight:700;color:var(--amb)}
+.seo-lp-cta{background:linear-gradient(135deg,rgba(0,255,160,.08),rgba(0,255,160,.03));border:1px solid rgba(0,255,160,.2);border-radius:12px;padding:22px 20px;text-align:center;margin-top:28px}
+.seo-lp-cta-title{font-family:var(--ff);font-weight:800;font-size:18px;margin-bottom:7px}
+.seo-lp-cta-sub{font-size:13px;color:var(--t2);margin-bottom:18px}
+/* ── SAVE DIAGNOSIS BANNER ── */
+.save-diag-banner{background:linear-gradient(90deg,rgba(0,255,160,.06),rgba(0,255,160,.02));border:1px solid rgba(0,255,160,.2);border-radius:10px;padding:14px 16px;margin:12px 0 4px;animation:fadeUp .3s ease}
+.save-diag-inner{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.save-diag-left{flex:1;min-width:180px}
+.save-diag-title{font-family:var(--ff);font-weight:700;font-size:14px;color:var(--t1);margin-bottom:4px}
+.save-diag-text{font-size:12px;color:var(--t2);line-height:1.5}
+.save-diag-btn{background:var(--g);color:#000;font-family:var(--ff);font-weight:700;font-size:12px;padding:8px 16px;border:none;border-radius:100px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .18s}
+.save-diag-btn:hover{background:#00FFB0}
+.save-diag-close{background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;flex-shrink:0;line-height:1;padding:0 4px;transition:color .18s}
+.save-diag-close:hover{color:var(--t1)}
+@media(max-width:480px){.save-diag-inner{flex-direction:column;align-items:flex-start}.save-diag-btn{width:100%}}
+
+
+/* ═══════════════════════════════════════════════════
+   TASKS 1–7 STYLES
+   ═══════════════════════════════════════════════════ */
+
+/* ── T1: LIVENESS DOTS + SIGNALS ── */
+.liveness-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--g); margin-right: 6px; flex-shrink: 0;
+  animation: pulse 2.2s ease-in-out infinite;
+}
+.report-liveness {
+  display: flex; align-items: center;
+  font-size: 10.5px; color: var(--t3); margin-top: 12px;
+  padding: 7px 12px; background: rgba(0,255,160,.04);
+  border-radius: 6px; border: 1px solid rgba(0,255,160,.10);
+}
+.flywheel-live-signal {
+  display: flex; align-items: center;
+  font-size: 11px; color: var(--t3); margin-top: 16px;
+  justify-content: center;
+}
+.vhs-liveness {
+  display: flex; align-items: center;
+  font-size: 11.5px; color: var(--t3); margin-top: 8px; margin-bottom: 4px;
+}
+
+/* ── T2: FORMAL REPORT HEADER ── */
+.report-formal-header {
+  background: linear-gradient(135deg, rgba(0,255,160,.07), rgba(0,255,160,.02));
+  border: 1px solid rgba(0,255,160,.18);
+  border-radius: 10px; padding: 16px 18px; margin-bottom: 16px;
+}
+
+/* ── T3: OWNERSHIP SIGNAL ── */
+.ownership-signal {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 12.5px; color: var(--t2);
+  padding: 9px 14px; margin: 8px 0 3px;
+  background: rgba(255,255,255,.025); border-radius: 8px;
+  border-left: 3px solid var(--g);
+  animation: fadeUp .3s ease;
+}
+.ownership-ico { font-size: 15px; flex-shrink: 0; }
+.ownership-txt { line-height: 1.5; }
+
+/* ── T4: ACTION BRIDGE ── */
+.action-bridge {
+  margin: 10px 0 3px; animation: fadeUp .3s ease;
+}
+.action-bridge-inner {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  background: var(--bg2); border: 1px solid rgba(0,255,160,.18);
+  border-radius: 9px; padding: 12px 16px;
+}
+.action-bridge-label {
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 700; color: var(--g); flex-shrink: 0;
+}
+.action-bridge-text {
+  font-size: 13px; color: var(--t1); flex: 1; min-width: 140px;
+}
+.action-bridge-btn {
+  background: var(--g); color: #000;
+  font-family: var(--ff); font-weight: 700; font-size: 12px; letter-spacing: .4px;
+  padding: 7px 16px; border: none; border-radius: 100px; cursor: pointer;
+  flex-shrink: 0; transition: background .18s;
+  white-space: nowrap;
+}
+.action-bridge-btn:hover { background: #00FFB0; }
+
+/* ── T5: PROGRESSION LOOP ── */
+.progression-loop {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  font-size: 12.5px; color: var(--t2);
+  padding: 10px 14px; margin: 6px 0;
+  background: rgba(0,100,255,.04); border: 1px solid rgba(0,100,255,.14);
+  border-radius: 8px; animation: fadeUp .3s ease;
+}
+.progression-btn {
+  background: none; border: 1px solid rgba(0,255,160,.3);
+  color: var(--g); font-size: 12px; font-weight: 600;
+  padding: 5px 13px; border-radius: 100px; cursor: pointer;
+  flex-shrink: 0; transition: all .18s;
+}
+.progression-btn:hover { background: var(--g); color: #000; }
+
+/* ── T7: MICRO TRUST SIGNALS ── */
+.report-trust-row {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  margin-top: 10px;
+}
+.report-trust-badge {
+  font-size: 10.5px; color: var(--t3);
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  padding: 4px 10px; border-radius: 20px;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:480px) {
+  .action-bridge-inner { flex-direction: column; align-items: flex-start; }
+  .action-bridge-btn { width: 100%; text-align: center; }
+  .report-trust-row { flex-direction: column; }
+}
+
 </style>
 </head>
 <body>
@@ -2186,7 +2508,7 @@ button,
       <div><div class="top-nav-name">99EVS</div><div class="top-nav-sub">MobilityAI</div></div>
     </div>
     <div class="top-nav-links" id="top-nav-links">
-      <button class="top-nav-link" onclick="goSubPage('pg-solver');closeMobNav()">Problem Solver</button>
+      <button class="top-nav-link" onclick="goSubPage('pg-solver');closeMobNav()">Problem Analysis</button>
       <button class="top-nav-link" onclick="goSubPage('pg-profile');closeMobNav()">Vehicle Profile</button>
       <button class="top-nav-link" onclick="goSubPage('pg-mechanic');closeMobNav()">Technical Mode</button>
       <button class="top-nav-link" onclick="goSubPage('pg-knowledge');closeMobNav()">Knowledge</button>
@@ -2214,27 +2536,110 @@ button,
   <!-- ═══════ SECTION 1 — HERO ═══════ -->
   <section class="hero">
     <div class="hero-grid"></div><div class="hero-glow"></div>
-    <div class="live-pill"><div class="live-dot"></div> World's First Mobility AI · India Launch · Free Forever</div>
-    <h1 class="hero-h1">The World's Most Trusted<br><em>Mobility Knowledge System</em></h1>
-    <p class="hero-sub">Diagnose vehicle problems, understand mobility systems, and prevent failures with MobilityAI.</p>
-    <p class="hero-supporting">Powered by 99EVS &mdash; building intelligent mobility tools for the future.</p>
+    <div class="live-pill"><div class="live-dot"></div> Know Your Vehicle · Diagnose Problems · Prevent Failures</div>
+    <h1 class="hero-h1">Know Your Vehicle's Real Condition<br><em>— Before It Fails</em></h1>
+    <p class="hero-sub">Diagnose vehicle problems instantly. Understand your vehicle's condition. Prevent costly failures before they happen.</p>
+    <p class="hero-supporting-ai" style="font-size:14px;color:var(--t2);text-align:center;margin:-8px 0 8px;line-height:1.6">AI-powered problem analysis with clear causes, risk levels, and recommended actions.</p>
+    <p class="hero-supporting">Diagnose issues &bull; Track health &bull; Prevent costly breakdowns</p>
     <div class="hero-btns" style="flex-wrap:wrap;justify-content:center">
       <button class="btn-lg g" onclick="goSubPage('pg-solver')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        Solve a Vehicle Problem
+        Solve My Vehicle Problem
       </button>
-      <button class="btn-lg o" onclick="goSubPage('pg-profile')">Create Vehicle Profile</button>
-      <button class="btn-lg o" onclick="goSubPage('pg-mechanic')">Technical Diagnostic Mode</button>
+      <button class="btn-lg o" onclick="goSubPage('pg-profile')">Create My Vehicle Profile</button>
+      <button class="btn-lg o" onclick="goSubPage('pg-mechanic')">Advanced Technical Mode</button>
     </div>
     <div class="hero-cred">
       <div class="hero-cred-item">16+ Mobility Knowledge Domains</div>
       <div class="hero-cred-divider"></div>
-      <div class="hero-cred-item">AI Diagnostic Engine</div>
+      <div class="hero-cred-item">AI Problem Analysis Engine</div>
       <div class="hero-cred-divider"></div>
       <div class="hero-cred-item">Safety-First Analysis</div>
     </div>
     <p class="hero-micro">Ask any vehicle question &mdash; free forever. No credit card required.</p>
     <p class="hero-disclaimer">Educational platform only &mdash; not a substitute for professional mechanical inspection. <a onclick="showInfoModal('safety')">Safety Notice</a></p>
+  </section>
+
+  <!-- ═══════ DIAGNOSTIC PROOF SECTION ═══════ -->
+  <section class="proof-sec" id="diagnostic-proof">
+    <div class="sec-in" style="max-width:860px">
+      <div style="text-align:center;margin-bottom:36px">
+        <div class="sec-eyebrow">Live Example</div>
+        <h2 class="sec-h2">See How MobilityAI Diagnoses Real Problems</h2>
+        <p class="sec-p" style="max-width:540px;margin:0 auto">This is what you get within seconds of describing your vehicle problem — no login, no waiting, no guesswork.</p>
+      </div>
+      <div class="proof-card">
+        <div class="proof-card-header">
+          <div class="proof-problem-label">Example Problem</div>
+          <div class="proof-vehicle-tag">⚡ Electric Vehicle</div>
+        </div>
+        <div class="proof-query">
+          <span class="proof-query-ico">💬</span>
+          <span class="proof-query-text">"My EV is not charging. The charger LED turns on but nothing happens on the vehicle side."</span>
+        </div>
+        <div class="proof-output">
+          <div class="proof-section-label">2️⃣ Most Likely Causes</div>
+          <div class="proof-causes">
+            <div class="proof-cause high">
+              <div class="proof-cause-left">
+                <span class="proof-dot red"></span>
+                <div>
+                  <div class="proof-cause-name">Charging Port Fault or Corrosion</div>
+                  <div class="proof-cause-reason">Physical connector degradation prevents EVSE handshake from completing</div>
+                </div>
+              </div>
+              <div class="proof-pct">62%</div>
+            </div>
+            <div class="proof-cause mod">
+              <div class="proof-cause-left">
+                <span class="proof-dot amber"></span>
+                <div>
+                  <div class="proof-cause-name">BMS Protection Lock Active</div>
+                  <div class="proof-cause-reason">Battery Management System blocking charge due to cell voltage or temperature condition</div>
+                </div>
+              </div>
+              <div class="proof-pct">25%</div>
+            </div>
+            <div class="proof-cause low">
+              <div class="proof-cause-left">
+                <span class="proof-dot yellow"></span>
+                <div>
+                  <div class="proof-cause-name">On-Board Charger (OBC) Fault</div>
+                  <div class="proof-cause-reason">Internal AC-to-DC conversion component failure</div>
+                </div>
+              </div>
+              <div class="proof-pct">13%</div>
+            </div>
+          </div>
+          <div class="proof-risk-row">
+            <div class="proof-risk-block">
+              <div class="proof-risk-label">Risk Level</div>
+              <div class="proof-risk-val moderate">⚠️ Moderate</div>
+            </div>
+            <div class="proof-confidence-block">
+              <div class="proof-risk-label">AI Confidence Score</div>
+              <div class="proof-risk-val green">87%</div>
+            </div>
+            <div class="proof-kg-block">
+              <div class="proof-risk-label">Knowledge Graph Path</div>
+              <div class="proof-kg-path">EV → Charging System → OBC → Charging Port</div>
+            </div>
+          </div>
+          <div class="proof-insight">
+            <strong>What This Means:</strong> The vehicle is not receiving proper charging input. EV charging requires a successful digital handshake between the BMS and charger — failure at any point aborts the session. This may lead to range loss and battery stress if left unaddressed.
+          </div>
+          <div class="proof-action">
+            <strong>Recommended Action:</strong> Inspect the charging port for bent pins or corrosion. Try a different charger or EVSE station. If the issue persists, request a BMS diagnostic scan at an authorised service centre.
+          </div>
+        </div>
+        <div class="proof-cta-row">
+          <button class="btn-lg g" onclick="goSubPage('pg-solver')" style="border-radius:100px;font-size:14px">
+            Get Your Own Diagnosis — Free →
+          </button>
+          <span class="proof-cta-note">No login required · Results in under 10 seconds</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ═══════ SECTION 2 — CHOOSE YOUR PATH ═══════ -->
@@ -2247,7 +2652,7 @@ button,
           <div class="path-ico">🔍</div>
           <div class="path-t">Vehicle Problem Solver</div>
           <div class="path-d">Describe your vehicle problem. MobilityAI diagnoses possible causes using structured AI reasoning — ranked by likelihood with safety assessment.</div>
-          <button class="path-btn">Diagnose a Problem →</button>
+          <button class="path-btn">Analyse My Problem →</button>
         </div>
         <div class="path-card profile" onclick="goSubPage('pg-profile')">
           <div class="path-ico">🧠</div>
@@ -2295,6 +2700,46 @@ button,
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
           Professional Mobility Tools
         </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ TRUST SIGNALS ═══════ -->
+  <section class="trust-sig-sec" id="trust-signals">
+    <div class="sec-in" style="max-width:900px">
+      <div style="text-align:center;margin-bottom:36px">
+        <div class="sec-eyebrow">Platform Integrity</div>
+        <h2 class="sec-h2">Built on Engineering Knowledge.<br>Designed for Real-World Use.</h2>
+      </div>
+      <div class="trust-sig-grid">
+        <div class="trust-sig-card">
+          <span class="trust-sig-ico">🔬</span>
+          <div class="trust-sig-label">Evidence-Based Diagnostics</div>
+          <div class="trust-sig-desc">Every output grounded in established engineering principles and symptom-cause data — not AI guesswork.</div>
+        </div>
+        <div class="trust-sig-card">
+          <span class="trust-sig-ico">🛡️</span>
+          <div class="trust-sig-label">Safety-First Recommendations</div>
+          <div class="trust-sig-desc">Every diagnostic includes a risk level and explicit safety guidance before any action is suggested.</div>
+        </div>
+        <div class="trust-sig-card">
+          <span class="trust-sig-ico">⚖️</span>
+          <div class="trust-sig-label">Completely Neutral — No Brand Bias</div>
+          <div class="trust-sig-desc">No manufacturer is promoted. No technology is favoured. Engineering facts and tradeoffs only.</div>
+        </div>
+        <div class="trust-sig-card">
+          <span class="trust-sig-ico">🔒</span>
+          <div class="trust-sig-label">Privacy-First System Design</div>
+          <div class="trust-sig-desc">No personal data sold. No ad tracking. Conversations are private. Zero ads, ever.</div>
+        </div>
+        <div class="trust-sig-card">
+          <span class="trust-sig-ico">🌍</span>
+          <div class="trust-sig-label">Free Access to Core Knowledge</div>
+          <div class="trust-sig-desc">The full diagnostic engine and knowledge library are free — no paywall on safety information.</div>
+        </div>
+      </div>
+      <div class="trust-sig-disclaimer">
+        MobilityAI is an intelligence assistant — not a replacement for certified mechanical inspection.
       </div>
     </div>
   </section>
@@ -2361,7 +2806,8 @@ button,
   <section class="eco-sec" id="ecosystem">
     <div class="sec-in">
       <div class="sec-eyebrow">Mobility Ecosystem</div>
-      <h2 class="sec-h2">Beyond Diagnostics — A Full Mobility Platform</h2>
+        <div class="marketplace-trust-line">Only verified service providers and partners will be listed on 99EVS.</div>
+      <h2 class="sec-h2">Beyond Problem Analysis — A Full Mobility Platform</h2>
       <p class="sec-p">99EVS is evolving into a complete mobility decision platform. Diagnose your vehicle, estimate its resale value, discover financing options, and generate professional inspection reports — all in one place.</p>
       <div class="eco-grid">
 
@@ -2443,7 +2889,7 @@ button,
           </div>
           <div class="mig-stat-card" onclick="goSubPage('pg-twin')">
             <div class="mig-stat-val" id="mig-live-twins">0</div>
-            <div class="mig-stat-label">Vehicle Digital Twins</div>
+            <div class="mig-stat-label">Vehicle Intelligence Profiles</div>
             <div class="mig-stat-sub">Living profiles with health scores &rarr;</div>
           </div>
           <div style="background:var(--bg2);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px 16px">
@@ -2459,12 +2905,12 @@ button,
   <section class="flywheel-sec" id="data-flywheel">
     <div class="sec-in">
       <div class="sec-eyebrow">The Platform Moat</div>
-      <h2 class="sec-h2">Data Flywheel &mdash; How 99EVS Grows Smarter</h2>
-      <p class="sec-p">Every diagnostic query improves the graph. Every improvement attracts more users. This compounding loop is our competitive moat.</p>
+      <h2 class="sec-h2">Every Diagnosis Makes the System Smarter</h2>
+      <p class="sec-p">Every diagnosis improves the system. Every improvement helps the next user.<br>This is how 99EVS gets smarter — and more accurate — every day.</p>
       <div class="flywheel-ring">
         <div class="fw-node"><span class="fw-ico">&#128100;</span><div class="fw-label">User Problems</div></div>
         <div class="fw-arrow">&rarr;</div>
-        <div class="fw-node"><span class="fw-ico">&#129504;</span><div class="fw-label">AI Diagnostics</div></div>
+        <div class="fw-node"><span class="fw-ico">&#129504;</span><div class="fw-label">AI Problem Analysis</div></div>
         <div class="fw-arrow">&rarr;</div>
         <div class="fw-node"><span class="fw-ico">&#128190;</span><div class="fw-label">Cases Stored</div></div>
         <div class="fw-arrow">&rarr;</div>
@@ -2477,25 +2923,34 @@ button,
         <div class="fw-node"><span class="fw-ico">&#127760;</span><div class="fw-label">More Users</div></div>
       </div>
       <div class="flywheel-moat">
-        <div class="flywheel-moat-t">Marketplace platforms come and go. Knowledge graphs become infrastructure.</div>
-        <div class="flywheel-moat-d">Most competitors rely on AI text models alone. 99EVS combines AI + a proprietary mobility failure graph that compounds with every case. Over time, diagnostic accuracy increases, repair predictions improve, and the data advantage becomes insurmountable.</div>
+        <div class="flywheel-moat-t">Every problem solved makes the system smarter. Every improvement helps the next user.</div>
+        <div class="flywheel-moat-d">MobilityAI learns from every diagnostic query. Cause probabilities sharpen. Safety patterns surface. Vehicle failure predictions improve. Each new user strengthens the knowledge graph for all users who follow.</div>
       </div>
+      <div class="flywheel-live-signal"><span class="liveness-dot"></span> Learning from recent diagnostics &mdash; knowledge graph updated continuously</div>
     </div>
   </section>
 
   <!-- VEHICLE HEALTH SCORE -->
   <section class="vhs-sec" id="vehicle-health-score">
     <div class="sec-in">
-      <div class="sec-eyebrow">Vehicle Digital Twin</div>
-      <h2 class="sec-h2">Vehicle Health Score</h2>
-      <p class="sec-p">Like a credit score &mdash; but for your vehicle. Four dimensions: Battery, Motor, Brakes, Safety. Generated from your Vehicle Profile.</p>
+      <div class="sec-eyebrow">Vehicle Intelligence</div>
+      <h2 class="sec-h2">Your Vehicle Intelligence Profile</h2>
+      <p class="sec-p">Your vehicle's live health intelligence — updated with every diagnosis. Four dimensions: Battery, Motor, Brakes, Safety. Generated from your Vehicle Profile.</p>
+      <div class="vhs-liveness"><span class="liveness-dot"></span> Based on real usage patterns &mdash; personalised to your vehicle profile</div>
       <div class="vhs-layout">
         <div id="vhs-panel-empty" class="vhs-score-panel">
-          <div style="text-align:center;padding:32px 0">
-            <div style="font-size:48px;margin-bottom:12px">&#129704;</div>
-            <div style="font-family:var(--ff);font-weight:700;font-size:15px;color:var(--t2);margin-bottom:8px">No Score Yet</div>
-            <div style="font-size:12.5px;color:var(--t3);margin-bottom:20px">Create your Vehicle Profile to generate a health score.</div>
-            <button class="btn-lg g" onclick="goSubPage('pg-profile')" style="margin:0 auto;border-radius:100px">Create Profile</button>
+          <div style="text-align:center;padding:28px 16px">
+            <div style="font-size:42px;margin-bottom:14px">🔋</div>
+            <div style="font-family:var(--ff);font-weight:800;font-size:17px;color:var(--t1);margin-bottom:12px">Unlock Your Vehicle Health Score</div>
+            <div style="font-size:13px;color:var(--t2);margin-bottom:18px;line-height:1.7;max-width:280px;margin-left:auto;margin-right:auto">Understand your vehicle like never before.</div>
+            <div style="text-align:left;margin-bottom:22px;display:inline-block">
+              <div style="font-size:13px;color:var(--t2);margin-bottom:7px;display:flex;align-items:center;gap:8px"><span style="color:var(--g);font-weight:700">✔</span> Track battery health and degradation</div>
+              <div style="font-size:13px;color:var(--t2);margin-bottom:7px;display:flex;align-items:center;gap:8px"><span style="color:var(--g);font-weight:700">✔</span> Monitor motor and system condition</div>
+              <div style="font-size:13px;color:var(--t2);margin-bottom:7px;display:flex;align-items:center;gap:8px"><span style="color:var(--g);font-weight:700">✔</span> Detect early risk of failure</div>
+              <div style="font-size:13px;color:var(--t2);display:flex;align-items:center;gap:8px"><span style="color:var(--g);font-weight:700">✔</span> Improve resale value with verified history</div>
+            </div>
+            <div style="font-size:12px;color:var(--t3);margin-bottom:16px">Create your profile to unlock your vehicle's complete health intelligence.</div>
+            <button class="btn-lg g" onclick="goSubPage('pg-profile')" style="margin:0 auto;border-radius:100px">Create Profile to Unlock Insights</button>
           </div>
         </div>
         <div id="vhs-panel-score" class="vhs-score-panel" style="display:none">
@@ -2514,7 +2969,7 @@ button,
         <div class="vhs-info">
           <div class="vhs-info-card"><div class="vhs-info-t">&#129704; What is a Vehicle Health Score?</div><div class="vhs-info-d">A 0&ndash;100 score across four dimensions. Generated from usage pattern, age, service history, and environment. Like a credit score &mdash; for your machine.</div></div>
           <div class="vhs-info-card"><div class="vhs-info-t">&#128202; Four Dimensions</div><div class="vhs-info-d"><strong>Battery</strong> &mdash; charge health, degradation rate. <strong>Motor</strong> &mdash; mechanical condition and wear. <strong>Brakes</strong> &mdash; pad life and system health. <strong>Safety</strong> &mdash; overall risk from age and usage.</div></div>
-          <button class="rpt-btn primary" onclick="goSubPage('pg-twin')" style="margin-top:4px">View Vehicle Timeline &rarr;</button>
+          <button class="rpt-btn primary" onclick="goSubPage('pg-twin')" style="margin-top:4px">View Vehicle Intelligence Profile &rarr;</button>
         </div>
       </div>
     </div>
@@ -2580,7 +3035,12 @@ button,
       <div>
         <div class="foot-col-t">My Vehicle</div>
         <div class="foot-links">
-          <button class="foot-link" onclick="goSubPage('pg-twin')">Digital Twin</button>
+          <button class="foot-link" onclick="goSubPage('pg-twin')">Your Vehicle Intelligence Profile</button>
+          <button class="foot-link" onclick="startChat('EV not charging — diagnose this');goSubPage('pg-solver')">/ev-not-charging</button>
+          <button class="foot-link" onclick="startChat('Bike not starting — diagnose this');goSubPage('pg-solver')">/bike-not-starting</button>
+          <button class="foot-link" onclick="startChat('Car battery draining fast — diagnose this');goSubPage('pg-solver')">/car-battery-drain</button>
+          <button class="foot-link" onclick="startChat('Motor overheating — diagnose this');goSubPage('pg-solver')">/motor-overheating</button>
+          <button class="foot-link" onclick="startChat('Brakes not working properly — diagnose this');goSubPage('pg-solver')">/brake-not-working</button>
           <button class="foot-link" onclick="goSubPage('pg-cases')">Case Library</button>
           <button class="foot-link" onclick="document.getElementById('vehicle-health-score').scrollIntoView({behavior:'smooth'})">Health Score</button>
           <button class="foot-link" onclick="document.getElementById('mig-section').scrollIntoView({behavior:'smooth'})">MIG Architecture</button>
@@ -3488,18 +3948,18 @@ button,
     <div style="width:120px"></div>
   </header>
   <div class="sub-pg-body">
-    <div class="sub-pg-title">Vehicle Digital Twin</div>
+    <div class="sub-pg-title">Your Vehicle Intelligence Profile</div>
     <div class="sub-pg-sub">Your vehicle&rsquo;s living digital profile &mdash; health score, usage history, and maintenance timeline.</div>
     <div id="twin-empty" class="twin-empty">
       <span class="twin-empty-ico">&#129514;</span>
-      <div class="twin-empty-t">No Digital Twin Yet</div>
-      <div class="twin-empty-d">Create your Vehicle Intelligence Profile and your Digital Twin will be generated automatically &mdash; storing health scores, usage data, and maintenance history.</div>
+      <div class="twin-empty-t">No Vehicle Profile Yet</div>
+      <div class="twin-empty-d">Create your Vehicle Intelligence Profile and your vehicle health intelligence will be built automatically &mdash; storing health scores, usage data, and maintenance history.</div>
       <button class="btn-lg g" onclick="goSubPage('pg-profile')" style="margin:0 auto;border-radius:100px">Create Vehicle Profile</button>
     </div>
     <div id="twin-content" style="display:none">
       <div class="twin-layout">
         <div class="twin-profile-card">
-          <div class="twin-profile-h">&#129514; Vehicle Digital Twin</div>
+          <div class="twin-profile-h">&#129514; Your Vehicle Intelligence Profile</div>
           <div style="text-align:center;margin-bottom:20px">
             <div class="twin-score-ring green" id="twin-ring">--</div>
             <div style="font-family:var(--ff);font-weight:800;font-size:15px;color:var(--t1)" id="twin-grade">&mdash;</div>
@@ -3582,7 +4042,7 @@ button,
       <div class="mos-layer"><div class="mos-layer-num">Layer 1</div><div class="mos-layer-t">API Gateway</div><div class="mos-layer-d">Stateless REST API. Rate limiting. Input validation. HTTPS only. API keys server-side.</div></div>
       <div class="mos-layer"><div class="mos-layer-num">Layer 2</div><div class="mos-layer-t">AI Intelligence Engine</div><div class="mos-layer-d">MobilityAI — 3-mode reasoning (Problem Solver / Technical / Knowledge). MIG context injection.</div></div>
       <div class="mos-layer" style="border-color:rgba(0,255,160,.2)"><div class="mos-layer-num" style="color:var(--g)">Layer 3</div><div class="mos-layer-t">Mobility Intelligence Graph</div><div class="mos-layer-d">Vehicle → System → Component → Symptom → Cause → Test → Solution. Probability-weighted edges.</div></div>
-      <div class="mos-layer"><div class="mos-layer-num">Layer 4</div><div class="mos-layer-t">Vehicle Digital Twin</div><div class="mos-layer-d">health_score (battery/motor/brakes/safety), usage patterns, maintenance history, risk prediction.</div></div>
+      <div class="mos-layer"><div class="mos-layer-num">Layer 4</div><div class="mos-layer-t">Your Vehicle Intelligence Profile</div><div class="mos-layer-d">health_score (battery/motor/brakes/safety), usage patterns, maintenance history, risk prediction.</div></div>
       <div class="mos-layer"><div class="mos-layer-num">Layer 5</div><div class="mos-layer-t">Diagnostic Case Library</div><div class="mos-layer-d">Every session → stored case. vehicle_type · symptom · cause · risk · resolution · confidence.</div></div>
       <div class="mos-layer"><div class="mos-layer-num">Layer 6</div><div class="mos-layer-t">Marketplace Ecosystem</div><div class="mos-layer-d">Vendors (service/parts/chargers/towing). service_requests. Lead generation. Verified listings.</div></div>
       <div class="mos-layer"><div class="mos-layer-num">Layer 7</div><div class="mos-layer-t">Reports &amp; Analytics</div><div class="mos-layer-d">Shareable diagnostic reports. Fleet analytics. MIG graph growth metrics. User health scores.</div></div>
@@ -6982,7 +7442,16 @@ async function sendDomain(domainKey) {
   var profile = ST.user ? { vehicle_type: ST.user.vehicle_type, experience_level: ST.user.experience_level } : {};
   var _vehicleCtx = profile.vehicle_type ? '\nUser vehicle: ' + profile.vehicle_type : '';
   var _levelCtx = profile.experience_level ? '\nUser experience level: ' + profile.experience_level + ' — adapt depth accordingly.' : '';
-  var systemPrompt = 'You are MobilityAI, the intelligence engine of 99EVS. Never ego. Never bias. Only knowledge and safety.\n'
+  var systemPrompt = 'You are MobilityAI, the AI diagnostic intelligence system of 99EVS. Never ego. Never bias. Only knowledge and safety.\n'
+    + 'STRUCTURED DIAGNOSTIC OUTPUT — For every vehicle problem or symptom described, always respond using this exact 7-element structure (use only sections relevant to the query):\n'
+    + '1. PROBLEM SUMMARY: Restate the issue clearly in 1-2 sentences. Identify vehicle type and affected system.\n'
+    + '2. MOST LIKELY CAUSES: Rank causes with probability indicators: 🔴 High Probability (60-80%+), 🟠 Moderate Probability (30-60%), 🟡 Low Probability (<30%). Include confidence percentage for each.\n'
+    + '3. RISK LEVEL: State as LOW / MODERATE / HIGH / CRITICAL with a one-sentence explanation. If HIGH or CRITICAL, explicitly state whether the vehicle should be driven.\n'
+    + '4. WHAT THIS MEANS: Explain the impact in plain language — what happens if ignored, how urgently this needs attention.\n'
+    + '5. RECOMMENDED ACTION: Numbered practical steps. Include what the user can check themselves vs what needs a mechanic. For India context: include estimated ₹ cost ranges where applicable.\n'
+    + '6. ESTIMATED COST RANGE (if applicable): Provide a realistic ₹ range for repair/service in India. Label clearly as estimate.\n'
+    + '7. AI CONFIDENCE SCORE: State in this exact format: "AI Confidence: [X]% — Based on known system behaviour and similar diagnostic patterns." (e.g., "AI Confidence: 87% — Based on known system behaviour and similar diagnostic patterns.") Percentage reflects symptom match quality and information completeness.\n'
+    + 'IMPORTANT: Use simple language. Define any technical terms. Never use jargon without explanation. Always add: "This is educational guidance — not a substitute for certified inspection."\n'
     + 'Apply MODE 3 — KNOWLEDGE MODE with the full 9-section Knowledge Card structure.\n'
     + 'Domain:' + tpl.domainName + '\n'
     + 'MISSION: Help people understand vehicles, transportation technologies, and safety. Free. Neutral. For everyone.\n'
@@ -7002,6 +7471,8 @@ async function sendDomain(domainKey) {
     var c = ConvoEngine.active();
     if (c) { c.domain = tpl.domainName; Store.saveUserConvos(ST.user.email, ST.convos); }
     UIRenderer.renderSidebar();
+    const _isDiag6 = /🔴|🟠|🟡|Risk Level|Most Likely|Problem Summary|Recommended Action/i.test(reply);
+    if (_isDiag6 && !ST.user.saveCtaShown) { ST.user.saveCtaShown = true; setTimeout(() => appendSaveCTA(), 400); }
   } catch(err) {
     ST.apiOk = false;
     UIRenderer.hideTyping();
@@ -7515,6 +7986,16 @@ function showReport(data) {
 
   var html = '';
 
+  // Formal Report Header (Task 2)
+  html += '<div class="report-formal-header">';
+  html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">';
+  html += '<div style="width:28px;height:28px;background:var(--g);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#000;font-family:var(--ff)">99</div>';
+  html += '<div style="font-family:var(--ff);font-weight:800;font-size:13px;color:var(--g);letter-spacing:.5px">99EVS MOBILITYAI</div>';
+  html += '</div>';
+  html += '<div style="font-family:var(--ff);font-weight:800;font-size:18px;color:var(--t1);margin-bottom:4px">MobilityAI Diagnostic Report</div>';
+  html += '<div style="font-size:11px;color:var(--t3)">Generated by 99EVS Intelligence System &mdash; ' + new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'}) + ' ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'}) + '</div>';
+  html += '</div>';
+
   // Vehicle info meta block
   html += '<div class="report-meta">';
   html += '<div class="report-meta-row"><div class="report-meta-l">Vehicle</div><div class="report-meta-v">' + esc(data.vehicle || '—') + '</div></div>';
@@ -7562,6 +8043,12 @@ function showReport(data) {
 
   // Action buttons
   html += '<div class="report-actions">';
+  html += '<button class="report-action-btn secondary" onclick="copyDiagReport()" title="Copy report text">';
+  html += '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+  html += ' Copy Report</button>';
+  html += '<button class="report-action-btn secondary" onclick="shareViaWhatsApp()" title="Share via WhatsApp">';
+  html += '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>';
+  html += ' Share via WhatsApp</button>';
   html += '<button class="report-action-btn primary" onclick="downloadReport()">';
   html += '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
   html += 'Download Report</button>';
@@ -7573,7 +8060,25 @@ function showReport(data) {
   html += 'Send to Mechanic</button>';
   html += '</div>';
 
+  // Save Report CTA — converts users to profiles
+  html += '<div class="save-report-cta">';
+  html += '<div class="save-report-title">Save This Diagnosis Report</div>';
+  html += '<div class="save-report-desc">Create your free Vehicle Profile to:</div>';
+  html += '<div class="save-report-features">';
+  html += '<div class="save-report-feat"><span class="save-feat-check">✔</span> Access this report anytime</div>';
+  html += '<div class="save-report-feat"><span class="save-feat-check">✔</span> Track your vehicle health over time</div>';
+  html += '<div class="save-report-feat"><span class="save-feat-check">✔</span> Get future maintenance alerts and insights</div>';
+  html += '</div>';
+  html += '<button class="report-action-btn primary save-report-btn" onclick="closeReport();goSubPage(\'pg-profile\')">Save My Report →</button>';
+  html += '</div>';
+
   html += '<div class="report-footer-note"><strong>Generated using MobilityAI by 99EVS</strong><br>Understand vehicle problems before they become failures.<br>Educational guidance only — always consult a qualified technician for safety-critical repairs.</div>';
+  html += '<div class="report-liveness"><span class="liveness-dot"></span> Learning from recent diagnostics · Updated just now · Based on real usage patterns</div>';
+  html += '<div class="report-trust-row">';
+  html += '<span class="report-trust-badge">🛡️ Safety-first analysis</span>';
+  html += '<span class="report-trust-badge">⚖️ No brand bias</span>';
+  html += '<span class="report-trust-badge">🔬 Engineering-based reasoning</span>';
+  html += '</div>';
 
   body.innerHTML = html;
   document.getElementById('report-overlay').classList.add('open');
@@ -8236,6 +8741,15 @@ async function send() {
     if (c && c.msgs.length <= 2) { c.domain = detectedDomain; Store.saveUserConvos(ST.user.email, ST.convos); }
     UIRenderer.renderSidebar();
     if (safetyBlocked) showToast('⚠️ Safety concern detected — redirected to safe knowledge', '🛡️', 4000);
+    // Task 6: Post-diagnostic save CTA — appears after diagnostic responses
+    const isDiag = /🔴|🟠|🟡|Risk Level|Most Likely|Problem Summary|Recommended Action/i.test(reply);
+    if (isDiag && !ST.user.saveCtaShown) {
+      ST.user.saveCtaShown = true;
+      // Task 3: Ownership signal first, then save CTA
+      setTimeout(() => appendOwnershipSignal(), 200);
+      setTimeout(() => appendSaveCTA(), 600);
+      setTimeout(() => appendActionBridge(), 1000);
+    }
   } catch(e) {
     UIRenderer.hideTyping();
     const fb = FallbackEngine.get(txt, domain);
@@ -8247,6 +8761,203 @@ async function send() {
   document.getElementById('sbtn').disabled = false;
   inp.focus();
 }
+
+
+/* ── TASK 6: POST-DIAGNOSTIC SAVE BANNER ──────────────────────── */
+function appendOwnershipSignal() {
+  const mi = document.getElementById('msgs-in');
+  if (!mi) return;
+  if (mi.querySelector('.ownership-signal')) return;
+  const el = document.createElement('div');
+  el.className = 'ownership-signal';
+  el.innerHTML = `<span class="ownership-ico">💡</span>
+    <span class="ownership-txt">This analysis can be saved to your vehicle profile to track changes over time.</span>`;
+  mi.appendChild(el);
+  const msgs = document.getElementById('msgs'); if (msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendActionBridge() {
+  const mi = document.getElementById('msgs-in');
+  if (!mi) return;
+  if (mi.querySelector('.action-bridge')) return;
+  const el = document.createElement('div');
+  el.className = 'action-bridge';
+  el.innerHTML = `<div class="action-bridge-inner">
+    <div class="action-bridge-label">Next Step</div>
+    <div class="action-bridge-text">Find a verified service provider for this issue.</div>
+    <button class="action-bridge-btn" onclick="goSubPage('pg-marketplace')">Find Service Provider →</button>
+  </div>`;
+  mi.appendChild(el);
+  const msgs = document.getElementById('msgs'); if (msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendSaveCTA() {
+  const mi = document.getElementById('msgs-in');
+  if (!mi) return;
+  const existing = mi.querySelector('.save-diag-banner');
+  if (existing) return; // only show once per session
+  const banner = document.createElement('div');
+  banner.className = 'save-diag-banner';
+  banner.innerHTML = `
+    <div class="save-diag-inner">
+      <div class="save-diag-left">
+        <div class="save-diag-title">💾 Save This Diagnosis Report</div>
+        <div class="save-diag-text">Create your free account to access this report anytime, track your vehicle health, and receive future alerts.</div>
+      </div>
+      <button class="save-diag-btn" onclick="openM('reg');this.closest('.save-diag-banner').remove()">Save My Report</button>
+      <button class="save-diag-close" onclick="this.closest('.save-diag-banner').remove()" title="Dismiss">×</button>
+    </div>`;
+  mi.appendChild(banner);
+  // Task 5: Progression loop — once per session
+  if (!window._progressionShown) {
+    window._progressionShown = true;
+    setTimeout(() => {
+      const prog = document.createElement('div');
+      prog.className = 'progression-loop';
+      prog.innerHTML = '<span class="liveness-dot"></span> Track this issue over time and get alerts if the risk increases. <button class="progression-btn" onclick="goSubPage(\'pg-profile\')">Set Up Tracking →</button>';
+      mi.appendChild(prog);
+      const msgs = document.getElementById('msgs'); if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    }, 1400);
+  }
+  const msgs = document.getElementById('msgs');
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+
+
+
+/* ── TASK 2: COPY REPORT + WHATSAPP SHARE ──────────────── */
+function copyDiagReport() {
+  const body = document.getElementById('report-body');
+  if (!body) return;
+  const text = body.innerText || body.textContent || '';
+  const clean = '99EVS MobilityAI Diagnostic Report\n' + new Date().toLocaleDateString('en-IN') + '\n\n' + text.trim();
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(clean).then(() => showToast('Report copied to clipboard!', '📋', 2500));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = clean; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('Report copied!', '📋', 2500); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+}
+function shareViaWhatsApp() {
+  const body = document.getElementById('report-body');
+  const text = body ? (body.innerText || body.textContent || '').slice(0, 800) : 'MobilityAI Diagnostic Report';
+  const msg = encodeURIComponent('MobilityAI Diagnostic Report from 99EVS:\n\n' + text.trim() + '\n\nFull free diagnosis at: https://www.99evs.com');
+  window.open('https://wa.me/?text=' + msg, '_blank');
+}
+
+/* ════════════════════════════════════════════
+   MODULE 18 — SEO LANDING PAGES
+   Reusable diagnostic problem pages for organic traffic
+════════════════════════════════════════════ */
+const SEO_PAGES_DATA = {
+  'ev-not-charging': {
+    title: 'EV Not Charging — Diagnosis & Solutions',
+    subtitle: 'Why your electric vehicle won\'t charge and how to fix it',
+    problem: 'Your electric vehicle is connected to a charger but the battery is not receiving charge. The charger may show a light, but the vehicle display shows no charging progress.',
+    causes: [
+      { prob: '🔴', label: 'Charging port fault or corrosion', pct: '62%', detail: 'Physical connector issues prevent the EVSE handshake from completing.' },
+      { prob: '🟠', label: 'BMS protection lock active', pct: '25%', detail: 'Battery Management System is blocking charge due to a temperature or cell voltage condition.' },
+      { prob: '🟡', label: 'On-Board Charger (OBC) fault', pct: '13%', detail: 'The internal AC-to-DC conversion component has failed.' }
+    ],
+    risk: 'Moderate',
+    whatThisMeans: 'The vehicle is not receiving charging input. If left unresolved, range will continue to decrease and battery stress may increase over time.',
+    action: 'Check charger output with a different cable or charging point. Inspect the charging port for bent pins or corrosion. If normal, have the BMS read by a certified EV technician.',
+    ctaQuery: 'My EV is not charging — please diagnose this problem in detail'
+  },
+  'bike-not-starting': {
+    title: 'Bike Not Starting — Diagnosis & Solutions',
+    subtitle: 'Why your motorcycle or scooter won\'t start and what to check',
+    problem: 'Your two-wheeler will not start. The engine may be silent, clicking, or cranking without firing. This is one of the most common vehicle problems in India.',
+    causes: [
+      { prob: '🔴', label: 'Dead or weak 12V battery', pct: '45%', detail: 'The most common cause — especially after the bike has been unused for several days.' },
+      { prob: '🟠', label: 'Fuel delivery problem', pct: '28%', detail: 'Fuel not reaching the carburettor or injector — blocked filter, empty tank, or pump fault.' },
+      { prob: '🟡', label: 'Spark plug failure', pct: '18%', detail: 'Worn or fouled spark plug prevents ignition — especially likely if the bike is older.' }
+    ],
+    risk: 'Low to Moderate',
+    whatThisMeans: 'The bike will not move until the fault is resolved. Most causes are inexpensive to fix — but delay can worsen battery condition.',
+    action: '1. Check fuel level. 2. Try starting in neutral with clutch pulled in. 3. Check kill switch position. 4. If clicking sound: battery is flat — charge or jump start. 5. If silent: check main fuse.',
+    ctaQuery: 'My bike or scooter is not starting — please diagnose the problem step by step'
+  },
+  'car-battery-drain': {
+    title: 'Car Battery Draining Fast — Diagnosis & Solutions',
+    subtitle: 'Why your car battery keeps going flat and how to stop it',
+    problem: 'Your vehicle\'s 12V battery is repeatedly going flat — either overnight, after a few days of parking, or more quickly than expected. This prevents the car from starting.',
+    causes: [
+      { prob: '🔴', label: 'Aged battery below 50% capacity', pct: '43%', detail: 'Batteries older than 3 years lose capacity significantly — especially in Indian heat.' },
+      { prob: '🟠', label: 'Alternator not charging at correct voltage', pct: '28%', detail: 'The alternator should output 13.8–14.4V. Below this, the battery drains while driving.' },
+      { prob: '🟡', label: 'Parasitic drain from accessory or relay', pct: '17%', detail: 'A stuck relay or aftermarket accessory drawing current when the ignition is off.' }
+    ],
+    risk: 'Moderate',
+    whatThisMeans: 'A repeatedly flat battery means the vehicle cannot be started reliably. Continual deep discharge accelerates battery failure and can damage electronics.',
+    action: '1. Test battery voltage: below 12.4V at rest indicates a weak battery. 2. Test alternator: should show 13.8–14.4V at idle. 3. If both are normal: perform a parasitic drain test. 4. Battery replacement typically ₹2,500–6,000.',
+    ctaQuery: 'My car battery keeps draining — please diagnose this problem'
+  }
+};
+
+function renderSEOPage(slug) {
+  const data = SEO_PAGES_DATA[slug];
+  if (!data) return;
+  const body = document.getElementById('seo-page-body');
+  if (!body) return;
+  const causesHtml = data.causes.map(c => `
+    <div class="seo-lp-cause">
+      <div class="seo-lp-cause-top">
+        <span class="seo-lp-prob">${c.prob}</span>
+        <span class="seo-lp-label">${c.label}</span>
+        <span class="seo-lp-pct">${c.pct}</span>
+      </div>
+      <div class="seo-lp-cause-detail">${c.detail}</div>
+    </div>`).join('');
+  body.innerHTML = `
+    <div class="seo-lp-wrap">
+      <div class="sec-eyebrow">MobilityAI Diagnostic Guide</div>
+      <h2 class="seo-lp-title">${data.title}</h2>
+      <p class="seo-lp-sub">${data.subtitle}</p>
+      <div class="seo-lp-section">
+        <div class="seo-lp-sect-label">The Problem</div>
+        <div class="seo-lp-body">${data.problem}</div>
+      </div>
+      <div class="seo-lp-section">
+        <div class="seo-lp-sect-label">Most Likely Causes</div>
+        <div class="seo-lp-causes">${causesHtml}</div>
+      </div>
+      <div class="seo-lp-section">
+        <div class="seo-lp-sect-label">Risk Level</div>
+        <div class="seo-lp-risk">${data.risk}</div>
+      </div>
+      <div class="seo-lp-section">
+        <div class="seo-lp-sect-label">What This Means</div>
+        <div class="seo-lp-body">${data.whatThisMeans}</div>
+      </div>
+      <div class="seo-lp-section">
+        <div class="seo-lp-sect-label">Recommended Action</div>
+        <div class="seo-lp-body">${data.action}</div>
+      </div>
+      <div class="seo-lp-cta">
+        <div class="seo-lp-cta-title">Get a Personalised AI Diagnosis — Free</div>
+        <div class="seo-lp-cta-sub">Describe your exact situation and MobilityAI will analyse it in seconds.</div>
+        <button class="btn-lg g" style="border-radius:100px;margin:0 auto" onclick="startChat('${data.ctaQuery}');goSubPage('pg-solver')">
+          Open Problem Solver →
+        </button>
+      </div>
+      <div style="font-size:11px;color:var(--t4);text-align:center;margin-top:16px">Educational guidance only — not a substitute for professional mechanical inspection.</div>
+    </div>`;
+  goSubPage('pg-seo');
+}
+
+// Hash-based routing for SEO pages
+(function() {
+  function handleHash() {
+    const hash = window.location.hash.replace('#/', '');
+    if (SEO_PAGES_DATA[hash]) renderSEOPage(hash);
+  }
+  window.addEventListener('hashchange', handleHash);
+  if (document.readyState === 'complete') handleHash();
+  else window.addEventListener('load', handleHash);
+})();
 
 /* ════════════════════════════════════════════
    MODULE 17 — MODAL & AUTH UI
@@ -8635,6 +9346,28 @@ document.addEventListener('keydown', e => {
     <div class="report-body" id="report-body">
       <!-- Populated by showReport() -->
     </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SEO LANDING PAGES — /ev-not-charging, /bike-not-starting etc.
+     These are separate pages revealed by hash routing
+═══════════════════════════════════════════════════════ -->
+<div id="pg-seo" class="pg sub-pg" style="display:none">
+  <header class="sub-pg-hdr">
+    <button class="sub-pg-back" onclick="goHome()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Home
+    </button>
+    <div class="top-nav-logo" onclick="goHome()">
+      <div class="top-nav-logo-m"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></div>
+      <div style="font-family:var(--ff);font-weight:800;font-size:13px;color:var(--t1)">99EVS MobilityAI</div>
+    </div>
+    <div style="width:120px"></div>
+  </header>
+  <div class="sub-pg-body" id="seo-page-body">
+    <!-- Content injected by renderSEOPage() -->
   </div>
 </div>
 
