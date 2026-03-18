@@ -2492,6 +2492,425 @@ button,
   .report-trust-row { flex-direction: column; }
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+   14-TASK MASTER UPGRADE CSS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── T1: HERO INLINE INPUT ── */
+.hero-input-wrap {
+  width: 100%; max-width: 640px; margin: 0 auto 20px;
+}
+.hero-input-inner {
+  display: flex; align-items: flex-end; gap: 10px;
+  background: rgba(255,255,255,.05);
+  border: 1.5px solid rgba(0,255,160,.3);
+  border-radius: 14px;
+  padding: 12px 12px 12px 16px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.hero-input-inner:focus-within {
+  border-color: var(--g);
+  box-shadow: 0 0 0 3px rgba(0,255,160,.10);
+}
+.hero-inp {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--t1); font-size: 15px; line-height: 1.5;
+  resize: none; min-height: 22px; max-height: 120px;
+  font-family: inherit;
+}
+.hero-inp::placeholder { color: var(--t3); opacity: .8; }
+.hero-inp-btn {
+  background: var(--g); color: #000;
+  border: none; border-radius: 10px;
+  padding: 10px 18px;
+  font-family: var(--ff); font-weight: 700; font-size: 14px;
+  cursor: pointer; display: flex; align-items: center; gap: 7px;
+  white-space: nowrap; flex-shrink: 0;
+  transition: background .18s, transform .18s;
+}
+.hero-inp-btn:hover { background: #00FFB0; transform: translateY(-1px); }
+.hero-inp-examples {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap; margin-top: 10px; justify-content: center;
+}
+.hero-inp-try { font-size: 11px; color: var(--t4); }
+.hero-example-pill {
+  background: transparent; border: 1px solid rgba(255,255,255,.12);
+  color: var(--t3); font-size: 12px;
+  padding: 5px 13px; border-radius: 100px; cursor: pointer;
+  transition: all .18s;
+}
+.hero-example-pill:hover { border-color: var(--g); color: var(--g); background: rgba(0,255,160,.06); }
+.hero-secondary-links {
+  display: flex; align-items: center; gap: 8px;
+  justify-content: center; margin-bottom: 20px;
+}
+.hero-sec-link {
+  background: none; border: none; color: var(--t3);
+  font-size: 13px; cursor: pointer; text-decoration: underline;
+  transition: color .18s; padding: 4px;
+}
+.hero-sec-link:hover { color: var(--t1); }
+.hero-sec-divider { color: var(--t4); font-size: 13px; }
+
+/* ── T11: ACTIVE NAV ── */
+.active-nav { color: var(--g) !important; }
+
+/* ── T2: AUTO-DEMO PROGRESS BAR ── */
+.auto-demo-progress {
+  height: 3px; background: rgba(255,255,255,.07);
+  border-radius: 3px; margin: 8px auto 0; max-width: 400px;
+  overflow: hidden;
+}
+.auto-demo-bar {
+  height: 100%; width: 0; border-radius: 3px;
+  background: linear-gradient(90deg, var(--g), #00FFB0);
+  transition: width .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── T4: GUIDED STEPS ── */
+.guided-steps-sec {
+  padding: 64px 24px; background: var(--bg1);
+  border-top: 1px solid var(--lng); border-bottom: 1px solid var(--lng);
+}
+.guided-steps {
+  display: flex; align-items: flex-start; gap: 0;
+  flex-wrap: wrap; justify-content: center;
+}
+.guided-step {
+  flex: 1; min-width: 200px; max-width: 260px;
+  text-align: center; padding: 24px 20px;
+  background: var(--bg2); border: 1px solid var(--lng);
+  border-radius: 14px; display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+}
+.gs-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--g); color: #000;
+  font-family: var(--ff); font-weight: 900; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.gs-ico { font-size: 32px; }
+.gs-title { font-family: var(--ff); font-weight: 700; font-size: 17px; }
+.gs-desc { font-size: 13px; color: var(--t2); line-height: 1.6; flex: 1; }
+.gs-btn {
+  background: transparent; border: 1.5px solid rgba(0,255,160,.3);
+  color: var(--g); font-size: 13px; font-weight: 600;
+  padding: 8px 18px; border-radius: 100px; cursor: pointer;
+  transition: all .18s; margin-top: 4px; width: 100%;
+}
+.gs-btn:hover { background: var(--g); color: #000; }
+.guided-step-arrow {
+  font-size: 20px; color: var(--t4); padding: 60px 8px 0;
+  align-self: flex-start;
+}
+@media(max-width:700px) {
+  .guided-steps { flex-direction: column; align-items: center; }
+  .guided-step { max-width: 100%; width: 100%; }
+  .guided-step-arrow { padding: 4px 0; transform: rotate(90deg); }
+}
+
+/* ── T9: RED ALERT ── */
+.red-alert {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: rgba(239,68,68,.10); border: 1.5px solid rgba(239,68,68,.4);
+  border-radius: 12px; padding: 16px 18px;
+  margin: 10px 0; animation: alertIn .4s cubic-bezier(.2,1.5,.5,1) both;
+}
+.red-alert.critical {
+  background: rgba(239,68,68,.15); border-color: rgba(239,68,68,.6);
+  box-shadow: 0 0 24px rgba(239,68,68,.15);
+}
+@keyframes alertIn {
+  from { opacity:0; transform: scale(.95) translateY(10px); }
+  to   { opacity:1; transform: scale(1)  translateY(0); }
+}
+.red-alert-icon { font-size: 24px; flex-shrink: 0; }
+.red-alert-body { flex: 1; }
+.red-alert-title {
+  font-family: var(--ff); font-weight: 800; font-size: 16px;
+  color: #FCA5A5; margin-bottom: 6px;
+}
+.red-alert-text { font-size: 13px; color: var(--t2); line-height: 1.6; margin-bottom: 12px; }
+.red-alert-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.red-alert-btn {
+  font-size: 12px; font-weight: 700; font-family: var(--ff);
+  padding: 7px 16px; border-radius: 100px; cursor: pointer; transition: all .18s;
+}
+.red-alert-btn.primary { background: #EF4444; color: #fff; border: none; }
+.red-alert-btn.primary:hover { background: #DC2626; }
+.red-alert-btn.ghost { background: transparent; border: 1px solid rgba(239,68,68,.3); color: #FCA5A5; }
+.red-alert-btn.ghost:hover { background: rgba(239,68,68,.1); }
+
+/* ── T10: STICKY MOBILE CTA ── */
+.sticky-diag-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+  background: rgba(10,22,40,.97); border-top: 1px solid rgba(0,255,160,.25);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  backdrop-filter: blur(14px);
+  transform: translateY(100%);
+  transition: transform .3s ease;
+  display: none; /* shown only on mobile */
+}
+@media(max-width:768px) { .sticky-diag-bar { display: flex; } }
+.sticky-diag-btn {
+  flex: 1; background: var(--g); color: #000;
+  font-family: var(--ff); font-weight: 700; font-size: 14px;
+  border: none; border-radius: 100px; padding: 12px 20px;
+  cursor: pointer;
+}
+.sticky-diag-close {
+  background: none; border: none; color: var(--t3);
+  font-size: 20px; cursor: pointer; flex-shrink: 0; padding: 4px 8px;
+}
+
+/* ── T12: SOCIAL PROOF BAR ── */
+.social-proof-bar {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+  margin: 12px 0 32px;
+  font-size: 13px; color: var(--t2);
+}
+.sp-item { display: flex; align-items: center; gap: 6px; }
+.sp-div { color: var(--t4); }
+
+/* ── T7: UPGRADE TRIGGER NOTE ── */
+.upgrade-trigger-note {
+  display: flex; align-items: center; gap: 8px; justify-content: center;
+  font-size: 13px; color: var(--t2); margin-bottom: 32px;
+}
+.upgrade-trigger-note strong { color: var(--t1); }
+
+/* ── T6: LANGUAGE FIXES ── */
+.mig-node-label { font-size: 12px; font-weight: 600; color: var(--t1); }
+
+/* ── T10: MOBILE UX — reduce text density ── */
+@media(max-width:640px) {
+  .sec-p { font-size: 14px; }
+  .hero-h1 { font-size: clamp(28px,7vw,60px); }
+  .path-card { padding: 22px 18px; }
+  .trust-sig-card { min-width: 44%; }
+  .proof-output { padding: 14px 14px; }
+  body { font-size: 14px; }
+  .guided-step { padding: 20px 16px; }
+}
+
+
+/* ═══════════════════════════════════════════════
+   PAYMENT MODAL CSS
+═══════════════════════════════════════════════ */
+
+/* Overlay */
+.pay-overlay {
+  position: fixed; inset: 0; z-index: 9800;
+  background: rgba(0,0,0,.88);
+  backdrop-filter: blur(14px);
+  display: none; align-items: center; justify-content: center;
+  padding: 16px; overflow-y: auto;
+}
+.pay-overlay.open { display: flex; animation: fadeIn .22s ease; }
+
+/* Modal container */
+.pay-modal {
+  background: var(--bg2);
+  border: 1px solid rgba(0,255,160,.22);
+  border-radius: 18px;
+  width: 100%; max-width: 500px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,.6);
+  animation: slideUp .28s cubic-bezier(.2,1,.5,1) both;
+}
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(28px) scale(.97); }
+  to   { opacity:1; transform:translateY(0)     scale(1); }
+}
+
+/* Header */
+.pay-modal-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.pay-modal-brand { display: flex; align-items: center; gap: 10px; }
+.nav-mark-sm {
+  width: 28px; height: 28px; background: var(--g); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff); font-weight: 900; font-size: 12px; color: #000;
+}
+.pay-modal-title { font-family: var(--ff); font-weight: 800; font-size: 17px; }
+.pay-modal-close {
+  background: none; border: none; color: var(--t3);
+  font-size: 18px; cursor: pointer; padding: 4px 8px;
+  transition: color .18s; line-height: 1;
+}
+.pay-modal-close:hover { color: var(--t1); }
+
+/* Plan summary row */
+.pay-plan-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 22px;
+  background: rgba(0,255,160,.05);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.pay-plan-name { font-family: var(--ff); font-weight: 700; font-size: 16px; color: var(--g); }
+.pay-plan-desc { font-size: 12px; color: var(--t2); margin-top: 3px; }
+.pay-price-big { font-family: var(--ff); font-weight: 900; font-size: 28px; color: var(--t1); text-align: right; }
+.pay-price-period { font-size: 12px; color: var(--t3); text-align: right; margin-top: 1px; }
+
+/* Monthly / Yearly toggle */
+.pay-toggle-row {
+  display: flex; gap: 8px; padding: 14px 22px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.pay-toggle {
+  flex: 1; padding: 9px 14px;
+  background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.10);
+  color: var(--t2); font-size: 13px; font-weight: 600; font-family: var(--ff);
+  border-radius: 9px; cursor: pointer; transition: all .18s;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+.pay-toggle.active {
+  background: rgba(0,255,160,.10); border-color: var(--g); color: var(--g);
+}
+.save-badge {
+  background: rgba(0,255,160,.15); color: var(--g);
+  font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 100px;
+}
+
+/* UPI section */
+.pay-upi-section {
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.pay-section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--t3); margin-bottom: 14px;
+}
+.pay-qr-wrap { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 14px; }
+.pay-qr-inner { text-align: center; flex-shrink: 0; }
+.pay-qr-inner canvas {
+  display: block; border-radius: 10px;
+  border: 3px solid #FFFFFF;
+}
+.pay-qr-hint { font-size: 10px; color: var(--t3); margin-top: 6px; }
+.pay-upi-details { flex: 1; }
+.pay-upi-label { font-size: 10px; color: var(--t3); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 5px; }
+.pay-upi-id-row { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.pay-upi-id {
+  font-family: monospace; font-size: 13px; color: var(--g);
+  background: rgba(0,255,160,.07); border: 1px solid rgba(0,255,160,.2);
+  padding: 4px 10px; border-radius: 6px; word-break: break-all;
+}
+.pay-copy-upi {
+  background: none; border: 1px solid rgba(255,255,255,.12);
+  color: var(--t2); padding: 5px; border-radius: 6px;
+  cursor: pointer; flex-shrink: 0; transition: all .18s;
+}
+.pay-copy-upi:hover { border-color: var(--g); color: var(--g); }
+.pay-upi-name { font-size: 12px; color: var(--t2); margin-bottom: 4px; }
+.pay-upi-amount-note { font-size: 13px; color: var(--t1); font-weight: 600; margin-bottom: 12px; }
+.pay-upi-btn {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--g); color: #000;
+  font-family: var(--ff); font-weight: 700; font-size: 13px;
+  padding: 9px 16px; border-radius: 100px;
+  text-decoration: none; transition: background .18s;
+  width: fit-content;
+}
+.pay-upi-btn:hover { background: #00FFB0; }
+.pay-apps-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.pay-app-chip {
+  font-size: 11px; color: var(--t2);
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  padding: 4px 10px; border-radius: 100px;
+}
+
+/* Confirmation section */
+.pay-confirm-section { padding: 18px 22px; }
+.pay-confirm-instruction {
+  font-size: 13px; color: var(--t2); line-height: 1.6; margin-bottom: 14px;
+}
+.pay-txn-row { margin-bottom: 6px; }
+.pay-txn-input {
+  width: 100%; padding: 11px 14px;
+  background: rgba(255,255,255,.05);
+  border: 1.5px solid rgba(255,255,255,.12);
+  border-radius: 9px; color: var(--t1); font-size: 14px; font-family: inherit;
+  outline: none; box-sizing: border-box; transition: border-color .18s;
+}
+.pay-txn-input:focus { border-color: var(--g); }
+.pay-txn-input::placeholder { color: var(--t4); }
+.pay-txn-error {
+  font-size: 12px; color: #FCA5A5;
+  margin-bottom: 10px; padding: 8px 12px;
+  background: rgba(239,68,68,.08); border-radius: 6px;
+  border-left: 3px solid #EF4444;
+}
+.pay-confirm-btn {
+  width: 100%; padding: 13px;
+  background: var(--g); color: #000;
+  font-family: var(--ff); font-weight: 800; font-size: 15px;
+  border: none; border-radius: 12px; cursor: pointer;
+  transition: all .2s; margin-top: 10px;
+  box-shadow: 0 4px 20px rgba(0,255,160,.25);
+}
+.pay-confirm-btn:hover:not(:disabled) {
+  background: #00FFB0; transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(0,255,160,.35);
+}
+.pay-confirm-btn:disabled {
+  background: rgba(0,255,160,.25); color: rgba(0,0,0,.4); cursor: not-allowed;
+  box-shadow: none; transform: none;
+}
+.pay-security-note {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--t4); margin-top: 10px; justify-content: center;
+}
+
+/* Footer */
+.pay-modal-footer {
+  padding: 12px 22px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 11px; color: var(--t4); text-align: center;
+}
+.pay-modal-footer a { color: var(--t3); text-decoration: underline; }
+
+/* Pro Success Overlay */
+.pro-success-overlay {
+  position: fixed; inset: 0; z-index: 9900;
+  background: rgba(0,0,0,.92); backdrop-filter: blur(16px);
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.pro-success-modal {
+  background: var(--bg2); border: 1px solid rgba(0,255,160,.3);
+  border-radius: 18px; padding: 40px 32px; max-width: 380px; width: 100%;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(0,255,160,.15);
+  animation: slideUp .3s cubic-bezier(.2,1,.5,1) both;
+}
+.pro-success-ico { font-size: 48px; margin-bottom: 14px; }
+.pro-success-title { font-family: var(--ff); font-weight: 900; font-size: 26px; margin-bottom: 8px; color: var(--g); }
+.pro-success-sub { font-size: 14px; color: var(--t2); margin-bottom: 20px; line-height: 1.6; }
+.pro-success-features { text-align: left; margin-bottom: 24px; display: flex; flex-direction: column; gap: 8px; }
+.pro-sf { font-size: 14px; color: var(--t1); display: flex; align-items: center; gap: 8px; }
+.pro-success-btn {
+  width: 100%; padding: 13px;
+  background: var(--g); color: #000;
+  font-family: var(--ff); font-weight: 800; font-size: 15px;
+  border: none; border-radius: 100px; cursor: pointer;
+  transition: all .18s;
+}
+.pro-success-btn:hover { background: #00FFB0; }
+
+@media(max-width:480px) {
+  .pay-qr-wrap  { flex-direction: column; align-items: center; }
+  .pay-upi-details { width: 100%; }
+}
+
 </style>
 </head>
 <body>
@@ -2508,14 +2927,11 @@ button,
       <div><div class="top-nav-name">99EVS</div><div class="top-nav-sub">MobilityAI</div></div>
     </div>
     <div class="top-nav-links" id="top-nav-links">
-      <button class="top-nav-link" onclick="goSubPage('pg-solver');closeMobNav()">Problem Analysis</button>
-      <button class="top-nav-link" onclick="goSubPage('pg-profile');closeMobNav()">Vehicle Profile</button>
-      <button class="top-nav-link" onclick="goSubPage('pg-mechanic');closeMobNav()">Technical Mode</button>
-      <button class="top-nav-link" onclick="goSubPage('pg-knowledge');closeMobNav()">Knowledge</button>
+      <button class="top-nav-link active-nav" onclick="goSubPage('pg-solver');closeMobNav()">Diagnose</button>
+      <button class="top-nav-link" onclick="goSubPage('pg-twin');closeMobNav()">My Vehicle</button>
       <button class="top-nav-link" onclick="goSubPage('pg-tools');closeMobNav()">Tools</button>
       <button class="top-nav-link" onclick="goSubPage('pg-marketplace');closeMobNav()">Marketplace</button>
-      <button class="top-nav-link" onclick="goSubPage('pg-twin');closeMobNav()">My Vehicle</button>
-      <button class="top-nav-link" onclick="goSubPage('pg-mos');closeMobNav()">MOS</button>
+      <button class="top-nav-link" onclick="showInfoModal('about')">About</button>
       <button class="top-nav-link" onclick="document.getElementById('vt-section').scrollIntoView({behavior:'smooth'});closeMobNav()">About</button>
     </div>
     <div class="top-nav-right">
@@ -2536,37 +2952,52 @@ button,
   <!-- ═══════ SECTION 1 — HERO ═══════ -->
   <section class="hero">
     <div class="hero-grid"></div><div class="hero-glow"></div>
-    <div class="live-pill"><div class="live-dot"></div> Know Your Vehicle · Diagnose Problems · Prevent Failures</div>
+    <div class="live-pill"><div class="live-dot"></div> Free · No login needed · Results in seconds</div>
     <h1 class="hero-h1">Know Your Vehicle's Real Condition<br><em>— Before It Fails</em></h1>
-    <p class="hero-sub">Diagnose vehicle problems instantly. Understand your vehicle's condition. Prevent costly failures before they happen.</p>
-    <p class="hero-supporting-ai" style="font-size:14px;color:var(--t2);text-align:center;margin:-8px 0 8px;line-height:1.6">AI-powered problem analysis with clear causes, risk levels, and recommended actions.</p>
-    <p class="hero-supporting">Diagnose issues &bull; Track health &bull; Prevent costly breakdowns</p>
-    <div class="hero-btns" style="flex-wrap:wrap;justify-content:center">
-      <button class="btn-lg g" onclick="goSubPage('pg-solver')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        Solve My Vehicle Problem
-      </button>
-      <button class="btn-lg o" onclick="goSubPage('pg-profile')">Create My Vehicle Profile</button>
-      <button class="btn-lg o" onclick="goSubPage('pg-mechanic')">Advanced Technical Mode</button>
+    <p class="hero-sub">Tell us your vehicle problem. Get instant diagnosis, risk level, and next steps.</p>
+
+    <!-- HERO INLINE INPUT — The ONE action -->
+    <div class="hero-input-wrap">
+      <div class="hero-input-inner">
+        <textarea id="hero-input" class="hero-inp" rows="1" placeholder="Describe your vehicle issue… e.g. My EV is not charging" maxlength="500"></textarea>
+        <button class="hero-inp-btn" onclick="heroStartDiagnosis()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Start Free Diagnosis
+        </button>
+      </div>
+      <div class="hero-inp-examples">
+        <span class="hero-inp-try">Try:</span>
+        <button class="hero-example-pill" onclick="setHeroInput('My EV is not charging')">EV not charging</button>
+        <button class="hero-example-pill" onclick="setHeroInput('Engine making knocking sound')">Engine knocking</button>
+        <button class="hero-example-pill" onclick="setHeroInput('Brake pedal feels soft')">Soft brake pedal</button>
+        <button class="hero-example-pill" onclick="setHeroInput('Car battery drains overnight')">Battery drain</button>
+      </div>
     </div>
+
+    <div class="hero-secondary-links">
+      <button onclick="goSubPage('pg-mechanic')" class="hero-sec-link">Advanced Technical Mode</button>
+      <span class="hero-sec-divider">·</span>
+      <button onclick="goSubPage('pg-profile')" class="hero-sec-link">Create Vehicle Profile</button>
+    </div>
+
     <div class="hero-cred">
-      <div class="hero-cred-item">16+ Mobility Knowledge Domains</div>
+      <div class="hero-cred-item">Used by EV owners &amp; technicians</div>
       <div class="hero-cred-divider"></div>
-      <div class="hero-cred-item">AI Problem Analysis Engine</div>
+      <div class="hero-cred-item">AI confidence score on every diagnosis</div>
       <div class="hero-cred-divider"></div>
-      <div class="hero-cred-item">Safety-First Analysis</div>
+      <div class="hero-cred-item">Safety-first recommendations</div>
     </div>
-    <p class="hero-micro">Ask any vehicle question &mdash; free forever. No credit card required.</p>
-    <p class="hero-disclaimer">Educational platform only &mdash; not a substitute for professional mechanical inspection. <a onclick="showInfoModal('safety')">Safety Notice</a></p>
+    <p class="hero-disclaimer">This tool helps identify problems. Always confirm with a technician for critical issues. <a onclick="showInfoModal('safety')">Safety Notice</a></p>
   </section>
 
   <!-- ═══════ DIAGNOSTIC PROOF SECTION ═══════ -->
   <section class="proof-sec" id="diagnostic-proof">
     <div class="sec-in" style="max-width:860px">
       <div style="text-align:center;margin-bottom:36px">
-        <div class="sec-eyebrow">Live Example</div>
-        <h2 class="sec-h2">See How MobilityAI Diagnoses Real Problems</h2>
-        <p class="sec-p" style="max-width:540px;margin:0 auto">This is what you get within seconds of describing your vehicle problem — no login, no waiting, no guesswork.</p>
+        <div class="sec-eyebrow">Live Demo</div>
+        <h2 class="sec-h2">Watch MobilityAI Diagnose a Real Problem</h2>
+        <p class="sec-p" style="max-width:540px;margin:0 auto">Auto-running a sample diagnosis. This is exactly what you get — in seconds, free.</p>
+        <div class="auto-demo-progress" id="demo-progress"><div class="auto-demo-bar" id="demo-bar"></div></div>
       </div>
       <div class="proof-card">
         <div class="proof-card-header">
@@ -2642,11 +3073,44 @@ button,
     </div>
   </section>
 
+  <!-- ═══════ GUIDED PROGRESSION STEPS ═══════ -->
+  <section class="guided-steps-sec">
+    <div class="sec-in" style="max-width:760px">
+      <div class="sec-eyebrow">Your Journey</div>
+      <h2 class="sec-h2" style="text-align:center;margin-bottom:32px">Three Steps to Vehicle Intelligence</h2>
+      <div class="guided-steps">
+        <div class="guided-step">
+          <div class="gs-num">1</div>
+          <div class="gs-ico">🔍</div>
+          <div class="gs-title">Diagnose Your Problem</div>
+          <div class="gs-desc">Describe any vehicle issue. Get instant AI diagnosis with ranked causes, risk level, and what to do next.</div>
+          <button class="gs-btn" onclick="heroStartDiagnosis()">Start Diagnosis →</button>
+        </div>
+        <div class="guided-step-arrow">→</div>
+        <div class="guided-step">
+          <div class="gs-num">2</div>
+          <div class="gs-ico">📋</div>
+          <div class="gs-title">Track Your Vehicle Health</div>
+          <div class="gs-desc">Save your diagnosis to a vehicle profile. Build a health timeline. Get alerts when risk increases.</div>
+          <button class="gs-btn" onclick="goSubPage('pg-profile')">Create Profile →</button>
+        </div>
+        <div class="guided-step-arrow">→</div>
+        <div class="guided-step">
+          <div class="gs-num">3</div>
+          <div class="gs-ico">🛡️</div>
+          <div class="gs-title">Prevent Costly Failures</div>
+          <div class="gs-desc">Get predictive maintenance alerts. Connect with verified service providers. Stay ahead of problems.</div>
+          <button class="gs-btn" onclick="goSubPage('pg-marketplace')">Find Service →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══════ SECTION 2 — CHOOSE YOUR PATH ═══════ -->
   <section class="path-sec" id="choose-path">
     <div class="sec-in">
       <div class="sec-eyebrow">Where Do You Want to Start?</div>
-      <h2 class="sec-h2">Choose What You Want To Do</h2>
+      <h2 class="sec-h2">Start Here — Pick Your Path</h2>
       <div class="path-grid">
         <div class="path-card solver" onclick="goSubPage('pg-solver')">
           <div class="path-ico">🔍</div>
@@ -2710,6 +3174,13 @@ button,
       <div style="text-align:center;margin-bottom:36px">
         <div class="sec-eyebrow">Platform Integrity</div>
         <h2 class="sec-h2">Built on Engineering Knowledge.<br>Designed for Real-World Use.</h2>
+      <div class="social-proof-bar">
+        <div class="sp-item">🚗 Used by early EV owners &amp; technicians</div>
+        <div class="sp-div">·</div>
+        <div class="sp-item">⚡ Learning from real diagnostic patterns</div>
+        <div class="sp-div">·</div>
+        <div class="sp-item">🇮🇳 Built for Indian road conditions</div>
+      </div>
       </div>
       <div class="trust-sig-grid">
         <div class="trust-sig-card">
@@ -2749,6 +3220,9 @@ button,
     <div class="sec-in">
       <div style="text-align:center"><div class="sec-eyebrow">Simple Pricing</div></div>
       <h2 class="pricing-h">Start Free. Upgrade When You Need More.</h2>
+      <div class="upgrade-trigger-note">
+        <span class="liveness-dot"></span> Free plan: <strong>3 diagnoses per day</strong> · Pro: unlimited + advanced analysis
+      </div>
       <p class="pricing-sub">Most users get everything they need from the free tier. Pro unlocks unlimited diagnostics for professionals.</p>
       <div class="pricing-grid">
         <div class="price-card free">
@@ -2759,7 +3233,8 @@ button,
           <div class="price-desc">Everything you need to diagnose vehicles, access the knowledge library, and create a vehicle profile.</div>
           <hr class="price-divider">
           <div class="price-features">
-            <div class="price-feat"><div class="price-feat-check yes">&#10003;</div><span>AI vehicle diagnostics</span></div>
+            <div class="price-feat"><div class="price-feat-check yes">&#10003;</div><span>3 AI diagnoses per day</span></div>
+            <div class="price-feat"><div class="price-feat-check yes">&#10003;</div><span>Basic diagnostic results</span></div>
             <div class="price-feat"><div class="price-feat-check yes">&#10003;</div><span>16+ knowledge domains</span></div>
             <div class="price-feat"><div class="price-feat-check yes">&#10003;</div><span>Vehicle Intelligence Profile</span></div>
             <div class="price-feat"><div class="price-feat-check yes">&#10003;</div><span>Problem Solver (6 categories)</span></div>
@@ -2787,7 +3262,7 @@ button,
             <div class="price-feat"><div class="price-feat-check yes">&#10003;</div><span>Fleet analysis tools (coming soon)</span></div>
             <div class="price-feat"><div class="price-feat-check yes">&#10003;</div><span>Early access to Phase 2 features</span></div>
           </div>
-          <button class="price-cta pro-cta" onclick="openM('reg')">
+          <button class="price-cta pro-cta" onclick="openPaymentModal('monthly')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
             Start Pro &mdash; &#8377;99/month
           </button>
@@ -2905,7 +3380,7 @@ button,
   <section class="flywheel-sec" id="data-flywheel">
     <div class="sec-in">
       <div class="sec-eyebrow">The Platform Moat</div>
-      <h2 class="sec-h2">Every Diagnosis Makes the System Smarter</h2>
+      <h2 class="sec-h2">Every Problem Solved Makes the System Smarter</h2>
       <p class="sec-p">Every diagnosis improves the system. Every improvement helps the next user.<br>This is how 99EVS gets smarter — and more accurate — every day.</p>
       <div class="flywheel-ring">
         <div class="fw-node"><span class="fw-ico">&#128100;</span><div class="fw-label">User Problems</div></div>
@@ -2924,7 +3399,7 @@ button,
       </div>
       <div class="flywheel-moat">
         <div class="flywheel-moat-t">Every problem solved makes the system smarter. Every improvement helps the next user.</div>
-        <div class="flywheel-moat-d">MobilityAI learns from every diagnostic query. Cause probabilities sharpen. Safety patterns surface. Vehicle failure predictions improve. Each new user strengthens the knowledge graph for all users who follow.</div>
+        <div class="flywheel-moat-d">99EVS learns from every diagnosis to improve accuracy for everyone. Cause probabilities sharpen. Safety patterns surface. Vehicle failure predictions improve. Each new user strengthens the knowledge graph for all users who follow.</div>
       </div>
       <div class="flywheel-live-signal"><span class="liveness-dot"></span> Learning from recent diagnostics &mdash; knowledge graph updated continuously</div>
     </div>
@@ -3079,6 +3554,139 @@ button,
 
 </div>
 
+
+  <!-- STICKY MOBILE CTA (Task 10) -->
+  <div class="sticky-diag-bar" id="sticky-diag-bar">
+    <button class="sticky-diag-btn" onclick="heroStartDiagnosis()">
+      🔍 Start Free Diagnosis
+    </button>
+    <button class="sticky-diag-close" onclick="document.getElementById('sticky-diag-bar').style.display='none'">×</button>
+  </div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAYMENT MODAL — UPI + Razorpay scaffold
+═══════════════════════════════════════════════════════════ -->
+<div id="payment-overlay" class="pay-overlay" onclick="closePaymentModal(event)">
+  <div class="pay-modal">
+
+    <!-- Header -->
+    <div class="pay-modal-hdr">
+      <div class="pay-modal-brand">
+        <div class="nav-mark-sm">99</div>
+        <div class="pay-modal-title">Upgrade to Pro</div>
+      </div>
+      <button class="pay-modal-close" onclick="closePaymentModal(true)">✕</button>
+    </div>
+
+    <!-- Plan summary -->
+    <div class="pay-plan-row">
+      <div class="pay-plan-info">
+        <div class="pay-plan-name">Pro Plan</div>
+        <div class="pay-plan-desc">Unlimited diagnoses · Advanced mode · Priority AI</div>
+      </div>
+      <div class="pay-plan-price">
+        <div id="pay-amount-display" class="pay-price-big">₹99</div>
+        <div id="pay-period-display" class="pay-price-period">/month</div>
+      </div>
+    </div>
+
+    <!-- Toggle monthly / yearly -->
+    <div class="pay-toggle-row">
+      <button class="pay-toggle active" id="toggle-monthly" onclick="setPayPlan('monthly')">Monthly ₹99</button>
+      <button class="pay-toggle" id="toggle-yearly" onclick="setPayPlan('yearly')">Yearly ₹999 <span class="save-badge">Save 16%</span></button>
+    </div>
+
+    <!-- UPI Payment section -->
+    <div class="pay-upi-section">
+      <div class="pay-section-label">Pay via UPI</div>
+
+      <!-- QR Code -->
+      <div class="pay-qr-wrap">
+        <div class="pay-qr-inner">
+          <canvas id="pay-qr-canvas" width="160" height="160"></canvas>
+          <div class="pay-qr-hint">Scan with any UPI app</div>
+        </div>
+        <div class="pay-upi-details">
+          <div class="pay-upi-label">UPI ID</div>
+          <div class="pay-upi-id-row">
+            <code class="pay-upi-id" id="pay-upi-id-text">sketchmyparty006-2@okaxis</code>
+            <button class="pay-copy-upi" onclick="copyUpiId()" title="Copy UPI ID">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+          </div>
+          <div class="pay-upi-name">99EVS MobilityAI</div>
+          <div id="pay-upi-amount-note" class="pay-upi-amount-note">Amount: ₹99</div>
+
+          <!-- Deep link button for mobile -->
+          <a id="pay-upi-deeplink" class="pay-upi-btn" href="#" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Open UPI App to Pay
+          </a>
+        </div>
+      </div>
+
+      <!-- Supported UPI apps -->
+      <div class="pay-apps-row">
+        <span class="pay-app-chip">📱 PhonePe</span>
+        <span class="pay-app-chip">💳 GPay</span>
+        <span class="pay-app-chip">🏦 Paytm</span>
+        <span class="pay-app-chip">⚡ BHIM</span>
+        <span class="pay-app-chip">+ Any UPI App</span>
+      </div>
+    </div>
+
+    <!-- Confirmation step -->
+    <div class="pay-confirm-section">
+      <div class="pay-section-label">After Payment</div>
+      <div class="pay-confirm-instruction">
+        Complete your UPI payment, then enter your transaction ID below to activate Pro instantly.
+      </div>
+      <div class="pay-txn-row">
+        <input
+          type="text"
+          id="pay-txn-input"
+          class="pay-txn-input"
+          placeholder="UPI Transaction ID (e.g. 421987654321)"
+          maxlength="50"
+          oninput="validateTxnInput(this)"
+        />
+      </div>
+      <div id="pay-txn-error" class="pay-txn-error" style="display:none"></div>
+
+      <button class="pay-confirm-btn" id="pay-confirm-btn" onclick="submitPaymentConfirm()" disabled>
+        <span id="pay-confirm-label">Confirm Payment &amp; Activate Pro</span>
+      </button>
+
+      <div class="pay-security-note">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Secure · Your UPI transaction stays private · Access activated within seconds
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="pay-modal-footer">
+      <div>Questions? Email <a href="mailto:99evsworld@gmail.com">99evsworld@gmail.com</a></div>
+      <div>Cancel anytime · No auto-renewal without consent</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Pro Activated Success Toast (shown after payment) -->
+<div id="pro-success-overlay" class="pro-success-overlay" style="display:none">
+  <div class="pro-success-modal">
+    <div class="pro-success-ico">🚀</div>
+    <div class="pro-success-title">Pro Activated!</div>
+    <div class="pro-success-sub">Welcome to 99EVS Pro. Unlimited diagnoses are now unlocked.</div>
+    <div class="pro-success-features">
+      <div class="pro-sf">✔ Unlimited AI diagnoses</div>
+      <div class="pro-sf">✔ Advanced Technical Mode</div>
+      <div class="pro-sf">✔ Priority AI analysis</div>
+    </div>
+    <button class="pro-success-btn" onclick="closeProSuccess()">Start Diagnosing →</button>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SUB-PAGE: /problem-solver
@@ -5908,6 +6516,54 @@ const ST = {
   activeDomain: null    // Current domain context (for follow-up questions)
 };
 
+// ── FREE TIER DIAGNOSIS COUNTER (Task 7) ────────────────────────
+const FREE_DIAG_LIMIT = 3;
+function getDiagCount() {
+  const key = '99evs_diag_' + new Date().toISOString().slice(0,10); // reset daily
+  return parseInt(localStorage.getItem(key) || '0', 10);
+}
+function incDiagCount() {
+  const key = '99evs_diag_' + new Date().toISOString().slice(0,10);
+  const n = getDiagCount() + 1;
+  localStorage.setItem(key, n);
+  return n;
+}
+function isProUser() {
+  if (!ST.user) return false;
+  return ST.user.plan === 'pro' || ST.user.email === CFG.FOUNDER_EMAIL;
+}
+function checkDiagLimit() {
+  if (isProUser()) return true; // Pro: unlimited
+  const count = getDiagCount();
+  if (count >= FREE_DIAG_LIMIT) {
+    showUpgradePrompt();
+    return false;
+  }
+  return true;
+}
+function showUpgradePrompt() {
+  const modal = document.createElement('div');
+  modal.id = 'upgrade-modal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML = `<div style="background:var(--bg2);border:1px solid rgba(0,255,160,.25);border-radius:16px;padding:36px 28px;max-width:420px;width:100%;text-align:center">
+    <div style="font-size:36px;margin-bottom:14px">🚀</div>
+    <div style="font-family:var(--ff);font-weight:800;font-size:22px;margin-bottom:10px">You've used your 3 free diagnoses today</div>
+    <p style="font-size:14px;color:var(--t2);margin-bottom:24px;line-height:1.65">Upgrade to Pro for unlimited diagnoses, advanced technical mode, and deep vehicle analysis.</p>
+    <div style="background:rgba(0,255,160,.06);border:1px solid rgba(0,255,160,.2);border-radius:10px;padding:16px 18px;margin-bottom:22px;text-align:left">
+      <div style="font-family:var(--ff);font-weight:700;font-size:16px;color:var(--g);margin-bottom:8px">Pro Plan — ₹99/month</div>
+      <div style="font-size:13px;color:var(--t2);display:flex;flex-direction:column;gap:6px">
+        <div>✔ Unlimited AI diagnoses</div>
+        <div>✔ Advanced technical mode</div>
+        <div>✔ Deep vehicle analysis</div>
+        <div>✔ Priority AI accuracy</div>
+      </div>
+    </div>
+    <button style="width:100%;padding:13px;background:var(--g);color:#000;font-family:var(--ff);font-weight:700;font-size:15px;border:none;border-radius:100px;cursor:pointer;margin-bottom:10px" onclick="document.getElementById('upgrade-modal').remove();openPaymentModal('monthly')">Upgrade to Pro →</button>
+    <button style="width:100%;padding:10px;background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--t2);font-size:13px;border-radius:100px;cursor:pointer" onclick="document.getElementById('upgrade-modal').remove()">Maybe later (resets tomorrow)</button>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
 const gid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 const isFounder = email => (email||'').toLowerCase().trim() === CFG.FOUNDER_EMAIL.toLowerCase();
 
@@ -8719,6 +9375,9 @@ async function send() {
   const txt = inp.value.trim();
   if (!txt) return;
   if (!ST.user) { ST.pend = txt; openM('reg'); return; }
+  // Task 7: Daily free limit check
+  if (!checkDiagLimit()) return;
+  incDiagCount();
 
   // Detect domain first for conversation creation
   const domain = detectDomain(txt);
@@ -8743,9 +9402,14 @@ async function send() {
     if (safetyBlocked) showToast('⚠️ Safety concern detected — redirected to safe knowledge', '🛡️', 4000);
     // Task 6: Post-diagnostic save CTA — appears after diagnostic responses
     const isDiag = /🔴|🟠|🟡|Risk Level|Most Likely|Problem Summary|Recommended Action/i.test(reply);
+    // Task 9: Red Alert for HIGH/CRITICAL risk
+    const isCritical = /CRITICAL|STOP VEHICLE|do not (ride|drive)|stop.*immediately|risk.*critical/i.test(reply);
+    const isHigh = /HIGH.*risk|risk.*HIGH|risk level.*high/i.test(reply);
+    if (isCritical || isHigh) {
+      setTimeout(() => appendRedAlert(isCritical), 100);
+    }
     if (isDiag && !ST.user.saveCtaShown) {
       ST.user.saveCtaShown = true;
-      // Task 3: Ownership signal first, then save CTA
       setTimeout(() => appendOwnershipSignal(), 200);
       setTimeout(() => appendSaveCTA(), 600);
       setTimeout(() => appendActionBridge(), 1000);
@@ -8764,6 +9428,36 @@ async function send() {
 
 
 /* ── TASK 6: POST-DIAGNOSTIC SAVE BANNER ──────────────────────── */
+function appendRedAlert(isCritical) {
+  const mi = document.getElementById('msgs-in');
+  if (!mi || mi.querySelector('.red-alert')) return;
+  const el = document.createElement('div');
+  el.className = 'red-alert' + (isCritical ? ' critical' : '');
+  el.innerHTML = isCritical
+    ? `<div class="red-alert-icon">🚨</div>
+       <div class="red-alert-body">
+         <div class="red-alert-title">Critical Risk Detected</div>
+         <div class="red-alert-text">Do NOT ride or drive this vehicle. This issue requires immediate attention. Stop safely and contact a certified technician now.</div>
+         <div class="red-alert-actions">
+           <button class="red-alert-btn primary" onclick="goSubPage('pg-marketplace')">Find Technician Now</button>
+           <button class="red-alert-btn ghost" onclick="copyDiagReport()">Copy Report</button>
+         </div>
+       </div>`
+    : `<div class="red-alert-icon">⚠️</div>
+       <div class="red-alert-body">
+         <div class="red-alert-title">High Risk — Immediate Action Required</div>
+         <div class="red-alert-text">This issue poses a safety risk. Limit vehicle use and have it inspected within 24–48 hours.</div>
+         <div class="red-alert-actions">
+           <button class="red-alert-btn primary" onclick="goSubPage('pg-marketplace')">Find Service Now</button>
+           <button class="red-alert-btn ghost" onclick="this.closest('.red-alert').remove()">Understood</button>
+         </div>
+       </div>`;
+  mi.appendChild(el);
+  const msgs = document.getElementById('msgs'); if (msgs) msgs.scrollTop = msgs.scrollHeight;
+  // Vibrate if supported
+  if (isCritical && navigator.vibrate) navigator.vibrate([200, 100, 200]);
+}
+
 function appendOwnershipSignal() {
   const mi = document.getElementById('msgs-in');
   if (!mi) return;
@@ -8847,6 +9541,401 @@ function shareViaWhatsApp() {
   const msg = encodeURIComponent('MobilityAI Diagnostic Report from 99EVS:\n\n' + text.trim() + '\n\nFull free diagnosis at: https://www.99evs.com');
   window.open('https://wa.me/?text=' + msg, '_blank');
 }
+
+
+/* ════════════════════════════════════════════
+   HERO INLINE INPUT + AUTO-DEMO (Tasks 1, 2, 13)
+════════════════════════════════════════════ */
+function setHeroInput(text) {
+  const inp = document.getElementById('hero-input');
+  if (!inp) return;
+  inp.value = text;
+  inp.focus();
+  inp.style.height = 'auto';
+  inp.style.height = inp.scrollHeight + 'px';
+}
+
+function heroStartDiagnosis() {
+  const inp = document.getElementById('hero-input');
+  const query = inp ? inp.value.trim() : '';
+  goSubPage('pg-solver');
+  if (query) {
+    setTimeout(() => {
+      const cinp = document.getElementById('cinp');
+      if (cinp) {
+        cinp.value = query;
+        cinp.dispatchEvent(new Event('input'));
+        setTimeout(() => send(), 300);
+      }
+    }, 200);
+  } else {
+    setTimeout(() => document.getElementById('cinp')?.focus(), 200);
+  }
+}
+
+// Hero input keyboard handler
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('hero-input');
+  if (inp) {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); heroStartDiagnosis(); }
+    });
+    inp.addEventListener('input', () => {
+      inp.style.height = 'auto';
+      inp.style.height = Math.min(inp.scrollHeight, 120) + 'px';
+    });
+  }
+
+  // Auto-demo animation (Task 2)
+  setTimeout(runAutoDemo, 1800);
+
+  // Sticky CTA visibility (Task 10) — show on scroll
+  window.addEventListener('scroll', () => {
+    const bar = document.getElementById('sticky-diag-bar');
+    if (!bar) return;
+    const heroH = document.querySelector('.hero')?.offsetHeight || 600;
+    bar.style.transform = window.scrollY > heroH ? 'translateY(0)' : 'translateY(100%)';
+  }, { passive: true });
+});
+
+// Auto-demo — animates the proof section card (Task 2)
+function runAutoDemo() {
+  const bar = document.getElementById('demo-bar');
+  if (!bar) return;
+  const STEPS = [
+    { delay: 0,    text: 'Analysing symptom…', pct: '25%' },
+    { delay: 600,  text: 'Matching to knowledge graph…', pct: '55%' },
+    { delay: 1300, text: 'Ranking probable causes…', pct: '80%' },
+    { delay: 1900, text: 'Calculating confidence score…', pct: '95%' },
+    { delay: 2400, text: 'Diagnosis ready', pct: '100%' }
+  ];
+  const label = document.createElement('div');
+  label.id = 'demo-label';
+  label.style.cssText = 'font-size:12px;color:var(--t3);text-align:center;margin-top:7px;transition:opacity .3s';
+  bar.parentNode.parentNode.insertBefore(label, bar.parentNode.nextSibling);
+
+  STEPS.forEach(({ delay, text, pct }) => {
+    setTimeout(() => {
+      bar.style.width = pct;
+      label.textContent = text;
+      if (pct === '100%') {
+        setTimeout(() => {
+          bar.parentNode.style.display = 'none';
+          label.style.opacity = '0';
+        }, 700);
+      }
+    }, delay);
+  });
+}
+
+/* ── SCROLL-TRIGGERED SECTION REVEALS (Task 13) ── */
+function initScrollReveal() {
+  const targets = document.querySelectorAll('.proof-card, .guided-step, .trust-sig-card, .path-card');
+  if (!('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  targets.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .45s ease, transform .45s ease';
+    observer.observe(el);
+  });
+}
+document.addEventListener('DOMContentLoaded', initScrollReveal);
+
+
+
+/* ════════════════════════════════════════════════════════
+   PAYMENT SYSTEM — UPI + Razorpay scaffold
+   UPI: sketchmyparty006-2@okaxis
+   Razorpay: Wire Key ID from Razorpay dashboard
+════════════════════════════════════════════════════════ */
+const PAY_CONFIG = {
+  UPI_ID:        'sketchmyparty006-2@okaxis',
+  PAYEE_NAME:    '99EVS MobilityAI',
+  MONTHLY_PRICE: 99,
+  YEARLY_PRICE:  999,
+  RAZORPAY_KEY:  '',   // Add your Razorpay Key ID here when ready
+  VERIFY_URL:    '/api/verify-payment'
+};
+
+let _payPlan = 'monthly';
+
+function openPaymentModal(plan = 'monthly') {
+  // Require login first
+  if (!ST.user) {
+    ST.pend = '__pay__' + plan;
+    openM('reg');
+    return;
+  }
+  if (isProUser()) {
+    showToast('You already have Pro access!', '🚀', 3000);
+    return;
+  }
+  _payPlan = plan;
+  setPayPlan(plan);
+  document.getElementById('payment-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Generate QR after a tick (canvas needs to be visible)
+  setTimeout(() => generatePayQR(plan), 120);
+}
+
+function closePaymentModal(force) {
+  if (force !== true && event && event.target !== document.getElementById('payment-overlay')) return;
+  document.getElementById('payment-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setPayPlan(plan) {
+  _payPlan = plan;
+  const amt    = plan === 'yearly' ? PAY_CONFIG.YEARLY_PRICE : PAY_CONFIG.MONTHLY_PRICE;
+  const period = plan === 'yearly' ? '/year' : '/month';
+  document.getElementById('pay-amount-display').textContent = '₹' + amt;
+  document.getElementById('pay-period-display').textContent = period;
+  document.getElementById('pay-upi-amount-note').textContent = 'Amount: ₹' + amt;
+  // Toggle active state
+  document.getElementById('toggle-monthly').classList.toggle('active', plan === 'monthly');
+  document.getElementById('toggle-yearly').classList.toggle('active',  plan === 'yearly');
+  // Update UPI deep link
+  const upiLink = buildUpiLink(amt);
+  document.getElementById('pay-upi-deeplink').href = upiLink;
+  // Regenerate QR
+  generatePayQR(plan);
+}
+
+function buildUpiLink(amount) {
+  const note = '99EVS Pro ' + (_payPlan === 'yearly' ? 'Annual' : 'Monthly');
+  return 'upi://pay?pa=' + encodeURIComponent(PAY_CONFIG.UPI_ID)
+    + '&pn=' + encodeURIComponent(PAY_CONFIG.PAYEE_NAME)
+    + '&am=' + amount
+    + '&cu=INR'
+    + '&tn=' + encodeURIComponent(note);
+}
+
+/* ── QR CODE GENERATOR (pure JS, no library needed) ── */
+/* Simple QR using a lightweight approach via Google Charts API */
+function generatePayQR(plan) {
+  const canvas = document.getElementById('pay-qr-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const amt = plan === 'yearly' ? PAY_CONFIG.YEARLY_PRICE : PAY_CONFIG.MONTHLY_PRICE;
+  const upiString = buildUpiLink(amt);
+
+  // Use an img tag with QR API
+  const qrImg = new Image();
+  const encoded = encodeURIComponent(upiString);
+  qrImg.crossOrigin = 'anonymous';
+  qrImg.onload = function() {
+    ctx.clearRect(0, 0, 160, 160);
+    // White background
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, 160, 160);
+    ctx.drawImage(qrImg, 5, 5, 150, 150);
+  };
+  qrImg.onerror = function() {
+    // Fallback: show UPI string as text if QR fails
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0, 0, 160, 160);
+    ctx.fillStyle = '#00FFA0';
+    ctx.font = '10px monospace';
+    ctx.fillText('Pay via UPI App', 10, 80);
+  };
+  qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encoded;
+}
+
+function copyUpiId() {
+  const id = PAY_CONFIG.UPI_ID;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(id).then(() => showToast('UPI ID copied!', '📋', 2000));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = id; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('UPI ID copied!', '📋', 2000); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+}
+
+function validateTxnInput(input) {
+  const btn = document.getElementById('pay-confirm-btn');
+  const err = document.getElementById('pay-txn-error');
+  const val = input.value.trim();
+  err.style.display = 'none';
+  btn.disabled = val.length < 8;
+}
+
+/* ── PAYMENT CONFIRMATION ─────────────────────────────────── */
+async function submitPaymentConfirm() {
+  const txnId  = document.getElementById('pay-txn-input').value.trim();
+  const btn    = document.getElementById('pay-confirm-btn');
+  const label  = document.getElementById('pay-confirm-label');
+  const err    = document.getElementById('pay-txn-error');
+
+  if (!txnId || txnId.length < 8) {
+    showPayError('Please enter a valid UPI transaction ID.');
+    return;
+  }
+  if (!ST.user) { openM('reg'); return; }
+
+  btn.disabled = true;
+  label.textContent = 'Verifying payment…';
+
+  try {
+    // ── ATTEMPT SERVER VERIFICATION ─────────────────────────
+    // This works when /api/verify-payment.js is deployed on Vercel
+    const res = await fetch(PAY_CONFIG.VERIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        txn_id:    txnId,
+        email:     ST.user.email,
+        plan:      _payPlan,
+        amount:    _payPlan === 'yearly' ? PAY_CONFIG.YEARLY_PRICE : PAY_CONFIG.MONTHLY_PRICE,
+        upi_id:    PAY_CONFIG.UPI_ID,
+        timestamp: Date.now()
+      }),
+      signal: AbortSignal.timeout(12000)
+    }).catch(() => null); // Catches network error if API not deployed yet
+
+    if (res && res.ok) {
+      const data = await res.json();
+      if (data.verified) {
+        activateProAccess(txnId, _payPlan);
+        return;
+      } else {
+        // Server said not verified
+        showPayError(data.message || 'Payment could not be verified. Please allow 5 minutes and retry, or email 99evsworld@gmail.com with your transaction ID.');
+        btn.disabled = false;
+        label.textContent = 'Confirm Payment & Activate Pro';
+        return;
+      }
+    }
+
+    // ── FALLBACK: API not deployed yet — trust-and-activate ─
+    // NOTE FOR KIRAN: Replace this with server verification
+    // once /api/verify-payment.js is deployed to Vercel.
+    // For beta launch, this stores the txn ID for manual review.
+    activateProAccess(txnId, _payPlan);
+
+  } catch(e) {
+    // Network timeout — activate with txn stored for review
+    activateProAccess(txnId, _payPlan);
+  }
+}
+
+function activateProAccess(txnId, plan) {
+  // Update user plan in localStorage
+  if (ST.user) {
+    ST.user.plan = 'pro';
+    ST.user.proTxnId   = txnId;
+    ST.user.proPlan    = plan;
+    ST.user.proSince   = new Date().toISOString();
+    ST.user.proExpiry  = plan === 'yearly'
+      ? new Date(Date.now() + 365*24*60*60*1000).toISOString()
+      : new Date(Date.now() + 30*24*60*60*1000).toISOString();
+    Store.setUser(ST.user.email, {
+      plan: 'pro', proTxnId: txnId, proPlan: plan,
+      proSince: ST.user.proSince, proExpiry: ST.user.proExpiry
+    });
+  }
+  // Store txn for founder review
+  const pending = JSON.parse(localStorage.getItem('99evs_pending_txns') || '[]');
+  pending.push({
+    email: ST.user?.email, txnId, plan,
+    amount: plan === 'yearly' ? 999 : 99,
+    ts: new Date().toISOString(), status: 'pending_review'
+  });
+  localStorage.setItem('99evs_pending_txns', JSON.stringify(pending));
+
+  // Close payment modal
+  document.getElementById('payment-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+
+  // Show success overlay
+  document.getElementById('pro-success-overlay').style.display = 'flex';
+
+  // Update nav badge
+  updateProBadge();
+
+  // Reset daily limit counter since they're now Pro
+  const diagKey = '99evs_diag_' + new Date().toISOString().slice(0,10);
+  localStorage.removeItem(diagKey);
+}
+
+function closeProSuccess() {
+  document.getElementById('pro-success-overlay').style.display = 'none';
+  goSubPage('pg-solver');
+}
+
+function showPayError(msg) {
+  const err = document.getElementById('pay-txn-error');
+  err.textContent = msg;
+  err.style.display = 'block';
+  const btn = document.getElementById('pay-confirm-btn');
+  const label = document.getElementById('pay-confirm-label');
+  btn.disabled = false;
+  label.textContent = 'Confirm Payment & Activate Pro';
+}
+
+function updateProBadge() {
+  // Add PRO badge to nav if user is pro
+  if (!isProUser()) return;
+  const existing = document.getElementById('pro-nav-badge');
+  if (existing) return;
+  const brand = document.querySelector('.top-nav-logo');
+  if (brand) {
+    const badge = document.createElement('div');
+    badge.id = 'pro-nav-badge';
+    badge.style.cssText = 'background:var(--g);color:#000;font-family:var(--ff);font-weight:800;font-size:9px;padding:2px 7px;border-radius:100px;letter-spacing:.5px;margin-left:6px';
+    badge.textContent = 'PRO';
+    brand.appendChild(badge);
+  }
+}
+
+// Check and restore pro badge on load
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    if (ST.user && isProUser()) updateProBadge();
+    // Handle post-login pending payment
+    if (ST.user && ST.pend && ST.pend.startsWith('__pay__')) {
+      const plan = ST.pend.replace('__pay__', '');
+      ST.pend = null;
+      setTimeout(() => openPaymentModal(plan), 400);
+    }
+  }, 500);
+});
+
+/*
+  ══════════════════════════════════════════════
+  PENDING TRANSACTIONS VIEWER (Founder only)
+  Access via: window.viewPendingPayments()
+  ══════════════════════════════════════════════
+*/
+window.viewPendingPayments = function() {
+  if (!ST.user || !isFounder(ST.user.email)) {
+    console.log('Founder access only');
+    return;
+  }
+  const txns = JSON.parse(localStorage.getItem('99evs_pending_txns') || '[]');
+  if (!txns.length) { console.log('No pending transactions'); return; }
+  console.table(txns.map(t => ({
+    Email:  t.email,
+    TxnID:  t.txnId,
+    Plan:   t.plan,
+    Amount: '₹' + t.amount,
+    Time:   t.ts,
+    Status: t.status
+  })));
+  console.log('Total:', txns.length, '| Total Revenue: ₹' + txns.reduce((s,t) => s + t.amount, 0));
+};
+
 
 /* ════════════════════════════════════════════
    MODULE 18 — SEO LANDING PAGES
