@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>99EVs Founder Dashboard</title>
+
+<script type="module">
+
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs,
+doc,
+updateDoc
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+apiKey: "YOUR_API_KEY",
+
+authDomain: "YOUR_PROJECT.firebaseapp.com",
+
+projectId: "YOUR_PROJECT_ID",
+
+storageBucket: "YOUR_PROJECT.appspot.com",
+
+messagingSenderId: "YOUR_SENDER_ID",
+
+appId: "YOUR_APP_ID"
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+
+async function loadVehicles(){
+
+const querySnapshot =
+await getDocs(collection(db,"vehicles"));
+
+const container =
+document.getElementById("queue");
+
+
+querySnapshot.forEach((docSnap)=>{
+
+const data = docSnap.data();
+
+const vehicleID = docSnap.id;
+
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>${data.make} ${data.model}</h3>
+
+<p>City:
+${data.city}</p>
+
+<p>KM:
+${data.km}</p>
+
+<p>Status:
+${data.founderStatus}</p>
+
+
+<button onclick="approveVehicle('${vehicleID}')">
+Approve
+</button>
+
+
+<button onclick="assignInspection('${vehicleID}')">
+Inspect
+</button>
+
+
+<button onclick="rejectVehicle('${vehicleID}')">
+Reject
+</button>
+
+
+</div>
+
+`;
+
+});
+
+}
+
+
+window.approveVehicle =
+async function(vehicleID){
+
+await updateDoc(
+
+doc(db,"vehicles",vehicleID),
+
+{
+founderStatus:"approved"
+}
+
+);
+
+alert("Vehicle approved");
+
+location.reload();
+
+};
+
+
+window.assignInspection =
+async function(vehicleID){
+
+await updateDoc(
+
+doc(db,"vehicles",vehicleID),
+
+{
+routingStatus:"inspection_required"
+}
+
+);
+
+alert("Inspection assigned");
+
+location.reload();
+
+};
+
+
+window.rejectVehicle =
+async function(vehicleID){
+
+await updateDoc(
+
+doc(db,"vehicles",vehicleID),
+
+{
+founderStatus:"rejected"
+}
+
+);
+
+alert("Vehicle rejected");
+
+location.reload();
+
+};
+
+
+window.onload = loadVehicles;
+
+</script>
+
+
+<style>
+
+body{
+
+background:#081423;
+
+font-family:sans-serif;
+
+color:white;
+
+}
+
+
+.card{
+
+background:#142b4f;
+
+padding:20px;
+
+margin:20px;
+
+border-radius:10px;
+
+}
+
+button{
+
+padding:10px;
+
+margin-right:10px;
+
+background:#f7b500;
+
+border:none;
+
+cursor:pointer;
+
+}
+
+</style>
+
+
+</head>
+
+<body>
+
+<h1>99EVs Founder Queue</h1>
+
+<div id="queue"></div>
+
+</body>
+</html>
