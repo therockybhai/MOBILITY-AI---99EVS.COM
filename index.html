@@ -2092,6 +2092,104 @@ document.addEventListener('DOMContentLoaded', () => {
   v3RenderThumbs();
 });
 </script>
+<script type="module">
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+getFirestore,
+collection,
+addDoc,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* Firebase config (replace if needed) */
+
+const firebaseConfig = {
+apiKey: "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-ZxdA",
+authDomain: "evs-production.firebaseapp.com",
+projectId: "evs-production",
+storageBucket: "evs-production.appspot.com",
+messagingSenderId: "775112664706",
+appId: "1:775112664706:web:2529507e7788d89e7bb69b"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+/* GLOBAL FUNCTION FOR BUTTON */
+
+window.submitForFounderQueue = async function () {
+
+try {
+
+const vehicleType =
+document.getElementById("veh-type")?.value || "";
+
+const city =
+document.getElementById("veh-city")?.value || "";
+
+const make =
+document.getElementById("veh-make")?.value || "";
+
+const model =
+document.getElementById("veh-model")?.value || "";
+
+const year =
+document.getElementById("veh-year")?.value || "";
+
+const km =
+document.getElementById("veh-km")?.value || "";
+
+const contact =
+document.getElementById("insp-contact")?.value || "";
+
+
+if (!contact) {
+alert("Please enter contact number");
+return;
+}
+
+
+await addDoc(collection(db, "vehicles"), {
+
+vehicleType,
+city,
+make,
+model,
+year,
+km,
+contact,
+
+founderStatus: "pending",
+
+createdAt: serverTimestamp(),
+
+geo: {
+timestamp: new Date().toISOString()
+}
+
+});
+
+
+alert("Vehicle submitted successfully to 99EVs");
+
+location.reload();
+
+}
+
+catch (error) {
+
+console.error(error);
+
+alert("Submission failed. Check console.");
+
+}
+
+};
+
+</script>
 </body>
 </html>
