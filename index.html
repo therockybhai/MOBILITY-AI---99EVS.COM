@@ -2987,5 +2987,24 @@ function showToast(msg){
     }, 3000);
 }
 </script>
+   <script>
+function openEngine(mode){
+  const engine = document.getElementById("engine-view");
+
+  if(!engine){
+    alert("Engine container missing");
+    return;
+  }
+
+  engine.style.display = "block";
+
+  window.scrollTo({
+    top: engine.offsetTop - 40,
+    behavior: "smooth"
+  });
+
+  console.log("Engine opened:", mode);
+}
+   </script>
 </body>
 </html>
