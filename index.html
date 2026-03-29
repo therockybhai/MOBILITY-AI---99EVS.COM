@@ -26,12 +26,12 @@
 /* Real config is applied inside the engine script below. */
 /* Placeholder kept to avoid parse errors during load.   */
 const firebaseConfig = {
-  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-ZxdA",
+  apiKey:            "Available - replaced",
   authDomain:        "evs-production.firebaseapp.com",
   projectId:         "evs-production",
   storageBucket:     "evs-production.firebasestorage.app",
-  messagingSenderId: "775112664706",
-  appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
+  messagingSenderId: "Available - replaced",
+  appId:             "Available"
 };
 firebase.initializeApp(firebaseConfig);
 /* window.db / window.storage / window.auth are set by the engine below */
@@ -1156,54 +1156,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
    window.db · window.storage · window.auth
 */
 
-/* FINAL PAYLOAD DEBUG — SAFE BEFORE FIRESTORE WRITE */
-
-console.log("FINAL SUBMISSION PAYLOAD:", {
-  formState: window.formState,
-  ownerTrustReport,
-  documentStatus,
-  confidenceLevel: conf?.key,
-  submissionId,
-  routing,
-  band,
-  geo: geoPayload
-  timestamp: new Date().toISOString(),
-});
-/*
-— §2 Primary write → vehicle_submissions collection
-*/
-await submitForFounderQueue({
-  submissionId,
-  vehicleType: vtype,
-  flowType: window.selectedFlow,
-  city,
-  make,
-  model,
-  year: year !== '—' ? parseInt(year) : null,
-  odometer: odo ? parseInt(odo) : null,
-  userEmail: window.auth?.currentUser?.email || null,
-  documentStatus,
-  ownerTrustReport,
-  evidenceMeta,
-  photoCount: v3Photos.length,
-  inspectionRequested: v3InspectionRequested,
-  confidenceLevel,
-  scores,
-  totalScore: totalScoreSafe,
-  band: bandSafe,
-  scoringSnapshot,
-  routingEligibility,
-  routingDecision,
-  completionPercent: completionSafe,
-  progressStage: sellerStep,
-  routing,
-  geo: geoPayload,
-  status: "intake_submitted",
-  stage: "awaiting_scoring",
-  timestamp: new Date().toISOString(),
-  notes,
-  contactNumber: phone
-});
+/* §2 payload debug + Firestore write live inside _doFirestoreSubmit() below — do not duplicate here */
 /*
 — §3 Image upload → evidence/vehicle_images/{submissionId}/
 — §4 Canvas image validation: blur · brightness · resolution
@@ -1261,12 +1214,12 @@ const GEO_CLOCK = {
 
 /* ── §1 FIREBASE INIT — expose as window globals ─────────────── */
 const _firebaseConfig = {
-  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-ZxdA",
+  apiKey:            "Available",
   authDomain:        "evs-production.firebaseapp.com",
   projectId:         "evs-production",
   storageBucket:     "evs-production.firebasestorage.app",
-  messagingSenderId: "775112664706",
-  appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
+  messagingSenderId: "Available",
+  appId:             "Available"
 };
 
 /* Re-initialise only if the existing app used placeholder config */
@@ -1642,6 +1595,7 @@ async function otpResend() {
 
 /* ── VIEW ROUTING ────────────────────────────────────────────── */
 function openEngine(mode) {
+  console.log("openEngine triggered:", mode);
   document.getElementById('homepage').style.display    = 'none';
   document.getElementById('engine-view').style.display = 'block';
   document.getElementById('engine-mode-label').textContent = mode ? '· ' + mode : '';
@@ -1677,7 +1631,7 @@ function hideAllFlows() {
 
 function startFlow(flow) {
   window.selectedFlow = flow;
-  console.log("Flow initialized:", flow);
+  console.log("startFlow triggered:", flow);
   hideAllFlows();
   captureGeoTimestamp();
   const map = {
