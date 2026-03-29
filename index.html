@@ -1,0 +1,3054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>99EVs — Vehicle Support Platform | Trust That Moves</title>
+<meta name="description" content="99EVs is India's trusted vehicle support platform. Know your vehicle's real value, connect with verified buyers, request expert inspection, and make confident decisions before every transaction.">
+<meta name="keywords" content="sell my vehicle India, best resale price EV India, used vehicle verification, buy electric auto India, repo vehicle purchase India, EV inspection near me, vehicle health check India">
+<link rel="canonical" href="https://www.99evs.com">
+<meta property="og:title" content="99EVs — Vehicle Support Platform">
+<meta property="og:description" content="Know your vehicle's real value. Verified inspection. Trusted buyers. Zero brokerage.">
+<meta name="theme-color" content="#0D1B2E">
+
+<!-- Firebase v9 modular SDK (compat layer for simplicity) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+<script>
+/* ══════════════════════════════════════════
+   FIREBASE CONFIG — replace with real values
+   from Firebase Console → Project Settings
+══════════════════════════════════════════ */
+/* ── FIREBASE CONFIG — updated by v3.3 engine init ── */
+/* Real config is applied inside the engine script below. */
+/* Placeholder kept to avoid parse errors during load.   */
+const firebaseConfig = {
+  apiKey:            "Available - replaced",
+  authDomain:        "evs-production.firebaseapp.com",
+  projectId:         "evs-production",
+  storageBucket:     "evs-production.firebasestorage.app",
+  messagingSenderId: "Available - replaced",
+  appId:             "Available"
+};
+firebase.initializeApp(firebaseConfig);
+/* window.db / window.storage / window.auth are set by the engine below */
+</script>
+
+<!-- EmailJS — founder notification delivery -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<!-- TensorFlow.js + MobileNet — vehicle type image match -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
+<!-- Tesseract.js — odometer OCR -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Mulish:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* toggle styles defined in main block below */
+.toggle-group.inline{display:flex;flex-wrap:wrap;gap:10px;}
+.toggle-group.inline .toggle-opt{min-width:160px;}
+/* ══════════════════════════════════════════════════════════
+   99EVS PRODUCTION — TRUST-FIRST MOBILITY INTAKE PLATFORM
+   Firebase: vehicles · inspections · lir_reports · dealer_routes · requirements · city_demand
+   Founder gate: pending → approve/reject/hold/neglect
+   Photo engine: watermark · consent · geo-privacy
+══════════════════════════════════════════════════════════ */
+:root{
+  --navy:#0D1B2E;--navy2:#132540;--navy3:#1C3456;--navy4:#253F68;
+  --amber:#F4A300;--amber2:#D98F00;--amber-l:rgba(244,163,0,.1);--amber-b:rgba(244,163,0,.2);
+  --green:#10B981;--green-l:rgba(16,185,129,.1);--green-b:rgba(16,185,129,.2);
+  --red:#EF4444;--red-l:rgba(239,68,68,.1);--red-b:rgba(239,68,68,.2);
+  --orange:#F97316;--blue:#3B82F6;
+  --bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.14);
+  --t1:#F1F5F9;--t2:#94A3B8;--t3:#475569;
+  --ff:'Syne',sans-serif;--fb:'Mulish',sans-serif;--fm:'DM Mono',monospace;
+  --max:1180px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--navy);color:var(--t1);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(244,163,0,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(244,163,0,.012) 1px,transparent 1px);background-size:48px 48px}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:900;height:60px;background:rgba(13,27,46,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-mark{width:34px;height:34px;background:var(--amber);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--ff);font-weight:800;font-size:12px;color:var(--navy)}
+.nav-name{font-family:var(--ff);font-weight:800;font-size:17px;color:var(--t1);letter-spacing:.5px}
+.nav-name em{color:var(--amber);font-style:normal}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{font-size:12px;font-weight:600;color:var(--t2);text-decoration:none;padding:6px 14px;border-radius:7px;border:1px solid transparent;transition:all .18s}
+.nav-links a:hover{color:var(--amber);border-color:var(--amber-b)}
+.nav-cta-group{display:flex;align-items:center;gap:8px}
+.nav-ghost{padding:7px 16px;border:1px solid var(--bd2);color:var(--t2);font-family:var(--fb);font-size:12px;font-weight:600;border-radius:100px;background:transparent;cursor:pointer;text-decoration:none;transition:all .18s;white-space:nowrap}
+.nav-ghost:hover{border-color:var(--amber);color:var(--amber)}
+.nav-btn{padding:8px 18px;background:var(--amber);color:var(--navy);font-family:var(--fb);font-size:12px;font-weight:800;border-radius:100px;border:none;cursor:pointer;text-decoration:none;transition:all .18s;white-space:nowrap}
+.nav-btn:hover{background:var(--amber2);transform:translateY(-1px)}
+@media(max-width:800px){.nav-links{display:none}.nav{padding:0 18px}}
+
+/* ── VIEW GATING ── */
+#homepage{display:block}#engine-view{display:none}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;padding:80px 40px 70px;text-align:center;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-20%;left:30%;width:800px;height:600px;background:radial-gradient(ellipse,rgba(244,163,0,.06) 0%,transparent 65%);pointer-events:none;z-index:0}
+.hero-inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
+.hero-live{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);padding:5px 16px;border-radius:100px;margin-bottom:28px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+.live-text{font-family:var(--fm);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+.hero-title{font-family:var(--ff);font-size:clamp(34px,5.5vw,66px);font-weight:800;line-height:1.06;letter-spacing:-.5px;margin-bottom:16px}
+.hero-title .hl{color:var(--amber)}.hero-title .dim{color:rgba(241,245,249,.3)}
+.hero-tagline{font-family:var(--fm);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);opacity:.8;margin-bottom:20px}
+.hero-sub{font-size:clamp(14px,1.8vw,17px);color:var(--t2);max-width:560px;margin:0 auto 40px;line-height:1.75}
+.hero-sub strong{color:var(--t1);font-weight:600}
+.hero-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:860px;margin:0 auto 48px}
+.action-card{background:var(--navy2);border:1.5px solid var(--bd);border-radius:16px;padding:22px 18px;cursor:pointer;transition:all .22s;text-align:center;text-decoration:none;display:block;position:relative;overflow:hidden}
+.action-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber);transform:scaleX(0);transform-origin:left;transition:transform .28s}
+.action-card:hover{border-color:var(--amber);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.action-card:hover::before{transform:scaleX(1)}
+.ac-ico{font-size:28px;margin-bottom:12px;display:block}
+.ac-label{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:5px;line-height:1.3}
+.ac-sub{font-size:11px;color:var(--t2);line-height:1.5}
+.ac-arrow{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--amber);margin-top:10px;letter-spacing:.03em}
+.hero-trust{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;padding-top:32px;border-top:1px solid var(--bd)}
+.ht-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t2)}
+.ht-item span{color:var(--green);font-weight:700}
+@media(max-width:860px){.hero-actions{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.hero-actions{grid-template-columns:1fr}.hero{padding:60px 20px 50px}}
+
+/* ── SECTIONS ── */
+.section{position:relative;z-index:1;padding:60px 40px}
+.section-inner{max-width:var(--max);margin:0 auto}
+.sec-eyebrow{font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);opacity:.8;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sec-eyebrow::before{content:'';width:18px;height:1px;background:var(--amber)}
+.sec-h2{font-family:var(--ff);font-size:clamp(22px,3vw,36px);font-weight:800;color:var(--t1);margin-bottom:8px;line-height:1.15}
+.sec-p{font-size:14px;color:var(--t2);max-width:520px;line-height:1.75;margin-bottom:40px}
+.why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.why-card{background:var(--navy2);border:1px solid var(--bd);border-radius:14px;padding:22px 18px;transition:all .2s}
+.why-card:hover{border-color:var(--amber-b);background:var(--navy3);transform:translateY(-3px)}
+.wc-ico{font-size:26px;margin-bottom:12px;display:block}
+.wc-title{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:6px;line-height:1.3}
+.wc-desc{font-size:12px;color:var(--t2);line-height:1.6}
+@media(max-width:900px){.why-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Inspection Layer */
+.insp-section{position:relative;z-index:1;padding:60px 40px}
+.insp-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
+.insp-feature-list{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.insp-feat{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;background:var(--navy2);border:1px solid var(--bd);border-radius:10px}
+.if-ico{font-size:16px;flex-shrink:0;margin-top:1px}
+.if-text{font-size:12px;color:var(--t2);line-height:1.6}
+.if-text strong{color:var(--t1);display:block;font-size:13px;margin-bottom:2px}
+.insp-card{background:var(--navy2);border:1px solid var(--amber-b);border-radius:16px;overflow:hidden}
+.insp-card-hdr{background:var(--navy3);padding:18px 22px;border-bottom:1px solid var(--bd)}
+.ich-title{font-family:var(--ff);font-size:16px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.ich-sub{font-size:12px;color:var(--amber)}
+.insp-card-body{padding:20px 22px}
+.insp-avail{display:flex;align-items:center;gap:10px;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.18);border-radius:8px;padding:10px 14px;margin-bottom:16px}
+.ia-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
+.ia-text{font-size:12px;color:var(--green);font-weight:600}
+.insp-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.insp-step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--t2);line-height:1.5}
+.is-num{width:20px;height:20px;border-radius:50%;background:var(--amber-l);border:1px solid var(--amber-b);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--fm)}
+.hp-insp-btn{width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:9px;cursor:pointer;transition:all .2s}
+.hp-insp-btn:hover{background:var(--amber2);transform:translateY(-1px)}
+@media(max-width:800px){.insp-inner{grid-template-columns:1fr}}
+
+/* Dealer section */
+.dealer-section{position:relative;z-index:1;padding:60px 40px;background:var(--navy2);border-top:1px solid var(--bd)}
+.dealer-inner{max-width:var(--max);margin:0 auto;text-align:center}
+.dealer-roles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:32px 0}
+.dealer-role{background:var(--navy);border:1px solid var(--bd);border-radius:12px;padding:20px 16px;text-align:center;transition:all .2s}
+.dealer-role:hover{border-color:var(--amber-b);transform:translateY(-3px)}
+.dr-ico{font-size:24px;margin-bottom:10px;display:block}
+.dr-name{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.dr-desc{font-size:11px;color:var(--t2);line-height:1.55}
+.dealer-cta{display:inline-flex;align-items:center;gap:9px;padding:14px 32px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:15px;border:none;border-radius:100px;cursor:pointer;transition:all .22s}
+.dealer-cta:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(244,163,0,.25)}
+@media(max-width:700px){.dealer-roles{grid-template-columns:repeat(2,1fr)}}
+
+/* Trust badges */
+.trust-section{position:relative;z-index:1;padding:48px 40px}
+.trust-inner{max-width:var(--max);margin:0 auto}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
+.trust-card{background:var(--navy2);border:1px solid var(--bd);border-radius:12px;padding:18px 16px}
+.tc-ico{font-size:22px;margin-bottom:10px;display:block}
+.tc-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px;font-family:var(--ff)}
+.tc-desc{font-size:11px;color:var(--t2);line-height:1.6}
+.trust-note{margin-top:20px;padding:14px 18px;background:var(--amber-l);border:1px solid var(--amber-b);border-radius:10px;font-size:12px;color:var(--t2);display:flex;align-items:flex-start;gap:10px}
+@media(max-width:700px){.trust-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Footer */
+.footer{position:relative;z-index:1;padding:36px 40px 24px;border-top:1px solid var(--bd)}
+.footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-brand{font-family:var(--ff);font-size:15px;font-weight:700;color:var(--t1)}
+.footer-brand em{color:var(--amber);font-style:normal}
+.footer-info{font-size:11px;color:var(--t3);margin-top:3px}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:12px;color:var(--t2);text-decoration:none;transition:color .18s}
+.footer-links a:hover{color:var(--amber)}
+.footer-copy{font-size:11px;color:var(--t3);text-align:right}
+
+/* ════════════════════════════════
+   ENGINE VIEW — INTAKE FLOWS
+════════════════════════════════ */
+.engine-back{display:flex;align-items:center;gap:8px;padding:14px 40px;background:var(--navy2);border-bottom:1px solid var(--bd);cursor:pointer;font-size:13px;color:var(--t2);transition:color .18s;font-weight:600}
+.engine-back:hover{color:var(--amber)}
+@media(max-width:700px){.engine-back{padding:14px 18px}}
+
+/* Intent screen */
+.intent-wrap{max-width:860px;margin:0 auto;padding:48px 24px 64px}
+.intent-hdr{text-align:center;margin-bottom:40px}
+.intent-hdr h1{font-family:var(--ff);font-size:clamp(24px,4vw,40px);font-weight:800;color:var(--t1);margin-bottom:10px;line-height:1.1}
+.intent-hdr p{font-size:15px;color:var(--t2);max-width:480px;margin:0 auto}
+.intent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:680px){.intent-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:400px){.intent-grid{grid-template-columns:1fr}}
+.intent-card{background:var(--navy2);border:1.5px solid var(--bd);border-radius:16px;padding:22px 18px;cursor:pointer;transition:all .22s;text-align:left;position:relative;overflow:hidden}
+.intent-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber);transform:scaleX(0);transform-origin:left;transition:transform .28s}
+.intent-card:hover{border-color:var(--amber);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.intent-card:hover::after{transform:scaleX(1)}
+.ic-ico{font-size:30px;margin-bottom:14px;display:block}
+.ic-title{font-family:var(--ff);font-size:15px;font-weight:700;color:var(--t1);margin-bottom:5px;line-height:1.3}
+.ic-desc{font-size:12px;color:var(--t2);line-height:1.55}
+.ic-arrow{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--amber);margin-top:12px}
+
+/* Flow wrapper */
+.flow-outer{padding:32px 20px 64px}
+.flow-inner{max-width:680px;margin:0 auto}
+.flow-progress{display:flex;align-items:center;gap:0;margin-bottom:28px}
+.fp-step{display:flex;align-items:center;gap:8px;flex:1}
+.fp-step:last-child{flex:0 0 auto}
+.fp-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:11px;font-weight:500;color:var(--t3);flex-shrink:0;transition:all .25s}
+.fp-dot.active{border-color:var(--amber);color:var(--amber);background:var(--amber-l)}
+.fp-dot.done{border-color:var(--green);color:var(--green);background:var(--green-l)}
+.fp-label{font-size:11px;color:var(--t3);transition:color .25s;white-space:nowrap}
+.fp-label.active{color:var(--amber)}.fp-label.done{color:var(--green)}
+.fp-line{flex:1;height:1px;background:var(--bd);margin:0 8px}
+.fp-line.done{background:var(--green)}
+@media(max-width:520px){.fp-label{display:none}.fp-line{margin:0 4px}}
+
+/* Flow card */
+.flow-card{background:var(--navy2);border:1px solid var(--bd);border-radius:18px;overflow:hidden}
+.flow-card-hdr{background:var(--navy3);padding:18px 22px;border-bottom:1px solid var(--bd)}
+.fch-eyebrow{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);opacity:.8;margin-bottom:5px}
+.fch-title{font-family:var(--ff);font-size:17px;font-weight:800;color:var(--t1)}
+.fch-sub{font-size:12px;color:var(--t2);margin-top:3px}
+.flow-card-body{padding:22px}
+
+/* Toggle question UI */
+.q-block{margin-bottom:20px}
+.q-label{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.q-badge{font-family:var(--fm);font-size:9px;letter-spacing:.08em;padding:2px 7px;border-radius:3px;font-weight:500}
+.q-badge-ev{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+.q-badge-3w4w{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
+.toggle-group{display:flex;flex-direction:column;gap:6px}
+.toggle-group.inline{flex-direction:row;flex-wrap:wrap}
+.toggle-opt{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;cursor:pointer;transition:all .18s;opacity:.55}
+.toggle-opt:hover{border-color:var(--bd2);opacity:.75}
+.toggle-opt.selected{opacity:1;border:2px solid var(--amber);background:linear-gradient(135deg,rgba(244,163,0,.18),rgba(244,163,0,.06));transform:scale(1.02);}
+.toggle-opt.selected .to-marker{background:var(--amber);border-color:var(--amber)}
+/* Color variants — only active when ALSO .selected */
+.toggle-opt.selected.sel-green{border-color:var(--green);background:var(--green-l)}
+.toggle-opt.selected.sel-green .to-marker{background:var(--green);border-color:var(--green)}
+.toggle-opt.selected.sel-orange{border-color:var(--orange);background:rgba(249,115,22,.12)}
+.toggle-opt.selected.sel-orange .to-marker{background:var(--orange);border-color:var(--orange)}
+.toggle-opt.selected.sel-red{border-color:var(--red);background:var(--red-l)}
+.toggle-opt.selected.sel-red .to-marker{background:var(--red);border-color:var(--red)}
+.to-marker{width:14px;height:14px;border-radius:50%;border:2px solid var(--bd2);transition:all .18s;flex-shrink:0}
+.to-text{flex:1}
+.to-label{font-size:13px;font-weight:600;color:var(--t1)}
+.to-sub{font-size:11px;color:var(--t2);margin-top:1px}
+
+/* Intel box */
+.intel-box{background:var(--navy);border:1px solid var(--amber-b);border-radius:11px;padding:12px 15px;margin-top:4px;display:none}
+.intel-box.visible{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ib-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.ib-row:last-child{margin-bottom:0}
+.ib-label{font-family:var(--fm);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);opacity:.8;width:90px;flex-shrink:0;padding-top:1px}
+.ib-val{font-size:12px;color:var(--t1);line-height:1.5;font-weight:600}
+.ib-sub{font-size:11px;color:var(--t2);margin-top:1px}
+
+/* Flow nav */
+.flow-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px}
+.flow-back{padding:10px 18px;background:transparent;border:1.5px solid var(--bd2);color:var(--t2);font-family:var(--fb);font-size:13px;font-weight:700;border-radius:10px;cursor:pointer;transition:all .18s}
+.flow-back:hover{border-color:var(--t2);color:var(--t1)}
+.flow-next{flex:1;padding:12px 24px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-size:14px;font-weight:800;border:none;border-radius:10px;cursor:pointer;transition:all .22s}
+.flow-next:hover{background:var(--amber2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(244,163,0,.25)}
+.flow-next:disabled{background:var(--navy4);color:var(--t3);cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Fields */
+.field{margin-bottom:10px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;background:var(--navy);border:1.5px solid var(--bd);border-radius:9px;color:var(--t1);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .18s,box-shadow .18s;appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-l)}
+.field input::placeholder,.field textarea::placeholder{color:var(--t3)}
+.field select option{background:var(--navy2)}
+.field textarea{resize:none;min-height:72px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Routing output */
+.routing-section{margin-bottom:18px}
+.rt-title{font-family:var(--fm);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);opacity:.7;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.rt-title::after{content:'';flex:1;height:1px;background:var(--bd)}
+.routing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(max-width:480px){.routing-grid{grid-template-columns:1fr}}
+.route-card{background:var(--navy3);border:1px solid var(--bd);border-radius:11px;padding:13px 14px}
+.rc-label{font-family:var(--fm);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
+.rc-val{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:2px;line-height:1.3}
+.rc-val.green{color:var(--green)}.rc-val.amber{color:var(--amber)}.rc-val.orange{color:var(--orange)}
+
+/* Confidence badge */
+.conf-badge-system{display:flex;align-items:flex-start;gap:14px;background:var(--navy);border:1px solid var(--bd2);border-radius:12px;padding:14px 16px}
+.cbs-ico{font-size:24px;flex-shrink:0;margin-top:1px}
+.cbs-label{font-family:var(--fm);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
+.cbs-level{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.cbs-desc{font-size:12px;color:var(--t2);line-height:1.55}
+.conf-level{font-family:var(--fm);font-size:9px;letter-spacing:.08em;padding:1px 6px;border-radius:3px;display:inline-block}
+.cl-low{background:rgba(239,68,68,.12);color:var(--red)}
+.cl-queue{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+.cl-medium{background:rgba(249,115,22,.12);color:var(--orange)}
+.cl-high{background:var(--green-l);color:var(--green)}
+
+/* Inline alerts */
+.inline-alert{display:flex;align-items:flex-start;gap:9px;padding:10px 13px;border-radius:9px;font-size:12px;margin-bottom:14px}
+.ia-info{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18);color:var(--t2)}
+.ia-warn{background:var(--amber-l);border:1px solid var(--amber-b);color:var(--amber)}
+.ia-success{background:var(--green-l);border:1px solid var(--green-b);color:var(--green)}
+.inline-alert strong{font-weight:700}
+
+/* Buyer report cards */
+.rec-hero{background:var(--navy);border:1px solid var(--amber-b);border-radius:14px;padding:18px 20px;margin-bottom:14px;text-align:center}
+.rh-verdict{font-family:var(--ff);font-size:20px;font-weight:800;color:var(--t1);margin-bottom:6px;line-height:1.2}
+.rh-reason{font-size:13px;color:var(--t2);line-height:1.6;max-width:420px;margin:0 auto}
+.rec-match-list{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.rec-match{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;background:var(--navy3);border:1px solid var(--bd);border-radius:9px}
+.rm-ico{font-size:16px;flex-shrink:0;margin-top:1px}
+.rm-text{font-size:12px;color:var(--t2);line-height:1.55}
+.rm-text strong{color:var(--t1);display:block;font-size:13px;margin-bottom:1px}
+
+/* Simple route screen */
+.simple-route{max-width:560px;margin:0 auto;padding:48px 24px;text-align:center}
+.sr-ico{font-size:44px;margin-bottom:18px}
+.sr-title{font-family:var(--ff);font-size:22px;font-weight:800;color:var(--t1);margin-bottom:10px}
+.sr-desc{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:28px}
+.sr-actions{display:flex;flex-direction:column;gap:10px;max-width:360px;margin:0 auto}
+.sr-btn-primary{padding:13px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;width:100%}
+.sr-btn-primary:hover{background:var(--amber2);transform:translateY(-1px)}
+.sr-btn-ghost{padding:12px;background:transparent;color:var(--t1);font-family:var(--fb);font-weight:700;font-size:13px;border:1.5px solid var(--bd2);border-radius:10px;cursor:pointer;transition:all .2s;width:100%}
+.sr-btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
+
+/* Report output styles */
+.report-card{background:var(--navy2);border:1px solid var(--bd);border-radius:18px;overflow:hidden;animation:reportIn .4s ease}
+@keyframes reportIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.report-header{background:var(--navy3);border-bottom:1px solid var(--bd);padding:18px 22px}
+.rh-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.rh-id{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);opacity:.8;margin-bottom:4px}
+.rh-vehicle{font-family:var(--ff);font-size:18px;font-weight:800;color:var(--t1);line-height:1.2}
+.rh-meta{font-size:12px;color:var(--t2);margin-top:3px}
+.rh-status{flex-shrink:0}
+.status-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.05em}
+.sb-approved{background:var(--green-l);border:1px solid var(--green-b);color:var(--green)}
+.sb-pending{background:var(--amber-l);border:1px solid var(--amber-b);color:var(--amber)}
+.sb-hold{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:var(--blue)}
+.sb-rejected{background:var(--red-l);border:1px solid var(--red-b);color:var(--red)}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.visibility-gate{display:flex;align-items:center;gap:10px;padding:8px 13px;border-radius:8px;font-size:12px;font-weight:600}
+.vg-visible{background:var(--green-l);border:1px solid var(--green-b);color:var(--green)}
+.vg-hidden{background:var(--red-l);border:1px solid var(--red-b);color:var(--red)}
+.report-body{padding:20px 22px;display:flex;flex-direction:column;gap:16px}
+.report-section{}
+.rs-title{font-family:var(--fm);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);opacity:.7;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.rs-title::after{content:'';flex:1;height:1px;background:var(--bd)}
+.score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.score-block{background:var(--navy3);border:1px solid var(--bd);border-radius:10px;padding:10px 8px;text-align:center}
+.sb-val{font-family:var(--ff);font-size:22px;font-weight:800;line-height:1;margin-bottom:3px}
+.sb-label{font-size:10px;color:var(--t2);line-height:1.3}
+@media(max-width:600px){.score-grid{grid-template-columns:repeat(3,1fr)}}
+.total-score-row{display:flex;align-items:center;gap:20px}
+.score-ring{position:relative;width:88px;height:88px;flex-shrink:0}
+.score-ring svg{width:88px;height:88px;transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:var(--navy4);stroke-width:7}
+.ring-fill{fill:none;stroke-width:7;stroke-linecap:round;stroke-dasharray:226;transition:stroke-dashoffset 1.4s cubic-bezier(.2,1,.4,1)}
+.ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-family:var(--ff);font-size:22px;font-weight:800;line-height:1}
+.ring-denom{font-size:10px;color:var(--t2)}
+.total-score-info{flex:1}
+.ts-band{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:5px;margin-bottom:6px}
+.band-premium{background:rgba(16,185,129,.12);color:var(--green);border:1px solid var(--green-b)}
+.band-verified{background:var(--amber-l);color:var(--amber);border:1px solid var(--amber-b)}
+.band-inspect{background:rgba(249,115,22,.1);color:var(--orange);border:1px solid rgba(249,115,22,.2)}
+.band-repair{background:var(--red-l);color:var(--red);border:1px solid var(--red-b)}
+.ts-routing{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.ts-sub{font-size:12px;color:var(--t2);line-height:1.5}
+.next-action{background:var(--navy);border:1px solid var(--bd2);border-radius:12px;padding:14px 16px}
+.na-label{font-family:var(--fm);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.na-action{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:6px}
+.na-steps{display:flex;flex-direction:column;gap:5px}
+.na-step{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t2)}
+.na-step::before{content:'→';color:var(--amber);font-size:11px;flex-shrink:0;margin-top:1px}
+.detail-bars{display:flex;flex-direction:column;gap:9px}
+.detail-row{display:flex;align-items:center;gap:10px}
+.dr-name{font-size:12px;color:var(--t1);width:120px;flex-shrink:0}
+.dr-track{flex:1;height:6px;background:var(--navy4);border-radius:3px;overflow:hidden}
+.dr-fill{height:100%;border-radius:3px;transition:width 1.4s cubic-bezier(.2,1,.4,1)}
+.dr-val{font-family:var(--fm);font-size:11px;color:var(--t1);width:28px;text-align:right;flex-shrink:0}
+.report-actions{display:flex;gap:8px;padding:0 22px 20px;flex-wrap:wrap}
+.ra-btn{flex:1;min-width:120px;padding:9px 14px;border-radius:8px;font-family:var(--fb);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;border:none;display:flex;align-items:center;gap:6px;justify-content:center}
+.ra-primary{background:var(--amber);color:var(--navy)}.ra-primary:hover{background:var(--amber2)}
+.ra-ghost{background:transparent;border:1px solid var(--bd2);color:var(--t1)}.ra-ghost:hover{border-color:var(--amber);color:var(--amber)}
+
+/* Photo upload */
+.photo-panel{display:none;margin-top:10px;background:var(--navy);border:1.5px solid var(--bd);border-radius:10px;padding:12px}
+.photo-panel.visible{display:block}
+.photo-drop-zone{border:2px dashed var(--bd2);border-radius:9px;padding:16px 12px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative}
+.photo-drop-zone:hover,.photo-drop-zone.drag-over{border-color:var(--amber);background:var(--amber-l)}
+.photo-drop-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.pdz-ico{font-size:20px;margin-bottom:5px}
+.pdz-text{font-size:12px;color:var(--t2)}
+.pdz-limit{font-family:var(--fm);font-size:10px;color:var(--t3);margin-top:2px}
+.photo-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.photo-thumb{position:relative;aspect-ratio:1;border-radius:7px;overflow:hidden;background:var(--navy3);border:1px solid var(--bd)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-thumb-empty{display:flex;align-items:center;justify-content:center;font-size:16px;opacity:.2;height:100%}
+.photo-thumb-rm{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:rgba(239,68,68,.85);color:#fff;font-size:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.photo-panel-hdr{margin-bottom:8px}
+.pph-title{font-size:12px;font-weight:700;color:var(--t1);display:block}
+.pph-sub{font-size:10px;color:var(--t3)}
+.photo-count-bar{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.photo-count{font-family:var(--fm);font-size:11px;color:var(--t2)}
+.photo-count span{color:var(--amber);font-weight:500}
+
+/* Geo consent toggle */
+.geo-consent{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--navy);border:1px solid var(--bd);border-radius:9px;margin-top:12px}
+.gc-label{font-size:12px;color:var(--t2);line-height:1.5}
+.gc-label strong{color:var(--t1);display:block;font-size:13px;margin-bottom:2px}
+.gc-toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+.gc-toggle input{opacity:0;width:0;height:0}
+.gc-slider{position:absolute;inset:0;background:var(--navy4);border-radius:22px;cursor:pointer;transition:.2s}
+.gc-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.2s}
+.gc-toggle input:checked + .gc-slider{background:var(--amber)}
+.gc-toggle input:checked + .gc-slider::before{transform:translateX(18px)}
+
+/* Inspection panel in flow */
+.insp-form-panel{display:none;margin-top:12px;background:var(--navy);border:1.5px solid var(--bd);border-radius:10px;padding:14px}
+.insp-form-panel.visible{display:block}
+.insp-notice{display:flex;gap:11px;align-items:flex-start;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18);border-radius:8px;padding:11px 13px;margin-bottom:12px}
+.insp-notice-ico{font-size:18px;flex-shrink:0;margin-top:1px}
+.insp-notice p{font-size:12px;color:var(--t2);line-height:1.6}
+.insp-notice strong{color:var(--t1)}
+.insp-req-btn{width:100%;padding:10px;border-radius:8px;background:transparent;border:1.5px solid var(--blue);color:var(--blue);font-family:var(--fb);font-weight:700;font-size:13px;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:7px}
+.insp-req-btn:hover{background:rgba(59,130,246,.1)}
+.insp-req-btn.submitted{background:var(--green-l);border-color:var(--green);color:var(--green);cursor:default}
+.insp-status{margin-top:10px;padding:9px 12px;background:var(--navy3);border:1px solid var(--bd);border-radius:8px;font-size:11px;color:var(--t2);display:none}
+.insp-status.visible{display:block}
+.insp-status strong{color:var(--amber)}
+
+/* Watermark canvas overlay */
+.wm-canvas{position:absolute;inset:0;pointer-events:none;opacity:.3;z-index:2}
+
+/* Submission loading state */
+.submit-loading{display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center}
+.submit-loading.visible{display:flex}
+.sl-spinner{width:40px;height:40px;border:3px solid var(--bd2);border-top-color:var(--amber);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sl-text{font-size:13px;color:var(--t2);line-height:1.6}
+.sl-text strong{color:var(--amber);display:block;font-size:15px;margin-bottom:4px}
+
+/* Utility */
+.toast-el{position:fixed;bottom:24px;right:24px;z-index:9999;background:#1C3456;color:#F1F5F9;padding:11px 18px;border-radius:9px;font-size:13px;font-weight:600;font-family:'Mulish',sans-serif;border:1px solid rgba(255,255,255,.12);box-shadow:0 6px 24px rgba(0,0,0,.4);opacity:1;transition:opacity .3s}
+.tooltip{position:relative;display:inline-block;cursor:help}
+.tooltip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--navy);border:1px solid var(--bd2);color:var(--t1);font-size:11px;padding:5px 9px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .18s}
+.tooltip:hover::after{opacity:1}
+@media print{body{background:white;color:black}.nav,.engine-back,.flow-nav,.flow-progress,.intent-wrap,.report-actions{display:none}.report-card{border:1px solid #ccc}body::before{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <a class="nav-logo" href="#" onclick="showHome();return false">
+    <div class="nav-mark">99</div>
+    <span class="nav-name">EV<em>s</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#why">Why 99EVs</a></li>
+    <li><a href="#inspection">Inspection</a></li>
+    <li><a href="#partners">Partners</a></li>
+    <li><a href="#trust">Trust</a></li>
+  </ul>
+  <div class="nav-cta-group">
+    <a class="nav-ghost" href="tel:+919880316306">📞 Call Us</a>
+    <button class="nav-btn" onclick="openEngine('sell')">Sell Vehicle →</button>
+  </div>
+</nav>
+
+<!-- ══════════════════
+     HOMEPAGE
+══════════════════ -->
+<div id="homepage">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-live"><span class="live-dot"></span><span class="live-text">Active · Bengaluru · Pilot Ready</span></div>
+      <p class="hero-tagline">Trust That Moves With You</p>
+      <h1 class="hero-title">Your Vehicle.<br>Your <span class="hl">True Value.</span><br><span class="dim">No Surprises.</span></h1>
+      <p class="hero-sub">99EVs is India's vehicle support platform — built so every driver, fleet owner, and partner can make <strong>confident decisions</strong> about any vehicle, before any transaction.</p>
+      <div class="hero-actions">
+        <a class="action-card" href="#" onclick="openEngine('sell');return false">
+          <span class="ac-ico">🚗</span><div class="ac-label">Sell Your Vehicle</div>
+          <div class="ac-sub">Get matched to verified buyers. Zero brokerage.</div><span class="ac-arrow">Start →</span>
+        </a>
+        <a class="action-card" href="#" onclick="openEngine('buy');return false">
+          <span class="ac-ico">🔍</span><div class="ac-label">Need a Vehicle</div>
+          <div class="ac-sub">Find verified inventory matched to your needs.</div><span class="ac-arrow">Find →</span>
+        </a>
+        <a class="action-card" href="#" onclick="openEngine('resale');return false">
+          <span class="ac-ico">💰</span><div class="ac-label">Check Resale Value</div>
+          <div class="ac-sub">Know the real market price. Free estimate.</div><span class="ac-arrow">Check Free →</span>
+        </a>
+        <a class="action-card" href="#" onclick="openEngine('health');return false">
+          <span class="ac-ico">🔬</span><div class="ac-label">Know Vehicle Health</div>
+          <div class="ac-sub">Understand condition across 5 key areas.</div><span class="ac-arrow">Get Report →</span>
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="ht-item"><span>✓</span> Geo-verified entries</div>
+        <div class="ht-item"><span>✓</span> Inspection-first process</div>
+        <div class="ht-item"><span>✓</span> Real readiness scoring</div>
+        <div class="ht-item"><span>✓</span> No fake listings</div>
+        <div class="ht-item"><span>✓</span> Team-reviewed approvals</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY 99EVS -->
+  <section class="section" id="why">
+    <div class="section-inner">
+      <div class="sec-eyebrow">Why Choose 99EVs</div>
+      <h2 class="sec-h2">Five Reasons to Trust the Process</h2>
+      <p class="sec-p">Every feature is built around one goal — making sure no vehicle moves without the right information in the right hands.</p>
+      <div class="why-grid">
+        <div class="why-card"><span class="wc-ico">📊</span><div class="wc-title">Know Real Resale Value</div><div class="wc-desc">Get a market-aligned estimate based on your vehicle's actual condition, city demand, and usage — not a guess.</div></div>
+        <div class="why-card"><span class="wc-ico">🛡️</span><div class="wc-title">Avoid Fraud Vehicles</div><div class="wc-desc">Every vehicle passes through document, condition, and verification checks before any listing or routing decision.</div></div>
+        <div class="why-card"><span class="wc-ico">🔬</span><div class="wc-title">Request Inspection Support</div><div class="wc-desc">Our team arranges certified physical inspection — Bengaluru pilot available within 48–72 hours.</div></div>
+        <div class="why-card"><span class="wc-ico">🤝</span><div class="wc-title">Find Verified Buyers</div><div class="wc-desc">Connect with a curated network of dealers, fleet operators, and partners — all pre-verified by 99EVs.</div></div>
+        <div class="why-card"><span class="wc-ico">✅</span><div class="wc-title">Understand Vehicle Readiness</div><div class="wc-desc">Know exactly where your vehicle stands — mechanically, legally, and commercially — before making any decision.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSPECTION -->
+  <section class="insp-section" id="inspection">
+    <div class="insp-inner">
+      <div>
+        <div class="sec-eyebrow">Expert Verification</div>
+        <h2 class="sec-h2">Need Expert<br>Verification?</h2>
+        <p class="sec-p" style="margin-bottom:0">Our team arranges a certified physical check of your vehicle. Real eyes. Real report. No self-assigned inspectors.</p>
+        <div class="insp-feature-list">
+          <div class="insp-feat"><span class="if-ico">📍</span><div class="if-text"><strong>We Come to You</strong>Inspection arranged at your vehicle's location — no need to move it.</div></div>
+          <div class="insp-feat"><span class="if-ico">📋</span><div class="if-text"><strong>Detailed Written Report</strong>Clear report covering battery, mechanical, legal, and market readiness.</div></div>
+          <div class="insp-feat"><span class="if-ico">📸</span><div class="if-text"><strong>Photo Evidence Included</strong>GPS-tagged photos captured at inspection, attached to your report.</div></div>
+          <div class="insp-feat"><span class="if-ico">🔒</span><div class="if-text"><strong>Team-Assigned Only</strong>Every inspector is reviewed and assigned directly by the 99EVs team.</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="insp-card">
+          <div class="insp-card-hdr"><div class="ich-title">Request Inspection Support</div><div class="ich-sub">Arranged by the 99EVs team · Subject to availability</div></div>
+          <div class="insp-card-body">
+            <div class="insp-avail"><span class="ia-dot"></span><span class="ia-text">Bengaluru pilot: available within 48–72 hours</span></div>
+            <div class="insp-steps">
+              <div class="insp-step"><span class="is-num">1</span>Share your vehicle details and location</div>
+              <div class="insp-step"><span class="is-num">2</span>Our team assigns a certified inspector</div>
+              <div class="insp-step"><span class="is-num">3</span>Inspector visits, checks, captures GPS photos</div>
+              <div class="insp-step"><span class="is-num">4</span>You receive your detailed vehicle report</div>
+            </div>
+            <button class="hp-insp-btn" onclick="openEngine('inspection')">Request Inspection →</button>
+            <p style="font-size:11px;color:var(--t3);text-align:center;margin-top:10px">Subject to city and inspector availability. Currently piloting in Bengaluru.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="dealer-section" id="partners">
+    <div class="dealer-inner">
+      <div class="sec-eyebrow" style="justify-content:center">Join the Network</div>
+      <h2 class="sec-h2">Dealer or Fleet Operator?</h2>
+      <p class="sec-p" style="margin:10px auto 0">Whether you buy, sell, finance, or service vehicles — 99EVs connects you to verified opportunities and a trusted partner ecosystem.</p>
+      <div class="dealer-roles">
+        <div class="dealer-role"><span class="dr-ico">🏪</span><div class="dr-name">Verified Dealers</div><div class="dr-desc">Access pre-vetted inventory before the open market. Bid with confidence.</div></div>
+        <div class="dealer-role"><span class="dr-ico">🏦</span><div class="dr-name">NBFC &amp; Banks</div><div class="dr-desc">Upload your portfolio. Get per-unit readiness reports. Track recovery.</div></div>
+        <div class="dealer-role"><span class="dr-ico">🚛</span><div class="dr-name">Fleet Partners</div><div class="dr-desc">Source verified vehicles for fleet operations. Rental and last-mile support.</div></div>
+        <div class="dealer-role"><span class="dr-ico">🔧</span><div class="dr-name">Service Providers</div><div class="dr-desc">Inspection partners, repair centres, RC support — join as a verified provider.</div></div>
+      </div>
+      <button class="dealer-cta" onclick="openEngine('partner')"><span>🤝</span> Join Partner Network</button>
+    </div>
+  </section>
+
+  <!-- TRUST LAYER -->
+  <section class="trust-section" id="trust">
+    <div class="trust-inner">
+      <div class="sec-eyebrow">Platform Standards</div>
+      <h2 class="sec-h2">Built on Commitments, Not Promises</h2>
+      <div class="trust-grid">
+        <div class="trust-card"><span class="tc-ico">📍</span><div class="tc-title">Geo-Verified Entries</div><div class="tc-desc">Every submission records ISO timestamp with location data. No anonymous, unverifiable entries.</div></div>
+        <div class="trust-card"><span class="tc-ico">🔬</span><div class="tc-title">Inspection-First Verification</div><div class="tc-desc">Vehicles only route to buyers after passing condition and document checks. Inspection upgrades the report.</div></div>
+        <div class="trust-card"><span class="tc-ico">🎛️</span><div class="tc-title">User Requirements Matching</div><div class="tc-desc">Main account monitors all activity. Approved routing controls switch between user, dealer, and admin modes.</div></div>
+        <div class="trust-card"><span class="tc-ico">🚫</span><div class="tc-title">No Fake Listings</div><div class="tc-desc">Founder approval gate controls all buyer visibility. Unapproved vehicles are hidden from the network.</div></div>
+      </div>
+      <div class="trust-note"><span style="font-size:16px;flex-shrink:0">ℹ️</span><span>All vehicle reports include a unique reference number, geo-timestamp, evidence classification level, and verification support status — creating a traceable, auditable record for every submission.</span></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">EV<em>s</em>.com — <span style="color:var(--t2);font-weight:400;font-family:var(--fb);font-size:13px">Vehicle Support Platform</span></div>
+        <div class="footer-info">Bengaluru, Karnataka · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8dbd7d6ccd9dbccf88181ddcecb96dbd7d5">[email&#160;protected]</a> · www.99evs.com</div>
+      </div>
+      <div class="footer-links">
+        <a href="#why">Why 99EVs</a><a href="#inspection">Inspection</a>
+        <a href="#partners">Partners</a><a href="#trust">Trust</a>
+        <a href="#" onclick="openEngine('health');return false">Get Report</a>
+      </div>
+      <div class="footer-copy">© 2026 99EVs Technologies Pvt. Ltd.<br><span style="color:var(--t3);font-style:italic">Trust is a commitment.</span></div>
+    </div>
+  </footer>
+
+</div><!-- end #homepage -->
+
+<!-- OTP LOGIN MODAL -->
+<div id="otp-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(13,27,46,.97);display:none;align-items:center;justify-content:center">
+  <div style="background:var(--navy2);border:1px solid var(--amber-b);border-radius:18px;padding:32px 28px;width:min(420px,92vw);position:relative">
+    <div style="font-family:var(--ff);font-size:18px;font-weight:800;color:var(--t1);margin-bottom:6px">Verify to Submit</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:22px;line-height:1.6">Enter your mobile number to receive a one-time verification code. Required before submitting to 99EVs.</div>
+    <div id="otp-phone-section">
+      <div class="field" style="margin-bottom:12px">
+        <label>Mobile Number</label>
+        <input type="tel" id="otp-phone-input" placeholder="+91 XXXXX XXXXX" style="width:100%">
+      </div>
+      <div id="recaptcha-container" style="margin-bottom:12px"></div>
+      <button onclick="otpSendCode()" id="otp-send-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Send OTP →</button>
+    </div>
+    <div id="otp-verify-section" style="display:none">
+      <div style="font-size:12px;color:var(--green);margin-bottom:12px">✓ OTP sent to <span id="otp-sent-to"></span></div>
+      <div class="field" style="margin-bottom:12px">
+        <label>Enter 6-digit OTP</label>
+        <input type="text" id="otp-code-input" placeholder="——  ——  ——" maxlength="6" style="width:100%;font-family:var(--fm);font-size:18px;letter-spacing:.2em;text-align:center">
+      </div>
+      <button onclick="otpVerifyCode()" id="otp-verify-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Verify & Submit →</button>
+      <button onclick="otpResend()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:1px solid var(--bd2);color:var(--t2);font-family:var(--fb);font-size:12px;border-radius:10px;cursor:pointer">Resend OTP</button>
+    </div>
+    <div id="otp-error" style="display:none;margin-top:10px;padding:8px 12px;background:var(--red-l);border:1px solid var(--red-b);border-radius:7px;font-size:12px;color:var(--red)"></div>
+    <button onclick="otpClose()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;line-height:1">✕</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════
+     ENGINE VIEW
+══════════════════════ -->
+<div id="engine-view">
+  <div class="engine-back" onclick="showHome()">
+    ← Back to Home
+    <span id="engine-mode-label" style="margin-left:4px;font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);opacity:.8"></span>
+  </div>
+
+  <!-- 1. INTENT SCREEN -->
+  <div id="intent-screen">
+    <div class="intent-wrap">
+      <div class="intent-hdr">
+        <h1>What would you like to do?</h1>
+        <p>Select your goal — we'll guide you through a simple, structured process.</p>
+      </div>
+      <div class="intent-grid">
+        <div class="intent-card" onclick="startFlow('sell')"><span class="ic-ico">🚗</span><div class="ic-title">Sell my vehicle</div><div class="ic-desc">Submit your vehicle for verified buyer matching. We assess condition, documents, and market fit.</div><div class="ic-arrow">Start →</div></div>
+        <div class="intent-card" onclick="startFlow('buy')"><span class="ic-ico">🔍</span><div class="ic-title">Buy a vehicle</div><div class="ic-desc">Tell us what you need — we match your requirements to verified, readiness-scored inventory.</div><div class="ic-arrow">Start →</div></div>
+        <div class="intent-card" onclick="startFlow('resale')"><span class="ic-ico">💰</span><div class="ic-title">Check resale timing</div><div class="ic-desc">System calculates your best sell window from segment lifecycle, city demand, and vehicle age.</div><div class="ic-arrow">Start →</div></div>
+        <div class="intent-card" onclick="startFlow('condition')"><span class="ic-ico">🔧</span><div class="ic-title">Know vehicle condition</div><div class="ic-desc">Understand your vehicle's mechanical, electrical, and document readiness before buying or selling.</div><div class="ic-arrow">Start →</div></div>
+        <div class="intent-card" onclick="startFlow('inspection')"><span class="ic-ico">🔬</span><div class="ic-title">Inspection support</div><div class="ic-desc">Request a certified inspector. Our team assigns one based on your city and availability.</div><div class="ic-arrow">Start →</div></div>
+        <div class="intent-card" onclick="startFlow('finance')"><span class="ic-ico">🏦</span><div class="ic-title">Finance / refinance</div><div class="ic-desc">Assess your vehicle's finance eligibility before approaching an NBFC or bank.</div><div class="ic-arrow">Start →</div></div>
+        <div class="intent-card" onclick="startFlow('fleet')"><span class="ic-ico">🚛</span><div class="ic-title">Fleet conversion support</div><div class="ic-desc">Route your fleet or portfolio to the right buyers, operators, or recovery channels.</div><div class="ic-arrow">Start →</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SELLER FLOW — 4 structured steps, no sliders -->
+  <div id="seller-flow" style="display:none">
+    <div class="flow-outer">
+      <div class="flow-inner">
+        <div class="flow-progress" id="seller-progress">
+          <div class="fp-step"><div class="fp-dot active" id="sp1">1</div><span class="fp-label active" id="spl1">Vehicle</span></div>
+          <div class="fp-line" id="sl1"></div>
+          <div class="fp-step"><div class="fp-dot" id="sp2">2</div><span class="fp-label" id="spl2">Documents</span></div>
+          <div class="fp-line" id="sl2"></div>
+          <div class="fp-step"><div class="fp-dot" id="sp3">3</div><span class="fp-label" id="spl3">Condition</span></div>
+          <div class="fp-line" id="sl3"></div>
+          <div class="fp-step"><div class="fp-dot" id="sp4">4</div><span class="fp-label" id="spl4">Evidence</span></div>
+        </div>
+
+        <!-- STEP 1: Vehicle Identity -->
+        <div id="s1" class="flow-step">
+          <div class="flow-card">
+            <div class="flow-card-hdr"><div class="fch-eyebrow">Step 1 of 4</div><div class="fch-title">Tell us about your vehicle</div><div class="fch-sub">We'll load market intelligence for your model and city automatically.</div></div>
+            <div class="flow-card-body">
+              <div class="field-row" style="margin-bottom:10px">
+                <div class="field"><label>Vehicle Type</label>
+                  <select id="s-vtype" onchange="onVTypeChange()">
+                    <option value="">Select type</option>
+                    <option value="EV — 2 Wheeler">EV — 2 Wheeler</option>
+                    <option value="EV — 3W Cargo">EV — 3W Cargo</option>
+                    <option value="EV — 3W Passenger">EV — 3W Passenger</option>
+                    <option value="EV — 4 Wheeler">EV — 4 Wheeler</option>
+                    <option value="Petrol — 2 Wheeler">Petrol — 2 Wheeler</option>
+                    <option value="Petrol — 3 Wheeler">Petrol — 3 Wheeler</option>
+                    <option value="Petrol — 4 Wheeler">Petrol — 4 Wheeler</option>
+                    <option value="Diesel — 4 Wheeler">Diesel — 4 Wheeler</option>
+                    <option value="Diesel — Commercial">Diesel — Commercial</option>
+                    <option value="CNG Vehicle">CNG Vehicle</option>
+                    <option value="Hybrid Vehicle">Hybrid Vehicle</option>
+                    <option value="Electric Bus">Electric Bus</option>
+                  </select>
+                </div>
+                <div class="field"><label>City</label>
+                  <select id="s-city" onchange="onCityChange()">
+                    <option value="">Select city</option>
+                    <option>Delhi NCR</option><option>Bangalore</option><option>Mumbai</option>
+                    <option>Pune</option><option>Hyderabad</option><option>Chennai</option>
+                    <option>Kolkata</option><option>Lucknow</option><option>Agra</option>
+                    <option>Kanpur</option><option>Ahmedabad</option><option>Jaipur</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-row" style="margin-bottom:10px">
+                <div class="field"><label>Make</label><input type="text" id="s-make" placeholder="e.g. Mahindra, Ather"></div>
+                <div class="field"><label>Model</label><input type="text" id="s-model" placeholder="e.g. Treo Zor, 450X"></div>
+              </div>
+              <div class="field-row" style="margin-bottom:10px">
+                <div class="field"><label>Year</label><input type="number" id="s-year" placeholder="2022" min="2010" max="2026"></div>
+                <div class="field"><label>Odometer (km)</label><input type="number" id="s-odo" placeholder="34000"></div>
+              </div>
+              <div class="field" style="margin-bottom:16px">
+                <label>Usage Type</label>
+                <div class="toggle-group inline" id="usage-group">
+                  <div class="toggle-opt" data-val="personal" onclick="selectToggle('usage-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Personal</span></div></div>
+                  <div class="toggle-opt" data-val="commercial" onclick="selectToggle('usage-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Commercial</span></div></div>
+                  <div class="toggle-opt" data-val="shared" onclick="selectToggle('usage-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Shared / Rental</span></div></div>
+                  <div class="toggle-opt" data-val="fleet" onclick="selectToggle('usage-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Fleet</span></div></div>
+                </div>
+              </div>
+              <div class="intel-box" id="intel-box">
+                <div class="ib-row"><span class="ib-label">Lifecycle</span><div><div class="ib-val" id="ib-lifecycle">—</div></div></div>
+                <div class="ib-row"><span class="ib-label">City demand</span><div><div class="ib-val" id="ib-demand">—</div><div class="ib-sub" id="ib-demand-sub"></div></div></div>
+                <div class="ib-row"><span class="ib-label">Inspection focus</span><div><div class="ib-val" id="ib-inspect">—</div></div></div>
+              </div>
+              <div class="flow-nav">
+                <button class="flow-back" onclick="showIntentScreen()">← Intents</button>
+                <button class="flow-next" onclick="goSellerStep(2)">Continue to Documents →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Documents -->
+        <div id="s2" class="flow-step" style="display:none">
+          <div class="flow-card">
+            <div class="flow-card-hdr"><div class="fch-eyebrow">Step 2 of 4</div><div class="fch-title">Document Status</div><div class="fch-sub">System calculates document readiness score from your answers — no manual scores.</div></div>
+            <div class="flow-card-body">
+              <div class="q-block">
+                <div class="q-label">RC (Registration Certificate) available?</div>
+                <div class="toggle-group inline" id="rc-group">
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — in hand</span></div></div>
+                  <div class="toggle-opt" data-val="lost" data-color="orange" onclick="toggleCondition('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Lost / Applied for duplicate</span></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="red" onclick="toggleCondition('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No</span></div></div>
+                </div>
+              </div>
+              <div class="q-block">
+                <div class="q-label">Insurance currently active?</div>
+                <div class="toggle-group inline" id="ins-group">
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — valid</span></div></div>
+                  <div class="toggle-opt" data-val="expiring" data-color="orange" onclick="toggleCondition('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expiring within 30 days</span></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="red" onclick="toggleCondition('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired / Not active</span></div></div>
+                </div>
+              </div>
+              <div class="q-block" id="fitness-block">
+                <div class="q-label">Fitness certificate valid? <span class="q-badge q-badge-3w4w">3W / 4W / Commercial</span></div>
+                <div class="toggle-group inline" id="fitness-group">
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes</span></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="orange" onclick="toggleCondition('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired / Pending renewal</span></div></div>
+                  <div class="toggle-opt" data-val="na" data-color="orange" onclick="toggleCondition('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Not applicable (2W)</span></div></div>
+                </div>
+              </div>
+              <div class="q-block">
+                <div class="q-label">Existing loan status?</div>
+                <div class="toggle-group inline" id="loan-group">
+                  <div class="toggle-opt" data-val="closed" data-color="green" onclick="toggleCondition('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Fully closed — NOC in hand</span></div></div>
+                  <div class="toggle-opt" data-val="none" data-color="green" onclick="toggleCondition('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No loan taken</span></div></div>
+                  <div class="toggle-opt" data-val="active" data-color="orange" onclick="toggleCondition('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Loan active — closure in progress</span></div></div>
+                </div>
+              </div>
+              <div class="q-block" id="battery-warranty-block" style="display:none">
+                <div class="q-label">Battery warranty documentation? <span class="q-badge q-badge-ev">EV Only</span></div>
+                <div class="toggle-group inline" id="bwty-group">
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — active warranty card</span></div></div>
+                  <div class="toggle-opt" data-val="expired" data-color="orange" onclick="toggleCondition('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired</span></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="red" onclick="toggleCondition('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Not available</span></div></div>
+                </div>
+              </div>
+              <div class="flow-nav">
+                <button class="flow-back" onclick="goSellerStep(1)">← Back</button>
+                <button class="flow-next" onclick="if(validateDocumentStep()) goSellerStep(3)">Continue to Condition →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Condition -->
+        <div id="s3" class="flow-step" style="display:none">
+          <div class="flow-card">
+            <div class="flow-card-hdr"><div class="fch-eyebrow">Step 3 of 4</div><div class="fch-title">Vehicle Condition</div><div class="fch-sub">System calculates mechanical readiness from your answers. Be honest — it helps accurate matching.</div></div>
+            <div class="flow-card-body">
+              <div class="q-block">
+                <div class="q-label">Does the vehicle start and run normally?</div>
+                <div class="toggle-group" id="starts-group">
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — starts and drives normally</span><div class="to-sub">No unusual sounds, hesitation, or power issues</div></div></div>
+                  <div class="toggle-opt" data-val="sometimes" data-color="orange" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Occasionally issues</span><div class="to-sub">Intermittent starting trouble or minor sluggishness</div></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="red" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Does not start or major issue</span><div class="to-sub">Needs repair before inspection or sale</div></div></div>
+                </div>
+              </div>
+              <div class="q-block">
+                <div class="q-label">Accident history?</div>
+                <div class="toggle-group inline" id="accident-group">
+                  <div class="toggle-opt" data-val="none" data-color="green" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None</span></div></div>
+                  <div class="toggle-opt" data-val="minor" data-color="orange" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — cosmetic only</span></div></div>
+                  <div class="toggle-opt" data-val="major" data-color="red" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — structural impact</span></div></div>
+                </div>
+              </div>
+              <div class="q-block">
+                <div class="q-label">Brake condition?</div>
+                <div class="toggle-group inline" id="brake-group">
+                  <div class="toggle-opt" data-val="good" data-color="green" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — responsive</span></div></div>
+                  <div class="toggle-opt" data-val="worn" data-color="orange" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Worn — needs replacement soon</span></div></div>
+                  <div class="toggle-opt" data-val="poor" data-color="red" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Poor — needs immediate attention</span></div></div>
+                </div>
+              </div>
+              <div class="q-block">
+                <div class="q-label">Tyre condition?</div>
+                <div class="toggle-group inline" id="tyre-group">
+                  <div class="toggle-opt" data-val="good" data-color="green" onclick="toggleCondition('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — 60%+ tread remaining</span></div></div>
+                  <div class="toggle-opt" data-val="replace" data-color="orange" onclick="toggleCondition('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Needs replacement</span></div></div>
+                </div>
+              </div>
+              <div class="q-block">
+                <div class="q-label">Dashboard warning lights?</div>
+                <div class="toggle-group inline" id="lights-group">
+                  <div class="toggle-opt" data-val="none" data-color="green" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None active</span></div></div>
+                  <div class="toggle-opt" data-val="minor" data-color="orange" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — service reminder</span></div></div>
+                  <div class="toggle-opt" data-val="major" data-color="red" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — engine or battery warning</span></div></div>
+                </div>
+              </div>
+              <div class="flow-nav">
+                <button class="flow-back" onclick="goSellerStep(2)">← Back</button>
+                <button class="flow-next" onclick="if(validateConditionStep()) goSellerStep(4)">Continue to Evidence →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Evidence Upload + Inspection + Geo Consent -->
+        <div id="s4" class="flow-step" style="display:none">
+          <div class="flow-card">
+            <div class="flow-card-hdr"><div class="fch-eyebrow">Step 4 of 4</div><div class="fch-title">Evidence &amp; Verification</div><div class="fch-sub">Adding photos improves your report accuracy. Inspection request upgrades to highest confidence level.</div></div>
+            <div class="flow-card-body">
+
+
+              <!-- Image checklist (advisory) -->
+              <div id="photo-checklist" style="background:var(--navy);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:12px;color:var(--t2)">
+                <div style="font-size:11px;font-family:var(--fm);letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px">Recommended photo checklist</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px">
+                  <span id="chk-front" style="padding:4px 10px;border-radius:100px;border:1px solid var(--bd2);color:var(--t3)">📸 Front view</span>
+                  <span id="chk-rear"  style="padding:4px 10px;border-radius:100px;border:1px solid var(--bd2);color:var(--t3)">📸 Rear view</span>
+                  <span id="chk-side"  style="padding:4px 10px;border-radius:100px;border:1px solid var(--bd2);color:var(--t3)">📸 Side view</span>
+                  <span id="chk-odo"   style="padding:4px 10px;border-radius:100px;border:1px solid var(--bd2);color:var(--t3)">📸 Odometer</span>
+                </div>
+              </div>
+              <!-- Image validation feedback -->
+              <div id="img-validation-msg" style="display:none;margin-bottom:8px;padding:9px 13px;background:var(--red-l);border:1px solid var(--red-b);border-radius:9px;font-size:12px;color:var(--red)"></div>
+              <!-- Photo Upload -->
+              <div class="q-block">
+                <div class="q-label">Attach vehicle photos</div>
+                <div class="photo-panel visible" id="v3-photo-panel">
+                  <div class="photo-panel-hdr"><span class="pph-title">Vehicle Photos</span><span class="pph-sub">Up to 10 · GPS-tagged · watermark applied automatically</span></div>
+                  <div class="photo-thumbs" id="v3-photo-thumbs"></div>
+                  <div class="photo-drop-zone" id="v3-photo-drop" style="margin-top:8px">
+                    <input type="file" id="v3-photo-input" accept="image/*" multiple onchange="v3HandlePhotos(this)">
+                    <div class="pdz-ico">📎</div>
+                    <div class="pdz-text">Tap to add photos or drag &amp; drop</div>
+                    <div class="pdz-limit">JPG · PNG · WEBP · max 10 · 99EVs watermark applied</div>
+                  </div>
+                  <div class="photo-count-bar"><span class="photo-count"><span id="v3-photo-count">0</span> / 10 photos</span></div>
+                </div>
+              </div>
+
+              <!-- Geo Consent Toggle -->
+              <div class="geo-consent" id="geo-consent-block">
+                <div class="gc-label"><strong>Location Visibility</strong>Allow your vehicle's location to be visible to verified buyers (default: OFF)</div>
+                <label class="gc-toggle"><input type="checkbox" id="geo-consent-toggle" onchange="toggleGeoConsent(this.checked)"><span class="gc-slider"></span></label>
+              </div>
+              <p id="geo-consent-note" style="font-size:11px;color:var(--t3);margin-top:6px;padding:0 2px">Location is recorded for audit purposes only. Not shared unless you enable this toggle.</p>
+
+              <!-- Inspection Request -->
+              <div class="q-block" style="margin-top:16px">
+                <div class="q-label">Would you like inspection support?</div>
+                <div class="toggle-group inline" style="margin-bottom:8px">
+                  <div class="toggle-opt" id="insp-toggle-no" data-val="no" onclick="toggleInspForm(false);selectToggleSimple('insp-toggle-no','insp-toggle-yes')"><span class="to-marker"></span><div class="to-text"><span class="to-label">Not now</span></div></div>
+                  <div class="toggle-opt" id="insp-toggle-yes" data-val="yes" onclick="toggleInspForm(true);selectToggleSimple('insp-toggle-yes','insp-toggle-no')"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — request inspection</span></div></div>
+                </div>
+                <div class="insp-form-panel" id="v3-insp-form">
+                  <div class="insp-notice"><span class="insp-notice-ico">🔒</span><p>Inspection is arranged by the 99EVs team — not self-assigned. <strong>Inspection arranged by 99EVs team (subject to availability — pilot Bengaluru available within 48–72hrs).</strong> This places your vehicle in our inspection queue. Team will contact you to confirm timing.</p></div>
+                  <div class="field" style="margin-bottom:10px"><label>Contact number</label><input type="tel" id="v3-insp-phone" placeholder="+91 XXXXX XXXXX"></div>
+                  <div class="field" style="margin-bottom:10px"><label>Vehicle location / area</label><input type="text" id="v3-insp-addr" placeholder="Area where vehicle is parked"></div>
+                  <div class="field" style="margin-bottom:12px"><label>Preferred time</label>
+                    <select id="v3-insp-window">
+                      <option value="">Select time window</option>
+                      <option>Morning — 8 AM to 12 PM</option>
+                      <option>Afternoon — 12 PM to 4 PM</option>
+                      <option>Evening — 4 PM to 7 PM</option>
+                      <option>Flexible</option>
+                    </select>
+                  </div>
+                  <button class="insp-req-btn" id="v3-insp-submit" onclick="v3SubmitInspection()">
+                    <span id="v3-insp-ico">📋</span><span id="v3-insp-text">Add to Inspection Queue</span>
+                  </button>
+                  <div class="insp-status" id="v3-insp-status"><strong>✅ Request submitted.</strong><br>The 99EVs team will review inspector availability and contact you to confirm timing.</div>
+                </div>
+              </div>
+
+              <!-- Seller contact -->
+              <div class="field" style="margin-top:12px"><label>Your contact number</label><input type="tel" id="s-phone" placeholder="+91 XXXXX XXXXX"></div>
+              <div class="field"><label>Notes (optional)</label><textarea id="s-notes" placeholder="Any additional details about the vehicle — modifications, recent service, reason for selling..."></textarea></div>
+
+              <!-- Submit loading state -->
+              <div class="submit-loading" id="submit-loading">
+                <div class="sl-spinner"></div>
+                <div class="sl-text"><strong>Submitting to 99EVs</strong>Storing vehicle details · Generating readiness report · Notifying team</div>
+              </div>
+
+              <div class="flow-nav">
+                <button class="flow-back" onclick="goSellerStep(3)">← Back</button>
+                <button class="flow-next" id="generate-report-btn" onclick="generateV3Report()">Generate Vehicle Report →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORT OUTPUT -->
+        <div id="s-report" class="flow-step" style="display:none">
+          <div id="v3-report-output"></div>
+          <div class="flow-nav" style="margin-top:14px">
+            <button class="flow-back" onclick="goSellerStep(4)">← Back to Evidence</button>
+            <button class="flow-next" onclick="startFlow('sell')">↺ New Report</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. BUYER FLOW -->
+  <div id="buyer-flow" style="display:none">
+    <div class="flow-outer">
+      <div class="flow-inner">
+        <div class="flow-progress">
+          <div class="fp-step"><div class="fp-dot active" id="bp1">1</div><span class="fp-label active" id="bpl1">Your Need</span></div>
+          <div class="fp-line" id="bl1"></div>
+          <div class="fp-step"><div class="fp-dot" id="bp2">2</div><span class="fp-label" id="bpl2">Preferences</span></div>
+          <div class="fp-line" id="bl2"></div>
+          <div class="fp-step"><div class="fp-dot" id="bp3">3</div><span class="fp-label" id="bpl3">Recommendation</span></div>
+        </div>
+
+        <div id="b1" class="flow-step">
+          <div class="flow-card">
+            <div class="flow-card-hdr"><div class="fch-eyebrow">Buyer Guidance — Step 1 of 2</div><div class="fch-title">What are you looking for?</div><div class="fch-sub">System matches your requirement to the best verified vehicle segment and supply channel.</div></div>
+            <div class="flow-card-body">
+              <div class="q-block"><div class="q-label">What will you use the vehicle for?</div>
+                <div class="toggle-group" id="b-purpose-group">
+                  <div class="toggle-opt" data-val="cargo" data-color="green" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Last-mile delivery / cargo</span><div class="to-sub">E-rickshaw, cargo 3W, delivery 2W</div></div></div>
+                  <div class="toggle-opt" data-val="passenger" data-color="green" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Passenger transport</span><div class="to-sub">Auto-rickshaw, taxi, shared mobility</div></div></div>
+                  <div class="toggle-opt" data-val="personal" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Personal use</span><div class="to-sub">Commuting, family use</div></div></div>
+                  <div class="toggle-opt" data-val="fleet" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Fleet expansion</span><div class="to-sub">Multiple units for commercial operation</div></div></div>
+                </div>
+              </div>
+              <div class="q-block"><div class="q-label">Daily km requirement?</div>
+                <div class="toggle-group inline" id="b-km-group">
+                  <div class="toggle-opt" data-val="under40" onclick="selectToggle('b-km-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Under 40 km/day</span></div></div>
+                  <div class="toggle-opt" data-val="40to80" onclick="selectToggle('b-km-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">40–80 km/day</span></div></div>
+                  <div class="toggle-opt" data-val="over80" onclick="selectToggle('b-km-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Over 80 km/day</span></div></div>
+                </div>
+              </div>
+              <div class="field"><label>City</label><select id="b-city"><option value="">Select city</option><option>Delhi NCR</option><option>Bangalore</option><option>Mumbai</option><option>Pune</option><option>Hyderabad</option><option>Chennai</option><option>Kolkata</option><option>Lucknow</option><option>Ahmedabad</option><option>Jaipur</option></select></div>
+              <div class="flow-nav"><button class="flow-back" onclick="showIntentScreen()">← All Intents</button><button class="flow-next" onclick="goBuyerStep(2)">Continue →</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="b2" class="flow-step" style="display:none">
+          <div class="flow-card">
+            <div class="flow-card-hdr"><div class="fch-eyebrow">Buyer Guidance — Step 2 of 2</div><div class="fch-title">Budget &amp; Charging Access</div><div class="fch-sub">This helps us recommend the right segment — EV or ICE — for your conditions.</div></div>
+            <div class="flow-card-body">
+              <div class="q-block"><div class="q-label">Budget range?</div>
+                <div class="toggle-group" id="b-budget-group">
+                  <div class="toggle-opt" data-val="under1L" onclick="selectToggle('b-budget-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Under ₹1 Lakh</span><div class="to-sub">Used 2W or older 3W segment</div></div></div>
+                  <div class="toggle-opt" data-val="1to3L" onclick="selectToggle('b-budget-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">₹1–3 Lakh</span><div class="to-sub">Quality used 2W or entry EV 3W</div></div></div>
+                  <div class="toggle-opt" data-val="3to7L" onclick="selectToggle('b-budget-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">₹3–7 Lakh</span><div class="to-sub">New EV 3W, used EV 4W or petrol 4W</div></div></div>
+                  <div class="toggle-opt" data-val="over7L" onclick="selectToggle('b-budget-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Above ₹7 Lakh</span><div class="to-sub">New EV 4W, premium segment</div></div></div>
+                </div>
+              </div>
+              <div class="q-block"><div class="q-label">Charging access?</div>
+                <div class="toggle-group" id="b-charge-group">
+                  <div class="toggle-opt" data-val="home" data-color="green" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Home charging available</span><div class="to-sub">Garage or dedicated parking with power point</div></div></div>
+                  <div class="toggle-opt" data-val="public" data-color="orange" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Public chargers nearby</span><div class="to-sub">Workplace or commercial charger within 2 km</div></div></div>
+                  <div class="toggle-opt" data-val="none" data-color="red" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No charging access</span><div class="to-sub">No reliable EV charging infrastructure available</div></div></div>
+                </div>
+              </div>
+              <div class="flow-nav" style="margin-top:16px"><button class="flow-back" onclick="goBuyerStep(1)">← Back</button><button class="flow-next" onclick="generateBuyerReport()">Get Recommendation →</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="b-report" class="flow-step" style="display:none">
+          <div id="v3-buyer-output"></div>
+          <div class="flow-nav" style="margin-top:14px">
+            <button class="flow-back" onclick="goBuyerStep(2)">← Adjust inputs</button>
+            <button class="flow-next" onclick="startFlow('buy')">↺ New Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. RESALE FLOW -->
+  <div id="resale-flow" style="display:none">
+    <div class="flow-outer"><div class="flow-inner">
+      <div class="flow-card">
+        <div class="flow-card-hdr"><div class="fch-eyebrow">Resale Timing Advisor</div><div class="fch-title">Check Resale Value</div><div class="fch-sub">System calculates your best sell window from segment lifecycle, city demand, and vehicle age.</div></div>
+        <div class="flow-card-body">
+          <div class="field-row" style="margin-bottom:10px">
+            <div class="field"><label>Vehicle Type</label><select id="r-vtype"><option value="">Select type</option><option value="EV — 2 Wheeler">EV — 2 Wheeler</option><option value="EV — 3W Cargo">EV — 3W Cargo</option><option value="EV — 3W Passenger">EV — 3W Passenger</option><option value="EV — 4 Wheeler">EV — 4 Wheeler</option><option value="Petrol — 2 Wheeler">Petrol — 2 Wheeler</option><option value="Petrol — 4 Wheeler">Petrol — 4 Wheeler</option><option value="Diesel — Commercial">Diesel — Commercial</option></select></div>
+            <div class="field"><label>City</label><select id="r-city"><option value="">Select city</option><option>Delhi NCR</option><option>Bangalore</option><option>Mumbai</option><option>Pune</option><option>Hyderabad</option><option>Chennai</option><option>Kolkata</option><option>Lucknow</option><option>Ahmedabad</option><option>Jaipur</option></select></div>
+          </div>
+          <div class="field-row" style="margin-bottom:16px">
+            <div class="field"><label>Purchase Year</label><input type="number" id="r-year" placeholder="2021" min="2010" max="2026"></div>
+            <div class="field"><label>Odometer (km)</label><input type="number" id="r-odo" placeholder="28000"></div>
+          </div>
+          <div id="resale-output" style="display:none"></div>
+          <button class="flow-next" style="width:100%;margin-top:4px" onclick="generateResaleOutput()">Get Resale Timing →</button>
+          <div class="flow-nav" style="margin-top:14px">
+            <button class="flow-back" onclick="showIntentScreen()">← All Intents</button>
+            <button class="flow-next" onclick="startFlow('sell')">Proceed to Full Report →</button>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 5. CONDITION FLOW -->
+  <div id="condition-flow" style="display:none">
+    <div class="simple-route">
+      <div class="sr-ico">🔧</div><div class="sr-title">Know Vehicle Condition</div>
+      <div class="sr-desc">For a full condition assessment, we run you through our structured intake — checking mechanical health, documents, and market fit. Takes about 3 minutes.</div>
+      <div class="sr-actions">
+        <button class="sr-btn-primary" onclick="startFlow('sell')">Start Full Vehicle Check →</button>
+        <button class="sr-btn-ghost" onclick="startFlow('inspection')">Request Physical Inspection</button>
+        <button class="sr-btn-ghost" onclick="showIntentScreen()">← Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. INSPECTION FLOW -->
+  <div id="inspection-flow" style="display:none">
+    <div class="flow-outer"><div class="flow-inner">
+      <div class="flow-card">
+        <div class="flow-card-hdr"><div class="fch-eyebrow">Inspection Support</div><div class="fch-title">Request a Certified Inspector</div><div class="fch-sub">Our team assigns a certified inspector based on your city and availability — not self-assigned.</div></div>
+        <div class="flow-card-body">
+          <div class="inline-alert ia-success"><span>✅</span><span><strong>Bengaluru pilot active</strong> — inspections available within 48–72 hours. Other cities: please contact the team.</span></div>
+          <div class="field-row" style="margin-bottom:10px">
+            <div class="field"><label>Vehicle Type</label><select id="i-vtype"><option value="">Select type</option><option>EV — 2 Wheeler</option><option>EV — 3W Cargo</option><option>EV — 4 Wheeler</option><option>Petrol — 2 Wheeler</option><option>Petrol — 4 Wheeler</option><option>Diesel — Commercial</option></select></div>
+            <div class="field"><label>City</label><select id="i-city"><option value="">Select city</option><option>Bangalore</option><option>Delhi NCR</option><option>Mumbai</option><option>Pune</option><option>Hyderabad</option><option>Chennai</option></select></div>
+          </div>
+          <div class="field-row" style="margin-bottom:10px">
+            <div class="field"><label>Make &amp; Model</label><input type="text" id="i-vehicle" placeholder="e.g. Mahindra Treo Zor"></div>
+            <div class="field"><label>Contact Number</label><input type="tel" id="i-phone" placeholder="+91 XXXXX XXXXX"></div>
+          </div>
+          <div class="field-row" style="margin-bottom:10px">
+            <div class="field"><label>Vehicle Location / Area</label><input type="text" id="i-addr" placeholder="Area where vehicle is parked"></div>
+            <div class="field"><label>Preferred Time</label><select id="i-window"><option value="">Select window</option><option>Morning — 8 AM to 12 PM</option><option>Afternoon — 12 PM to 4 PM</option><option>Evening — 4 PM to 7 PM</option><option>Flexible</option></select></div>
+          </div>
+          <button class="insp-req-btn" id="i-submit-btn" onclick="submitStandaloneInsp()">
+            <span id="i-ico">📋</span> <span id="i-text">Submit Inspection Request</span>
+          </button>
+          <div class="insp-status" id="i-status" style="display:none"><strong>✅ Request submitted.</strong><br>The 99EVs team will review inspector availability and contact you to confirm timing.</div>
+          <div class="flow-nav" style="margin-top:16px">
+            <button class="flow-back" onclick="showIntentScreen()">← All Intents</button>
+            <button class="flow-next" onclick="startFlow('sell')">Full Seller Report →</button>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 7. FINANCE FLOW -->
+  <div id="finance-flow" style="display:none">
+    <div class="flow-outer"><div class="flow-inner">
+      <div class="flow-card">
+        <div class="flow-card-hdr"><div class="fch-eyebrow">Finance Eligibility</div><div class="fch-title">Finance / Refinance Support</div><div class="fch-sub">We assess your vehicle's NBFC and bank eligibility based on documents, condition, and vehicle age.</div></div>
+        <div class="flow-card-body">
+          <div class="inline-alert ia-info"><span>ℹ️</span><span>Finance eligibility is calculated within the full vehicle check flow. Complete your vehicle details first — we'll include a <strong>finance eligibility probability</strong> in your readiness report.</span></div>
+          <div class="sr-actions" style="max-width:100%;margin-top:16px">
+            <button class="sr-btn-primary" onclick="startFlow('sell')">Start Vehicle Check for Finance Report →</button>
+            <button class="sr-btn-ghost" onclick="showIntentScreen()">← All Intents</button>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 8. FLEET FLOW -->
+  <div id="fleet-flow" style="display:none">
+    <div class="flow-outer"><div class="flow-inner">
+      <div class="flow-card">
+        <div class="flow-card-hdr"><div class="fch-eyebrow">Fleet Conversion</div><div class="fch-title">Fleet &amp; Portfolio Support</div><div class="fch-sub">For fleet operators, NBFC liquidation portfolios, and rental operators.</div></div>
+        <div class="flow-card-body">
+          <div class="rec-match-list">
+            <div class="rec-match"><span class="rm-ico">🏦</span><div class="rm-text"><strong>NBFC Portfolios</strong>Upload your repossessed vehicle portfolio. We generate per-unit readiness reports and route each vehicle to the best recovery channel.</div></div>
+            <div class="rec-match"><span class="rm-ico">🚛</span><div class="rm-text"><strong>Fleet Operators</strong>Source verified pre-owned EV 3W, cargo, or passenger vehicles. Batch intake and routing support available.</div></div>
+            <div class="rec-match"><span class="rm-ico">🔄</span><div class="rm-text"><strong>Rental &amp; Refurbishment</strong>Route older fleet units to refurbishment partners before remarketing — improves recovery significantly.</div></div>
+          </div>
+          <div class="sr-actions" style="max-width:100%;margin-top:8px">
+            <button class="sr-btn-primary" onclick="openEngine('partner')">Join Partner Network →</button>
+            <button class="sr-btn-ghost" onclick="startFlow('sell')">Submit Single Vehicle</button>
+            <button class="sr-btn-ghost" onclick="showIntentScreen()">← All Intents</button>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+</div><!-- end #engine-view -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+/*===============================================================
+99EVS PRODUCTION ENGINE v3.3 — Firebase-Connected
+===============================================================
+
+— §1 Firebase SDK compat: projectId=evs-production
+   window.db · window.storage · window.auth
+*/
+
+/* FINAL PAYLOAD DEBUG — SAFE BEFORE FIRESTORE WRITE */
+
+console.log("FINAL SUBMISSION PAYLOAD:", {
+  formState: window.formState,
+  ownerTrustReport,
+  documentStatus,
+  confidenceLevel: conf?.key,
+  submissionId,
+  routing,
+  band,
+  geo: geoPayload
+  timestamp: new Date().toISOString(),
+});
+/*
+— §2 Primary write → vehicle_submissions collection
+*/
+await submitForFounderQueue({
+  submissionId,
+  vehicleType: vtype,
+  flowType: window.selectedFlow,
+  city,
+  make,
+  model,
+  year: year !== '—' ? parseInt(year) : null,
+  odometer: odo ? parseInt(odo) : null,
+  userEmail: window.auth?.currentUser?.email || null,
+  documentStatus,
+  ownerTrustReport,
+  evidenceMeta,
+  photoCount: v3Photos.length,
+  inspectionRequested: v3InspectionRequested,
+  confidenceLevel,
+  scores,
+  totalScore: totalScoreSafe,
+  band: bandSafe,
+  scoringSnapshot,
+  routingEligibility,
+  routingDecision,
+  completionPercent: completionSafe,
+  progressStage: sellerStep,
+  routing,
+  geo: geoPayload,
+  status: "intake_submitted",
+  stage: "awaiting_scoring",
+  timestamp: new Date().toISOString(),
+  notes,
+  contactNumber: phone
+});
+/*
+— §3 Image upload → evidence/vehicle_images/{submissionId}/
+— §4 Canvas image validation: blur · brightness · resolution
+— §5 TF MobileNet vehicle type match
+— §6 Document inputs unselected · blocked if unanswered
+— §7 Condition grouped single-select → ownerTrustReport[]
+— §8 Contact number ^[6-9]\d{9}$ validation
+— §9 Tesseract odometer OCR ±300 km
+— §10 evidence collection: submissionId · geo · timezone · resolution
+     hideLocationUntilConsent = true
+— §11 dataCompletenessScore auto-calculation
+— §12 alerts collection triggers:
+     missing docs · low confidence · inspection pending
+     dealer match pending · pricing locked
+— §13 Founder approval gate:
+     pending / approved / rejected / hold / neglect
+     routingVisible = true only when approved
+— §14 audit_logs collection:
+     all lifecycle events
+— §15 Global clock:
+     timezone auto-detect · geo · device time
+— §16 UI unchanged
+===============================================================*/
+
+/* ── §15 GLOBAL CLOCK / TIMEZONE MODULE ─────────────────────── */
+const GEO_CLOCK = {
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Kolkata',
+  deviceTime: null,
+  geo: null,
+
+  init() {
+    this.deviceTime = new Date().toISOString();
+    this.localTime  = new Date().toLocaleString('en-IN', { timeZone: this.timezone });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        pos => { this.geo = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy }; },
+        ()  => { this.geo = { status: 'denied' }; },
+        { timeout: 8000, maximumAge: 60000 }
+      );
+    } else {
+      this.geo = { status: 'unavailable' };
+    }
+  },
+
+  snapshot() {
+    this.deviceTime = new Date().toISOString();
+    return {
+      timezone:   this.timezone,
+      deviceTime: this.deviceTime,
+      localTime:  new Date().toLocaleString('en-IN', { timeZone: this.timezone }),
+      geo:        this.geo || { status: 'pending' }
+    };
+  }
+};
+
+/* ── §1 FIREBASE INIT — expose as window globals ─────────────── */
+const _firebaseConfig = {
+  apiKey:            "Available",
+  authDomain:        "evs-production.firebaseapp.com",
+  projectId:         "evs-production",
+  storageBucket:     "evs-production.firebasestorage.app",
+  messagingSenderId: "Available",
+  appId:             "Available"
+};
+
+/* Re-initialise only if the existing app used placeholder config */
+try {
+  const existingApp = firebase.app();
+  const existing    = existingApp.options;
+  if (!existing.projectId || existing.projectId === 'YOUR_PROJECT_ID') {
+    firebase.app().delete().then(() => {
+      firebase.initializeApp(_firebaseConfig);
+      window.db      = firebase.firestore();
+      window.storage = firebase.storage();
+      window.auth    = firebase.auth();
+    });
+  } else {
+    window.db      = firebase.firestore();
+    window.storage = firebase.storage();
+    window.auth    = firebase.auth();
+  }
+} catch (e) {
+  firebase.initializeApp(_firebaseConfig);
+  window.db      = firebase.firestore();
+  window.storage = firebase.storage();
+  window.auth    = firebase.auth();
+}
+
+/* Firestore helpers — always use window.db so re-init is picked up */
+const FS  = () => window.db;
+const ST  = () => window.storage;
+const serverTs = () => firebase.firestore.FieldValue.serverTimestamp();
+
+/* ── CONSTANTS ──────────────────────────────────────────────── */
+const PLATFORM_VERSION   = 'v3.3-prod';
+const SOURCE_PLATFORM    = '99EVs_web';
+const EVIDENCE_IMAGES    = 'evidence/vehicle_images';
+const EVIDENCE_DOCS      = 'evidence/documents';
+const EVIDENCE_INSP      = 'evidence/inspection_requests';
+const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 min
+
+const FOUNDER_EMAIL  = '99evsworld@gmail.com';
+
+/* Rule versions — matched to Firestore collections */
+const RULE_VERSIONS = {
+  confidenceRuleVersion:     1,
+  inspectionRuleVersion:     1,
+  dealerMatchRuleVersion:    1,
+  pricingRuleVersion:        1,
+  mobilityGuidanceRuleVersion: 1
+};
+
+/* EmailJS — replace with your dashboard values */
+const EMAILJS_PUBLIC_KEY  = 'EMAILJS_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'EMAILJS_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'EMAILJS_TEMPLATE_ID';
+if (typeof emailjs !== 'undefined') emailjs.init(EMAILJS_PUBLIC_KEY);
+
+/* State */
+let geoConsentEnabled     = false;
+let v3InspectionRequested = false;
+let v3InspectionContact   = '';
+let evidenceMeta          = [];
+let ownerTrustReport      = [];
+let _currentSubmissionId  = null;
+let _otpConfirmResult     = null;
+let _otpPendingSubmit     = false;
+
+/* Auto-logout */
+let _inactivityTimer = null;
+function resetInactivityTimer() {
+  clearTimeout(_inactivityTimer);
+  _inactivityTimer = setTimeout(() => {
+    if (auth && auth.currentUser) {
+      auth.signOut().then(() => {
+        showToast('Session expired. Please log in again to submit.');
+        setTimeout(() => window.location.reload(), 2000);
+      });
+    }
+  }, INACTIVITY_TIMEOUT);
+}
+['mousemove','keydown','click','touchstart'].forEach(ev =>
+  document.addEventListener(ev, resetInactivityTimer, { passive: true })
+);
+
+/* ── §14 AUDIT LOG ENGINE ─────────────────────────────────────── */
+/* §13 Supported founderStatus values: pending|approved|rejected|hold|neglect */
+/* routingVisible becomes true only when founderStatus = approved */
+const FOUNDER_STATUSES = ['pending','approved','rejected','hold','neglect'];
+
+async function writeAuditLog(event, extra = {}) {
+  try {
+    const clock = GEO_CLOCK.snapshot();
+    await FS().collection('audit_logs').add({
+      event,
+      submissionId: _currentSubmissionId || null,
+      userId:       (window.auth?.currentUser?.uid) || 'anonymous',
+      timestamp:    serverTs(),
+      localTime:    clock.localTime,
+      timezone:     clock.timezone,
+      location:     (geoConsentEnabled && clock.geo?.lat)
+                      ? { lat: clock.geo.lat, lng: clock.geo.lng }
+                      : { status: 'not_shared' },
+      platform:     PLATFORM_VERSION,
+      ...extra
+    });
+  } catch (e) {
+    console.warn('Audit log write failed (non-blocking):', e);
+  }
+}
+
+/* ── §12 ALERT ENGINE ────────────────────────────────────────── */
+async function triggerAlerts(submissionId, scores, conf, docStatus, inspReq) {
+  const alerts = [];
+  const clock  = GEO_CLOCK.snapshot();
+  const base   = {
+    submissionId,
+    createdAt:  serverTs(),
+    timezone:   clock.timezone,
+    resolved:   false,
+    platform:   PLATFORM_VERSION
+  };
+
+  /* Missing documents */
+  const missingDocs = Object.entries(docStatus)
+    .filter(([, v]) => !v)
+    .map(([k]) => k);
+  if (missingDocs.length > 0) {
+    alerts.push({ ...base, type: 'missing_documents', severity: 'high',
+      message: `Missing document answers: ${missingDocs.join(', ')}`, fields: missingDocs });
+  }
+
+  /* Low confidence */
+  const total = scores.mech + scores.elec + scores.legal + scores.usage + scores.market;
+  if (total < 55) {
+    alerts.push({ ...base, type: 'low_confidence', severity: 'medium',
+      message: `Readiness score ${total}/100 is below routing threshold`, totalScore: total });
+  }
+
+  /* Inspection pending */
+  if (inspReq) {
+    alerts.push({ ...base, type: 'inspection_pending', severity: 'info',
+      message: 'Inspection request placed — awaiting team assignment' });
+  }
+
+  /* Dealer match pending */
+  alerts.push({ ...base, type: 'dealer_match_pending', severity: 'info',
+    message: 'Vehicle awaiting founder approval before dealer routing' });
+
+  /* Pricing locked */
+  alerts.push({ ...base, type: 'pricing_locked', severity: 'info',
+    message: 'Pricing will unlock after founder approval and inspection' });
+
+  for (const alert of alerts) {
+    try { await FS().collection('alerts').add(alert); } catch (e) { console.warn('Alert write failed:', e); }
+  }
+}
+
+/* ── §11 DATA COMPLETENESS SCORE ─────────────────────────────── */
+function computeDataCompletenessScore(photoCount, docStatus, inspReq, dealerValidated) {
+  let score = 0;
+  if (photoCount >= 1) score += 15;                                    // +15 image uploaded
+  const docsAnswered = Object.values(docStatus).filter(Boolean).length;
+  if (docsAnswered >= 3) score += 25;                                  // +25 documents answered
+  if (inspReq) score += 30;                                            // +30 inspection completed/requested
+  if (dealerValidated) score += 20;                                    // +20 dealer validation
+  return Math.min(score, 90); // max before inspection is 90
+}
+
+/* ── §2 submitForFounderQueue — vehicle_submissions primary ───── */
+async function submitForFounderQueue(payload) {
+  const {
+    submissionId, vehicleType, city, make, model, year, odometer,
+    userEmail, documentStatus, ownerTrustReport, evidenceMeta,
+    photoCount, inspectionRequested, confidenceLevel,
+    scores, totalScore, band, routing, geo, notes, contactNumber
+  } = payload;
+
+  const dataCompletenessScore = computeDataCompletenessScore(
+    photoCount, documentStatus, inspectionRequested, false
+  ) ?? null;
+  const scoringSnapshot = {
+  confidenceLevel: confidenceLevel,
+  band: bandSafe,
+  totalScore: totalScoreSafe
+};
+
+  /* §2 Required document shape */
+  const submissionDoc = {
+    /* Core vehicle fields */
+    vehicleType:    vehicleType || null,
+    city:           city        || null,
+    make:           make        || null,
+    model:          model       || null,
+    year:           year        || null,
+    odometer:       odometer    || null,
+    contactNumber:  contactNumber || null,
+    notes:          notes       || null,
+    userEmail:      userEmail   || (window.auth?.currentUser?.email) || null,
+
+    /* §2 Rule version stamps */
+    ...RULE_VERSIONS,
+
+    /* §2 Platform flags */
+    alertsEnabled:      true,
+    routingVisible:     false,       // §13 hidden until approved
+    inspectionRequired: inspectionRequested || true,
+    dealerMatchEnabled: true,
+    stage:              'intake',
+
+    /* §13 Founder gate */
+    founderStatus:      'pending',
+    founderAction:      null,
+    founderNote:        null,
+
+    /* §11 */
+    dataCompletenessScore,
+
+    /* Meta */
+    sourcePlatform:     SOURCE_PLATFORM,
+    evidencePath:       `${EVIDENCE_IMAGES}/${submissionId}/`,
+    submissionId,
+
+    /* Structured data */
+    documentStatus,
+    ownerTrustReport,
+    evidenceMeta,
+    confidenceLevel,
+    scores,
+    totalScore,
+    band:           band?.label || null,
+    routing,
+    geo,
+
+    /* Rule-engine refs */
+    assignedInspector:  null,
+    dealerMatchStatus:  'pending',
+    pricingStatus:      'locked',
+    mobilityGuidance:   null,
+
+    /* §2 Timestamps */
+    createdAt:          serverTs(),
+    stageLastUpdated:   serverTs(),
+    submittedAt:        new Date().toISOString(),
+    platform:           PLATFORM_VERSION
+  };
+
+  /* localStorage backup */
+  try {
+    const lsKey = `99evs_submission_${submissionId}`;
+    localStorage.setItem(lsKey, JSON.stringify({ ...submissionDoc, createdAt: new Date().toISOString() }));
+  } catch (e) { /* quota — non-blocking */ }
+
+  /* Primary write → vehicle_submissions */
+  await FS().collection('vehicle_submissions').doc(submissionId).set(submissionDoc);
+  return submissionDoc;
+}
+
+/* ── §10 EVIDENCE METADATA WRITE ─────────────────────────────── */
+async function writeEvidenceMetadata(submissionId, metaArray) {
+  const clock  = GEO_CLOCK.snapshot();
+  const hideGeo = !geoConsentEnabled; // §10 privacy flag
+
+  for (let i = 0; i < metaArray.length; i++) {
+    const m = metaArray[i];
+    const evidenceDoc = {
+      submissionId,
+      fileIndex:   i,
+      timestamp:   serverTs(),
+      deviceTime:  m.deviceTime || clock.localTime,
+      timezone:    clock.timezone,
+      resolution:  m.resolution || null,
+      brightness:  m.brightness || null,
+      blurVariance:m.blurVariance || null,
+      geo:         hideGeo ? null : (m.lat ? { lat: m.lat, lng: m.lng } : clock.geo),
+      hideLocationUntilConsent: hideGeo,   // §10
+      platform:    PLATFORM_VERSION
+    };
+    try { await FS().collection('evidence').add(evidenceDoc); } catch (e) { console.warn('Evidence meta write failed:', e); }
+  }
+}
+
+/* ── §3 STORAGE UPLOAD → correct bucket paths ────────────────── */
+async function uploadEvidencePhotos(submissionId, photos) {
+  const ts = Date.now().toString(36);
+  for (let i = 0; i < photos.length; i++) {
+    try {
+      const label = new Date().toLocaleDateString('en-IN');
+      const blob  = await applyWatermark(photos[i], label);
+      /* §3 path: evidence/vehicle_images/{submissionId}/ */
+      const path  = `${EVIDENCE_IMAGES}/${submissionId}/photo_${i}_${ts}.jpg`;
+      const ref   = ST().ref(path);
+      const clock = GEO_CLOCK.snapshot();
+      await ref.put(blob, {
+        contentType: 'image/jpeg',
+        customMetadata: {
+          submissionId,
+          fileIndex:   String(i),
+          watermarked: 'true',
+          timestamp:   new Date().toISOString(),
+          lat:         (geoConsentEnabled && clock.geo?.lat) ? String(clock.geo.lat) : '',
+          lng:         (geoConsentEnabled && clock.geo?.lng) ? String(clock.geo.lng) : '',
+          timezone:    clock.timezone,
+          resolution:  evidenceMeta[i]?.resolution || 'unknown',
+          geoConsent:  String(geoConsentEnabled)
+        }
+      });
+      await writeAuditLog('image_uploaded', { fileIndex: i, path, submissionId });
+    } catch (err) {
+      console.warn(`Photo ${i} upload failed (non-blocking):`, err);
+    }
+  }
+}
+
+/* ── OTP PHONE LOGIN ─────────────────────────────────────────── */
+function otpShow() {
+  const overlay = document.getElementById('otp-overlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+
+function otpClose() {
+  const overlay = document.getElementById('otp-overlay');
+  if (overlay) overlay.style.display = 'none';
+  _otpPendingSubmit = false;
+}
+
+function otpShowError(msg) {
+  const el = document.getElementById('otp-error');
+  if (!el) return;
+  el.textContent   = msg;
+  el.style.display = 'block';
+}
+
+async function otpSendCode() {
+  const phoneRaw  = (document.getElementById('otp-phone-input')?.value || '').replace(/\s/g,'');
+  const phoneE164 = phoneRaw.startsWith('+') ? phoneRaw : '+91' + phoneRaw.replace(/^0/,'');
+  document.getElementById('otp-error').style.display = 'none';
+
+  if (!window.recaptchaVerifier) {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      size: 'normal', callback: () => {}
+    });
+    await window.recaptchaVerifier.render();
+  }
+  try {
+    _otpConfirmResult = await (window.auth || auth).signInWithPhoneNumber(phoneE164, window.recaptchaVerifier);
+    document.getElementById('otp-sent-to').textContent = phoneE164;
+    document.getElementById('otp-phone-section').style.display  = 'none';
+    document.getElementById('otp-verify-section').style.display = 'block';
+  } catch (err) {
+    otpShowError('Failed to send OTP: ' + (err.message || 'Please try again'));
+  }
+}
+
+async function otpVerifyCode() {
+  const code = (document.getElementById('otp-code-input')?.value || '').trim();
+  document.getElementById('otp-error').style.display = 'none';
+  if (!_otpConfirmResult) { otpShowError('Please request OTP first'); return; }
+  if (code.length !== 6)  { otpShowError('Enter the 6-digit OTP'); return; }
+  try {
+    await _otpConfirmResult.confirm(code);
+    otpClose();
+    resetInactivityTimer();
+    if (_otpPendingSubmit) { _otpPendingSubmit = false; await _doFirestoreSubmit(); }
+  } catch (err) {
+    otpShowError('Incorrect OTP. Please try again.');
+  }
+}
+
+async function otpResend() {
+  if (window.recaptchaVerifier) { window.recaptchaVerifier.clear(); window.recaptchaVerifier = null; }
+  document.getElementById('otp-phone-section').style.display  = 'block';
+  document.getElementById('otp-verify-section').style.display = 'none';
+  document.getElementById('otp-code-input').value = '';
+}
+
+/* ── VIEW ROUTING ────────────────────────────────────────────── */
+function openEngine(mode) {
+  document.getElementById('homepage').style.display    = 'none';
+  document.getElementById('engine-view').style.display = 'block';
+  document.getElementById('engine-mode-label').textContent = mode ? '· ' + mode : '';
+  window.selectedFlow = mode || null;
+  window.scrollTo({ top:0, behavior:'smooth' });
+  if      (mode === 'sell' || mode === 'health') startFlow('sell');
+  else if (mode === 'buy')        startFlow('buy');
+  else if (mode === 'inspection') startFlow('inspection');
+  else if (mode === 'resale')     startFlow('resale');
+  else if (mode === 'condition')  startFlow('condition');
+  else if (mode === 'finance')    startFlow('finance');
+  else if (mode === 'fleet')      startFlow('fleet');
+  else showIntentScreen();
+}
+
+function showHome() {
+  document.getElementById('engine-view').style.display = 'none';
+  document.getElementById('homepage').style.display    = 'block';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function showIntentScreen() {
+  hideAllFlows();
+  document.getElementById('intent-screen').style.display = 'block';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function hideAllFlows() {
+  ['intent-screen','seller-flow','buyer-flow','resale-flow',
+   'condition-flow','inspection-flow','finance-flow','fleet-flow']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+}
+
+function startFlow(flow) {
+  window.selectedFlow = flow;
+  console.log("Flow initialized:", flow);
+  hideAllFlows();
+  captureGeoTimestamp();
+  const map = {
+    sell:'seller-flow', buy:'buyer-flow', resale:'resale-flow',
+    condition:'condition-flow', inspection:'inspection-flow',
+    finance:'finance-flow', fleet:'fleet-flow'
+  };
+  const target = map[flow];
+  if (target) document.getElementById(target).style.display = 'block';
+  if (flow === 'sell') goSellerStep(1);
+  else if (flow === 'buy') goBuyerStep(1);
+  else if (flow === 'resale') {
+    if (document.getElementById('resale-output')) document.getElementById('resale-output').style.display = 'none';
+  }
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+/* ── §15 GEO / TIMESTAMP (wraps GEO_CLOCK) ─────────────────── */
+function captureGeoTimestamp() {
+  GEO_CLOCK.init();
+  window._auditLog = {
+    ts:         new Date().toISOString(),
+    ts_local:   GEO_CLOCK.localTime,
+    timezone:   GEO_CLOCK.timezone,
+    country:    'IN',
+    platform:   PLATFORM_VERSION,
+    geo:        null,
+    geoConsent: false
+  };
+  /* async geo */
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const g = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy };
+        window._auditLog.geo = g;
+        GEO_CLOCK.geo = g;
+      },
+      () => { window._auditLog.geo = 'user-denied'; }
+    );
+  } else {
+    window._auditLog.geo = 'unavailable';
+  }
+}
+
+function toggleGeoConsent(enabled) {
+  geoConsentEnabled = enabled;
+  if (window._auditLog) window._auditLog.geoConsent = enabled;
+  const note = document.getElementById('geo-consent-note');
+  if (note) note.textContent = enabled
+    ? '✓ Location visibility enabled — verified buyers may see approximate vehicle location.'
+    : 'Location is recorded for audit purposes only. Not shared unless you enable this toggle.';
+  evidenceMeta.forEach(m => {
+    if (!enabled) { delete m.lat; delete m.lng; }
+    else if (window._auditLog?.geo?.lat) { m.lat = window._auditLog.geo.lat; m.lng = window._auditLog.geo.lng; }
+  });
+}
+
+/* ── §4 IMAGE VALIDATION ENGINE ─────────────────────────────── */
+function validateImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const w = img.width, h = img.height;
+      URL.revokeObjectURL(url);
+      if (w < 400 || h < 400) {
+        return reject(`Image resolution too low (${w}×${h}px). Minimum 400×400px required.`);
+      }
+      const canvas  = document.createElement('canvas');
+      const sample  = Math.min(w, h, 200);
+      canvas.width  = sample; canvas.height = sample;
+      const ctx     = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, sample, sample);
+      const data    = ctx.getImageData(0, 0, sample, sample).data;
+      const pixels  = sample * sample;
+      let totalB    = 0, mean = 0, variance = 0;
+      const grays   = [];
+      for (let i = 0; i < data.length; i += 4) {
+        const g = data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114;
+        grays.push(g); totalB += g;
+      }
+      mean = totalB / grays.length;
+      grays.forEach(v => { variance += (v - mean) ** 2; });
+      variance /= grays.length;
+      const avgBrightness = totalB / pixels;
+      if (avgBrightness < 30)  return reject('Image is too dark. Please upload a well-lit vehicle photo.');
+      if (variance < 120)      return reject('Image not clear. Please upload clearer vehicle photo.');
+      resolve({ width: w, height: h, brightness: Math.round(avgBrightness), variance: Math.round(variance) });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject('Could not read image. Please try a different file.'); };
+    img.src = url;
+  });
+}
+
+/* ── §5 MOBILENET VEHICLE TYPE MATCH ────────────────────────── */
+let _tfModel = null, _tfLoading = false;
+
+async function loadMobileNet() {
+  if (_tfModel) return _tfModel;
+  if (_tfLoading) return null;
+  if (typeof mobilenet === 'undefined' || typeof tf === 'undefined') return null;
+  _tfLoading = true;
+  try { _tfModel = await mobilenet.load(); } catch (e) { /* silent */ }
+  _tfLoading = false;
+  return _tfModel;
+}
+
+function _inferCategory(predictions) {
+  const combined = predictions.map(p => p.className.toLowerCase()).join(' ');
+  if (['rickshaw','three-wheeler','tuk-tuk','auto rickshaw'].some(k => combined.includes(k))) return 'three-wheeler';
+  if (['truck','lorry','van','pickup'].some(k => combined.includes(k))) return 'commercial';
+  if (['motor scooter','moped','motorbike','scooter','bicycle'].some(k => combined.includes(k))) return 'two-wheeler';
+  if (['car','automobile','sedan','hatchback','suv','minivan','cab'].some(k => combined.includes(k))) return 'four-wheeler';
+  return 'unknown';
+}
+
+function _vtypeCategory(vtype) {
+  const v = (vtype || '').toLowerCase();
+  if (v.includes('2 wheeler') || v.includes('2w')) return 'two-wheeler';
+  if (v.includes('3w') || v.includes('three'))     return 'three-wheeler';
+  if (v.includes('bus') || v.includes('commercial')) return 'commercial';
+  if (v.includes('4 wheeler') || v.includes('4w'))  return 'four-wheeler';
+  return 'unknown';
+}
+
+async function checkVehicleTypeMatch(file, vtype) {
+  const model = await loadMobileNet();
+  if (!model) return true;
+  try {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+    const preds     = await model.classify(img, 5);
+    URL.revokeObjectURL(url);
+    const predicted = _inferCategory(preds);
+    const expected  = _vtypeCategory(vtype);
+    if (predicted === 'unknown' || expected === 'unknown') return true;
+    return predicted === expected;
+  } catch (e) { return true; }
+}
+
+/* ── §9 TESSERACT ODO OCR ────────────────────────────────────── */
+let _tessWorker = null;
+
+async function _getTesseract() {
+  if (typeof Tesseract === 'undefined') return null;
+  if (_tessWorker) return _tessWorker;
+  try { _tessWorker = await Tesseract.createWorker('eng'); return _tessWorker; }
+  catch (e) { return null; }
+}
+
+async function validateOdometer(file, enteredKm) {
+  if (!enteredKm || enteredKm <= 0) return { ok: true };
+  const worker = await _getTesseract();
+  if (!worker) return { ok: true };
+  try {
+    const url = URL.createObjectURL(file);
+    const { data: { text } } = await worker.recognize(url);
+    URL.revokeObjectURL(url);
+    const matches    = text.match(/\b\d{4,7}\b/g);
+    if (!matches) return { ok: true };
+    const candidates = matches.map(Number).filter(n => n >= 100 && n <= 999999);
+    if (!candidates.length) return { ok: true };
+    const extracted  = Math.max(...candidates);
+    const diff       = Math.abs(extracted - enteredKm);
+    return diff > 300 ? { ok: false, extracted, entered: enteredKm } : { ok: true, extracted };
+  } catch (e) { return { ok: true }; }
+}
+
+/* ── PHOTO WATERMARK + UPLOAD HELPERS ─────────────────────────── */
+const v3Photos = [];
+
+function v3HandlePhotos(input) {
+  const files = Array.from(input.files);
+  const rem   = 10 - v3Photos.length;
+  if (rem <= 0) { showToast('Maximum 10 photos attached'); return; }
+  files.slice(0, rem).forEach(f => { if (f.type.startsWith('image/')) v3Photos.push(f); });
+  input.value = '';
+  v3RenderThumbs();
+  updateChecklist();
+}
+
+function v3RenderThumbs() {
+  const grid  = document.getElementById('v3-photo-thumbs');
+  const count = document.getElementById('v3-photo-count');
+  if (!grid) return;
+  count.textContent = v3Photos.length;
+  grid.innerHTML = v3Photos.map((f, i) =>
+    `<div class="photo-thumb"><img src="${URL.createObjectURL(f)}" style="width:100%;height:100%;object-fit:cover"><button class="photo-thumb-rm" onclick="v3RemovePhoto(${i})">✕</button></div>`
+  ).join('') + (v3Photos.length < 10 ? '<div class="photo-thumb"><div class="photo-thumb-empty">📷</div></div>' : '');
+}
+
+function v3RemovePhoto(i) {
+  v3Photos.splice(i, 1);
+  evidenceMeta.splice(i, 1);
+  v3RenderThumbs();
+  updateChecklist();
+}
+
+/* §7 advisory checklist */
+function updateChecklist() {
+  const n     = v3Photos.length;
+  const green = 'padding:4px 10px;border-radius:100px;border:1px solid rgba(16,185,129,.3);color:#10B981;background:rgba(16,185,129,.08)';
+  const grey  = 'padding:4px 10px;border-radius:100px;border:1px solid rgba(255,255,255,.08);color:#475569';
+  [
+    { id:'chk-front', label:'📸 Front view',  filled: n >= 1 },
+    { id:'chk-rear',  label:'📸 Rear view',   filled: n >= 2 },
+    { id:'chk-side',  label:'📸 Side view',   filled: n >= 3 },
+    { id:'chk-odo',   label:'✅ Odometer',    filled: n >= 4 }
+  ].forEach(t => {
+    const el = document.getElementById(t.id);
+    if (el) { el.textContent = t.filled ? t.label.replace('📸','✅') : t.label; el.style.cssText = t.filled ? green : grey; }
+  });
+}
+
+function applyWatermark(file, label) {
+  return new Promise(resolve => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width; canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      ctx.save();
+      ctx.globalAlpha = 0.28;
+      ctx.fillStyle   = '#ffffff';
+      ctx.font        = `bold ${Math.max(16, img.width / 30)}px Mulish, sans-serif`;
+      ctx.rotate(-Math.PI / 6);
+      const step = Math.max(img.width, img.height) / 3;
+      for (let y = -img.height; y < img.height * 2; y += step * 0.7)
+        for (let x = -img.width; x < img.width * 2; x += step) {
+          ctx.fillText('99EVs Verified', x, y);
+          ctx.fillText(label, x, y + (Math.max(16, img.width / 30) * 1.4));
+        }
+      ctx.restore();
+      URL.revokeObjectURL(url);
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.88);
+    };
+    img.src = url;
+  });
+}
+
+/* ── §7 toggleCondition — REMOVED (shadow) — production version in Toggle Engine v3 block below ── */
+
+function getToggleVal(groupId) {
+  const sel = document.querySelector('#' + groupId + ' .toggle-opt.selected');
+  return sel ? sel.dataset.val : null;
+}
+
+function toggleInspForm(show) {
+  const panel = document.getElementById('v3-insp-form');
+  if (panel) panel.classList.toggle('visible', show);
+}
+
+/* ── §8 CONTACT VALIDATION ──────────────────────────────────── */
+function validateContactNumber(phone) {
+  if (!phone) return false;
+  const cleaned = phone.replace(/\s+/g,'').replace(/^\+91/,'');
+  return /^[6-9]\d{9}$/.test(cleaned);
+}
+
+/* ── §6 validateDocuments — REMOVED (shadow) — production validateDocumentStep() in Toggle Engine v3 block below ── */
+
+/* ── §6/§8 FINAL SUBMISSION LOCK ─────────────────────────────── */
+function checkSubmissionReady() {
+  if (!document.getElementById('s-vtype').value || !document.getElementById('s-city').value)
+    return 'Vehicle type and city are required.';
+  if (!validateDocumentStep())
+    return 'Please confirm document availability';
+  if (ownerTrustReport.length === 0)
+    return 'Please select at least one vehicle condition item in Step 3.';
+  const phone = document.getElementById('s-phone')?.value?.trim() || '';
+  if (!validateContactNumber(phone))
+    return 'Enter valid contact number';
+  if (v3Photos.length === 0)
+    return 'Please attach at least one verified vehicle photo.';
+  return null;
+}
+
+/* ── SELLER FLOW NAVIGATION ─────────────────────────────────── */
+let sellerStep = 1;
+
+function goSellerStep(n) {
+  if (n > sellerStep) {
+    if (sellerStep === 1 && n === 2) {
+      if (!document.getElementById('s-vtype').value || !document.getElementById('s-city').value) {
+        showToast('Please select vehicle type and city to continue'); return;
+      }
+      console.log('Vehicle step complete');
+      writeAuditLog('submission_created', { step: 'vehicle_identity_complete' });
+    }
+    if (sellerStep === 2 && n === 3) {
+      if (!validateDocumentStep()) { showToast('Please confirm document availability'); return; }
+      console.log('Documents step complete');
+      writeAuditLog('document_selected', { step: 'document_step_complete' });
+    }
+    if (sellerStep === 3 && n === 4) {
+      if (!validateConditionStep()) { showToast('Please select at least one vehicle condition item'); return; }
+      console.log('Condition step complete');
+    }
+  }
+  sellerStep = n;
+  ['s1','s2','s3','s4','s-report'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+  const target = { 1:'s1', 2:'s2', 3:'s3', 4:'s4' }[n] || 's1';
+  document.getElementById(target).style.display = 'block';
+  updateSellerProgress(n);
+  if (n === 2) {
+    const isEV = (document.getElementById('s-vtype').value || '').toLowerCase().includes('ev');
+    document.getElementById('battery-warranty-block').style.display = isEV ? 'block' : 'none';
+  }
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function updateSellerProgress(n) {
+  for (let i = 1; i <= 4; i++) {
+    const dot  = document.getElementById('sp' + i);
+    const lbl  = document.getElementById('spl' + i);
+    const line = document.getElementById('sl' + i);
+    if (!dot || !lbl) continue;
+    if (i < n)        { dot.className = 'fp-dot done';   dot.textContent = '✓'; lbl.className = 'fp-label done'; }
+    else if (i === n) { dot.className = 'fp-dot active'; dot.textContent = i;   lbl.className = 'fp-label active'; }
+    else              { dot.className = 'fp-dot';        dot.textContent = i;   lbl.className = 'fp-label'; }
+    if (line) line.className = 'fp-line' + (i < n ? ' done' : '');
+  }
+}
+
+/* ── VEHICLE INTEL ───────────────────────────────────────────── */
+const SEGMENT_INTEL = {
+  'EV — 2 Wheeler':     { lifecycle:'Growth adoption',                inspect:'Battery health, motor, controller' },
+  'EV — 3W Cargo':      { lifecycle:'Strong growth demand',           inspect:'Controller heating, wiring harness, rear suspension' },
+  'EV — 3W Passenger':  { lifecycle:'Established — high demand',      inspect:'Battery pack, motor wear, tyre life' },
+  'EV — 4 Wheeler':     { lifecycle:'Early mainstream',               inspect:'BMS, charging port, battery degradation' },
+  'Petrol — 2 Wheeler': { lifecycle:'Mature — stable demand',         inspect:'Engine, clutch, electrical' },
+  'Petrol — 3 Wheeler': { lifecycle:'Declining in tier-1 cities',     inspect:'Engine, CNG/petrol switch, permit' },
+  'Petrol — 4 Wheeler': { lifecycle:'Mature market',                  inspect:'Engine, AC, suspension, service history' },
+  'Diesel — 4 Wheeler': { lifecycle:'Declining — BS6 transition',     inspect:'DPF, turbo, emission compliance' },
+  'Diesel — Commercial':{ lifecycle:'Stable fleet demand',            inspect:'Engine hours, tyre wear, load capacity' },
+  'CNG Vehicle':        { lifecycle:'Active — especially tier-2',     inspect:'CNG kit, cylinder date, engine health' },
+  'Hybrid Vehicle':     { lifecycle:'Premium segment — limited resale',inspect:'HV battery, regeneration system' },
+  'Electric Bus':       { lifecycle:'Growing fleet segment',          inspect:'Battery pack, drivetrain, charging system' }
+};
+
+const CITY_INTEL = {
+  'Delhi NCR': { ev3w:'Very high — top cargo EV market', ev2w:'High',                      ev4w:'Strong',              petrol:'Active' },
+  'Bangalore': { ev3w:'Strong',                          ev2w:'High — tech corridor demand',ev4w:'Very high',           petrol:'Active' },
+  'Mumbai':    { ev3w:'Moderate',                        ev2w:'Moderate',                   ev4w:'High — premium segment',petrol:'Active' },
+  'Pune':      { ev3w:'Moderate',                        ev2w:'Strong — growth market',     ev4w:'Strong',              petrol:'Active' },
+  'Hyderabad': { ev3w:'Moderate',                        ev2w:'Growing',                    ev4w:'Active',              petrol:'Active' },
+  'Chennai':   { ev3w:'Emerging',                        ev2w:'Moderate',                   ev4w:'Moderate',            petrol:'Strong' },
+  'Kolkata':   { ev3w:'Active — e-rickshaw hub',         ev2w:'Growing',                    ev4w:'Moderate',            petrol:'Active' },
+  'Lucknow':   { ev3w:'Growing',                         ev2w:'Emerging',                   ev4w:'Limited',             petrol:'Active' },
+  'Kanpur':    { ev3w:'Emerging',                        ev2w:'Emerging',                   ev4w:'Limited',             petrol:'Active' },
+  'Agra':      { ev3w:'Emerging',                        ev2w:'Limited',                    ev4w:'Limited',             petrol:'Moderate' },
+  'Ahmedabad': { ev3w:'Strong',                          ev2w:'Active',                     ev4w:'Active',              petrol:'Active' },
+  'Jaipur':    { ev3w:'Active',                          ev2w:'Growing',                    ev4w:'Moderate',            petrol:'Active' }
+};
+
+const CITY_DEMAND_SCORES = {
+  'Delhi NCR': { ev2w:16,ev3w:18,ev4w:14,petrol2w:15,petrol4w:14,commercial:17,def:15 },
+  'Bangalore': { ev2w:15,ev3w:14,ev4w:17,petrol2w:13,petrol4w:15,commercial:13,def:14 },
+  'Mumbai':    { ev2w:13,ev3w:12,ev4w:15,petrol2w:14,petrol4w:16,commercial:12,def:13 },
+  'Pune':      { ev2w:14,ev3w:13,ev4w:15,petrol2w:13,petrol4w:14,commercial:12,def:13 },
+  'Hyderabad': { ev2w:13,ev3w:13,ev4w:14,petrol2w:13,petrol4w:13,commercial:12,def:13 },
+  'Chennai':   { ev2w:11,ev3w:11,ev4w:13,petrol2w:14,petrol4w:14,commercial:11,def:12 },
+  'Kolkata':   { ev2w:11,ev3w:14,ev4w:12,petrol2w:13,petrol4w:12,commercial:13,def:12 },
+  'Lucknow':   { ev2w:11,ev3w:14,ev4w:11,petrol2w:13,petrol4w:11,commercial:13,def:11 },
+  'Ahmedabad': { ev2w:13,ev3w:14,ev4w:13,petrol2w:14,petrol4w:13,commercial:14,def:13 },
+  'Jaipur':    { ev2w:11,ev3w:13,ev4w:12,petrol2w:13,petrol4w:11,commercial:12,def:11 },
+  'Agra':      { ev2w:9, ev3w:12,ev4w:9, petrol2w:11,petrol4w:9, commercial:11,def:10 },
+  'Kanpur':    { ev2w:9, ev3w:12,ev4w:9, petrol2w:11,petrol4w:9, commercial:12,def:10 }
+};
+
+function getCityDemandScore(city, vtype) {
+  const m = CITY_DEMAND_SCORES[city] || { def:11 };
+  const v = (vtype || '').toLowerCase();
+  if (v.includes('ev') && v.includes('3'))   return m.ev3w || m.def;
+  if (v.includes('ev') && v.includes('2'))   return m.ev2w || m.def;
+  if (v.includes('ev') && v.includes('4'))   return m.ev4w || m.def;
+  if (v.includes('petrol') && v.includes('2')) return m.petrol2w || m.def;
+  if (v.includes('petrol') && v.includes('4')) return m.petrol4w || m.def;
+  if (v.includes('diesel') && v.includes('commercial')) return m.commercial || m.def;
+  return m.def;
+}
+
+function getCityDemandStr(city, vtype) {
+  const c = CITY_INTEL[city]; if (!c) return 'Market data loading';
+  const vt = (vtype || '').toLowerCase();
+  if (vt.includes('ev') && vt.includes('3')) return c.ev3w;
+  if (vt.includes('ev') && vt.includes('2')) return c.ev2w;
+  if (vt.includes('ev') && vt.includes('4')) return c.ev4w;
+  return c.petrol;
+}
+
+function onVTypeChange() { loadIntelBox(); }
+function onCityChange()  { loadIntelBox(); }
+
+function loadIntelBox() {
+  const vtype = document.getElementById('s-vtype').value;
+  const city  = document.getElementById('s-city').value;
+  const box   = document.getElementById('intel-box');
+  if (!vtype && !city) { box.classList.remove('visible'); return; }
+  const seg = SEGMENT_INTEL[vtype] || {};
+  document.getElementById('ib-lifecycle').textContent  = seg.lifecycle || '—';
+  document.getElementById('ib-demand').textContent     = city ? getCityDemandStr(city, vtype) : '—';
+  document.getElementById('ib-demand-sub').textContent = city ? 'Resale liquidity in ' + city : '';
+  document.getElementById('ib-inspect').textContent    = seg.inspect || '—';
+  box.classList.add('visible');
+}
+
+/* ── AUTO-SCORE ENGINE ───────────────────────────────────────── */
+function computeScores() {
+  const vtype = document.getElementById('s-vtype').value;
+  const year  = parseInt(document.getElementById('s-year').value) || 2021;
+  const odo   = parseInt(document.getElementById('s-odo').value)  || 30000;
+  const usage = getToggleVal('usage-group');
+  const isEV  = vtype.toLowerCase().includes('ev');
+  const age   = 2026 - year;
+
+  let mech = 11;
+  if (ownerTrustReport.includes('starts_yes'))       mech += 5;
+  if (ownerTrustReport.includes('starts_sometimes')) mech += 1;
+  if (ownerTrustReport.includes('starts_no'))        mech -= 5;
+  if (ownerTrustReport.includes('accident_none'))    mech += 3;
+  if (ownerTrustReport.includes('accident_minor'))   mech -= 1;
+  if (ownerTrustReport.includes('accident_major'))   mech -= 5;
+  if (ownerTrustReport.includes('brake_good'))       mech += 2;
+  if (ownerTrustReport.includes('brake_worn'))       mech -= 2;
+  if (ownerTrustReport.includes('brake_poor'))       mech -= 4;
+  if (ownerTrustReport.includes('tyre_good'))        mech += 1;
+  if (ownerTrustReport.includes('tyre_replace'))     mech -= 2;
+  mech = clamp(mech, 0, 20);
+
+  let elec = isEV ? 10 : 15;
+  if (ownerTrustReport.includes('lights_none'))  elec += 4;
+  if (ownerTrustReport.includes('lights_major')) elec -= 5;
+  if (isEV) {
+    const bwty = getToggleVal('bwty-group');
+    if (bwty === 'yes') elec += 6; else if (bwty === 'expired') elec += 1; else elec -= 2;
+    if (age > 4) elec -= 2;
+  }
+  elec = clamp(elec, 0, 20);
+
+  let legal = 0;
+  const rc  = getToggleVal('rc-group');
+  const ins = getToggleVal('ins-group');
+  const fit = getToggleVal('fitness-group');
+  const lon = getToggleVal('loan-group');
+  if (rc  === 'yes') legal += 6; else if (rc  === 'lost') legal += 2;
+  if (ins === 'yes') legal += 6; else if (ins === 'expiring') legal += 3;
+  if (fit === 'yes' || fit === 'na') legal += 4;
+  if (lon === 'closed' || lon === 'none') legal += 4; else if (lon === 'active') legal += 1;
+  legal = clamp(legal, 0, 20);
+
+  let usageScore   = 13;
+  const expectedOdo = age * 15000;
+  if (odo < expectedOdo * 0.65)      usageScore += 4;
+  else if (odo < expectedOdo * 0.9)  usageScore += 2;
+  else if (odo > expectedOdo * 1.35) usageScore -= 3;
+  else if (odo > expectedOdo * 1.7)  usageScore -= 5;
+  if (usage === 'personal')          usageScore += 2;
+  else if (usage === 'commercial' || usage === 'shared') usageScore -= 2;
+  else if (usage === 'fleet')        usageScore -= 3;
+  usageScore = clamp(usageScore, 0, 20);
+
+  const market = getCityDemandScore(document.getElementById('s-city').value, vtype);
+  return { mech, elec, legal, usage: usageScore, market };
+}
+
+function clamp(v, mn, mx) { return Math.min(mx, Math.max(mn, v)); }
+
+/* ── CONFIDENCE ASSIGNMENT ──────────────────────────────────── */
+function assignConfidence(scores, photoCount, inspReq) {
+  if (inspReq) return {
+    key:'inspection_supported', level:'INSPECTION QUEUED',
+    label:'Inspection Supported', cls:'cl-queue', icon:'🔬',
+    desc:'Vehicle placed in inspection queue. Readiness level upgrades once inspector submits report.'
+  };
+  const docsStrong = getToggleVal('rc-group') === 'yes' && getToggleVal('ins-group') === 'yes';
+  if (docsStrong && photoCount >= 2) return {
+    key:'document_supported', level:'DOCUMENT SUPPORTED',
+    label:'Document + Photo Supported', cls:'cl-high', icon:'📄',
+    desc:'RC confirmed, insurance active, and photos attached. Strong routing eligibility.'
+  };
+  if (photoCount > 0) return {
+    key:'photo_supported', level:'PHOTO SUPPORTED',
+    label:'Photo Supported', cls:'cl-medium', icon:'📸',
+    desc:`${photoCount} photo(s) attached. Visual evidence supports this submission.`
+  };
+  return {
+    key:'basic_submission', level:'BASIC',
+    label:'Basic Submission', cls:'cl-low', icon:'📝',
+    desc:'Self-declared information only. Adding photos and confirming documents upgrades readiness.'
+  };
+}
+
+/* ── ROUTING ENGINE ─────────────────────────────────────────── */
+function buildRouting(scores, vtype, city, year) {
+  const total = scores.mech + scores.elec + scores.legal + scores.usage + scores.market;
+  const age   = 2026 - (parseInt(year) || 2021);
+  const isEV  = (vtype || '').toLowerCase().includes('ev');
+  const is3WC = (vtype || '').toLowerCase().includes('3') && (vtype || '').toLowerCase().includes('cargo');
+
+  let expCity = city || 'your city';
+  if (scores.market < 11) {
+    const alt = { 'Agra':'Delhi NCR','Kanpur':'Delhi NCR','Lucknow':'Delhi NCR','Chennai':'Bangalore','Kolkata':'Delhi NCR' };
+    if (alt[city]) expCity = alt[city] + ' (recommended alternate market)';
+  }
+
+  let segment = 'Verified retail buyers and used vehicle dealers';
+  if (is3WC) segment = 'Fleet operators and cargo companies';
+  else if (isEV && (vtype||'').includes('2')) segment = 'Urban commuters and retail buyers';
+  else if ((vtype||'').includes('Commercial')) segment = 'Fleet operators and logistics companies';
+  else if (getToggleVal('usage-group') === 'commercial') segment = 'Fleet operators and used vehicle dealers';
+
+  let resaleWindow, resaleReason;
+  if (age <= 2)      { resaleWindow = 'Next 12–24 months';         resaleReason = 'Vehicle in early lifecycle — depreciation slowing, demand strong.'; }
+  else if (age <= 4) { resaleWindow = 'Within 6–12 months';        resaleReason = 'Peak resale window. Demand strong and battery (if EV) at mid-lifecycle.'; }
+  else if (age <= 6) { resaleWindow = 'Sell now for best recovery'; resaleReason = 'Approaching second depreciation curve. Current window offers best response.'; }
+  else               { resaleWindow = 'Immediate listing advised';  resaleReason = 'Older vehicle — act before further depreciation reduces buyer interest.'; }
+
+  const inspPriority  = total < 58 ? 'Highly recommended' : total < 74 ? 'Recommended' : 'Optional';
+  const finScore      = scores.legal + (age <= 3 ? 7 : age <= 5 ? 4 : 1) + (total > 72 ? 5 : total > 58 ? 2 : 0);
+  const finEligibility = finScore >= 17 ? 'High probability' : finScore >= 13 ? 'Moderate probability' : 'Limited';
+
+  return { expCity, segment, resaleWindow, resaleReason, inspPriority, finEligibility, total };
+}
+
+/* ── INSPECTION SUBMIT ──────────────────────────────────────── */
+async function sendFounderNotification(data) {
+  try {
+    if (typeof emailjs === 'undefined') return;
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email:      FOUNDER_EMAIL,
+      vehicleType:   data.vehicleType   || '—',
+      city:          data.city          || '—',
+      make:          data.make          || '—',
+      model:         data.model         || '—',
+      year:          data.year          || '—',
+      km:            data.km            || '—',
+      contactNumber: data.contactNumber || '—',
+      submissionId:  data.submissionId  || '—',
+      submittedAt:   new Date().toLocaleString('en-IN')
+    });
+    console.log('Founder notification sent');
+  } catch (err) {
+    console.error('Email notification failed (non-blocking):', err);
+  }
+}
+
+async function v3SubmitInspection() {
+  const btn     = document.getElementById('v3-insp-submit');
+  if (btn.classList.contains('submitted')) return;
+  const phone   = document.getElementById('v3-insp-phone').value.trim();
+  const window_ = document.getElementById('v3-insp-window').value;
+  const addr    = document.getElementById('v3-insp-addr').value.trim();
+  if (!phone)   { showToast('Please enter a contact number'); return; }
+  if (!window_) { showToast('Please select a preferred time window'); return; }
+
+  v3InspectionContact = phone;
+  const city  = document.getElementById('s-city').value  || '—';
+  const make  = document.getElementById('s-make').value  || '—';
+  const model = document.getElementById('s-model').value || '—';
+  const vtype = document.getElementById('s-vtype').value || '—';
+  const clock = GEO_CLOCK.snapshot();
+
+  const record = {
+    status: 'queued', contact: phone, address: addr || 'Not provided',
+    window: window_, city, make, model, vehicleType: vtype,
+    requestedAt: new Date().toISOString(),
+    timezone:    clock.timezone,
+    geo:         geoConsentEnabled && clock.geo?.lat ? clock.geo : { status: 'not_shared' },
+    auditLog:    window._auditLog || null,
+    founderAssigned: false, assignedInspector: null, notificationSent: false,
+    submissionId: _currentSubmissionId || null
+  };
+
+  try {
+    await FS().collection('inspections').add(record);
+    /* §3 store request in evidence/inspection_requests */
+    try {
+      const blob = new Blob([JSON.stringify(record)], { type:'application/json' });
+      const path = `${EVIDENCE_INSP}/${Date.now()}_${city.replace(/\s/g,'_')}.json`;
+      await ST().ref(path).put(blob, { contentType:'application/json' });
+    } catch (e) { /* non-blocking */ }
+    await writeAuditLog('inspection_requested', { city, vehicleType: vtype });
+    btn.classList.add('submitted');
+    document.getElementById('v3-insp-ico').textContent  = '✅';
+    document.getElementById('v3-insp-text').textContent = 'Added to Inspection Queue';
+    document.getElementById('v3-insp-status').style.display = 'block';
+    v3InspectionRequested = true;
+    showToast('Inspection request submitted. Team will be in touch.');
+  } catch (err) {
+    console.error('Inspection write failed:', err);
+    btn.classList.add('submitted');
+    document.getElementById('v3-insp-ico').textContent  = '✅';
+    document.getElementById('v3-insp-text').textContent = 'Request Noted — Team Will Contact You';
+    v3InspectionRequested = true;
+    showToast('Request noted. Please also WhatsApp 99evsworld@gmail.com to confirm.');
+  }
+}
+
+async function submitStandaloneInsp() {
+  const btn     = document.getElementById('i-submit-btn');
+  if (btn.classList.contains('submitted')) return;
+  const phone   = document.getElementById('i-phone').value.trim();
+  const window_ = document.getElementById('i-window').value;
+  const addr    = document.getElementById('i-addr').value.trim();
+  const vtype   = document.getElementById('i-vtype').value   || '—';
+  const city    = document.getElementById('i-city').value    || '—';
+  const vehicle = document.getElementById('i-vehicle').value.trim() || '—';
+
+  if (!phone)   { showToast('Please enter a contact number'); return; }
+  if (!window_) { showToast('Please select a time window'); return; }
+
+  const record = {
+    status:'queued', contact:phone, address:addr||'Not provided', window:window_,
+    vehicle, vehicleType:vtype, city, requestedAt:new Date().toISOString(),
+    timezone:GEO_CLOCK.timezone, auditLog:window._auditLog||null,
+    founderAssigned:false, assignedInspector:null
+  };
+
+  try {
+    await FS().collection('inspections').add(record);
+    btn.classList.add('submitted');
+    document.getElementById('i-ico').textContent  = '✅';
+    document.getElementById('i-text').textContent = 'Request Submitted';
+    document.getElementById('i-status').style.display = 'block';
+    showToast('Inspection request submitted. Team will be in touch.');
+  } catch (err) {
+    console.error('Inspection write failed:', err);
+    btn.classList.add('submitted');
+    document.getElementById('i-ico').textContent  = '✅';
+    document.getElementById('i-text').textContent = 'Request Noted';
+    document.getElementById('i-status').style.display = 'block';
+    showToast('Request noted. Please also WhatsApp to confirm.');
+  }
+}
+
+/* ── SCORE / VISIBILITY HELPERS ─────────────────────────────── */
+function getScoreColor(v, max) {
+  const p = v / (max || 20);
+  if (p >= 0.8) return '#10B981'; if (p >= 0.6) return '#F4A300';
+  if (p >= 0.4) return '#F97316'; return '#EF4444';
+}
+
+function getV3Visibility(fs) {
+  if (fs === 'approved') return { visible:true,  text:'Visible to verified buyer network', cls:'vg-visible', ico:'🟢' };
+  const msgs = {
+    pending:  'Hidden — pending team review',
+    hold:     'Hidden — under investigation',
+    rejected: 'Removed from system',
+    neglect:  'Deprioritised — no action taken',
+    approved: 'Visible to verified buyer network'
+  };
+  return { visible:false, text:msgs[fs]||'Hidden', cls:'vg-hidden', ico:'🔴' };
+}
+
+/* ── MAIN REPORT GENERATION (entry point) ────────────────────── */
+async function generateV3Report() {
+  const lockMsg = checkSubmissionReady();
+  if (lockMsg) { showToast(lockMsg); return; }
+
+  const vtype = document.getElementById('s-vtype').value || '—';
+  const city  = document.getElementById('s-city').value  || '—';
+  const make  = document.getElementById('s-make').value  || '—';
+  const model = document.getElementById('s-model').value || '—';
+  const year  = document.getElementById('s-year').value  || '—';
+  const odo   = document.getElementById('s-odo').value;
+  const phone = document.getElementById('s-phone').value.trim();
+
+  const btn     = document.getElementById('generate-report-btn');
+  const loading = document.getElementById('submit-loading');
+  btn.style.display = 'none';
+  loading.classList.add('visible');
+
+  const validationMsgEl = document.getElementById('img-validation-msg');
+  evidenceMeta = [];
+  const validatedPhotos = [];
+
+  /* §4 Validate all images */
+  for (let i = 0; i < v3Photos.length; i++) {
+    const file = v3Photos[i];
+    try {
+      const result = await validateImage(file);
+
+      /* §5 Vehicle type match */
+      const typeMatch = await checkVehicleTypeMatch(file, vtype);
+      if (!typeMatch) {
+        loading.classList.remove('visible'); btn.style.display = '';
+        if (validationMsgEl) { validationMsgEl.textContent = 'Uploaded vehicle image does not match selected vehicle type.'; validationMsgEl.style.display = 'block'; }
+        showToast('Uploaded vehicle image does not match selected vehicle type.');
+        return;
+      }
+
+      const metaEntry = {
+        uploadTime:   new Date().toISOString(),
+        deviceTime:   new Date().toLocaleString('en-IN', { timeZone: GEO_CLOCK.timezone }),
+        timezone:     GEO_CLOCK.timezone,
+        resolution:   result.width + 'x' + result.height,
+        brightness:   result.brightness,
+        blurVariance: result.variance
+      };
+      if (geoConsentEnabled && window._auditLog?.geo?.lat) {
+        metaEntry.lat = window._auditLog.geo.lat;
+        metaEntry.lng = window._auditLog.geo.lng;
+      }
+      evidenceMeta.push(metaEntry);
+      validatedPhotos.push(file);
+    } catch (errMsg) {
+      loading.classList.remove('visible'); btn.style.display = '';
+      if (validationMsgEl) { validationMsgEl.textContent = errMsg; validationMsgEl.style.display = 'block'; }
+      showToast(errMsg);
+      return;
+    }
+  }
+
+  /* §9 Odometer OCR */
+  if (odo && v3Photos.length > 0 && typeof Tesseract !== 'undefined') {
+    try {
+      const ocrResult = await validateOdometer(v3Photos[v3Photos.length - 1], parseInt(odo));
+      if (ocrResult && !ocrResult.ok) {
+        loading.classList.remove('visible'); btn.style.display = '';
+        const msg = `Odometer reading mismatch detected. OCR read ${ocrResult.extracted?.toLocaleString('en-IN')} km, you entered ${parseInt(odo).toLocaleString('en-IN')} km. Please upload correct dashboard photo.`;
+        if (validationMsgEl) { validationMsgEl.textContent = msg; validationMsgEl.style.display = 'block'; }
+        showToast('Odometer reading mismatch detected.');
+        return;
+      }
+    } catch (e) { /* OCR error — allow */ }
+  }
+
+  console.log('Evidence validation passed');
+
+  /* OTP gate */
+  if (!window.auth?.currentUser) {
+    loading.classList.remove('visible'); btn.style.display = '';
+    _otpPendingSubmit = true;
+    otpShow();
+    return;
+  }
+
+  await _doFirestoreSubmit();
+}
+
+/* ── CORE FIRESTORE WRITE ────────────────────────────────────── */
+async function _doFirestoreSubmit() {
+  const btn     = document.getElementById('generate-report-btn');
+  const loading = document.getElementById('submit-loading');
+  btn.style.display = 'none';
+  loading.classList.add('visible');
+
+  const vtype = document.getElementById('s-vtype').value || '—';
+  const city  = document.getElementById('s-city').value  || '—';
+  const make  = document.getElementById('s-make').value  || '—';
+  const model = document.getElementById('s-model').value || '—';
+  const year  = document.getElementById('s-year').value  || '—';
+  const odo   = document.getElementById('s-odo').value;
+  const phone = document.getElementById('s-phone').value.trim();
+  const notes = document.getElementById('s-notes')?.value.trim() || '';
+
+  const scores  = computeScores();
+  const total   = scores.mech + scores.elec + scores.legal + scores.usage + scores.market;
+  const conf    = assignConfidence(scores, v3Photos.length, v3InspectionRequested);
+  const routing = buildRouting(scores, vtype, city, year);
+
+  const band = total >= 85 ? { label:'VERIFIED — MATCHING READY', cls:'band-premium' }
+             : total >= 70 ? { label:'SUPPORTED — BUYER MATCHING',  cls:'band-verified' }
+             : total >= 55 ? { label:'INSPECTION RECOMMENDED',       cls:'band-inspect' }
+             :               { label:'READINESS SUPPORT ADVISED',    cls:'band-repair' };
+
+  const submissionId = 'VRS-' + Date.now().toString(36).toUpperCase() + '-99EVS';
+  _currentSubmissionId = submissionId;
+  const now    = new Date().toLocaleString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  const clock  = GEO_CLOCK.snapshot();
+  const geoStr = (window._auditLog?.geo?.lat && geoConsentEnabled)
+    ? ` · Geo: ${window._auditLog.geo.lat.toFixed(3)},${window._auditLog.geo.lng.toFixed(3)}` : '';
+
+  const geoPayload = geoConsentEnabled && window._auditLog?.geo?.lat
+    ? { lat: window._auditLog.geo.lat, lng: window._auditLog.geo.lng, accuracy: window._auditLog.geo.accuracy, consent: true }
+    : { consent: false, note: 'Location not shared by seller' };
+
+  const documentStatus = {
+    rc:              getToggleVal('rc-group'),
+    insurance:       getToggleVal('ins-group'),
+    fitness:         getToggleVal('fitness-group'),
+    loan:            getToggleVal('loan-group'),
+    batteryWarranty: getToggleVal('bwty-group')
+  };
+
+  /* PATCH 6 — safe defaults */
+  const confidenceLevel    = conf?.key ?? null;
+  const totalScoreSafe     = total ?? null;
+  const bandSafe           = band ?? null;
+  const completionSafe     = computeDataCompletenessScore(v3Photos.length, documentStatus, v3InspectionRequested, false) ?? null;
+
+  /* PATCH 3 — routing eligibility flags */
+  const routingEligibility = {
+    inspectionEligible: confidenceLevel !== 'low' && documentStatus !== 'missing',
+    dealerEligible:     confidenceLevel === 'high' || confidenceLevel === 'medium',
+    refinanceEligible:  vtype === 'passenger' && confidenceLevel !== 'low',
+    fleetEligible:      window.selectedFlow === 'fleet'
+  };
+  const routingDecision = {
+  sendToInspectionQueue:
+    routingEligibility.inspectionEligible &&
+    v3InspectionRequested === true,
+  sendToDealerNetwork:
+    routingEligibility.dealerEligible &&
+    !v3InspectionRequested,
+  sendToNBFC:
+    routingEligibility.refinanceEligible &&
+    window.selectedFlow === "finance",
+  sendToFleetPartners:
+    routingEligibility.fleetEligible
+};
+  /* PATCH 2 — scoring snapshot */
+  const scoringSnapshot = {
+    confidenceLevel,
+    band:       bandSafe,
+    totalScore: totalScoreSafe
+  };
+
+  try {
+    console.log('Submitting to Firestore...');
+
+    /* PATCH 8 — full structured payload debug log */
+    console.log("FINAL SUBMISSION PAYLOAD:", {
+      submissionId,
+      vehicleType:    vtype,
+      city, make, model,
+      year:           year !== '—' ? parseInt(year) : null,
+      odometer:       odo ? parseInt(odo) : null,
+      documentStatus,
+      ownerTrustReport,
+      confidenceLevel,
+      band:           bandSafe,
+      totalScore:     totalScoreSafe,
+      scoringSnapshot,
+      routingEligibility,
+      completionPercent: completionSafe,
+      progressStage:  sellerStep,
+      routing,
+      geo:            geoPayload,
+      status:         'intake_submitted',
+      stage:          'awaiting_scoring',
+      timestamp:      new Date().toISOString()
+    });
+
+    /* §2 Primary write → vehicle_submissions */
+    await submitForFounderQueue({
+      submissionId,
+      vehicleType:    vtype,
+      city, make, model,
+      year:           year !== '—' ? parseInt(year) : null,
+      odometer:       odo ? parseInt(odo) : null,
+      userEmail:      window.auth?.currentUser?.email || null,
+      documentStatus,
+      ownerTrustReport,
+      evidenceMeta,
+      photoCount:           v3Photos.length,
+      inspectionRequested:  v3InspectionRequested,
+      confidenceLevel,
+      scores,
+      totalScore:     totalScoreSafe,
+      band:           bandSafe,
+      scoringSnapshot,
+      routingEligibility,
+      completionPercent: completionSafe,
+      progressStage:  sellerStep,
+      routing,
+      geo:            geoPayload,
+      status:         'intake_submitted',
+      stage:          'awaiting_scoring',
+      notes,
+      contactNumber:  phone
+    });
+
+    console.log('Firestore write success');
+
+    /* §3 Upload photos to evidence/vehicle_images/{submissionId}/ */
+    if (v3Photos.length > 0) {
+    await uploadEvidencePhotos(submissionId, v3Photos);
+     console.log("Evidence upload confirmed");}
+     document.querySelector(".submission-loader")?.classList.add("hidden");
+     showToast("Submission sent successfully to 99EVs verification queue");
+    /* §10 Write evidence metadata */
+    if (evidenceMeta.length > 0) await writeEvidenceMetadata(submissionId, evidenceMeta);
+
+    /* §12 Alert engine */
+    await triggerAlerts(submissionId, scores, conf, documentStatus, v3InspectionRequested);
+
+    /* §14 Audit log — submission_created */
+    await writeAuditLog('submission_created', {
+      submissionId, vehicleType: vtype, city,
+      totalScore: totalScoreSafe, confidence: confidenceLevel,
+      timezone: clock.timezone
+    });
+    await writeAuditLog('confidence_updated', { submissionId, confidence: confidenceLevel, totalScore: totalScoreSafe });
+    await writeAuditLog('status_changed', { submissionId, newStatus: 'pending', previousStatus: null });
+
+    /* EmailJS — non-blocking */
+    sendFounderNotification({ vehicleType:vtype, city, make, model, year, km:odo, contactNumber:phone, submissionId });
+
+    loading.classList.remove('visible');
+    btn.style.display = '';
+
+    /* §2 Toast */
+    showToast('Submission sent successfully to 99EVs verification queue');
+    setTimeout(() => {
+      renderReportAndReset(vtype, city, make, model, year, odo, now, geoStr, scores, total, band, conf, routing, submissionId);
+    }, 1500);
+
+  } catch (err) {
+    console.error(err);
+    loading.classList.remove('visible');
+    btn.style.display = '';
+    showToast('Submission failed. Please retry.');
+  }
+}
+
+/* ── REPORT RENDER ───────────────────────────────────────────── */
+function renderReportAndReset(vtype, city, make, model, year, odo, now, geoStr, scores, total, band, conf, routing, submissionId) {
+  const ringColor  = getScoreColor(total, 100);
+  const ringOffset = 226 - (total / 100 * 226);
+
+  const dims = [
+    { name:'⚙️ Mechanical', key:'mech',   val:scores.mech   },
+    { name:'⚡ Electrical', key:'elec',   val:scores.elec   },
+    { name:'📋 Documents',  key:'legal',  val:scores.legal  },
+    { name:'📏 Usage',      key:'usage',  val:scores.usage  },
+    { name:'📊 Market Fit', key:'market', val:scores.market }
+  ];
+
+  const barsHTML   = dims.map(d => `<div class="detail-row"><span class="dr-name">${d.name}</span><div class="dr-track"><div class="dr-fill" id="v3bar-${d.key}" style="width:0%;background:${getScoreColor(d.val)}"></div></div><span class="dr-val">${d.val}/20</span></div>`).join('');
+  const blocksHTML = dims.map(d => `<div class="score-block"><div class="sb-val" style="color:${getScoreColor(d.val)}">${d.val}</div><div class="sb-label">${d.name.split(' ')[1]}</div></div>`).join('');
+
+  const reportHTML = `
+  <div class="report-card" id="v3-lir-report">
+    <div class="report-header">
+      <div class="rh-top">
+        <div>
+          <div class="rh-id">${submissionId}${geoStr}</div>
+          <div class="rh-vehicle">${year !== '—' ? year + ' ' : ''}${make} ${model}</div>
+          <div class="rh-meta">${vtype} · ${city}${odo ? ' · ' + parseInt(odo).toLocaleString('en-IN') + ' km' : ''} · ${now}</div>
+        </div>
+        <div class="rh-status"><div class="status-badge sb-pending"><span class="sb-dot"></span>PENDING REVIEW</div></div>
+      </div>
+      <div class="visibility-gate vg-hidden"><span>🔴</span><span>Hidden — pending team review before buyer matching</span></div>
+    </div>
+    <div class="report-body">
+      <div class="report-section">
+        <div class="rs-title">Evidence Confidence Level</div>
+        <div class="conf-badge-system">
+          <span class="cbs-ico">${conf.icon}</span>
+          <div>
+            <div class="cbs-label">System-assigned — not user-selectable</div>
+            <div class="cbs-level">${conf.label} <span class="conf-level ${conf.cls}" style="font-size:11px;padding:2px 8px;margin-left:6px">${conf.level}</span></div>
+            <div class="cbs-desc">${conf.desc}</div>
+          </div>
+        </div>
+      </div>
+      <div class="report-section">
+        <div class="rs-title">Vehicle Readiness Score</div>
+        <div class="total-score-row">
+          <div class="score-ring">
+            <svg viewBox="0 0 88 88"><circle class="ring-track" cx="44" cy="44" r="36"/><circle class="ring-fill" cx="44" cy="44" r="36" stroke="${ringColor}" stroke-dashoffset="${ringOffset}"/></svg>
+            <div class="ring-text"><span class="ring-num" style="color:${ringColor}">${total}</span><span class="ring-denom">/ 100</span></div>
+          </div>
+          <div class="total-score-info">
+            <div class="ts-band ${band.cls}">${band.label}</div>
+            <div class="ts-routing" style="margin-top:6px">Calculated from 5 system dimensions</div>
+            <div class="ts-sub">Mechanical · Electrical · Documents · Usage · Market — auto-computed from your answers</div>
+          </div>
+        </div>
+      </div>
+      <div class="report-section">
+        <div class="rs-title">Dimension Breakdown</div>
+        <div class="score-grid">${blocksHTML}</div>
+        <div class="detail-bars" style="margin-top:14px">${barsHTML}</div>
+      </div>
+      <div class="report-section">
+        <div class="rs-title">Matching Recommendations</div>
+        <div class="routing-grid">
+          <div class="route-card"><div class="rc-label">Best exposure city</div><div class="rc-val amber">${routing.expCity}</div><div class="rc-sub">${scores.market >= 14 ? 'Strong demand in your city' : 'Consider alternate market for better response'}</div></div>
+          <div class="route-card"><div class="rc-label">Buyer segment match</div><div class="rc-val">${routing.segment}</div><div class="rc-sub">Based on vehicle type and usage pattern</div></div>
+          <div class="route-card"><div class="rc-label">Recommended resale window</div><div class="rc-val green">${routing.resaleWindow}</div><div class="rc-sub">${routing.resaleReason}</div></div>
+          <div class="route-card"><div class="rc-label">Inspection priority</div><div class="rc-val" style="color:${total < 58 ? '#F97316' : total < 74 ? '#F4A300' : '#10B981'}">${routing.inspPriority}</div><div class="rc-sub">Upgrades confidence level to inspection-supported</div></div>
+          <div class="route-card"><div class="rc-label">Finance eligibility</div><div class="rc-val">${routing.finEligibility}</div><div class="rc-sub">Based on document score and vehicle age</div></div>
+          <div class="route-card"><div class="rc-label">Verification status</div><div class="rc-val" style="color:#F4A300">Pending Review</div><div class="rc-sub">Team will review and route once approved</div></div>
+        </div>
+      </div>
+      <div class="report-section">
+        <div class="rs-title">Recommended Next Steps</div>
+        <div class="next-action">
+          <div class="na-label">suggested action path</div>
+          <div class="na-action">${total >= 85 ? 'Proceed to verified buyer matching' : total >= 70 ? 'Submit to buyer network — response expected within 72 hrs' : total >= 55 ? 'Book inspection to strengthen report' : 'Address key dimension gaps before listing'}</div>
+          <div class="na-steps">
+            ${conf.key === 'basic_submission' ? '<div class="na-step">Upload vehicle photos to upgrade confidence level</div>' : ''}
+            ${conf.key !== 'inspection_supported' && total < 75 ? '<div class="na-step">Request inspection to upgrade to highest confidence tier</div>' : ''}
+            ${scores.legal < 12 ? '<div class="na-step">Confirm RC and insurance to improve document readiness score</div>' : ''}
+            ${scores.mech < 12 ? '<div class="na-step">Address mechanical condition items before listing for best buyer response</div>' : ''}
+            <div class="na-step">${routing.resaleWindow} is the recommended listing window for this vehicle</div>
+            <div class="na-step">Target: ${routing.segment}</div>
+          </div>
+        </div>
+      </div>
+      <div class="inline-alert ia-success" style="margin:0">
+        <span>✅</span>
+        <span><strong>Submission sent successfully to 99EVs verification queue.</strong> The team will review and approve before buyer matching begins. You will be contacted at the number provided.</span>
+      </div>
+    </div>
+    <div class="report-actions">
+      <button class="ra-btn ra-primary" onclick="window.print()">🖨️ Print / Save PDF</button>
+      <button class="ra-btn ra-ghost" onclick="v3CopyReport()">📋 Copy Summary</button>
+    </div>
+  </div>`;
+
+  ['s1','s2','s3','s4'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+  document.getElementById('s-report').style.display      = 'block';
+  document.getElementById('v3-report-output').innerHTML  = reportHTML;
+
+  for (let i = 1; i <= 4; i++) {
+    const d = document.getElementById('sp' + i);
+    const l = document.getElementById('spl' + i);
+    if (d) { d.className = 'fp-dot done'; d.textContent = '✓'; }
+    if (l) l.className = 'fp-label done';
+    const line = document.getElementById('sl' + i);
+    if (line) line.className = 'fp-line done';
+  }
+
+  requestAnimationFrame(() => setTimeout(() => {
+    dims.forEach(d => { const el = document.getElementById('v3bar-' + d.key); if (el) el.style.width = (d.val / 20 * 100) + '%'; });
+  }, 80));
+
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function v3CopyReport() {
+  const make  = document.getElementById('s-make').value  || '—';
+  const model = document.getElementById('s-model').value || '—';
+  const year  = document.getElementById('s-year').value  || '—';
+  const city  = document.getElementById('s-city').value  || '—';
+  const scores = computeScores();
+  const total  = scores.mech + scores.elec + scores.legal + scores.usage + scores.market;
+  const txt = `99EVs Vehicle Readiness Report\n${year} ${make} ${model} | ${city}\nReadiness Score: ${total}/100\nMechanical: ${scores.mech}/20 · Electrical: ${scores.elec}/20 · Documents: ${scores.legal}/20 · Usage: ${scores.usage}/20 · Market: ${scores.market}/20\nStatus: PENDING TEAM REVIEW\nGenerated: ${new Date().toLocaleString('en-IN')}`;
+  navigator.clipboard?.writeText(txt).then(() => showToast('Report summary copied'));
+}
+
+/* ── BUYER FLOW ──────────────────────────────────────────────── */
+let buyerStep = 1;
+
+function goBuyerStep(n) {
+  buyerStep = n;
+  ['b1','b2','b-report'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+  if (n === 1) document.getElementById('b1').style.display = 'block';
+  else if (n === 2) document.getElementById('b2').style.display = 'block';
+  else if (n === 3) document.getElementById('b-report').style.display = 'block';
+  for (let i = 1; i <= 3; i++) {
+    const d = document.getElementById('bp' + i);
+    const l = document.getElementById('bpl' + i);
+    const line = document.getElementById('bl' + i);
+    if (!d) continue;
+    if (i < n)       { d.className = 'fp-dot done';   d.textContent = '✓'; if (l) l.className = 'fp-label done'; }
+    else if (i === n){ d.className = 'fp-dot active'; d.textContent = i;   if (l) l.className = 'fp-label active'; }
+    else             { d.className = 'fp-dot';        d.textContent = i;   if (l) l.className = 'fp-label'; }
+    if (line) line.className = 'fp-line' + (i < n ? ' done' : '');
+  }
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+async function generateBuyerReport() {
+  const purpose  = getToggleVal('b-purpose-group');
+  const dailyKm  = getToggleVal('b-km-group');
+  const city     = document.getElementById('b-city').value || 'your city';
+  const budget   = getToggleVal('b-budget-group');
+  const charging = getToggleVal('b-charge-group');
+
+  try {
+    await FS().collection('requirements').add({
+      purpose, dailyKm, city, budget, charging, status:'open',
+      submittedAt:  new Date().toISOString(),
+      timezone:     GEO_CLOCK.timezone,
+      auditLog:     window._auditLog || null,
+      matched:      false, matchedVehicles: []
+    });
+  } catch (err) { console.warn('Requirement write failed:', err); }
+
+  let evScore = 0;
+  if (charging === 'home') evScore += 4; else if (charging === 'public') evScore += 2;
+  if (dailyKm === 'under40') evScore += 3; else if (dailyKm === '40to80') evScore += 2;
+  if (purpose === 'cargo') evScore += 2;
+  const evSuitable = evScore >= 5;
+
+  let newVsUsed = 'Used vehicle recommended', newVsUsedReason = 'Used vehicles in this segment offer strong value with lower upfront cost.';
+  if (budget === 'over7L' && evSuitable) { newVsUsed = 'New EV recommended'; newVsUsedReason = 'Budget supports new EV — full warranty, latest battery generation.'; }
+  else if (budget === '3to7L' && evSuitable) { newVsUsed = 'New EV or quality used EV'; newVsUsedReason = 'Budget can stretch to new mid-range EV. Quality used EV with inspection is strong value.'; }
+
+  let segment = '', segmentReason = '';
+  if (purpose === 'cargo') { segment = 'EV 3-Wheeler Cargo'; segmentReason = 'Best operational economics for last-mile delivery. Strong resale demand in most tier-1 cities.'; }
+  else if (purpose === 'passenger') { segment = 'EV 3-Wheeler Passenger'; segmentReason = 'Established segment with high daily demand and strong fleet operator resale channels.'; }
+  else if (purpose === 'personal' && budget === 'over7L') { segment = 'EV 4-Wheeler'; segmentReason = 'Increasing model choice, growing charging infra, strong resale value in tier-1 cities.'; }
+  else if (purpose === 'personal' && (budget === '1to3L' || budget === '3to7L')) { segment = evSuitable ? 'EV 2-Wheeler' : 'Petrol 2-Wheeler'; segmentReason = evSuitable ? 'Low running cost, easy home charging.' : 'Best fuel economy for your daily range. Strong service network.'; }
+  else if (purpose === 'fleet') { segment = evSuitable ? 'EV 3W or 4W (fleet grade)' : 'Diesel / CNG Commercial'; segmentReason = 'Fleet segment with bulk sourcing advantage and established resale channel.'; }
+  else { segment = evSuitable ? 'EV 2-Wheeler or EV 3W Cargo' : 'Petrol 2-Wheeler'; segmentReason = 'Based on your daily km and budget, this segment offers the best operational fit.'; }
+
+  const resaleConf = (evSuitable && (purpose === 'cargo' || purpose === 'passenger')) ? 'High — fleet and operator demand is strong' : evSuitable ? 'Moderate to high — growing retail EV demand' : 'Stable — mature petrol segment with established resale channels';
+
+  const html = `
+  <div class="report-card">
+    <div class="report-header">
+      <div class="rh-top"><div>
+        <div class="rh-id">BDR-${Date.now().toString(36).toUpperCase()}-99EVS</div>
+        <div class="rh-vehicle">Buyer Decision Report</div>
+        <div class="rh-meta">${purpose || 'General'} use · ${city} · ${new Date().toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric'})}</div>
+      </div></div>
+      <div class="visibility-gate vg-visible"><span>🟢</span><span>Requirement matched against verified inventory</span></div>
+    </div>
+    <div class="report-body">
+      <div class="report-section"><div class="rs-title">Recommendation</div>
+        <div class="rec-hero">
+          <div class="rh-verdict">${evSuitable ? '✅ EV Recommended' : '⛽ ICE Recommended for now'}</div>
+          <div class="rh-reason">${evSuitable ? 'Your daily usage, charging access, and purpose make an EV the right fit — lower running cost, strong segment demand in ' + city + '.' : 'Current charging infrastructure or daily range makes ICE the more practical choice today.'}</div>
+        </div>
+      </div>
+      <div class="report-section"><div class="rs-title">Decision Intelligence</div>
+        <div class="routing-grid">
+          <div class="route-card"><div class="rc-label">Recommended segment</div><div class="rc-val amber">${segment}</div><div class="rc-sub">${segmentReason}</div></div>
+          <div class="route-card"><div class="rc-label">New vs Used</div><div class="rc-val">${newVsUsed}</div><div class="rc-sub">${newVsUsedReason}</div></div>
+          <div class="route-card"><div class="rc-label">Resale confidence</div><div class="rc-val green">${resaleConf}</div><div class="rc-sub">Expected value at resale in ${city}</div></div>
+          <div class="route-card"><div class="rc-label">Inspection recommendation</div><div class="rc-val">Recommended</div><div class="rc-sub">Improves purchase confidence and reveals hidden condition issues</div></div>
+        </div>
+      </div>
+      <div class="report-section"><div class="rs-title">Next Steps</div>
+        <div class="rec-match-list">
+          <div class="rec-match"><span class="rm-ico">🔍</span><div class="rm-text"><strong>Find verified vehicles</strong>Browse verified ${segment} inventory in ${city}. All vehicles are team-reviewed before being shown.</div></div>
+          <div class="rec-match"><span class="rm-ico">🔬</span><div class="rm-text"><strong>Request inspection before purchase</strong>For used vehicles, request a 99EVs certified inspection — our team assigns an inspector and you receive a full readiness report before committing.</div></div>
+          <div class="rec-match"><span class="rm-ico">🏦</span><div class="rm-text"><strong>Finance eligibility</strong>${evSuitable ? 'EV segment qualifies for FAME-II subsidies where applicable. Check with your city RTO and NBFC partner.' : 'Vehicle finance available through partner NBFCs. Confirm RC, insurance, and loan status before applying.'}</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="report-actions">
+      <button class="ra-btn ra-primary" onclick="startFlow('inspection')">🔬 Request Inspection</button>
+      <button class="ra-btn ra-ghost" onclick="window.print()">🖨️ Print Report</button>
+    </div>
+  </div>`;
+
+  document.getElementById('v3-buyer-output').innerHTML = html;
+  goBuyerStep(3);
+}
+
+/* ── RESALE TIMING ENGINE ────────────────────────────────────── */
+function generateResaleOutput() {
+  const vtype = document.getElementById('r-vtype').value;
+  const city  = document.getElementById('r-city').value;
+  const year  = parseInt(document.getElementById('r-year').value) || 2021;
+  const odo   = parseInt(document.getElementById('r-odo').value)  || 30000;
+  if (!vtype || !city) { showToast('Please select vehicle type and city'); return; }
+
+  const age         = 2026 - year;
+  const expectedOdo = age * 15000;
+  const usageRatio  = odo / Math.max(expectedOdo, 1);
+
+  let window_, reason1, reason2;
+  if (age <= 1) { window_ = 'Hold — too early to sell for good value'; reason1 = 'Vehicle is less than 1 year old'; reason2 = 'Resale now will incur steep depreciation. Optimal window is 2–4 years from purchase.'; }
+  else if (age <= 3) { window_ = 'Within 12–18 months'; reason1 = 'Vehicle in early-to-mid lifecycle'; reason2 = 'Demand is strong. Battery (if EV) in healthy range. Good window to list.'; }
+  else if (age <= 5) { window_ = 'Now — peak window'; reason1 = 'Vehicle at optimal resale age'; reason2 = 'Mid-lifecycle pricing is well-understood by buyers. Act before second depreciation curve.'; }
+  else { window_ = 'List immediately'; reason1 = 'Vehicle approaching end of primary resale lifecycle'; reason2 = 'Delay may reduce buyer interest significantly. Immediate listing advised for best recovery.'; }
+
+  const cityDemandStr = getCityDemandStr(city, vtype) || 'Moderate';
+  const out = document.getElementById('resale-output');
+  out.style.display = 'block';
+  out.innerHTML = `
+  <div style="background:var(--navy);border:1px solid var(--amber-b);border-radius:14px;padding:16px 18px;margin-bottom:14px">
+    <div class="rs-title" style="margin-bottom:12px">Resale Timing Analysis</div>
+    <div class="routing-grid">
+      <div class="route-card"><div class="rc-label">Recommended window</div><div class="rc-val green">${window_}</div><div class="rc-sub">${reason2}</div></div>
+      <div class="route-card"><div class="rc-label">City demand</div><div class="rc-val amber">${cityDemandStr}</div><div class="rc-sub">Resale liquidity in ${city}</div></div>
+      <div class="route-card"><div class="rc-label">Vehicle age</div><div class="rc-val">${age} year${age !== 1 ? 's' : ''}</div><div class="rc-sub">${reason1}</div></div>
+      <div class="route-card"><div class="rc-label">Usage ratio</div><div class="rc-val" style="color:${usageRatio < 0.8 ? '#10B981' : usageRatio < 1.2 ? '#F4A300' : '#EF4444'}">${usageRatio < 0.8 ? 'Below average — positive' : usageRatio < 1.2 ? 'Average' : 'Above average — may affect price'}</div><div class="rc-sub">${Math.round(odo).toLocaleString('en-IN')} km vs ${Math.round(expectedOdo).toLocaleString('en-IN')} km expected</div></div>
+    </div>
+  </div>`;
+}
+
+/* ── TOAST — REMOVED duplicate; single definition in Toggle Engine v3 block below ── */
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+  GEO_CLOCK.init();
+  captureGeoTimestamp();
+  resetInactivityTimer();
+  loadMobileNet(); // pre-load TF silently
+
+  const dz = document.getElementById('v3-photo-drop');
+  if (dz) {
+    dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault(); dz.classList.remove('drag-over');
+   if (e.dataTransfer?.files.length) v3HandlePhotos({ files: e.dataTransfer.files, value: '' });
+    });}
+  updateChecklist();
+  v3RenderThumbs();
+});
+
+</script>
+   <script>
+
+/*===============================
+99EVs Toggle Engine v3 — Stabilized
+Single-select per group
+Tap again = deselect
+Auto color class from data-color attr
+State written to window.formState[groupId]
+Validation checks formState, NOT classList
+===============================*/
+
+window.formState = window.formState || {};
+
+/* ===============================
+UNIFIED TOGGLE ENGINE
+Used for ALL groups — condition, documents, and others
+=============================== */
+
+function toggleCondition(groupId, element){
+    const group = document.getElementById(groupId);
+    if(!group) return;
+
+    const options = group.querySelectorAll(".toggle-opt");
+    const alreadySelected = element.classList.contains("selected");
+
+    // Clear ALL options in this group
+    options.forEach(opt => {
+        opt.classList.remove("selected");
+        // Remove color classes
+        opt.classList.remove("sel-green","sel-orange","sel-red");
+    });
+
+    if(alreadySelected){
+        // Deselect — remove from formState
+        delete window.formState[groupId];
+        // Mirror: remove from ownerTrustReport
+        const prefix = groupId.replace('-group', '');
+        ownerTrustReport = ownerTrustReport.filter(e => !e.startsWith(prefix + '_'));
+        return;
+    }
+
+    // Select this element
+    element.classList.add("selected");
+
+    // Apply color class if data-color is set
+    if(element.dataset.color){
+        element.classList.add("sel-" + element.dataset.color);
+    }
+
+    // Write to formState
+    const val = element.dataset.val;
+    window.formState[groupId] = val;
+
+    // Mirror to ownerTrustReport[] for scoring engine compatibility
+    const prefix = groupId.replace('-group', '');
+    ownerTrustReport = ownerTrustReport.filter(e => !e.startsWith(prefix + '_'));
+    ownerTrustReport.push(prefix + '_' + val);
+
+    // Audit log (non-blocking)
+    if(typeof writeAuditLog === 'function'){
+        try { writeAuditLog('document_selected', { group: groupId, value: val }); } catch(e){}
+    }
+}
+
+/* Legacy alias — kept for any other calls in the page */
+function selectToggle(groupId, element){
+    toggleCondition(groupId, element);
+}
+
+/* ===============================
+INSPECTION YES / NO TOGGLE
+=============================== */
+
+function selectToggleSimple(activeId, inactiveId){
+    const active = document.getElementById(activeId);
+    const inactive = document.getElementById(inactiveId);
+
+    if(active.classList.contains("selected")){
+        active.classList.remove("selected");
+        window.formState.inspectionRequested = false;
+        return;
+    }
+    active.classList.add("selected");
+    inactive.classList.remove("selected");
+    window.formState.inspectionRequested = active.dataset.val === "yes";
+}
+
+/* ===============================
+DOCUMENT STEP VALIDATION ENGINE
+Checks all required doc groups have a value in formState
+Fitness and battery warranty are conditionally required
+=============================== */
+
+function validateDocumentStep(){
+    // Always required
+    const alwaysRequired = ["rc-group","ins-group","loan-group"];
+    const missing = alwaysRequired.filter(g => !window.formState[g]);
+
+    // fitness-group: required unless vehicle is 2W (na = not applicable is a valid answer)
+    if(!window.formState["fitness-group"]){
+        missing.push("fitness-group");
+    }
+
+    // bwty-group: only required if battery warranty block is visible (EV vehicles)
+    const bwtyBlock = document.getElementById("battery-warranty-block");
+    const bwtyVisible = bwtyBlock && bwtyBlock.style.display !== "none";
+    if(bwtyVisible && !window.formState["bwty-group"]){
+        missing.push("bwty-group");
+    }
+
+    if(missing.length > 0){
+        showToast("Please complete all document fields before continuing");
+        return false;
+    }
+    return true;
+}
+
+/* ===============================
+CONDITION STEP VALIDATION ENGINE
+=============================== */
+
+function validateConditionStep(){
+    const requiredGroups = [
+        "starts-group",
+        "accident-group",
+        "brake-group",
+        "tyre-group",
+        "lights-group"
+    ];
+    const missing = requiredGroups.filter(group => !window.formState[group]);
+    if(missing.length > 0){
+        showToast("Please complete all condition checks before continuing");
+        return false;
+    }
+    return true;
+}
+
+/* ===============================
+DEBUG HELPER — type debugFormState() in console
+=============================== */
+
+window.debugFormState = () => {
+
+console.log("FORM STATE:", window.formState);
+
+alert(JSON.stringify(window.formState, null, 2));
+
+};
+
+/* ===============================
+TOAST — deduplicated (defined once here)
+=============================== */
+function showToast(msg){
+    // Remove any existing toast
+    document.querySelectorAll(".toast-el").forEach(t => t.remove());
+    const toast = document.createElement("div");
+    toast.className = "toast-el";
+    toast.innerText = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 350);
+    }, 3000);
+}
+</script>
+</body>
+</html>
