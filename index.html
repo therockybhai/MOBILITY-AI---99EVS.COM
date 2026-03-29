@@ -50,6 +50,21 @@ firebase.initializeApp(firebaseConfig);
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Mulish:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+
+/* existing styles already here */
+.toggle-opt{
+opacity:.45;
+border:1px solid rgba(255,255,255,.15);
+transition:.25s ease;}
+.toggle-opt.selected{
+opacity:1;
+border:2px solid #f5a623;
+background:linear-gradient(
+135deg,
+rgba(245,166,35,.25),
+rgba(245,166,35,.08)
+);
+transform:scale(1.02);}
 /* ══════════════════════════════════════════════════════════
    99EVS PRODUCTION — TRUST-FIRST MOBILITY INTAKE PLATFORM
    Firebase: vehicles · inspections · lir_reports ·
@@ -250,7 +265,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .toggle-group.inline{flex-direction:row;flex-wrap:wrap}
 .toggle-opt{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;cursor:pointer;transition:all .18s}
 .toggle-opt:hover{border-color:var(--bd2)}
-.toggle-opt.selected{border-color:var(--amber);background:var(--amber-l)}
+.toggle-opt.selected{opacity:1;border:2px solid currentColor;background:linear-gradient(135deg,color-mix(in srgb, currentColor 25%, transparent),color-mix(in srgb, currentColor 8%, transparent));transform:scale(1.02);}
 .toggle-opt.selected .to-marker{background:var(--amber);border-color:var(--amber)}
 .toggle-opt.sel-green{border-color:var(--green);background:var(--green-l)}
 .toggle-opt.sel-green .to-marker{background:var(--green);border-color:var(--green)}
@@ -2789,5 +2804,116 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+   <script>
+
+/*
+99EVs Toggle Engine v2
+Single-select
+Tap again = unselect
+Clear visual selection
+State stored globally
+*/
+
+window.formState = window.formState || {};
+
+/* ===============================
+DOCUMENT STEP TOGGLE ENGINE
+=============================== */
+
+function selectToggle(groupId, element){
+
+    const group = document.getElementById(groupId);
+    if(!group) return;
+
+    const options = group.querySelectorAll(".toggle-opt");
+
+    const alreadySelected = element.classList.contains("selected");
+
+    options.forEach(opt=>{
+        opt.classList.remove("selected");
+    });
+
+    if(alreadySelected){
+
+        delete window.formState[groupId];
+        return;
+
+    }
+
+    element.classList.add("selected");
+
+    window.formState[groupId] = element.dataset.val;
+
+}
+
+
+/* ===============================
+CONDITION STEP TOGGLE ENGINE
+=============================== */
+
+function toggleCondition(groupId, element){
+
+    const group = document.getElementById(groupId);
+    if(!group) return;
+
+    const options = group.querySelectorAll(".toggle-opt");
+
+    const alreadySelected = element.classList.contains("selected");
+
+    options.forEach(opt=>{
+        opt.classList.remove("selected");
+    });
+
+    if(alreadySelected){
+
+        delete window.formState[groupId];
+        return;
+
+    }
+
+    element.classList.add("selected");
+
+    window.formState[groupId] = element.dataset.val;
+
+}
+
+
+/* ===============================
+INSPECTION YES / NO TOGGLE
+=============================== */
+
+function selectToggleSimple(activeId, inactiveId){
+
+    const active = document.getElementById(activeId);
+    const inactive = document.getElementById(inactiveId);
+
+    if(active.classList.contains("selected")){
+
+        active.classList.remove("selected");
+        window.formState.inspectionRequested = false;
+        return;
+
+    }
+
+    active.classList.add("selected");
+    inactive.classList.remove("selected");
+
+    window.formState.inspectionRequested =
+        active.dataset.val === "yes";
+
+}
+
+
+/* ===============================
+DEBUG VISIBILITY (OPTIONAL)
+=============================== */
+
+window.debugFormState = () => {
+
+    console.log("FORM STATE:", window.formState);
+
+};
+
+   </script>
 </body>
 </html>
