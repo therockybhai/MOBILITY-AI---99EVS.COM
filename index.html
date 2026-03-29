@@ -50,21 +50,11 @@ firebase.initializeApp(firebaseConfig);
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Mulish:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-
 /* existing styles already here */
-.toggle-opt{
-opacity:.45;
-border:1px solid rgba(255,255,255,.15);
-transition:.25s ease;}
-.toggle-opt.selected{
-opacity:1;
-border:2px solid #f5a623;
-background:linear-gradient(
-135deg,
-rgba(245,166,35,.25),
-rgba(245,166,35,.08)
-);
-transform:scale(1.02);}
+.toggle-opt{opacity:.45;border:1px solid rgba(255,255,255,.15);transition:.25s ease;}
+.toggle-opt.selected{opacity:1;border:2px solid #f5a623;background:linear-gradient(135deg,rgba(245,166,35,.25),rgba(245,166,35,.08));transform:scale(1.02);}
+.toggle-group.inline{display:flex;flex-wrap:wrap;gap:10px;}
+.toggle-group.inline .toggle-opt{min-width:160px;}
 /* ══════════════════════════════════════════════════════════
    99EVS PRODUCTION — TRUST-FIRST MOBILITY INTAKE PLATFORM
    Firebase: vehicles · inspections · lir_reports ·
@@ -2474,10 +2464,9 @@ async function _doFirestoreSubmit() {
     /* §3 Upload photos to evidence/vehicle_images/{submissionId}/ */
     if (v3Photos.length > 0) {
     await uploadEvidencePhotos(submissionId, v3Photos);
-     console.log("Evidence upload confirmed");
-    }
+     console.log("Evidence upload confirmed");}
      document.querySelector(".submission-loader")?.classList.add("hidden");
-showToast("Submission sent successfully to 99EVs verification queue");
+     showToast("Submission sent successfully to 99EVs verification queue");
     /* §10 Write evidence metadata */
     if (evidenceMeta.length > 0) await writeEvidenceMetadata(submissionId, evidenceMeta);
 
@@ -2780,8 +2769,7 @@ function generateResaleOutput() {
 function showToast(msg) {
   const t = Object.assign(document.createElement('div'), { textContent:msg, className:'toast-el' });
   document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 350); }, 3000);
-}
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 350); }, 3000);}
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -2797,8 +2785,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dz.addEventListener('drop', e => {
       e.preventDefault(); dz.classList.remove('drag-over');
       if (e.dataTransfer?.files.length) v3HandlePhotos({ files: e.dataTransfer.files, value: '' });
-    });
-  }
+    });}
   updateChecklist();
   v3RenderThumbs();
 });
@@ -2826,26 +2813,18 @@ function selectToggle(groupId, element){
     if(!group) return;
 
     const options = group.querySelectorAll(".toggle-opt");
-
     const alreadySelected = element.classList.contains("selected");
 
     options.forEach(opt=>{
         opt.classList.remove("selected");
     });
-
     if(alreadySelected){
-
         delete window.formState[groupId];
-        return;
-
-    }
+        return;}
 
     element.classList.add("selected");
 
-    window.formState[groupId] = element.dataset.val;
-
-}
-
+    window.formState[groupId] = element.dataset.val;}
 
 /* ===============================
 CONDITION STEP TOGGLE ENGINE
@@ -2857,25 +2836,19 @@ function toggleCondition(groupId, element){
     if(!group) return;
 
     const options = group.querySelectorAll(".toggle-opt");
-
     const alreadySelected = element.classList.contains("selected");
 
     options.forEach(opt=>{
-        opt.classList.remove("selected");
-    });
+        opt.classList.remove("selected");});
 
     if(alreadySelected){
 
         delete window.formState[groupId];
-        return;
-
-    }
+        return;}
 
     element.classList.add("selected");
 
-    window.formState[groupId] = element.dataset.val;
-
-}
+    window.formState[groupId] = element.dataset.val;}
 
 
 /* ===============================
@@ -2891,29 +2864,43 @@ function selectToggleSimple(activeId, inactiveId){
 
         active.classList.remove("selected");
         window.formState.inspectionRequested = false;
-        return;
-
-    }
+        return;}
 
     active.classList.add("selected");
     inactive.classList.remove("selected");
 
     window.formState.inspectionRequested =
-        active.dataset.val === "yes";
+        active.dataset.val === "yes";}
+      
+/* ===============================
+CONDITION STEP VALIDATION ENGINE
+=============================== */
 
-}
+function validateConditionStep(){
 
+const requiredGroups = [
+"starts-group",
+"accident-group",
+"brake-group",
+"tyre-group",
+"lights-group"
+];
+
+const missing = requiredGroups.filter(
+group => !window.formState[group]
+);
+
+if(missing.length > 0){
+showToast("Please select at least one vehicle condition item");
+return false;}
+return true;}
 
 /* ===============================
 DEBUG VISIBILITY (OPTIONAL)
 =============================== */
 
 window.debugFormState = () => {
-
-    console.log("FORM STATE:", window.formState);
-
-};
-
+    console.log("FORM STATE:", window.formState);};
    </script>
 </body>
 </html>
