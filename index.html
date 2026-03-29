@@ -1147,29 +1147,77 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 </div><!-- end #engine-view -->
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ════════════════════════════════════════════════════════════════
-   99EVS PRODUCTION ENGINE v3.3 — Firebase-Connected
-   ─ §1  Firebase SDK compat: projectId=evs-production
-          window.db · window.storage · window.auth
-   ─ §2  submitForFounderQueue() → vehicle_submissions collection
-   ─ §3  Image upload → evidence/vehicle_images/{submissionId}/
-   ─ §4  Canvas image validation: blur · brightness · resolution
-   ─ §5  TF MobileNet vehicle type match
-   ─ §6  Document inputs unselected · blocked if unanswered
-   ─ §7  Condition multi-select → ownerTrustReport[]
-   ─ §8  Contact number ^[6-9]\d{9}$ validation
-   ─ §9  Tesseract odometer OCR ± 300 km
-   ─ §10 evidence collection: submissionId·geo·timezone·resolution
-          hideLocationUntilConsent = true
-   ─ §11 dataCompletenessScore auto-calculation
-   ─ §12 alerts collection triggers: missing docs · low confidence
-          inspection pending · dealer match pending · pricing locked
-   ─ §13 Founder approval gate: pending/approved/rejected/hold/neglect
-          routingVisible = true only when approved
-   ─ §14 audit_logs collection: all lifecycle events
-   ─ §15 Global clock: timezone auto-detect · geo · device time
-   ─ §16 UI unchanged
-════════════════════════════════════════════════════════════════ */
+
+/*===============================================================
+99EVS PRODUCTION ENGINE v3.3 — Firebase-Connected
+===============================================================
+
+— §1 Firebase SDK compat: projectId=evs-production
+   window.db · window.storage · window.auth
+*/
+
+/* FINAL PAYLOAD DEBUG — SAFE BEFORE FIRESTORE WRITE */
+
+console.log("FINAL SUBMISSION PAYLOAD:", {
+  formState: window.formState,
+  ownerTrustReport,
+  documentStatus,
+  confidenceLevel: conf?.key,
+  submissionId,
+  routing,
+  band,
+  geo: geoPayload
+  timestamp: new Date().toISOString(),
+});
+/*
+— §2 Primary write → vehicle_submissions collection
+*/
+await submitForFounderQueue({
+  submissionId,
+  vehicleType: vtype,
+  city,
+  make,
+  model,
+  year: year !== '_' ? parseInt(year) : null,
+  odometer: odo ? parseInt(odo) : null,
+  userEmail: window.auth?.currentUser?.email || null,
+  documentStatus,
+  ownerTrustReport,
+  evidenceMeta,
+  photoCount: v3Photos.length,
+  inspectionRequested: v3InspectionRequested,
+  confidenceLevel: conf?.key ?? null,
+  scores,
+  totalScore: total,
+  band,
+  routing,
+  geo: geoPayload,
+  notes,
+  contactNumber: phone
+});
+/*
+— §3 Image upload → evidence/vehicle_images/{submissionId}/
+— §4 Canvas image validation: blur · brightness · resolution
+— §5 TF MobileNet vehicle type match
+— §6 Document inputs unselected · blocked if unanswered
+— §7 Condition grouped single-select → ownerTrustReport[]
+— §8 Contact number ^[6-9]\d{9}$ validation
+— §9 Tesseract odometer OCR ±300 km
+— §10 evidence collection: submissionId · geo · timezone · resolution
+     hideLocationUntilConsent = true
+— §11 dataCompletenessScore auto-calculation
+— §12 alerts collection triggers:
+     missing docs · low confidence · inspection pending
+     dealer match pending · pricing locked
+— §13 Founder approval gate:
+     pending / approved / rejected / hold / neglect
+     routingVisible = true only when approved
+— §14 audit_logs collection:
+     all lifecycle events
+— §15 Global clock:
+     timezone auto-detect · geo · device time
+— §16 UI unchanged
+===============================================================*/
 
 /* ── §15 GLOBAL CLOCK / TIMEZONE MODULE ─────────────────────── */
 const GEO_CLOCK = {
