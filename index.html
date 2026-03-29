@@ -49,9 +49,7 @@ firebase.initializeApp(firebaseConfig);
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Mulish:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-/* existing styles already here */
-.toggle-opt{opacity:.45;border:1px solid rgba(255,255,255,.15);transition:.25s ease;}
-.toggle-opt.selected{opacity:1;border:2px solid #f5a623;background:linear-gradient(135deg,rgba(245,166,35,.25),rgba(245,166,35,.08));transform:scale(1.02);}
+/* toggle styles defined in main block below */
 .toggle-group.inline{display:flex;flex-wrap:wrap;gap:10px;}
 .toggle-group.inline .toggle-opt{min-width:160px;}
 /* ══════════════════════════════════════════════════════════
@@ -251,16 +249,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .q-badge-3w4w{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
 .toggle-group{display:flex;flex-direction:column;gap:6px}
 .toggle-group.inline{flex-direction:row;flex-wrap:wrap}
-.toggle-opt{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;cursor:pointer;transition:all .18s}
-.toggle-opt:hover{border-color:var(--bd2)}
-.toggle-opt.selected{opacity:1;border:2px solid currentColor;background:linear-gradient(135deg,color-mix(in srgb, currentColor 25%, transparent),color-mix(in srgb, currentColor 8%, transparent));transform:scale(1.02);}
+.toggle-opt{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;cursor:pointer;transition:all .18s;opacity:.55}
+.toggle-opt:hover{border-color:var(--bd2);opacity:.75}
+.toggle-opt.selected{opacity:1;border:2px solid var(--amber);background:linear-gradient(135deg,rgba(244,163,0,.18),rgba(244,163,0,.06));transform:scale(1.02);}
 .toggle-opt.selected .to-marker{background:var(--amber);border-color:var(--amber)}
-.toggle-opt.sel-green{border-color:var(--green);background:var(--green-l)}
-.toggle-opt.sel-green .to-marker{background:var(--green);border-color:var(--green)}
-.toggle-opt.sel-orange{border-color:var(--orange);background:rgba(249,115,22,.08)}
-.toggle-opt.sel-orange .to-marker{background:var(--orange);border-color:var(--orange)}
-.toggle-opt.sel-red{border-color:var(--red);background:var(--red-l)}
-.toggle-opt.sel-red .to-marker{background:var(--red);border-color:var(--red)}
+/* Color variants — only active when ALSO .selected */
+.toggle-opt.selected.sel-green{border-color:var(--green);background:var(--green-l)}
+.toggle-opt.selected.sel-green .to-marker{background:var(--green);border-color:var(--green)}
+.toggle-opt.selected.sel-orange{border-color:var(--orange);background:rgba(249,115,22,.12)}
+.toggle-opt.selected.sel-orange .to-marker{background:var(--orange);border-color:var(--orange)}
+.toggle-opt.selected.sel-red{border-color:var(--red);background:var(--red-l)}
+.toggle-opt.selected.sel-red .to-marker{background:var(--red);border-color:var(--red)}
 .to-marker{width:14px;height:14px;border-radius:50%;border:2px solid var(--bd2);transition:all .18s;flex-shrink:0}
 .to-text{flex:1}
 .to-label{font-size:13px;font-weight:600;color:var(--t1)}
@@ -769,46 +768,46 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
               <div class="q-block">
                 <div class="q-label">RC (Registration Certificate) available?</div>
                 <div class="toggle-group inline" id="rc-group">
-                  <div class="toggle-opt sel-green" data-val="yes" onclick="selectToggle('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — in hand</span></div></div>
-                  <div class="toggle-opt" data-val="lost" onclick="selectToggle('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Lost / Applied for duplicate</span></div></div>
-                  <div class="toggle-opt" data-val="no" onclick="selectToggle('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No</span></div></div>
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — in hand</span></div></div>
+                  <div class="toggle-opt" data-val="lost" data-color="orange" onclick="toggleCondition('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Lost / Applied for duplicate</span></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="red" onclick="toggleCondition('rc-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No</span></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Insurance currently active?</div>
                 <div class="toggle-group inline" id="ins-group">
-                  <div class="toggle-opt sel-green" data-val="yes" onclick="selectToggle('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — valid</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="expiring" onclick="selectToggle('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expiring within 30 days</span></div></div>
-                  <div class="toggle-opt sel-red" data-val="no" onclick="selectToggle('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired / Not active</span></div></div>
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — valid</span></div></div>
+                  <div class="toggle-opt" data-val="expiring" data-color="orange" onclick="toggleCondition('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expiring within 30 days</span></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="red" onclick="toggleCondition('ins-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired / Not active</span></div></div>
                 </div>
               </div>
               <div class="q-block" id="fitness-block">
                 <div class="q-label">Fitness certificate valid? <span class="q-badge q-badge-3w4w">3W / 4W / Commercial</span></div>
                 <div class="toggle-group inline" id="fitness-group">
-                  <div class="toggle-opt sel-green" data-val="yes" onclick="selectToggle('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes</span></div></div>
-                  <div class="toggle-opt" data-val="no" onclick="selectToggle('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired / Pending renewal</span></div></div>
-                  <div class="toggle-opt" data-val="na" onclick="selectToggle('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Not applicable (2W)</span></div></div>
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes</span></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="orange" onclick="toggleCondition('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired / Pending renewal</span></div></div>
+                  <div class="toggle-opt" data-val="na" data-color="orange" onclick="toggleCondition('fitness-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Not applicable (2W)</span></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Existing loan status?</div>
                 <div class="toggle-group inline" id="loan-group">
-                  <div class="toggle-opt sel-green" data-val="closed" onclick="selectToggle('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Fully closed — NOC in hand</span></div></div>
-                  <div class="toggle-opt sel-green" data-val="none" onclick="selectToggle('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No loan taken</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="active" onclick="selectToggle('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Loan active — closure in progress</span></div></div>
+                  <div class="toggle-opt" data-val="closed" data-color="green" onclick="toggleCondition('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Fully closed — NOC in hand</span></div></div>
+                  <div class="toggle-opt" data-val="none" data-color="green" onclick="toggleCondition('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No loan taken</span></div></div>
+                  <div class="toggle-opt" data-val="active" data-color="orange" onclick="toggleCondition('loan-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Loan active — closure in progress</span></div></div>
                 </div>
               </div>
               <div class="q-block" id="battery-warranty-block" style="display:none">
                 <div class="q-label">Battery warranty documentation? <span class="q-badge q-badge-ev">EV Only</span></div>
                 <div class="toggle-group inline" id="bwty-group">
-                  <div class="toggle-opt sel-green" data-val="yes" onclick="selectToggle('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — active warranty card</span></div></div>
-                  <div class="toggle-opt" data-val="expired" onclick="selectToggle('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired</span></div></div>
-                  <div class="toggle-opt" data-val="no" onclick="selectToggle('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Not available</span></div></div>
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — active warranty card</span></div></div>
+                  <div class="toggle-opt" data-val="expired" data-color="orange" onclick="toggleCondition('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Expired</span></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="red" onclick="toggleCondition('bwty-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Not available</span></div></div>
                 </div>
               </div>
               <div class="flow-nav">
                 <button class="flow-back" onclick="goSellerStep(1)">← Back</button>
-                <button class="flow-next" onclick="goSellerStep(3)">Continue to Condition →</button>
+                <button class="flow-next" onclick="if(validateDocumentStep()) goSellerStep(3)">Continue to Condition →</button>
               </div>
             </div>
           </div>
@@ -822,40 +821,40 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
               <div class="q-block">
                 <div class="q-label">Does the vehicle start and run normally?</div>
                 <div class="toggle-group" id="starts-group">
-                  <div class="toggle-opt sel-green" data-val="yes" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — starts and drives normally</span><div class="to-sub">No unusual sounds, hesitation, or power issues</div></div></div>
-                  <div class="toggle-opt sel-orange" data-val="sometimes" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Occasionally issues</span><div class="to-sub">Intermittent starting trouble or minor sluggishness</div></div></div>
-                  <div class="toggle-opt sel-red" data-val="no" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Does not start or major issue</span><div class="to-sub">Needs repair before inspection or sale</div></div></div>
+                  <div class="toggle-opt" data-val="yes" data-color="green" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — starts and drives normally</span><div class="to-sub">No unusual sounds, hesitation, or power issues</div></div></div>
+                  <div class="toggle-opt" data-val="sometimes" data-color="orange" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Occasionally issues</span><div class="to-sub">Intermittent starting trouble or minor sluggishness</div></div></div>
+                  <div class="toggle-opt" data-val="no" data-color="red" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Does not start or major issue</span><div class="to-sub">Needs repair before inspection or sale</div></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Accident history?</div>
                 <div class="toggle-group inline" id="accident-group">
-                  <div class="toggle-opt sel-green" data-val="none" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="minor" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — cosmetic only</span></div></div>
-                  <div class="toggle-opt sel-red" data-val="major" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — structural impact</span></div></div>
+                  <div class="toggle-opt" data-val="none" data-color="green" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None</span></div></div>
+                  <div class="toggle-opt" data-val="minor" data-color="orange" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — cosmetic only</span></div></div>
+                  <div class="toggle-opt" data-val="major" data-color="red" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — structural impact</span></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Brake condition?</div>
                 <div class="toggle-group inline" id="brake-group">
-                  <div class="toggle-opt sel-green" data-val="good" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — responsive</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="worn" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Worn — needs replacement soon</span></div></div>
-                  <div class="toggle-opt sel-red" data-val="poor" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Poor — needs immediate attention</span></div></div>
+                  <div class="toggle-opt" data-val="good" data-color="green" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — responsive</span></div></div>
+                  <div class="toggle-opt" data-val="worn" data-color="orange" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Worn — needs replacement soon</span></div></div>
+                  <div class="toggle-opt" data-val="poor" data-color="red" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Poor — needs immediate attention</span></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Tyre condition?</div>
                 <div class="toggle-group inline" id="tyre-group">
-                  <div class="toggle-opt sel-green" data-val="good" onclick="toggleCondition('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — 60%+ tread remaining</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="replace" onclick="toggleCondition('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Needs replacement</span></div></div>
+                  <div class="toggle-opt" data-val="good" data-color="green" onclick="toggleCondition('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — 60%+ tread remaining</span></div></div>
+                  <div class="toggle-opt" data-val="replace" data-color="orange" onclick="toggleCondition('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Needs replacement</span></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Dashboard warning lights?</div>
                 <div class="toggle-group inline" id="lights-group">
-                  <div class="toggle-opt sel-green" data-val="none" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None active</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="minor" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — service reminder</span></div></div>
-                  <div class="toggle-opt sel-red" data-val="major" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — engine or battery warning</span></div></div>
+                  <div class="toggle-opt" data-val="none" data-color="green" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None active</span></div></div>
+                  <div class="toggle-opt" data-val="minor" data-color="orange" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — service reminder</span></div></div>
+                  <div class="toggle-opt" data-val="major" data-color="red" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — engine or battery warning</span></div></div>
                 </div>
               </div>
               <div class="flow-nav">
@@ -984,8 +983,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
             <div class="flow-card-body">
               <div class="q-block"><div class="q-label">What will you use the vehicle for?</div>
                 <div class="toggle-group" id="b-purpose-group">
-                  <div class="toggle-opt sel-green" data-val="cargo" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Last-mile delivery / cargo</span><div class="to-sub">E-rickshaw, cargo 3W, delivery 2W</div></div></div>
-                  <div class="toggle-opt sel-green" data-val="passenger" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Passenger transport</span><div class="to-sub">Auto-rickshaw, taxi, shared mobility</div></div></div>
+                  <div class="toggle-opt" data-val="cargo" data-color="green" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Last-mile delivery / cargo</span><div class="to-sub">E-rickshaw, cargo 3W, delivery 2W</div></div></div>
+                  <div class="toggle-opt" data-val="passenger" data-color="green" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Passenger transport</span><div class="to-sub">Auto-rickshaw, taxi, shared mobility</div></div></div>
                   <div class="toggle-opt" data-val="personal" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Personal use</span><div class="to-sub">Commuting, family use</div></div></div>
                   <div class="toggle-opt" data-val="fleet" onclick="selectToggle('b-purpose-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Fleet expansion</span><div class="to-sub">Multiple units for commercial operation</div></div></div>
                 </div>
@@ -1017,9 +1016,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
               </div>
               <div class="q-block"><div class="q-label">Charging access?</div>
                 <div class="toggle-group" id="b-charge-group">
-                  <div class="toggle-opt sel-green" data-val="home" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Home charging available</span><div class="to-sub">Garage or dedicated parking with power point</div></div></div>
-                  <div class="toggle-opt sel-orange" data-val="public" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Public chargers nearby</span><div class="to-sub">Workplace or commercial charger within 2 km</div></div></div>
-                  <div class="toggle-opt sel-red" data-val="none" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No charging access</span><div class="to-sub">No reliable EV charging infrastructure available</div></div></div>
+                  <div class="toggle-opt" data-val="home" data-color="green" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Home charging available</span><div class="to-sub">Garage or dedicated parking with power point</div></div></div>
+                  <div class="toggle-opt" data-val="public" data-color="orange" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Public chargers nearby</span><div class="to-sub">Workplace or commercial charger within 2 km</div></div></div>
+                  <div class="toggle-opt" data-val="none" data-color="red" onclick="selectToggle('b-charge-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">No charging access</span><div class="to-sub">No reliable EV charging infrastructure available</div></div></div>
                 </div>
               </div>
               <div class="flow-nav" style="margin-top:16px"><button class="flow-back" onclick="goBuyerStep(1)">← Back</button><button class="flow-next" onclick="generateBuyerReport()">Get Recommendation →</button></div>
@@ -2792,117 +2791,153 @@ document.addEventListener('DOMContentLoaded', () => {
    <script>
 
 /*===============================
-99EVs Toggle Engine v2
-Single-select
-Tap again = unselect
-Clear visual selection
-State stored globally
+99EVs Toggle Engine v3 — Stabilized
+Single-select per group
+Tap again = deselect
+Auto color class from data-color attr
+State written to window.formState[groupId]
+Validation checks formState, NOT classList
 ===============================*/
 
 window.formState = window.formState || {};
 
 /* ===============================
-DOCUMENT STEP TOGGLE ENGINE
-=============================== */
-
-function selectToggle(groupId, element){
-
-    const group = document.getElementById(groupId);
-    if(!group) return;
-
-    const options = group.querySelectorAll(".toggle-opt");
-    const alreadySelected = element.classList.contains("selected");
-
-    options.forEach(opt=>{
-        opt.classList.remove("selected");
-    });
-    if(alreadySelected){
-        delete window.formState[groupId];
-        return;}
-
-    element.classList.add("selected");
-
-    window.formState[groupId] = element.dataset.val;}
-
-/* ===============================
-CONDITION STEP TOGGLE ENGINE
+UNIFIED TOGGLE ENGINE
+Used for ALL groups — condition, documents, and others
 =============================== */
 
 function toggleCondition(groupId, element){
-
     const group = document.getElementById(groupId);
     if(!group) return;
 
     const options = group.querySelectorAll(".toggle-opt");
     const alreadySelected = element.classList.contains("selected");
 
-    options.forEach(opt=>{
-        opt.classList.remove("selected");});
-    if(alreadySelected){
-        delete window.formState[groupId];
-        return;}
-    element.classList.add("selected");
-    window.formState[groupId] = element.dataset.val;}
+    // Clear ALL options in this group
+    options.forEach(opt => {
+        opt.classList.remove("selected");
+        // Remove color classes
+        opt.classList.remove("sel-green","sel-orange","sel-red");
+    });
 
+    if(alreadySelected){
+        // Deselect — remove from formState
+        delete window.formState[groupId];
+        return;
+    }
+
+    // Select this element
+    element.classList.add("selected");
+
+    // Apply color class if data-color is set
+    if(element.dataset.color){
+        element.classList.add("sel-" + element.dataset.color);
+    }
+
+    // Write to formState
+    window.formState[groupId] = element.dataset.val;
+}
+
+/* Legacy alias — kept for any other calls in the page */
+function selectToggle(groupId, element){
+    toggleCondition(groupId, element);
+}
 
 /* ===============================
 INSPECTION YES / NO TOGGLE
 =============================== */
 
 function selectToggleSimple(activeId, inactiveId){
-
     const active = document.getElementById(activeId);
     const inactive = document.getElementById(inactiveId);
 
     if(active.classList.contains("selected")){
         active.classList.remove("selected");
-        window.formState.inspectionRequested = false;return;}
-        active.classList.add("selected");
-        inactive.classList.remove("selected");
+        window.formState.inspectionRequested = false;
+        return;
+    }
+    active.classList.add("selected");
+    inactive.classList.remove("selected");
+    window.formState.inspectionRequested = active.dataset.val === "yes";
+}
 
-        window.formState.inspectionRequested =
-        active.dataset.val === "yes";}
-      
+/* ===============================
+DOCUMENT STEP VALIDATION ENGINE
+Checks all required doc groups have a value in formState
+Fitness and battery warranty are conditionally required
+=============================== */
+
+function validateDocumentStep(){
+    // Always required
+    const alwaysRequired = ["rc-group","ins-group","loan-group"];
+    const missing = alwaysRequired.filter(g => !window.formState[g]);
+
+    // fitness-group: required unless vehicle is 2W (na = not applicable is a valid answer)
+    if(!window.formState["fitness-group"]){
+        missing.push("fitness-group");
+    }
+
+    // bwty-group: only required if battery warranty block is visible (EV vehicles)
+    const bwtyBlock = document.getElementById("battery-warranty-block");
+    const bwtyVisible = bwtyBlock && bwtyBlock.style.display !== "none";
+    if(bwtyVisible && !window.formState["bwty-group"]){
+        missing.push("bwty-group");
+    }
+
+    if(missing.length > 0){
+        showToast("Please complete all document fields before continuing");
+        return false;
+    }
+    return true;
+}
+
 /* ===============================
 CONDITION STEP VALIDATION ENGINE
 =============================== */
 
 function validateConditionStep(){
-
-const requiredGroups = [
-"starts-group",
-"accident-group",
-"brake-group",
-"tyre-group",
-"lights-group"];
-const missing = requiredGroups.filter(
-group => !window.formState[group]);
-if(missing.length > 0){
-showToast("Please select all vehicle condition items");
-return false;}
-return true;}
+    const requiredGroups = [
+        "starts-group",
+        "accident-group",
+        "brake-group",
+        "tyre-group",
+        "lights-group"
+    ];
+    const missing = requiredGroups.filter(group => !window.formState[group]);
+    if(missing.length > 0){
+        showToast("Please complete all condition checks before continuing");
+        return false;
+    }
+    return true;
+}
 
 /* ===============================
-DEBUG VISIBILITY (OPTIONAL)
+DEBUG HELPER — type debugFormState() in console
 =============================== */
 
 window.debugFormState = () => {
-console.log("FORM STATE:", window.formState);};
-function showToast(msg){
 
-const toast = document.createElement("div");
-toast.innerText = msg;
-toast.style.position = "fixed";
-toast.style.bottom = "30px";
-toast.style.right = "30px";
-toast.style.padding = "10px 16px";
-toast.style.background = "#1f2937";
-toast.style.color = "white";
-toast.style.borderRadius = "8px";
-toast.style.fontSize = "12px";
-toast.style.zIndex = 9999;
-document.body.appendChild(toast);
-setTimeout(()=>toast.remove(),3000);}
+console.log("FORM STATE:", window.formState);
+
+alert(JSON.stringify(window.formState, null, 2));
+
+};
+
+/* ===============================
+TOAST — deduplicated (defined once here)
+=============================== */
+function showToast(msg){
+    // Remove any existing toast
+    document.querySelectorAll(".toast-el").forEach(t => t.remove());
+    const toast = document.createElement("div");
+    toast.className = "toast-el";
+    toast.innerText = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 350);
+    }, 3000);
+}
 </script>
 </body>
 </html>
