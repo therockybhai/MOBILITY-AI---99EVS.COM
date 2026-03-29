@@ -2457,8 +2457,12 @@ async function _doFirestoreSubmit() {
     console.log('Firestore write success');
 
     /* §3 Upload photos to evidence/vehicle_images/{submissionId}/ */
-    if (v3Photos.length > 0) await uploadEvidencePhotos(submissionId, v3Photos);
-
+    if (v3Photos.length > 0) {
+    await uploadEvidencePhotos(submissionId, v3Photos);
+     console.log("Evidence upload confirmed");
+    }
+     document.querySelector(".submission-loader")?.classList.add("hidden");
+showToast("Submission sent successfully to 99EVs verification queue");
     /* §10 Write evidence metadata */
     if (evidenceMeta.length > 0) await writeEvidenceMetadata(submissionId, evidenceMeta);
 
