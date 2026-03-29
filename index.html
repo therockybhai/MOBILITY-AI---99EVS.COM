@@ -860,7 +860,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
               </div>
               <div class="flow-nav">
                 <button class="flow-back" onclick="goSellerStep(2)">← Back</button>
-                <button class="flow-next" onclick="goSellerStep(4)">Continue to Evidence →</button>
+                <button class="flow-next" onclick="if(validateConditionStep()) goSellerStep(4)">Continue to Evidence →</button>
               </div>
             </div>
           </div>
@@ -2782,7 +2782,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
     dz.addEventListener('drop', e => {
       e.preventDefault(); dz.classList.remove('drag-over');
-      if (e.dataTransfer?.files.length) v3HandlePhotos({ files: e.dataTransfer.files, value: '' });
+   if (e.dataTransfer?.files.length) v3HandlePhotos({ files: e.dataTransfer.files, value: '' });
     });}
   updateChecklist();
   v3RenderThumbs();
@@ -2791,13 +2791,13 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
    <script>
 
-/*
+/*===============================
 99EVs Toggle Engine v2
 Single-select
 Tap again = unselect
 Clear visual selection
 State stored globally
-*/
+===============================*/
 
 window.formState = window.formState || {};
 
@@ -2838,14 +2838,10 @@ function toggleCondition(groupId, element){
 
     options.forEach(opt=>{
         opt.classList.remove("selected");});
-
     if(alreadySelected){
-
         delete window.formState[groupId];
         return;}
-
     element.classList.add("selected");
-
     window.formState[groupId] = element.dataset.val;}
 
 
@@ -2859,15 +2855,12 @@ function selectToggleSimple(activeId, inactiveId){
     const inactive = document.getElementById(inactiveId);
 
     if(active.classList.contains("selected")){
-
         active.classList.remove("selected");
-        window.formState.inspectionRequested = false;
-        return;}
+        window.formState.inspectionRequested = false;return;}
+        active.classList.add("selected");
+        inactive.classList.remove("selected");
 
-    active.classList.add("selected");
-    inactive.classList.remove("selected");
-
-    window.formState.inspectionRequested =
+        window.formState.inspectionRequested =
         active.dataset.val === "yes";}
       
 /* ===============================
@@ -2881,15 +2874,11 @@ const requiredGroups = [
 "accident-group",
 "brake-group",
 "tyre-group",
-"lights-group"
-];
-
+"lights-group"];
 const missing = requiredGroups.filter(
-group => !window.formState[group]
-);
-
+group => !window.formState[group]);
 if(missing.length > 0){
-showToast("Please select at least one vehicle condition item");
+showToast("Please select all vehicle condition items");
 return false;}
 return true;}
 
@@ -2898,7 +2887,22 @@ DEBUG VISIBILITY (OPTIONAL)
 =============================== */
 
 window.debugFormState = () => {
-    console.log("FORM STATE:", window.formState);};
-   </script>
+console.log("FORM STATE:", window.formState);};
+function showToast(msg){
+
+const toast = document.createElement("div");
+toast.innerText = msg;
+toast.style.position = "fixed";
+toast.style.bottom = "30px";
+toast.style.right = "30px";
+toast.style.padding = "10px 16px";
+toast.style.background = "#1f2937";
+toast.style.color = "white";
+toast.style.borderRadius = "8px";
+toast.style.fontSize = "12px";
+toast.style.zIndex = 9999;
+document.body.appendChild(toast);
+setTimeout(()=>toast.remove(),3000);}
+</script>
 </body>
 </html>
