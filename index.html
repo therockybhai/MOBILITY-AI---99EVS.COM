@@ -22,24 +22,29 @@
    FIREBASE CONFIG — replace with real values
    from Firebase Console → Project Settings
 ══════════════════════════════════════════ */
+/* ── FIREBASE CONFIG — updated by v3.3 engine init ── */
+/* Real config is applied inside the engine script below. */
+/* Placeholder kept to avoid parse errors during load.   */
 const firebaseConfig = {
-  apiKey: "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-ZxdA",
-  authDomain: "evs-production.firebaseapp.com",
-  projectId: "evs-production",
-  storageBucket: "evs-production.appspot.com",
-  messagingSenderId: "775112664706",
-  appId: "1:775112664706:web:2529507e7788d89e7bb69b"
+  apiKey:            "REPLACE_WITH_API_KEY",
+  authDomain:        "evs-production.firebaseapp.com",
+  projectId:         "evs-production",
+  storageBucket:     "evs-production.firebasestorage.app",
+  messagingSenderId: "REPLACE_WITH_SENDER_ID",
+  appId:             "REPLACE_WITH_APP_ID"
 };
-
 firebase.initializeApp(firebaseConfig);
-const db      = firebase.firestore();
-const storage = firebase.storage();
-const auth    = firebase.auth();
-
-/* ── FOUNDER EMAIL (for alerts) ── */
-const FOUNDER_EMAIL = '99evsworld@gmail.com';
+/* window.db / window.storage / window.auth are set by the engine below */
 </script>
 
+
+<!-- EmailJS — founder notification delivery -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<!-- TensorFlow.js + MobileNet — vehicle type image match -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
+<!-- Tesseract.js — odometer OCR -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Mulish:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -607,7 +612,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <div class="footer-inner">
       <div>
         <div class="footer-brand">EV<em>s</em>.com — <span style="color:var(--t2);font-weight:400;font-family:var(--fb);font-size:13px">Vehicle Support Platform</span></div>
-        <div class="footer-info">Bengaluru, Karnataka · 99evsworld@gmail.com · www.99evs.com</div>
+        <div class="footer-info">Bengaluru, Karnataka · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8dbd7d6ccd9dbccf88181ddcecb96dbd7d5">[email&#160;protected]</a> · www.99evs.com</div>
       </div>
       <div class="footer-links">
         <a href="#why">Why 99EVs</a><a href="#inspection">Inspection</a>
@@ -619,6 +624,34 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   </footer>
 
 </div><!-- end #homepage -->
+
+<!-- OTP LOGIN MODAL -->
+<div id="otp-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(13,27,46,.97);display:none;align-items:center;justify-content:center">
+  <div style="background:var(--navy2);border:1px solid var(--amber-b);border-radius:18px;padding:32px 28px;width:min(420px,92vw);position:relative">
+    <div style="font-family:var(--ff);font-size:18px;font-weight:800;color:var(--t1);margin-bottom:6px">Verify to Submit</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:22px;line-height:1.6">Enter your mobile number to receive a one-time verification code. Required before submitting to 99EVs.</div>
+    <div id="otp-phone-section">
+      <div class="field" style="margin-bottom:12px">
+        <label>Mobile Number</label>
+        <input type="tel" id="otp-phone-input" placeholder="+91 XXXXX XXXXX" style="width:100%">
+      </div>
+      <div id="recaptcha-container" style="margin-bottom:12px"></div>
+      <button onclick="otpSendCode()" id="otp-send-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Send OTP →</button>
+    </div>
+    <div id="otp-verify-section" style="display:none">
+      <div style="font-size:12px;color:var(--green);margin-bottom:12px">✓ OTP sent to <span id="otp-sent-to"></span></div>
+      <div class="field" style="margin-bottom:12px">
+        <label>Enter 6-digit OTP</label>
+        <input type="text" id="otp-code-input" placeholder="——  ——  ——" maxlength="6" style="width:100%;font-family:var(--fm);font-size:18px;letter-spacing:.2em;text-align:center">
+      </div>
+      <button onclick="otpVerifyCode()" id="otp-verify-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Verify & Submit →</button>
+      <button onclick="otpResend()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:1px solid var(--bd2);color:var(--t2);font-family:var(--fb);font-size:12px;border-radius:10px;cursor:pointer">Resend OTP</button>
+    </div>
+    <div id="otp-error" style="display:none;margin-top:10px;padding:8px 12px;background:var(--red-l);border:1px solid var(--red-b);border-radius:7px;font-size:12px;color:var(--red)"></div>
+    <button onclick="otpClose()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;line-height:1">✕</button>
+  </div>
+</div>
+
 
 <!-- ══════════════════════
      ENGINE VIEW
@@ -786,40 +819,40 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
               <div class="q-block">
                 <div class="q-label">Does the vehicle start and run normally?</div>
                 <div class="toggle-group" id="starts-group">
-                  <div class="toggle-opt sel-green" data-val="yes" onclick="selectToggle('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — starts and drives normally</span><div class="to-sub">No unusual sounds, hesitation, or power issues</div></div></div>
-                  <div class="toggle-opt sel-orange" data-val="sometimes" onclick="selectToggle('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Occasionally issues</span><div class="to-sub">Intermittent starting trouble or minor sluggishness</div></div></div>
-                  <div class="toggle-opt sel-red" data-val="no" onclick="selectToggle('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Does not start or major issue</span><div class="to-sub">Needs repair before inspection or sale</div></div></div>
+                  <div class="toggle-opt sel-green" data-val="yes" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Yes — starts and drives normally</span><div class="to-sub">No unusual sounds, hesitation, or power issues</div></div></div>
+                  <div class="toggle-opt sel-orange" data-val="sometimes" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Occasionally issues</span><div class="to-sub">Intermittent starting trouble or minor sluggishness</div></div></div>
+                  <div class="toggle-opt sel-red" data-val="no" onclick="toggleCondition('starts-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Does not start or major issue</span><div class="to-sub">Needs repair before inspection or sale</div></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Accident history?</div>
                 <div class="toggle-group inline" id="accident-group">
-                  <div class="toggle-opt sel-green" data-val="none" onclick="selectToggle('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="minor" onclick="selectToggle('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — cosmetic only</span></div></div>
-                  <div class="toggle-opt sel-red" data-val="major" onclick="selectToggle('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — structural impact</span></div></div>
+                  <div class="toggle-opt sel-green" data-val="none" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None</span></div></div>
+                  <div class="toggle-opt sel-orange" data-val="minor" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — cosmetic only</span></div></div>
+                  <div class="toggle-opt sel-red" data-val="major" onclick="toggleCondition('accident-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — structural impact</span></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Brake condition?</div>
                 <div class="toggle-group inline" id="brake-group">
-                  <div class="toggle-opt sel-green" data-val="good" onclick="selectToggle('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — responsive</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="worn" onclick="selectToggle('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Worn — needs replacement soon</span></div></div>
-                  <div class="toggle-opt sel-red" data-val="poor" onclick="selectToggle('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Poor — needs immediate attention</span></div></div>
+                  <div class="toggle-opt sel-green" data-val="good" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — responsive</span></div></div>
+                  <div class="toggle-opt sel-orange" data-val="worn" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Worn — needs replacement soon</span></div></div>
+                  <div class="toggle-opt sel-red" data-val="poor" onclick="toggleCondition('brake-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Poor — needs immediate attention</span></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Tyre condition?</div>
                 <div class="toggle-group inline" id="tyre-group">
-                  <div class="toggle-opt sel-green" data-val="good" onclick="selectToggle('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — 60%+ tread remaining</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="replace" onclick="selectToggle('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Needs replacement</span></div></div>
+                  <div class="toggle-opt sel-green" data-val="good" onclick="toggleCondition('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Good — 60%+ tread remaining</span></div></div>
+                  <div class="toggle-opt sel-orange" data-val="replace" onclick="toggleCondition('tyre-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Needs replacement</span></div></div>
                 </div>
               </div>
               <div class="q-block">
                 <div class="q-label">Dashboard warning lights?</div>
                 <div class="toggle-group inline" id="lights-group">
-                  <div class="toggle-opt sel-green" data-val="none" onclick="selectToggle('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None active</span></div></div>
-                  <div class="toggle-opt sel-orange" data-val="minor" onclick="selectToggle('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — service reminder</span></div></div>
-                  <div class="toggle-opt sel-red" data-val="major" onclick="selectToggle('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — engine or battery warning</span></div></div>
+                  <div class="toggle-opt sel-green" data-val="none" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">None active</span></div></div>
+                  <div class="toggle-opt sel-orange" data-val="minor" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Minor — service reminder</span></div></div>
+                  <div class="toggle-opt sel-red" data-val="major" onclick="toggleCondition('lights-group',this)"><span class="to-marker"></span><div class="to-text"><span class="to-label">Major — engine or battery warning</span></div></div>
                 </div>
               </div>
               <div class="flow-nav">
@@ -836,6 +869,19 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
             <div class="flow-card-hdr"><div class="fch-eyebrow">Step 4 of 4</div><div class="fch-title">Evidence &amp; Verification</div><div class="fch-sub">Adding photos improves your report accuracy. Inspection request upgrades to highest confidence level.</div></div>
             <div class="flow-card-body">
 
+
+              <!-- Image checklist (advisory) -->
+              <div id="photo-checklist" style="background:var(--navy);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:12px;color:var(--t2)">
+                <div style="font-size:11px;font-family:var(--fm);letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px">Recommended photo checklist</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px">
+                  <span id="chk-front" style="padding:4px 10px;border-radius:100px;border:1px solid var(--bd2);color:var(--t3)">📸 Front view</span>
+                  <span id="chk-rear"  style="padding:4px 10px;border-radius:100px;border:1px solid var(--bd2);color:var(--t3)">📸 Rear view</span>
+                  <span id="chk-side"  style="padding:4px 10px;border-radius:100px;border:1px solid var(--bd2);color:var(--t3)">📸 Side view</span>
+                  <span id="chk-odo"   style="padding:4px 10px;border-radius:100px;border:1px solid var(--bd2);color:var(--t3)">📸 Odometer</span>
+                </div>
+              </div>
+              <!-- Image validation feedback -->
+              <div id="img-validation-msg" style="display:none;margin-bottom:8px;padding:9px 13px;background:var(--red-l);border:1px solid var(--red-b);border-radius:9px;font-size:12px;color:var(--red)"></div>
               <!-- Photo Upload -->
               <div class="q-block">
                 <div class="q-label">Attach vehicle photos</div>
@@ -1098,41 +1144,454 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 
 </div><!-- end #engine-view -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ════════════════════════════════════════════════════════════════
-   99EVS PRODUCTION ENGINE
-   ─ Firebase Firestore writes (vehicles, inspections, lir_reports,
-     requirements, dealer_routes)
-   ─ Structured evidence capture (no user-assigned sliders)
-   ─ Auto-computed readiness score from intake answers
-   ─ Founder approval gate: all vehicles status = "pending"
-   ─ Photo watermark engine (canvas-based)
-   ─ Geo-privacy consent toggle
-   ─ Audit timestamp capture (ISO + timezone)
+   99EVS PRODUCTION ENGINE v3.3 — Firebase-Connected
+   ─ §1  Firebase SDK compat: projectId=evs-production
+          window.db · window.storage · window.auth
+   ─ §2  submitForFounderQueue() → vehicle_submissions collection
+   ─ §3  Image upload → evidence/vehicle_images/{submissionId}/
+   ─ §4  Canvas image validation: blur · brightness · resolution
+   ─ §5  TF MobileNet vehicle type match
+   ─ §6  Document inputs unselected · blocked if unanswered
+   ─ §7  Condition multi-select → ownerTrustReport[]
+   ─ §8  Contact number ^[6-9]\d{9}$ validation
+   ─ §9  Tesseract odometer OCR ± 300 km
+   ─ §10 evidence collection: submissionId·geo·timezone·resolution
+          hideLocationUntilConsent = true
+   ─ §11 dataCompletenessScore auto-calculation
+   ─ §12 alerts collection triggers: missing docs · low confidence
+          inspection pending · dealer match pending · pricing locked
+   ─ §13 Founder approval gate: pending/approved/rejected/hold/neglect
+          routingVisible = true only when approved
+   ─ §14 audit_logs collection: all lifecycle events
+   ─ §15 Global clock: timezone auto-detect · geo · device time
+   ─ §16 UI unchanged
 ════════════════════════════════════════════════════════════════ */
 
+/* ── §15 GLOBAL CLOCK / TIMEZONE MODULE ─────────────────────── */
+const GEO_CLOCK = {
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Kolkata',
+  deviceTime: null,
+  geo: null,
+
+  init() {
+    this.deviceTime = new Date().toISOString();
+    this.localTime  = new Date().toLocaleString('en-IN', { timeZone: this.timezone });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        pos => { this.geo = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy }; },
+        ()  => { this.geo = { status: 'denied' }; },
+        { timeout: 8000, maximumAge: 60000 }
+      );
+    } else {
+      this.geo = { status: 'unavailable' };
+    }
+  },
+
+  snapshot() {
+    this.deviceTime = new Date().toISOString();
+    return {
+      timezone:   this.timezone,
+      deviceTime: this.deviceTime,
+      localTime:  new Date().toLocaleString('en-IN', { timeZone: this.timezone }),
+      geo:        this.geo || { status: 'pending' }
+    };
+  }
+};
+
+/* ── §1 FIREBASE INIT — expose as window globals ─────────────── */
+const _firebaseConfig = {
+  apiKey:            "REPLACE_WITH_API_KEY",
+  authDomain:        "evs-production.firebaseapp.com",
+  projectId:         "evs-production",
+  storageBucket:     "evs-production.firebasestorage.app",
+  messagingSenderId: "REPLACE_WITH_SENDER_ID",
+  appId:             "REPLACE_WITH_APP_ID"
+};
+
+/* Re-initialise only if the existing app used placeholder config */
+try {
+  const existingApp = firebase.app();
+  const existing    = existingApp.options;
+  if (!existing.projectId || existing.projectId === 'YOUR_PROJECT_ID') {
+    firebase.app().delete().then(() => {
+      firebase.initializeApp(_firebaseConfig);
+      window.db      = firebase.firestore();
+      window.storage = firebase.storage();
+      window.auth    = firebase.auth();
+    });
+  } else {
+    window.db      = firebase.firestore();
+    window.storage = firebase.storage();
+    window.auth    = firebase.auth();
+  }
+} catch (e) {
+  firebase.initializeApp(_firebaseConfig);
+  window.db      = firebase.firestore();
+  window.storage = firebase.storage();
+  window.auth    = firebase.auth();
+}
+
+/* Firestore helpers — always use window.db so re-init is picked up */
+const FS  = () => window.db;
+const ST  = () => window.storage;
+const serverTs = () => firebase.firestore.FieldValue.serverTimestamp();
+
 /* ── CONSTANTS ──────────────────────────────────────────────── */
-const PLATFORM_VERSION = 'v3.1-prod';
-let geoConsentEnabled = false;
+const PLATFORM_VERSION   = 'v3.3-prod';
+const SOURCE_PLATFORM    = '99EVs_web';
+const EVIDENCE_IMAGES    = 'evidence/vehicle_images';
+const EVIDENCE_DOCS      = 'evidence/documents';
+const EVIDENCE_INSP      = 'evidence/inspection_requests';
+const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 min
+
+const FOUNDER_EMAIL  = '99evsworld@gmail.com';
+
+/* Rule versions — matched to Firestore collections */
+const RULE_VERSIONS = {
+  confidenceRuleVersion:     1,
+  inspectionRuleVersion:     1,
+  dealerMatchRuleVersion:    1,
+  pricingRuleVersion:        1,
+  mobilityGuidanceRuleVersion: 1
+};
+
+/* EmailJS — replace with your dashboard values */
+const EMAILJS_PUBLIC_KEY  = 'EMAILJS_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'EMAILJS_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'EMAILJS_TEMPLATE_ID';
+if (typeof emailjs !== 'undefined') emailjs.init(EMAILJS_PUBLIC_KEY);
+
+/* State */
+let geoConsentEnabled     = false;
 let v3InspectionRequested = false;
-let v3FounderStatus = 'pending'; // Always pending on submission
+let v3InspectionContact   = '';
+let evidenceMeta          = [];
+let ownerTrustReport      = [];
+let _currentSubmissionId  = null;
+let _otpConfirmResult     = null;
+let _otpPendingSubmit     = false;
+
+/* Auto-logout */
+let _inactivityTimer = null;
+function resetInactivityTimer() {
+  clearTimeout(_inactivityTimer);
+  _inactivityTimer = setTimeout(() => {
+    if (auth && auth.currentUser) {
+      auth.signOut().then(() => {
+        showToast('Session expired. Please log in again to submit.');
+        setTimeout(() => window.location.reload(), 2000);
+      });
+    }
+  }, INACTIVITY_TIMEOUT);
+}
+['mousemove','keydown','click','touchstart'].forEach(ev =>
+  document.addEventListener(ev, resetInactivityTimer, { passive: true })
+);
+
+/* ── §14 AUDIT LOG ENGINE ─────────────────────────────────────── */
+/* §13 Supported founderStatus values: pending|approved|rejected|hold|neglect */
+/* routingVisible becomes true only when founderStatus = approved */
+const FOUNDER_STATUSES = ['pending','approved','rejected','hold','neglect'];
+
+async function writeAuditLog(event, extra = {}) {
+  try {
+    const clock = GEO_CLOCK.snapshot();
+    await FS().collection('audit_logs').add({
+      event,
+      submissionId: _currentSubmissionId || null,
+      userId:       (window.auth?.currentUser?.uid) || 'anonymous',
+      timestamp:    serverTs(),
+      localTime:    clock.localTime,
+      timezone:     clock.timezone,
+      location:     (geoConsentEnabled && clock.geo?.lat)
+                      ? { lat: clock.geo.lat, lng: clock.geo.lng }
+                      : { status: 'not_shared' },
+      platform:     PLATFORM_VERSION,
+      ...extra
+    });
+  } catch (e) {
+    console.warn('Audit log write failed (non-blocking):', e);
+  }
+}
+
+/* ── §12 ALERT ENGINE ────────────────────────────────────────── */
+async function triggerAlerts(submissionId, scores, conf, docStatus, inspReq) {
+  const alerts = [];
+  const clock  = GEO_CLOCK.snapshot();
+  const base   = {
+    submissionId,
+    createdAt:  serverTs(),
+    timezone:   clock.timezone,
+    resolved:   false,
+    platform:   PLATFORM_VERSION
+  };
+
+  /* Missing documents */
+  const missingDocs = Object.entries(docStatus)
+    .filter(([, v]) => !v)
+    .map(([k]) => k);
+  if (missingDocs.length > 0) {
+    alerts.push({ ...base, type: 'missing_documents', severity: 'high',
+      message: `Missing document answers: ${missingDocs.join(', ')}`, fields: missingDocs });
+  }
+
+  /* Low confidence */
+  const total = scores.mech + scores.elec + scores.legal + scores.usage + scores.market;
+  if (total < 55) {
+    alerts.push({ ...base, type: 'low_confidence', severity: 'medium',
+      message: `Readiness score ${total}/100 is below routing threshold`, totalScore: total });
+  }
+
+  /* Inspection pending */
+  if (inspReq) {
+    alerts.push({ ...base, type: 'inspection_pending', severity: 'info',
+      message: 'Inspection request placed — awaiting team assignment' });
+  }
+
+  /* Dealer match pending */
+  alerts.push({ ...base, type: 'dealer_match_pending', severity: 'info',
+    message: 'Vehicle awaiting founder approval before dealer routing' });
+
+  /* Pricing locked */
+  alerts.push({ ...base, type: 'pricing_locked', severity: 'info',
+    message: 'Pricing will unlock after founder approval and inspection' });
+
+  for (const alert of alerts) {
+    try { await FS().collection('alerts').add(alert); } catch (e) { console.warn('Alert write failed:', e); }
+  }
+}
+
+/* ── §11 DATA COMPLETENESS SCORE ─────────────────────────────── */
+function computeDataCompletenessScore(photoCount, docStatus, inspReq, dealerValidated) {
+  let score = 0;
+  if (photoCount >= 1) score += 15;                                    // +15 image uploaded
+  const docsAnswered = Object.values(docStatus).filter(Boolean).length;
+  if (docsAnswered >= 3) score += 25;                                  // +25 documents answered
+  if (inspReq) score += 30;                                            // +30 inspection completed/requested
+  if (dealerValidated) score += 20;                                    // +20 dealer validation
+  return Math.min(score, 90); // max before inspection is 90
+}
+
+/* ── §2 submitForFounderQueue — vehicle_submissions primary ───── */
+async function submitForFounderQueue(payload) {
+  const {
+    submissionId, vehicleType, city, make, model, year, odometer,
+    userEmail, documentStatus, ownerTrustReport, evidenceMeta,
+    photoCount, inspectionRequested, confidenceLevel,
+    scores, totalScore, band, routing, geo, notes, contactNumber
+  } = payload;
+
+  const dataCompletenessScore = computeDataCompletenessScore(
+    photoCount, documentStatus, inspectionRequested, false
+  );
+
+  /* §2 Required document shape */
+  const submissionDoc = {
+    /* Core vehicle fields */
+    vehicleType:    vehicleType || null,
+    city:           city        || null,
+    make:           make        || null,
+    model:          model       || null,
+    year:           year        || null,
+    odometer:       odometer    || null,
+    contactNumber:  contactNumber || null,
+    notes:          notes       || null,
+    userEmail:      userEmail   || (window.auth?.currentUser?.email) || null,
+
+    /* §2 Rule version stamps */
+    ...RULE_VERSIONS,
+
+    /* §2 Platform flags */
+    alertsEnabled:      true,
+    routingVisible:     false,       // §13 hidden until approved
+    inspectionRequired: inspectionRequested || true,
+    dealerMatchEnabled: true,
+    stage:              'intake',
+
+    /* §13 Founder gate */
+    founderStatus:      'pending',
+    founderAction:      null,
+    founderNote:        null,
+
+    /* §11 */
+    dataCompletenessScore,
+
+    /* Meta */
+    sourcePlatform:     SOURCE_PLATFORM,
+    evidencePath:       `${EVIDENCE_IMAGES}/${submissionId}/`,
+    submissionId,
+
+    /* Structured data */
+    documentStatus,
+    ownerTrustReport,
+    evidenceMeta,
+    confidenceLevel,
+    scores,
+    totalScore,
+    band:           band?.label || null,
+    routing,
+    geo,
+
+    /* Rule-engine refs */
+    assignedInspector:  null,
+    dealerMatchStatus:  'pending',
+    pricingStatus:      'locked',
+    mobilityGuidance:   null,
+
+    /* §2 Timestamps */
+    createdAt:          serverTs(),
+    stageLastUpdated:   serverTs(),
+    submittedAt:        new Date().toISOString(),
+    platform:           PLATFORM_VERSION
+  };
+
+  /* localStorage backup */
+  try {
+    const lsKey = `99evs_submission_${submissionId}`;
+    localStorage.setItem(lsKey, JSON.stringify({ ...submissionDoc, createdAt: new Date().toISOString() }));
+  } catch (e) { /* quota — non-blocking */ }
+
+  /* Primary write → vehicle_submissions */
+  await FS().collection('vehicle_submissions').doc(submissionId).set(submissionDoc);
+  return submissionDoc;
+}
+
+/* ── §10 EVIDENCE METADATA WRITE ─────────────────────────────── */
+async function writeEvidenceMetadata(submissionId, metaArray) {
+  const clock  = GEO_CLOCK.snapshot();
+  const hideGeo = !geoConsentEnabled; // §10 privacy flag
+
+  for (let i = 0; i < metaArray.length; i++) {
+    const m = metaArray[i];
+    const evidenceDoc = {
+      submissionId,
+      fileIndex:   i,
+      timestamp:   serverTs(),
+      deviceTime:  m.deviceTime || clock.localTime,
+      timezone:    clock.timezone,
+      resolution:  m.resolution || null,
+      brightness:  m.brightness || null,
+      blurVariance:m.blurVariance || null,
+      geo:         hideGeo ? null : (m.lat ? { lat: m.lat, lng: m.lng } : clock.geo),
+      hideLocationUntilConsent: hideGeo,   // §10
+      platform:    PLATFORM_VERSION
+    };
+    try { await FS().collection('evidence').add(evidenceDoc); } catch (e) { console.warn('Evidence meta write failed:', e); }
+  }
+}
+
+/* ── §3 STORAGE UPLOAD → correct bucket paths ────────────────── */
+async function uploadEvidencePhotos(submissionId, photos) {
+  const ts = Date.now().toString(36);
+  for (let i = 0; i < photos.length; i++) {
+    try {
+      const label = new Date().toLocaleDateString('en-IN');
+      const blob  = await applyWatermark(photos[i], label);
+      /* §3 path: evidence/vehicle_images/{submissionId}/ */
+      const path  = `${EVIDENCE_IMAGES}/${submissionId}/photo_${i}_${ts}.jpg`;
+      const ref   = ST().ref(path);
+      const clock = GEO_CLOCK.snapshot();
+      await ref.put(blob, {
+        contentType: 'image/jpeg',
+        customMetadata: {
+          submissionId,
+          fileIndex:   String(i),
+          watermarked: 'true',
+          timestamp:   new Date().toISOString(),
+          lat:         (geoConsentEnabled && clock.geo?.lat) ? String(clock.geo.lat) : '',
+          lng:         (geoConsentEnabled && clock.geo?.lng) ? String(clock.geo.lng) : '',
+          timezone:    clock.timezone,
+          resolution:  evidenceMeta[i]?.resolution || 'unknown',
+          geoConsent:  String(geoConsentEnabled)
+        }
+      });
+      await writeAuditLog('image_uploaded', { fileIndex: i, path, submissionId });
+    } catch (err) {
+      console.warn(`Photo ${i} upload failed (non-blocking):`, err);
+    }
+  }
+}
+
+/* ── OTP PHONE LOGIN ─────────────────────────────────────────── */
+function otpShow() {
+  const overlay = document.getElementById('otp-overlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+
+function otpClose() {
+  const overlay = document.getElementById('otp-overlay');
+  if (overlay) overlay.style.display = 'none';
+  _otpPendingSubmit = false;
+}
+
+function otpShowError(msg) {
+  const el = document.getElementById('otp-error');
+  if (!el) return;
+  el.textContent   = msg;
+  el.style.display = 'block';
+}
+
+async function otpSendCode() {
+  const phoneRaw  = (document.getElementById('otp-phone-input')?.value || '').replace(/\s/g,'');
+  const phoneE164 = phoneRaw.startsWith('+') ? phoneRaw : '+91' + phoneRaw.replace(/^0/,'');
+  document.getElementById('otp-error').style.display = 'none';
+
+  if (!window.recaptchaVerifier) {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      size: 'normal', callback: () => {}
+    });
+    await window.recaptchaVerifier.render();
+  }
+  try {
+    _otpConfirmResult = await (window.auth || auth).signInWithPhoneNumber(phoneE164, window.recaptchaVerifier);
+    document.getElementById('otp-sent-to').textContent = phoneE164;
+    document.getElementById('otp-phone-section').style.display  = 'none';
+    document.getElementById('otp-verify-section').style.display = 'block';
+  } catch (err) {
+    otpShowError('Failed to send OTP: ' + (err.message || 'Please try again'));
+  }
+}
+
+async function otpVerifyCode() {
+  const code = (document.getElementById('otp-code-input')?.value || '').trim();
+  document.getElementById('otp-error').style.display = 'none';
+  if (!_otpConfirmResult) { otpShowError('Please request OTP first'); return; }
+  if (code.length !== 6)  { otpShowError('Enter the 6-digit OTP'); return; }
+  try {
+    await _otpConfirmResult.confirm(code);
+    otpClose();
+    resetInactivityTimer();
+    if (_otpPendingSubmit) { _otpPendingSubmit = false; await _doFirestoreSubmit(); }
+  } catch (err) {
+    otpShowError('Incorrect OTP. Please try again.');
+  }
+}
+
+async function otpResend() {
+  if (window.recaptchaVerifier) { window.recaptchaVerifier.clear(); window.recaptchaVerifier = null; }
+  document.getElementById('otp-phone-section').style.display  = 'block';
+  document.getElementById('otp-verify-section').style.display = 'none';
+  document.getElementById('otp-code-input').value = '';
+}
 
 /* ── VIEW ROUTING ────────────────────────────────────────────── */
 function openEngine(mode) {
-  document.getElementById('homepage').style.display = 'none';
+  document.getElementById('homepage').style.display    = 'none';
   document.getElementById('engine-view').style.display = 'block';
   document.getElementById('engine-mode-label').textContent = mode ? '· ' + mode : '';
   window.scrollTo({ top:0, behavior:'smooth' });
   if (mode === 'sell' || mode === 'health') startFlow('sell');
-  else if (mode === 'buy') startFlow('buy');
+  else if (mode === 'buy')        startFlow('buy');
   else if (mode === 'inspection') startFlow('inspection');
-  else if (mode === 'resale') startFlow('resale');
+  else if (mode === 'resale')     startFlow('resale');
   else showIntentScreen();
 }
 
 function showHome() {
   document.getElementById('engine-view').style.display = 'none';
-  document.getElementById('homepage').style.display = 'block';
+  document.getElementById('homepage').style.display    = 'block';
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
@@ -1150,7 +1609,7 @@ function hideAllFlows() {
 
 function startFlow(flow) {
   hideAllFlows();
-  captureGeoTimestamp(); // Always capture on flow start
+  captureGeoTimestamp();
   const map = {
     sell:'seller-flow', buy:'buyer-flow', resale:'resale-flow',
     condition:'condition-flow', inspection:'inspection-flow',
@@ -1160,35 +1619,31 @@ function startFlow(flow) {
   if (target) document.getElementById(target).style.display = 'block';
   if (flow === 'sell') goSellerStep(1);
   else if (flow === 'buy') goBuyerStep(1);
-  else if (flow === 'resale') { if (document.getElementById('resale-output')) document.getElementById('resale-output').style.display = 'none'; }
+  else if (flow === 'resale') {
+    if (document.getElementById('resale-output')) document.getElementById('resale-output').style.display = 'none';
+  }
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-/* ════════════════════════════════════
-   GEO TIMESTAMP CAPTURE
-   Stores: ISO timestamp, timezone, 
-   lat/lng (only if consent given),
-   country = IN, city from form
-════════════════════════════════════ */
+/* ── §15 GEO / TIMESTAMP (wraps GEO_CLOCK) ─────────────────── */
 function captureGeoTimestamp() {
-  const now = new Date();
+  GEO_CLOCK.init();
   window._auditLog = {
-    ts:           now.toISOString(),
-    ts_local:     now.toLocaleString('en-IN', { timeZone:'Asia/Kolkata' }),
-    timezone:     'Asia/Kolkata',
-    country:      'IN',
-    platform:     PLATFORM_VERSION,
-    geo:          null,
-    geoConsent:   false
+    ts:         new Date().toISOString(),
+    ts_local:   GEO_CLOCK.localTime,
+    timezone:   GEO_CLOCK.timezone,
+    country:    'IN',
+    platform:   PLATFORM_VERSION,
+    geo:        null,
+    geoConsent: false
   };
+  /* async geo */
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       pos => {
-        window._auditLog.geo = {
-          lat:      pos.coords.latitude,
-          lng:      pos.coords.longitude,
-          accuracy: pos.coords.accuracy
-        };
+        const g = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy };
+        window._auditLog.geo = g;
+        GEO_CLOCK.geo = g;
       },
       () => { window._auditLog.geo = 'user-denied'; }
     );
@@ -1204,29 +1659,139 @@ function toggleGeoConsent(enabled) {
   if (note) note.textContent = enabled
     ? '✓ Location visibility enabled — verified buyers may see approximate vehicle location.'
     : 'Location is recorded for audit purposes only. Not shared unless you enable this toggle.';
+  evidenceMeta.forEach(m => {
+    if (!enabled) { delete m.lat; delete m.lng; }
+    else if (window._auditLog?.geo?.lat) { m.lat = window._auditLog.geo.lat; m.lng = window._auditLog.geo.lng; }
+  });
 }
 
-/* ════════════════════════════════════
-   PHOTO WATERMARK ENGINE
-   Applies: "99EVs Verified Submission"
-   + timestamp as repeating watermark
-   User photos are processed in-browser
-   before storage
-════════════════════════════════════ */
+/* ── §4 IMAGE VALIDATION ENGINE ─────────────────────────────── */
+function validateImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const w = img.width, h = img.height;
+      URL.revokeObjectURL(url);
+      if (w < 400 || h < 400) {
+        return reject(`Image resolution too low (${w}×${h}px). Minimum 400×400px required.`);
+      }
+      const canvas  = document.createElement('canvas');
+      const sample  = Math.min(w, h, 200);
+      canvas.width  = sample; canvas.height = sample;
+      const ctx     = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, sample, sample);
+      const data    = ctx.getImageData(0, 0, sample, sample).data;
+      const pixels  = sample * sample;
+      let totalB    = 0, mean = 0, variance = 0;
+      const grays   = [];
+      for (let i = 0; i < data.length; i += 4) {
+        const g = data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114;
+        grays.push(g); totalB += g;
+      }
+      mean = totalB / grays.length;
+      grays.forEach(v => { variance += (v - mean) ** 2; });
+      variance /= grays.length;
+      const avgBrightness = totalB / pixels;
+      if (avgBrightness < 30)  return reject('Image is too dark. Please upload a well-lit vehicle photo.');
+      if (variance < 120)      return reject('Image not clear. Please upload clearer vehicle photo.');
+      resolve({ width: w, height: h, brightness: Math.round(avgBrightness), variance: Math.round(variance) });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject('Could not read image. Please try a different file.'); };
+    img.src = url;
+  });
+}
+
+/* ── §5 MOBILENET VEHICLE TYPE MATCH ────────────────────────── */
+let _tfModel = null, _tfLoading = false;
+
+async function loadMobileNet() {
+  if (_tfModel) return _tfModel;
+  if (_tfLoading) return null;
+  if (typeof mobilenet === 'undefined' || typeof tf === 'undefined') return null;
+  _tfLoading = true;
+  try { _tfModel = await mobilenet.load(); } catch (e) { /* silent */ }
+  _tfLoading = false;
+  return _tfModel;
+}
+
+function _inferCategory(predictions) {
+  const combined = predictions.map(p => p.className.toLowerCase()).join(' ');
+  if (['rickshaw','three-wheeler','tuk-tuk','auto rickshaw'].some(k => combined.includes(k))) return 'three-wheeler';
+  if (['truck','lorry','van','pickup'].some(k => combined.includes(k))) return 'commercial';
+  if (['motor scooter','moped','motorbike','scooter','bicycle'].some(k => combined.includes(k))) return 'two-wheeler';
+  if (['car','automobile','sedan','hatchback','suv','minivan','cab'].some(k => combined.includes(k))) return 'four-wheeler';
+  return 'unknown';
+}
+
+function _vtypeCategory(vtype) {
+  const v = (vtype || '').toLowerCase();
+  if (v.includes('2 wheeler') || v.includes('2w')) return 'two-wheeler';
+  if (v.includes('3w') || v.includes('three'))     return 'three-wheeler';
+  if (v.includes('bus') || v.includes('commercial')) return 'commercial';
+  if (v.includes('4 wheeler') || v.includes('4w'))  return 'four-wheeler';
+  return 'unknown';
+}
+
+async function checkVehicleTypeMatch(file, vtype) {
+  const model = await loadMobileNet();
+  if (!model) return true;
+  try {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+    const preds     = await model.classify(img, 5);
+    URL.revokeObjectURL(url);
+    const predicted = _inferCategory(preds);
+    const expected  = _vtypeCategory(vtype);
+    if (predicted === 'unknown' || expected === 'unknown') return true;
+    return predicted === expected;
+  } catch (e) { return true; }
+}
+
+/* ── §9 TESSERACT ODO OCR ────────────────────────────────────── */
+let _tessWorker = null;
+
+async function _getTesseract() {
+  if (typeof Tesseract === 'undefined') return null;
+  if (_tessWorker) return _tessWorker;
+  try { _tessWorker = await Tesseract.createWorker('eng'); return _tessWorker; }
+  catch (e) { return null; }
+}
+
+async function validateOdometer(file, enteredKm) {
+  if (!enteredKm || enteredKm <= 0) return { ok: true };
+  const worker = await _getTesseract();
+  if (!worker) return { ok: true };
+  try {
+    const url = URL.createObjectURL(file);
+    const { data: { text } } = await worker.recognize(url);
+    URL.revokeObjectURL(url);
+    const matches    = text.match(/\b\d{4,7}\b/g);
+    if (!matches) return { ok: true };
+    const candidates = matches.map(Number).filter(n => n >= 100 && n <= 999999);
+    if (!candidates.length) return { ok: true };
+    const extracted  = Math.max(...candidates);
+    const diff       = Math.abs(extracted - enteredKm);
+    return diff > 300 ? { ok: false, extracted, entered: enteredKm } : { ok: true, extracted };
+  } catch (e) { return { ok: true }; }
+}
+
+/* ── PHOTO WATERMARK + UPLOAD HELPERS ─────────────────────────── */
 const v3Photos = [];
-const v3WatermarkedBlobs = [];
 
 function v3HandlePhotos(input) {
   const files = Array.from(input.files);
-  const rem = 10 - v3Photos.length;
+  const rem   = 10 - v3Photos.length;
   if (rem <= 0) { showToast('Maximum 10 photos attached'); return; }
   files.slice(0, rem).forEach(f => { if (f.type.startsWith('image/')) v3Photos.push(f); });
   input.value = '';
   v3RenderThumbs();
+  updateChecklist();
 }
 
 function v3RenderThumbs() {
-  const grid = document.getElementById('v3-photo-thumbs');
+  const grid  = document.getElementById('v3-photo-thumbs');
   const count = document.getElementById('v3-photo-count');
   if (!grid) return;
   count.textContent = v3Photos.length;
@@ -1235,7 +1800,28 @@ function v3RenderThumbs() {
   ).join('') + (v3Photos.length < 10 ? '<div class="photo-thumb"><div class="photo-thumb-empty">📷</div></div>' : '');
 }
 
-function v3RemovePhoto(i) { v3Photos.splice(i, 1); v3RenderThumbs(); }
+function v3RemovePhoto(i) {
+  v3Photos.splice(i, 1);
+  evidenceMeta.splice(i, 1);
+  v3RenderThumbs();
+  updateChecklist();
+}
+
+/* §7 advisory checklist */
+function updateChecklist() {
+  const n     = v3Photos.length;
+  const green = 'padding:4px 10px;border-radius:100px;border:1px solid rgba(16,185,129,.3);color:#10B981;background:rgba(16,185,129,.08)';
+  const grey  = 'padding:4px 10px;border-radius:100px;border:1px solid rgba(255,255,255,.08);color:#475569';
+  [
+    { id:'chk-front', label:'📸 Front view',  filled: n >= 1 },
+    { id:'chk-rear',  label:'📸 Rear view',   filled: n >= 2 },
+    { id:'chk-side',  label:'📸 Side view',   filled: n >= 3 },
+    { id:'chk-odo',   label:'✅ Odometer',    filled: n >= 4 }
+  ].forEach(t => {
+    const el = document.getElementById(t.id);
+    if (el) { el.textContent = t.filled ? t.label.replace('📸','✅') : t.label; el.style.cssText = t.filled ? green : grey; }
+  });
+}
 
 function applyWatermark(file, label) {
   return new Promise(resolve => {
@@ -1243,23 +1829,20 @@ function applyWatermark(file, label) {
     const url = URL.createObjectURL(file);
     img.onload = () => {
       const canvas = document.createElement('canvas');
-      canvas.width  = img.width;
-      canvas.height = img.height;
+      canvas.width = img.width; canvas.height = img.height;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
-      // Repeating watermark
       ctx.save();
       ctx.globalAlpha = 0.28;
       ctx.fillStyle   = '#ffffff';
       ctx.font        = `bold ${Math.max(16, img.width / 30)}px Mulish, sans-serif`;
       ctx.rotate(-Math.PI / 6);
       const step = Math.max(img.width, img.height) / 3;
-      for (let y = -img.height; y < img.height * 2; y += step * 0.7) {
+      for (let y = -img.height; y < img.height * 2; y += step * 0.7)
         for (let x = -img.width; x < img.width * 2; x += step) {
           ctx.fillText('99EVs Verified', x, y);
           ctx.fillText(label, x, y + (Math.max(16, img.width / 30) * 1.4));
         }
-      }
       ctx.restore();
       URL.revokeObjectURL(url);
       canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.88);
@@ -1268,12 +1851,24 @@ function applyWatermark(file, label) {
   });
 }
 
-/* ════════════════════════════════════
-   TOGGLE UI HELPERS
-════════════════════════════════════ */
+/* ── §7 MULTI-SELECT CONDITION ──────────────────────────────── */
+function toggleCondition(groupId, el) {
+  el.classList.toggle('selected');
+  ownerTrustReport = [];
+  ['starts-group','accident-group','brake-group','tyre-group','lights-group'].forEach(gid => {
+    document.querySelectorAll('#' + gid + ' .toggle-opt.selected').forEach(opt => {
+      ownerTrustReport.push(gid.replace('-group','') + '_' + opt.dataset.val);
+    });
+  });
+  /* §14 audit */
+  writeAuditLog('document_selected', { group: groupId, selections: ownerTrustReport.length });
+}
+
+/* ── §6 SINGLE-SELECT TOGGLE (non-condition) ─────────────────── */
 function selectToggle(groupId, el) {
   document.querySelectorAll('#' + groupId + ' .toggle-opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
+  writeAuditLog('document_selected', { group: groupId, value: el.dataset.val });
 }
 
 function selectToggleSimple(onId, offId) {
@@ -1291,9 +1886,41 @@ function toggleInspForm(show) {
   if (panel) panel.classList.toggle('visible', show);
 }
 
-/* ════════════════════════════════════
-   SELLER FLOW NAVIGATION
-════════════════════════════════════ */
+/* ── §8 CONTACT VALIDATION ──────────────────────────────────── */
+function validateContactNumber(phone) {
+  if (!phone) return false;
+  const cleaned = phone.replace(/\s+/g,'').replace(/^\+91/,'');
+  return /^[6-9]\d{9}$/.test(cleaned);
+}
+
+/* ── §6 DOCUMENT VALIDATION ──────────────────────────────────── */
+function validateDocuments() {
+  const required = ['rc-group','ins-group','loan-group'];
+  const isEV     = (document.getElementById('s-vtype')?.value || '').toLowerCase().includes('ev');
+  if (isEV) required.push('bwty-group');
+  for (const gid of required) { if (!getToggleVal(gid)) return false; }
+  const fitBlock = document.getElementById('fitness-block');
+  if (fitBlock && fitBlock.style.display !== 'none' && !getToggleVal('fitness-group')) return false;
+  return true;
+}
+
+/* ── §6/§8 FINAL SUBMISSION LOCK ─────────────────────────────── */
+function checkSubmissionReady() {
+  if (!document.getElementById('s-vtype').value || !document.getElementById('s-city').value)
+    return 'Vehicle type and city are required.';
+  if (!validateDocuments())
+    return 'Please confirm document availability';
+  if (ownerTrustReport.length === 0)
+    return 'Please select at least one vehicle condition item in Step 3.';
+  const phone = document.getElementById('s-phone')?.value?.trim() || '';
+  if (!validateContactNumber(phone))
+    return 'Enter valid contact number';
+  if (v3Photos.length === 0)
+    return 'Please attach at least one verified vehicle photo.';
+  return null;
+}
+
+/* ── SELLER FLOW NAVIGATION ─────────────────────────────────── */
 let sellerStep = 1;
 
 function goSellerStep(n) {
@@ -1302,17 +1929,26 @@ function goSellerStep(n) {
       if (!document.getElementById('s-vtype').value || !document.getElementById('s-city').value) {
         showToast('Please select vehicle type and city to continue'); return;
       }
+      console.log('Vehicle step complete');
+      writeAuditLog('submission_created', { step: 'vehicle_identity_complete' });
+    }
+    if (sellerStep === 2 && n === 3) {
+      if (!validateDocuments()) { showToast('Please confirm document availability'); return; }
+      console.log('Documents step complete');
+      writeAuditLog('document_selected', { step: 'document_step_complete' });
+    }
+    if (sellerStep === 3 && n === 4) {
+      if (ownerTrustReport.length === 0) { showToast('Please select at least one vehicle condition item'); return; }
+      console.log('Condition step complete');
     }
   }
   sellerStep = n;
   ['s1','s2','s3','s4','s-report'].forEach(id => {
     const el = document.getElementById(id); if (el) el.style.display = 'none';
   });
-  const stepMap = { 1:'s1', 2:'s2', 3:'s3', 4:'s4' };
-  const target  = stepMap[n] || 's1';
+  const target = { 1:'s1', 2:'s2', 3:'s3', 4:'s4' }[n] || 's1';
   document.getElementById(target).style.display = 'block';
   updateSellerProgress(n);
-
   if (n === 2) {
     const isEV = (document.getElementById('s-vtype').value || '').toLowerCase().includes('ev');
     document.getElementById('battery-warranty-block').style.display = isEV ? 'block' : 'none';
@@ -1326,44 +1962,42 @@ function updateSellerProgress(n) {
     const lbl  = document.getElementById('spl' + i);
     const line = document.getElementById('sl' + i);
     if (!dot || !lbl) continue;
-    if (i < n)      { dot.className = 'fp-dot done';   dot.textContent = '✓'; lbl.className = 'fp-label done'; }
-    else if (i === n){ dot.className = 'fp-dot active'; dot.textContent = i;   lbl.className = 'fp-label active'; }
-    else             { dot.className = 'fp-dot';        dot.textContent = i;   lbl.className = 'fp-label'; }
+    if (i < n)        { dot.className = 'fp-dot done';   dot.textContent = '✓'; lbl.className = 'fp-label done'; }
+    else if (i === n) { dot.className = 'fp-dot active'; dot.textContent = i;   lbl.className = 'fp-label active'; }
+    else              { dot.className = 'fp-dot';        dot.textContent = i;   lbl.className = 'fp-label'; }
     if (line) line.className = 'fp-line' + (i < n ? ' done' : '');
   }
 }
 
-/* ════════════════════════════════════
-   VEHICLE INTEL (segment + city data)
-════════════════════════════════════ */
+/* ── VEHICLE INTEL ───────────────────────────────────────────── */
 const SEGMENT_INTEL = {
-  'EV — 2 Wheeler':    { lifecycle:'Growth adoption',               inspect:'Battery health, motor, controller' },
-  'EV — 3W Cargo':     { lifecycle:'Strong growth demand',          inspect:'Controller heating, wiring harness, rear suspension' },
-  'EV — 3W Passenger': { lifecycle:'Established — high demand',     inspect:'Battery pack, motor wear, tyre life' },
-  'EV — 4 Wheeler':    { lifecycle:'Early mainstream',              inspect:'BMS, charging port, battery degradation' },
-  'Petrol — 2 Wheeler':{ lifecycle:'Mature — stable demand',        inspect:'Engine, clutch, electrical' },
-  'Petrol — 3 Wheeler':{ lifecycle:'Declining in tier-1 cities',    inspect:'Engine, CNG/petrol switch, permit' },
-  'Petrol — 4 Wheeler':{ lifecycle:'Mature market',                 inspect:'Engine, AC, suspension, service history' },
-  'Diesel — 4 Wheeler':{ lifecycle:'Declining — BS6 transition',    inspect:'DPF, turbo, emission compliance' },
-  'Diesel — Commercial':{ lifecycle:'Stable fleet demand',          inspect:'Engine hours, tyre wear, load capacity' },
-  'CNG Vehicle':       { lifecycle:'Active — especially tier-2',    inspect:'CNG kit, cylinder date, engine health' },
-  'Hybrid Vehicle':    { lifecycle:'Premium segment — limited resale',inspect:'HV battery, regeneration system' },
-  'Electric Bus':      { lifecycle:'Growing fleet segment',         inspect:'Battery pack, drivetrain, charging system' }
+  'EV — 2 Wheeler':     { lifecycle:'Growth adoption',                inspect:'Battery health, motor, controller' },
+  'EV — 3W Cargo':      { lifecycle:'Strong growth demand',           inspect:'Controller heating, wiring harness, rear suspension' },
+  'EV — 3W Passenger':  { lifecycle:'Established — high demand',      inspect:'Battery pack, motor wear, tyre life' },
+  'EV — 4 Wheeler':     { lifecycle:'Early mainstream',               inspect:'BMS, charging port, battery degradation' },
+  'Petrol — 2 Wheeler': { lifecycle:'Mature — stable demand',         inspect:'Engine, clutch, electrical' },
+  'Petrol — 3 Wheeler': { lifecycle:'Declining in tier-1 cities',     inspect:'Engine, CNG/petrol switch, permit' },
+  'Petrol — 4 Wheeler': { lifecycle:'Mature market',                  inspect:'Engine, AC, suspension, service history' },
+  'Diesel — 4 Wheeler': { lifecycle:'Declining — BS6 transition',     inspect:'DPF, turbo, emission compliance' },
+  'Diesel — Commercial':{ lifecycle:'Stable fleet demand',            inspect:'Engine hours, tyre wear, load capacity' },
+  'CNG Vehicle':        { lifecycle:'Active — especially tier-2',     inspect:'CNG kit, cylinder date, engine health' },
+  'Hybrid Vehicle':     { lifecycle:'Premium segment — limited resale',inspect:'HV battery, regeneration system' },
+  'Electric Bus':       { lifecycle:'Growing fleet segment',          inspect:'Battery pack, drivetrain, charging system' }
 };
 
 const CITY_INTEL = {
-  'Delhi NCR': { ev3w:'Very high — top cargo EV market', ev2w:'High', ev4w:'Strong', petrol:'Active' },
-  'Bangalore': { ev3w:'Strong', ev2w:'High — tech corridor demand', ev4w:'Very high', petrol:'Active' },
-  'Mumbai':    { ev3w:'Moderate', ev2w:'Moderate', ev4w:'High — premium segment', petrol:'Active' },
-  'Pune':      { ev3w:'Moderate', ev2w:'Strong — growth market', ev4w:'Strong', petrol:'Active' },
-  'Hyderabad': { ev3w:'Moderate', ev2w:'Growing', ev4w:'Active', petrol:'Active' },
-  'Chennai':   { ev3w:'Emerging', ev2w:'Moderate', ev4w:'Moderate', petrol:'Strong' },
-  'Kolkata':   { ev3w:'Active — e-rickshaw hub', ev2w:'Growing', ev4w:'Moderate', petrol:'Active' },
-  'Lucknow':   { ev3w:'Growing', ev2w:'Emerging', ev4w:'Limited', petrol:'Active' },
-  'Kanpur':    { ev3w:'Emerging', ev2w:'Emerging', ev4w:'Limited', petrol:'Active' },
-  'Agra':      { ev3w:'Emerging', ev2w:'Limited', ev4w:'Limited', petrol:'Moderate' },
-  'Ahmedabad': { ev3w:'Strong', ev2w:'Active', ev4w:'Active', petrol:'Active' },
-  'Jaipur':    { ev3w:'Active', ev2w:'Growing', ev4w:'Moderate', petrol:'Active' }
+  'Delhi NCR': { ev3w:'Very high — top cargo EV market', ev2w:'High',                      ev4w:'Strong',              petrol:'Active' },
+  'Bangalore': { ev3w:'Strong',                          ev2w:'High — tech corridor demand',ev4w:'Very high',           petrol:'Active' },
+  'Mumbai':    { ev3w:'Moderate',                        ev2w:'Moderate',                   ev4w:'High — premium segment',petrol:'Active' },
+  'Pune':      { ev3w:'Moderate',                        ev2w:'Strong — growth market',     ev4w:'Strong',              petrol:'Active' },
+  'Hyderabad': { ev3w:'Moderate',                        ev2w:'Growing',                    ev4w:'Active',              petrol:'Active' },
+  'Chennai':   { ev3w:'Emerging',                        ev2w:'Moderate',                   ev4w:'Moderate',            petrol:'Strong' },
+  'Kolkata':   { ev3w:'Active — e-rickshaw hub',         ev2w:'Growing',                    ev4w:'Moderate',            petrol:'Active' },
+  'Lucknow':   { ev3w:'Growing',                         ev2w:'Emerging',                   ev4w:'Limited',             petrol:'Active' },
+  'Kanpur':    { ev3w:'Emerging',                        ev2w:'Emerging',                   ev4w:'Limited',             petrol:'Active' },
+  'Agra':      { ev3w:'Emerging',                        ev2w:'Limited',                    ev4w:'Limited',             petrol:'Moderate' },
+  'Ahmedabad': { ev3w:'Strong',                          ev2w:'Active',                     ev4w:'Active',              petrol:'Active' },
+  'Jaipur':    { ev3w:'Active',                          ev2w:'Growing',                    ev4w:'Moderate',            petrol:'Active' }
 };
 
 const CITY_DEMAND_SCORES = {
@@ -1384,9 +2018,9 @@ const CITY_DEMAND_SCORES = {
 function getCityDemandScore(city, vtype) {
   const m = CITY_DEMAND_SCORES[city] || { def:11 };
   const v = (vtype || '').toLowerCase();
-  if (v.includes('ev') && v.includes('3')) return m.ev3w || m.def;
-  if (v.includes('ev') && v.includes('2')) return m.ev2w || m.def;
-  if (v.includes('ev') && v.includes('4')) return m.ev4w || m.def;
+  if (v.includes('ev') && v.includes('3'))   return m.ev3w || m.def;
+  if (v.includes('ev') && v.includes('2'))   return m.ev2w || m.def;
+  if (v.includes('ev') && v.includes('4'))   return m.ev4w || m.def;
   if (v.includes('petrol') && v.includes('2')) return m.petrol2w || m.def;
   if (v.includes('petrol') && v.includes('4')) return m.petrol4w || m.def;
   if (v.includes('diesel') && v.includes('commercial')) return m.commercial || m.def;
@@ -1411,19 +2045,14 @@ function loadIntelBox() {
   const box   = document.getElementById('intel-box');
   if (!vtype && !city) { box.classList.remove('visible'); return; }
   const seg = SEGMENT_INTEL[vtype] || {};
-  document.getElementById('ib-lifecycle').textContent = seg.lifecycle || '—';
-  document.getElementById('ib-demand').textContent    = city ? getCityDemandStr(city, vtype) : '—';
+  document.getElementById('ib-lifecycle').textContent  = seg.lifecycle || '—';
+  document.getElementById('ib-demand').textContent     = city ? getCityDemandStr(city, vtype) : '—';
   document.getElementById('ib-demand-sub').textContent = city ? 'Resale liquidity in ' + city : '';
-  document.getElementById('ib-inspect').textContent   = seg.inspect || '—';
+  document.getElementById('ib-inspect').textContent    = seg.inspect || '—';
   box.classList.add('visible');
 }
 
-/* ════════════════════════════════════
-   AUTO-SCORE ENGINE
-   Computes readiness from intake only.
-   NO user-assigned sliders.
-   Stored in Firestore → lir_reports
-════════════════════════════════════ */
+/* ── AUTO-SCORE ENGINE ───────────────────────────────────────── */
 function computeScores() {
   const vtype = document.getElementById('s-vtype').value;
   const year  = parseInt(document.getElementById('s-year').value) || 2021;
@@ -1432,22 +2061,23 @@ function computeScores() {
   const isEV  = vtype.toLowerCase().includes('ev');
   const age   = 2026 - year;
 
-  // MECHANICAL (0–20) — from condition answers
   let mech = 11;
-  const starts = getToggleVal('starts-group');
-  if (starts === 'yes') mech += 5; else if (starts === 'sometimes') mech += 1; else mech -= 5;
-  const acc = getToggleVal('accident-group');
-  if (acc === 'none') mech += 3; else if (acc === 'minor') mech -= 1; else mech -= 5;
-  const brakes = getToggleVal('brake-group');
-  if (brakes === 'good') mech += 2; else if (brakes === 'worn') mech -= 2; else mech -= 4;
-  const tyres = getToggleVal('tyre-group');
-  if (tyres === 'good') mech += 1; else if (tyres === 'replace') mech -= 2;
+  if (ownerTrustReport.includes('starts_yes'))       mech += 5;
+  if (ownerTrustReport.includes('starts_sometimes')) mech += 1;
+  if (ownerTrustReport.includes('starts_no'))        mech -= 5;
+  if (ownerTrustReport.includes('accident_none'))    mech += 3;
+  if (ownerTrustReport.includes('accident_minor'))   mech -= 1;
+  if (ownerTrustReport.includes('accident_major'))   mech -= 5;
+  if (ownerTrustReport.includes('brake_good'))       mech += 2;
+  if (ownerTrustReport.includes('brake_worn'))       mech -= 2;
+  if (ownerTrustReport.includes('brake_poor'))       mech -= 4;
+  if (ownerTrustReport.includes('tyre_good'))        mech += 1;
+  if (ownerTrustReport.includes('tyre_replace'))     mech -= 2;
   mech = clamp(mech, 0, 20);
 
-  // ELECTRICAL (0–20) — lights + EV-specific
   let elec = isEV ? 10 : 15;
-  const lights = getToggleVal('lights-group');
-  if (lights === 'none') elec += 4; else if (lights === 'minor') elec += 0; else elec -= 5;
+  if (ownerTrustReport.includes('lights_none'))  elec += 4;
+  if (ownerTrustReport.includes('lights_major')) elec -= 5;
   if (isEV) {
     const bwty = getToggleVal('bwty-group');
     if (bwty === 'yes') elec += 6; else if (bwty === 'expired') elec += 1; else elec -= 2;
@@ -1455,50 +2085,42 @@ function computeScores() {
   }
   elec = clamp(elec, 0, 20);
 
-  // LEGAL (0–20) — from document answers
   let legal = 0;
-  const rc = getToggleVal('rc-group');
-  if (rc === 'yes') legal += 6; else if (rc === 'lost') legal += 2;
+  const rc  = getToggleVal('rc-group');
   const ins = getToggleVal('ins-group');
+  const fit = getToggleVal('fitness-group');
+  const lon = getToggleVal('loan-group');
+  if (rc  === 'yes') legal += 6; else if (rc  === 'lost') legal += 2;
   if (ins === 'yes') legal += 6; else if (ins === 'expiring') legal += 3;
-  const fitness = getToggleVal('fitness-group');
-  if (fitness === 'yes' || fitness === 'na') legal += 4;
-  const loan = getToggleVal('loan-group');
-  if (loan === 'closed' || loan === 'none') legal += 4; else if (loan === 'active') legal += 1;
+  if (fit === 'yes' || fit === 'na') legal += 4;
+  if (lon === 'closed' || lon === 'none') legal += 4; else if (lon === 'active') legal += 1;
   legal = clamp(legal, 0, 20);
 
-  // USAGE (0–20) — odometer + usage type
-  let usageScore = 13;
+  let usageScore   = 13;
   const expectedOdo = age * 15000;
-  if (odo < expectedOdo * 0.65)       usageScore += 4;
-  else if (odo < expectedOdo * 0.9)   usageScore += 2;
-  else if (odo > expectedOdo * 1.35)  usageScore -= 3;
-  else if (odo > expectedOdo * 1.7)   usageScore -= 5;
-  if (usage === 'personal')           usageScore += 2;
+  if (odo < expectedOdo * 0.65)      usageScore += 4;
+  else if (odo < expectedOdo * 0.9)  usageScore += 2;
+  else if (odo > expectedOdo * 1.35) usageScore -= 3;
+  else if (odo > expectedOdo * 1.7)  usageScore -= 5;
+  if (usage === 'personal')          usageScore += 2;
   else if (usage === 'commercial' || usage === 'shared') usageScore -= 2;
-  else if (usage === 'fleet')         usageScore -= 3;
+  else if (usage === 'fleet')        usageScore -= 3;
   usageScore = clamp(usageScore, 0, 20);
 
-  // MARKET (0–20) — city + segment demand lookup
   const market = getCityDemandScore(document.getElementById('s-city').value, vtype);
-
   return { mech, elec, legal, usage: usageScore, market };
 }
 
 function clamp(v, mn, mx) { return Math.min(mx, Math.max(mn, v)); }
 
-/* ════════════════════════════════════
-   CONFIDENCE ASSIGNMENT (system-only)
-════════════════════════════════════ */
+/* ── CONFIDENCE ASSIGNMENT ──────────────────────────────────── */
 function assignConfidence(scores, photoCount, inspReq) {
   if (inspReq) return {
     key:'inspection_supported', level:'INSPECTION QUEUED',
     label:'Inspection Supported', cls:'cl-queue', icon:'🔬',
     desc:'Vehicle placed in inspection queue. Readiness level upgrades once inspector submits report.'
   };
-  const rc = getToggleVal('rc-group');
-  const ins = getToggleVal('ins-group');
-  const docsStrong = rc === 'yes' && ins === 'yes';
+  const docsStrong = getToggleVal('rc-group') === 'yes' && getToggleVal('ins-group') === 'yes';
   if (docsStrong && photoCount >= 2) return {
     key:'document_supported', level:'DOCUMENT SUPPORTED',
     label:'Document + Photo Supported', cls:'cl-high', icon:'📄',
@@ -1516,9 +2138,7 @@ function assignConfidence(scores, photoCount, inspReq) {
   };
 }
 
-/* ════════════════════════════════════
-   ROUTING ENGINE
-════════════════════════════════════ */
+/* ── ROUTING ENGINE ─────────────────────────────────────────── */
 function buildRouting(scores, vtype, city, year) {
   const total = scores.mech + scores.elec + scores.legal + scores.usage + scores.market;
   const age   = 2026 - (parseInt(year) || 2021);
@@ -1543,22 +2163,37 @@ function buildRouting(scores, vtype, city, year) {
   else if (age <= 6) { resaleWindow = 'Sell now for best recovery'; resaleReason = 'Approaching second depreciation curve. Current window offers best response.'; }
   else               { resaleWindow = 'Immediate listing advised';  resaleReason = 'Older vehicle — act before further depreciation reduces buyer interest.'; }
 
-  const inspPriority = total < 58 ? 'Highly recommended — improves matching quality'
-                     : total < 74 ? 'Recommended — supports buyer confidence'
-                     : 'Optional — report is strong at current level';
-
-  const finScore = scores.legal + (age <= 3 ? 7 : age <= 5 ? 4 : 1) + (total > 72 ? 5 : total > 58 ? 2 : 0);
-  const finEligibility = finScore >= 17 ? 'High probability' : finScore >= 13 ? 'Moderate probability' : 'Limited — document or condition gaps may affect eligibility';
+  const inspPriority  = total < 58 ? 'Highly recommended' : total < 74 ? 'Recommended' : 'Optional';
+  const finScore      = scores.legal + (age <= 3 ? 7 : age <= 5 ? 4 : 1) + (total > 72 ? 5 : total > 58 ? 2 : 0);
+  const finEligibility = finScore >= 17 ? 'High probability' : finScore >= 13 ? 'Moderate probability' : 'Limited';
 
   return { expCity, segment, resaleWindow, resaleReason, inspPriority, finEligibility, total };
 }
 
-/* ════════════════════════════════════
-   INSPECTION SUBMISSION (inline in
-   seller flow — Step 4)
-════════════════════════════════════ */
+/* ── INSPECTION SUBMIT ──────────────────────────────────────── */
+async function sendFounderNotification(data) {
+  try {
+    if (typeof emailjs === 'undefined') return;
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email:      FOUNDER_EMAIL,
+      vehicleType:   data.vehicleType   || '—',
+      city:          data.city          || '—',
+      make:          data.make          || '—',
+      model:         data.model         || '—',
+      year:          data.year          || '—',
+      km:            data.km            || '—',
+      contactNumber: data.contactNumber || '—',
+      submissionId:  data.submissionId  || '—',
+      submittedAt:   new Date().toLocaleString('en-IN')
+    });
+    console.log('Founder notification sent');
+  } catch (err) {
+    console.error('Email notification failed (non-blocking):', err);
+  }
+}
+
 async function v3SubmitInspection() {
-  const btn = document.getElementById('v3-insp-submit');
+  const btn     = document.getElementById('v3-insp-submit');
   if (btn.classList.contains('submitted')) return;
   const phone   = document.getElementById('v3-insp-phone').value.trim();
   const window_ = document.getElementById('v3-insp-window').value;
@@ -1566,26 +2201,33 @@ async function v3SubmitInspection() {
   if (!phone)   { showToast('Please enter a contact number'); return; }
   if (!window_) { showToast('Please select a preferred time window'); return; }
 
+  v3InspectionContact = phone;
   const city  = document.getElementById('s-city').value  || '—';
   const make  = document.getElementById('s-make').value  || '—';
   const model = document.getElementById('s-model').value || '—';
   const vtype = document.getElementById('s-vtype').value || '—';
+  const clock = GEO_CLOCK.snapshot();
 
-  const inspectionRecord = {
-    status:      'queued',
-    contact:     phone,
-    address:     addr || 'Not provided',
-    window:      window_,
-    city, make, model, vehicleType: vtype,
+  const record = {
+    status: 'queued', contact: phone, address: addr || 'Not provided',
+    window: window_, city, make, model, vehicleType: vtype,
     requestedAt: new Date().toISOString(),
+    timezone:    clock.timezone,
+    geo:         geoConsentEnabled && clock.geo?.lat ? clock.geo : { status: 'not_shared' },
     auditLog:    window._auditLog || null,
-    founderAssigned: false,
-    assignedInspector: null,
-    notificationSent:  false
+    founderAssigned: false, assignedInspector: null, notificationSent: false,
+    submissionId: _currentSubmissionId || null
   };
 
   try {
-    await db.collection('inspections').add(inspectionRecord);
+    await FS().collection('inspections').add(record);
+    /* §3 store request in evidence/inspection_requests */
+    try {
+      const blob = new Blob([JSON.stringify(record)], { type:'application/json' });
+      const path = `${EVIDENCE_INSP}/${Date.now()}_${city.replace(/\s/g,'_')}.json`;
+      await ST().ref(path).put(blob, { contentType:'application/json' });
+    } catch (e) { /* non-blocking */ }
+    await writeAuditLog('inspection_requested', { city, vehicleType: vtype });
     btn.classList.add('submitted');
     document.getElementById('v3-insp-ico').textContent  = '✅';
     document.getElementById('v3-insp-text').textContent = 'Added to Inspection Queue';
@@ -1594,7 +2236,6 @@ async function v3SubmitInspection() {
     showToast('Inspection request submitted. Team will be in touch.');
   } catch (err) {
     console.error('Inspection write failed:', err);
-    // Fallback: mark as submitted locally
     btn.classList.add('submitted');
     document.getElementById('v3-insp-ico').textContent  = '✅';
     document.getElementById('v3-insp-text').textContent = 'Request Noted — Team Will Contact You';
@@ -1603,37 +2244,28 @@ async function v3SubmitInspection() {
   }
 }
 
-/* ════════════════════════════════════
-   STANDALONE INSPECTION SUBMISSION
-   (from inspection-flow)
-════════════════════════════════════ */
 async function submitStandaloneInsp() {
   const btn     = document.getElementById('i-submit-btn');
   if (btn.classList.contains('submitted')) return;
   const phone   = document.getElementById('i-phone').value.trim();
   const window_ = document.getElementById('i-window').value;
   const addr    = document.getElementById('i-addr').value.trim();
-  const vtype   = document.getElementById('i-vtype').value || '—';
-  const city    = document.getElementById('i-city').value  || '—';
+  const vtype   = document.getElementById('i-vtype').value   || '—';
+  const city    = document.getElementById('i-city').value    || '—';
   const vehicle = document.getElementById('i-vehicle').value.trim() || '—';
 
   if (!phone)   { showToast('Please enter a contact number'); return; }
   if (!window_) { showToast('Please select a time window'); return; }
 
   const record = {
-    status:    'queued',
-    contact:   phone,
-    address:   addr || 'Not provided',
-    window:    window_,
-    vehicle, vehicleType: vtype, city,
-    requestedAt:       new Date().toISOString(),
-    auditLog:          window._auditLog || null,
-    founderAssigned:   false,
-    assignedInspector: null
+    status:'queued', contact:phone, address:addr||'Not provided', window:window_,
+    vehicle, vehicleType:vtype, city, requestedAt:new Date().toISOString(),
+    timezone:GEO_CLOCK.timezone, auditLog:window._auditLog||null,
+    founderAssigned:false, assignedInspector:null
   };
 
   try {
-    await db.collection('inspections').add(record);
+    await FS().collection('inspections').add(record);
     btn.classList.add('submitted');
     document.getElementById('i-ico').textContent  = '✅';
     document.getElementById('i-text').textContent = 'Request Submitted';
@@ -1649,14 +2281,7 @@ async function submitStandaloneInsp() {
   }
 }
 
-/* ════════════════════════════════════
-   MAIN REPORT GENERATION
-   Writes to Firebase:
-   - vehicles (with status = pending)
-   - lir_reports (readiness score)
-   - inspections (if requested)
-   Geo data written only if consent
-════════════════════════════════════ */
+/* ── SCORE / VISIBILITY HELPERS ─────────────────────────────── */
 function getScoreColor(v, max) {
   const p = v / (max || 20);
   if (p >= 0.8) return '#10B981'; if (p >= 0.6) return '#F4A300';
@@ -1664,12 +2289,22 @@ function getScoreColor(v, max) {
 }
 
 function getV3Visibility(fs) {
-  if (fs === 'approved') return { visible:true, text:'Visible to verified buyer network', cls:'vg-visible', ico:'🟢' };
-  const msgs = { pending:'Hidden — pending team review', hold:'Hidden — under investigation', rejected:'Removed from system' };
+  if (fs === 'approved') return { visible:true,  text:'Visible to verified buyer network', cls:'vg-visible', ico:'🟢' };
+  const msgs = {
+    pending:  'Hidden — pending team review',
+    hold:     'Hidden — under investigation',
+    rejected: 'Removed from system',
+    neglect:  'Deprioritised — no action taken',
+    approved: 'Visible to verified buyer network'
+  };
   return { visible:false, text:msgs[fs]||'Hidden', cls:'vg-hidden', ico:'🔴' };
 }
 
+/* ── MAIN REPORT GENERATION (entry point) ────────────────────── */
 async function generateV3Report() {
+  const lockMsg = checkSubmissionReady();
+  if (lockMsg) { showToast(lockMsg); return; }
+
   const vtype = document.getElementById('s-vtype').value || '—';
   const city  = document.getElementById('s-city').value  || '—';
   const make  = document.getElementById('s-make').value  || '—';
@@ -1677,13 +2312,95 @@ async function generateV3Report() {
   const year  = document.getElementById('s-year').value  || '—';
   const odo   = document.getElementById('s-odo').value;
   const phone = document.getElementById('s-phone').value.trim();
-  const notes = document.getElementById('s-notes').value.trim();
 
-  // Show loading state
-  const btn = document.getElementById('generate-report-btn');
+  const btn     = document.getElementById('generate-report-btn');
   const loading = document.getElementById('submit-loading');
-  btn.style.display  = 'none';
+  btn.style.display = 'none';
   loading.classList.add('visible');
+
+  const validationMsgEl = document.getElementById('img-validation-msg');
+  evidenceMeta = [];
+  const validatedPhotos = [];
+
+  /* §4 Validate all images */
+  for (let i = 0; i < v3Photos.length; i++) {
+    const file = v3Photos[i];
+    try {
+      const result = await validateImage(file);
+
+      /* §5 Vehicle type match */
+      const typeMatch = await checkVehicleTypeMatch(file, vtype);
+      if (!typeMatch) {
+        loading.classList.remove('visible'); btn.style.display = '';
+        if (validationMsgEl) { validationMsgEl.textContent = 'Uploaded vehicle image does not match selected vehicle type.'; validationMsgEl.style.display = 'block'; }
+        showToast('Uploaded vehicle image does not match selected vehicle type.');
+        return;
+      }
+
+      const metaEntry = {
+        uploadTime:   new Date().toISOString(),
+        deviceTime:   new Date().toLocaleString('en-IN', { timeZone: GEO_CLOCK.timezone }),
+        timezone:     GEO_CLOCK.timezone,
+        resolution:   result.width + 'x' + result.height,
+        brightness:   result.brightness,
+        blurVariance: result.variance
+      };
+      if (geoConsentEnabled && window._auditLog?.geo?.lat) {
+        metaEntry.lat = window._auditLog.geo.lat;
+        metaEntry.lng = window._auditLog.geo.lng;
+      }
+      evidenceMeta.push(metaEntry);
+      validatedPhotos.push(file);
+    } catch (errMsg) {
+      loading.classList.remove('visible'); btn.style.display = '';
+      if (validationMsgEl) { validationMsgEl.textContent = errMsg; validationMsgEl.style.display = 'block'; }
+      showToast(errMsg);
+      return;
+    }
+  }
+
+  /* §9 Odometer OCR */
+  if (odo && v3Photos.length > 0 && typeof Tesseract !== 'undefined') {
+    try {
+      const ocrResult = await validateOdometer(v3Photos[v3Photos.length - 1], parseInt(odo));
+      if (ocrResult && !ocrResult.ok) {
+        loading.classList.remove('visible'); btn.style.display = '';
+        const msg = `Odometer reading mismatch detected. OCR read ${ocrResult.extracted?.toLocaleString('en-IN')} km, you entered ${parseInt(odo).toLocaleString('en-IN')} km. Please upload correct dashboard photo.`;
+        if (validationMsgEl) { validationMsgEl.textContent = msg; validationMsgEl.style.display = 'block'; }
+        showToast('Odometer reading mismatch detected.');
+        return;
+      }
+    } catch (e) { /* OCR error — allow */ }
+  }
+
+  console.log('Evidence validation passed');
+
+  /* OTP gate */
+  if (!window.auth?.currentUser) {
+    loading.classList.remove('visible'); btn.style.display = '';
+    _otpPendingSubmit = true;
+    otpShow();
+    return;
+  }
+
+  await _doFirestoreSubmit();
+}
+
+/* ── CORE FIRESTORE WRITE ────────────────────────────────────── */
+async function _doFirestoreSubmit() {
+  const btn     = document.getElementById('generate-report-btn');
+  const loading = document.getElementById('submit-loading');
+  btn.style.display = 'none';
+  loading.classList.add('visible');
+
+  const vtype = document.getElementById('s-vtype').value || '—';
+  const city  = document.getElementById('s-city').value  || '—';
+  const make  = document.getElementById('s-make').value  || '—';
+  const model = document.getElementById('s-model').value || '—';
+  const year  = document.getElementById('s-year').value  || '—';
+  const odo   = document.getElementById('s-odo').value;
+  const phone = document.getElementById('s-phone').value.trim();
+  const notes = document.getElementById('s-notes')?.value.trim() || '';
 
   const scores  = computeScores();
   const total   = scores.mech + scores.elec + scores.legal + scores.usage + scores.market;
@@ -1695,112 +2412,99 @@ async function generateV3Report() {
              : total >= 55 ? { label:'INSPECTION RECOMMENDED',       cls:'band-inspect' }
              :               { label:'READINESS SUPPORT ADVISED',    cls:'band-repair' };
 
-  const vrsRef  = 'VRS-' + Date.now().toString(36).toUpperCase() + '-99EVS';
-  const now     = new Date().toLocaleString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-  const geoStr  = (window._auditLog?.geo?.lat && geoConsentEnabled) ? ` · Geo: ${window._auditLog.geo.lat.toFixed(3)},${window._auditLog.geo.lng.toFixed(3)}` : '';
+  const submissionId = 'VRS-' + Date.now().toString(36).toUpperCase() + '-99EVS';
+  _currentSubmissionId = submissionId;
+  const now    = new Date().toLocaleString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  const clock  = GEO_CLOCK.snapshot();
+  const geoStr = (window._auditLog?.geo?.lat && geoConsentEnabled)
+    ? ` · Geo: ${window._auditLog.geo.lat.toFixed(3)},${window._auditLog.geo.lng.toFixed(3)}` : '';
 
-  // Build geo payload (respect consent)
   const geoPayload = geoConsentEnabled && window._auditLog?.geo?.lat
     ? { lat: window._auditLog.geo.lat, lng: window._auditLog.geo.lng, accuracy: window._auditLog.geo.accuracy, consent: true }
     : { consent: false, note: 'Location not shared by seller' };
 
-  /* ── FIRESTORE WRITE: vehicles collection ── */
-  const vehicleDoc = {
-    vehicleType:   vtype,
-    city,
-    make,
-    model,
-    year:          year !== '—' ? parseInt(year) : null,
-    odometer:      odo ? parseInt(odo) : null,
-    usageType:     getToggleVal('usage-group'),
-    phone:         phone || null,
-    notes:         notes || null,
-    // Document status
-    rc:            getToggleVal('rc-group'),
-    insurance:     getToggleVal('ins-group'),
-    fitness:       getToggleVal('fitness-group'),
-    loan:          getToggleVal('loan-group'),
-    batteryWarranty: getToggleVal('bwty-group'),
-    // Condition
-    starts:        getToggleVal('starts-group'),
-    accidentHistory: getToggleVal('accident-group'),
-    brakes:        getToggleVal('brake-group'),
-    tyres:         getToggleVal('tyre-group'),
-    dashLights:    getToggleVal('lights-group'),
-    // Evidence
-    photoCount:    v3Photos.length,
-    inspectionRequested: v3InspectionRequested,
-    confidenceLevel:     conf.key,
-    // System fields
-    status:        'pending',              // ALWAYS pending — founder must approve
-    routingVisibility: false,              // Hidden from dealer_routes until approved
-    vrsRef,
-    scores,
-    totalScore:    total,
-    band:          band.label,
-    routing,
-    geo:           geoPayload,
-    auditLog:      window._auditLog || null,
-    submittedAt:   new Date().toISOString(),
-    platform:      PLATFORM_VERSION,
-    founderAction: null,
-    founderNote:   null,
-    assignedInspector: null
+  const documentStatus = {
+    rc:              getToggleVal('rc-group'),
+    insurance:       getToggleVal('ins-group'),
+    fitness:         getToggleVal('fitness-group'),
+    loan:            getToggleVal('loan-group'),
+    batteryWarranty: getToggleVal('bwty-group')
   };
 
-  /* ── FIRESTORE WRITE: lir_reports collection ── */
-  const lirDoc = {
-    vrsRef,
-    vehicleRef:  null, // Will be set after vehicle write
-    scores,
-    totalScore:  total,
-    band:        band.label,
-    confidence:  conf,
-    routing,
-    generatedAt: new Date().toISOString(),
-    status:      'pending',
-    founderReviewed: false
-  };
-
-  /* ── FIRESTORE WRITE: Attempt writes ── */
   try {
-    const vehicleRef = await db.collection('vehicles').add(vehicleDoc);
-    lirDoc.vehicleRef = vehicleRef.id;
-    await db.collection('lir_reports').add(lirDoc);
+    console.log('Submitting to Firestore...');
 
-    // Upload watermarked photos to Firebase Storage
-    if (v3Photos.length > 0) {
-      const ts = Date.now().toString(36);
-      for (let i = 0; i < v3Photos.length; i++) {
-        try {
-          const label = new Date().toLocaleDateString('en-IN');
-          const blob  = await applyWatermark(v3Photos[i], label);
-          const ref   = storage.ref(`vehicles/${vehicleRef.id}/photo_${i}_${ts}.jpg`);
-          await ref.put(blob, { contentType:'image/jpeg', customMetadata: { vehicleId: vehicleRef.id, watermarked:'true', geoConsent: String(geoConsentEnabled) } });
-        } catch (photoErr) { console.warn('Photo upload failed for photo', i, photoErr); }
-      }
-    }
+    /* §2 Primary write → vehicle_submissions */
+    await submitForFounderQueue({
+      submissionId,
+      vehicleType:    vtype,
+      city, make, model,
+      year:           year !== '—' ? parseInt(year) : null,
+      odometer:       odo ? parseInt(odo) : null,
+      userEmail:      window.auth?.currentUser?.email || null,
+      documentStatus,
+      ownerTrustReport,
+      evidenceMeta,
+      photoCount:     v3Photos.length,
+      inspectionRequested: v3InspectionRequested,
+      confidenceLevel: conf.key,
+      scores, totalScore: total,
+      band, routing,
+      geo:            geoPayload,
+      notes, contactNumber: phone
+    });
+
+    console.log('Firestore write success');
+
+    /* §3 Upload photos to evidence/vehicle_images/{submissionId}/ */
+    if (v3Photos.length > 0) await uploadEvidencePhotos(submissionId, v3Photos);
+
+    /* §10 Write evidence metadata */
+    if (evidenceMeta.length > 0) await writeEvidenceMetadata(submissionId, evidenceMeta);
+
+    /* §12 Alert engine */
+    await triggerAlerts(submissionId, scores, conf, documentStatus, v3InspectionRequested);
+
+    /* §14 Audit log — submission_created */
+    await writeAuditLog('submission_created', {
+      submissionId, vehicleType: vtype, city,
+      totalScore: total, confidence: conf.key,
+      timezone: clock.timezone
+    });
+    await writeAuditLog('confidence_updated', { submissionId, confidence: conf.key, totalScore: total });
+    await writeAuditLog('status_changed', { submissionId, newStatus: 'pending', previousStatus: null });
+
+    /* EmailJS — non-blocking */
+    sendFounderNotification({ vehicleType:vtype, city, make, model, year, km:odo, contactNumber:phone, submissionId });
+
+    loading.classList.remove('visible');
+    btn.style.display = '';
+
+    /* §2 Toast */
+    showToast('Submission sent successfully to 99EVs verification queue');
+    setTimeout(() => {
+      renderReportAndReset(vtype, city, make, model, year, odo, now, geoStr, scores, total, band, conf, routing, submissionId);
+    }, 1500);
+
   } catch (err) {
-    console.error('Firestore write failed:', err);
-    // Proceed with local report generation anyway
-    showToast('Submission saved locally — Firebase sync pending');
+    console.error(err);
+    loading.classList.remove('visible');
+    btn.style.display = '';
+    showToast('Submission failed. Please retry.');
   }
+}
 
-  // Hide loading, restore button
-  loading.classList.remove('visible');
-  btn.style.display = '';
-
-  /* ── RENDER REPORT HTML ── */
-  const vis  = getV3Visibility('pending'); // All pending initially
+/* ── REPORT RENDER ───────────────────────────────────────────── */
+function renderReportAndReset(vtype, city, make, model, year, odo, now, geoStr, scores, total, band, conf, routing, submissionId) {
   const ringColor  = getScoreColor(total, 100);
   const ringOffset = 226 - (total / 100 * 226);
 
   const dims = [
-    { name:'⚙️ Mechanical',  key:'mech',   val:scores.mech   },
-    { name:'⚡ Electrical',  key:'elec',   val:scores.elec   },
-    { name:'📋 Documents',   key:'legal',  val:scores.legal  },
-    { name:'📏 Usage',       key:'usage',  val:scores.usage  },
-    { name:'📊 Market Fit',  key:'market', val:scores.market }
+    { name:'⚙️ Mechanical', key:'mech',   val:scores.mech   },
+    { name:'⚡ Electrical', key:'elec',   val:scores.elec   },
+    { name:'📋 Documents',  key:'legal',  val:scores.legal  },
+    { name:'📏 Usage',      key:'usage',  val:scores.usage  },
+    { name:'📊 Market Fit', key:'market', val:scores.market }
   ];
 
   const barsHTML   = dims.map(d => `<div class="detail-row"><span class="dr-name">${d.name}</span><div class="dr-track"><div class="dr-fill" id="v3bar-${d.key}" style="width:0%;background:${getScoreColor(d.val)}"></div></div><span class="dr-val">${d.val}/20</span></div>`).join('');
@@ -1811,7 +2515,7 @@ async function generateV3Report() {
     <div class="report-header">
       <div class="rh-top">
         <div>
-          <div class="rh-id">${vrsRef}${geoStr}</div>
+          <div class="rh-id">${submissionId}${geoStr}</div>
           <div class="rh-vehicle">${year !== '—' ? year + ' ' : ''}${make} ${model}</div>
           <div class="rh-meta">${vtype} · ${city}${odo ? ' · ' + parseInt(odo).toLocaleString('en-IN') + ' km' : ''} · ${now}</div>
         </div>
@@ -1820,7 +2524,6 @@ async function generateV3Report() {
       <div class="visibility-gate vg-hidden"><span>🔴</span><span>Hidden — pending team review before buyer matching</span></div>
     </div>
     <div class="report-body">
-
       <div class="report-section">
         <div class="rs-title">Evidence Confidence Level</div>
         <div class="conf-badge-system">
@@ -1832,7 +2535,6 @@ async function generateV3Report() {
           </div>
         </div>
       </div>
-
       <div class="report-section">
         <div class="rs-title">Vehicle Readiness Score</div>
         <div class="total-score-row">
@@ -1847,13 +2549,11 @@ async function generateV3Report() {
           </div>
         </div>
       </div>
-
       <div class="report-section">
         <div class="rs-title">Dimension Breakdown</div>
         <div class="score-grid">${blocksHTML}</div>
         <div class="detail-bars" style="margin-top:14px">${barsHTML}</div>
       </div>
-
       <div class="report-section">
         <div class="rs-title">Matching Recommendations</div>
         <div class="routing-grid">
@@ -1865,7 +2565,6 @@ async function generateV3Report() {
           <div class="route-card"><div class="rc-label">Verification status</div><div class="rc-val" style="color:#F4A300">Pending Review</div><div class="rc-sub">Team will review and route once approved</div></div>
         </div>
       </div>
-
       <div class="report-section">
         <div class="rs-title">Recommended Next Steps</div>
         <div class="next-action">
@@ -1881,12 +2580,10 @@ async function generateV3Report() {
           </div>
         </div>
       </div>
-
-      <div class="inline-alert ia-warn" style="margin:0">
-        <span>⏳</span>
-        <span><strong>Awaiting team review.</strong> Your submission has been received. The 99EVs team will review and approve your vehicle before it becomes visible to verified buyers. You will be contacted at the number provided.</span>
+      <div class="inline-alert ia-success" style="margin:0">
+        <span>✅</span>
+        <span><strong>Submission sent successfully to 99EVs verification queue.</strong> The team will review and approve before buyer matching begins. You will be contacted at the number provided.</span>
       </div>
-
     </div>
     <div class="report-actions">
       <button class="ra-btn ra-primary" onclick="window.print()">🖨️ Print / Save PDF</button>
@@ -1895,11 +2592,12 @@ async function generateV3Report() {
   </div>`;
 
   ['s1','s2','s3','s4'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
-  document.getElementById('s-report').style.display = 'block';
-  document.getElementById('v3-report-output').innerHTML = reportHTML;
+  document.getElementById('s-report').style.display      = 'block';
+  document.getElementById('v3-report-output').innerHTML  = reportHTML;
 
   for (let i = 1; i <= 4; i++) {
-    const d = document.getElementById('sp' + i); const l = document.getElementById('spl' + i);
+    const d = document.getElementById('sp' + i);
+    const l = document.getElementById('spl' + i);
     if (d) { d.className = 'fp-dot done'; d.textContent = '✓'; }
     if (l) l.className = 'fp-label done';
     const line = document.getElementById('sl' + i);
@@ -1924,11 +2622,7 @@ function v3CopyReport() {
   navigator.clipboard?.writeText(txt).then(() => showToast('Report summary copied'));
 }
 
-/* ════════════════════════════════════
-   BUYER FLOW
-   Stores requirement in Firestore:
-   collection = requirements
-════════════════════════════════════ */
+/* ── BUYER FLOW ──────────────────────────────────────────────── */
 let buyerStep = 1;
 
 function goBuyerStep(n) {
@@ -1938,11 +2632,13 @@ function goBuyerStep(n) {
   else if (n === 2) document.getElementById('b2').style.display = 'block';
   else if (n === 3) document.getElementById('b-report').style.display = 'block';
   for (let i = 1; i <= 3; i++) {
-    const d = document.getElementById('bp' + i); const l = document.getElementById('bpl' + i); const line = document.getElementById('bl' + i);
+    const d = document.getElementById('bp' + i);
+    const l = document.getElementById('bpl' + i);
+    const line = document.getElementById('bl' + i);
     if (!d) continue;
-    if (i < n) { d.className = 'fp-dot done'; d.textContent = '✓'; if (l) l.className = 'fp-label done'; }
-    else if (i === n) { d.className = 'fp-dot active'; d.textContent = i; if (l) l.className = 'fp-label active'; }
-    else { d.className = 'fp-dot'; d.textContent = i; if (l) l.className = 'fp-label'; }
+    if (i < n)       { d.className = 'fp-dot done';   d.textContent = '✓'; if (l) l.className = 'fp-label done'; }
+    else if (i === n){ d.className = 'fp-dot active'; d.textContent = i;   if (l) l.className = 'fp-label active'; }
+    else             { d.className = 'fp-dot';        d.textContent = i;   if (l) l.className = 'fp-label'; }
     if (line) line.className = 'fp-line' + (i < n ? ' done' : '');
   }
   window.scrollTo({ top:0, behavior:'smooth' });
@@ -1955,35 +2651,30 @@ async function generateBuyerReport() {
   const budget   = getToggleVal('b-budget-group');
   const charging = getToggleVal('b-charge-group');
 
-  // Store requirement in Firestore
   try {
-    await db.collection('requirements').add({
-      purpose, dailyKm, city, budget, charging,
-      status:      'open',
-      submittedAt: new Date().toISOString(),
-      auditLog:    window._auditLog || null,
-      matched:     false,
-      matchedVehicles: []
+    await FS().collection('requirements').add({
+      purpose, dailyKm, city, budget, charging, status:'open',
+      submittedAt:  new Date().toISOString(),
+      timezone:     GEO_CLOCK.timezone,
+      auditLog:     window._auditLog || null,
+      matched:      false, matchedVehicles: []
     });
   } catch (err) { console.warn('Requirement write failed:', err); }
 
-  // EV suitability
   let evScore = 0;
   if (charging === 'home') evScore += 4; else if (charging === 'public') evScore += 2;
   if (dailyKm === 'under40') evScore += 3; else if (dailyKm === '40to80') evScore += 2;
-  const ownDur = null; // not collected in this version
   if (purpose === 'cargo') evScore += 2;
   const evSuitable = evScore >= 5;
 
-  let newVsUsed = 'Used vehicle recommended';
-  let newVsUsedReason = 'Used vehicles in this segment offer strong value with lower upfront cost.';
+  let newVsUsed = 'Used vehicle recommended', newVsUsedReason = 'Used vehicles in this segment offer strong value with lower upfront cost.';
   if (budget === 'over7L' && evSuitable) { newVsUsed = 'New EV recommended'; newVsUsedReason = 'Budget supports new EV — full warranty, latest battery generation.'; }
   else if (budget === '3to7L' && evSuitable) { newVsUsed = 'New EV or quality used EV'; newVsUsedReason = 'Budget can stretch to new mid-range EV. Quality used EV with inspection is strong value.'; }
 
   let segment = '', segmentReason = '';
   if (purpose === 'cargo') { segment = 'EV 3-Wheeler Cargo'; segmentReason = 'Best operational economics for last-mile delivery. Strong resale demand in most tier-1 cities.'; }
   else if (purpose === 'passenger') { segment = 'EV 3-Wheeler Passenger'; segmentReason = 'Established segment with high daily demand and strong fleet operator resale channels.'; }
-  else if (purpose === 'personal' && budget === 'over7L') { segment = 'EV 4-Wheeler'; segmentReason = 'Increasing model choice, growing charging infra, and strong resale value in tier-1 cities.'; }
+  else if (purpose === 'personal' && budget === 'over7L') { segment = 'EV 4-Wheeler'; segmentReason = 'Increasing model choice, growing charging infra, strong resale value in tier-1 cities.'; }
   else if (purpose === 'personal' && (budget === '1to3L' || budget === '3to7L')) { segment = evSuitable ? 'EV 2-Wheeler' : 'Petrol 2-Wheeler'; segmentReason = evSuitable ? 'Low running cost, easy home charging.' : 'Best fuel economy for your daily range. Strong service network.'; }
   else if (purpose === 'fleet') { segment = evSuitable ? 'EV 3W or 4W (fleet grade)' : 'Diesel / CNG Commercial'; segmentReason = 'Fleet segment with bulk sourcing advantage and established resale channel.'; }
   else { segment = evSuitable ? 'EV 2-Wheeler or EV 3W Cargo' : 'Petrol 2-Wheeler'; segmentReason = 'Based on your daily km and budget, this segment offers the best operational fit.'; }
@@ -2004,7 +2695,7 @@ async function generateBuyerReport() {
       <div class="report-section"><div class="rs-title">Recommendation</div>
         <div class="rec-hero">
           <div class="rh-verdict">${evSuitable ? '✅ EV Recommended' : '⛽ ICE Recommended for now'}</div>
-          <div class="rh-reason">${evSuitable ? 'Your daily usage, charging access, and purpose make an EV the right fit — lower running cost, strong segment demand in ' + city + '.' : 'Current charging infrastructure or daily range makes ICE the more practical choice today. Revisit EV when home or workplace charging is accessible.'}</div>
+          <div class="rh-reason">${evSuitable ? 'Your daily usage, charging access, and purpose make an EV the right fit — lower running cost, strong segment demand in ' + city + '.' : 'Current charging infrastructure or daily range makes ICE the more practical choice today.'}</div>
         </div>
       </div>
       <div class="report-section"><div class="rs-title">Decision Intelligence</div>
@@ -2012,14 +2703,14 @@ async function generateBuyerReport() {
           <div class="route-card"><div class="rc-label">Recommended segment</div><div class="rc-val amber">${segment}</div><div class="rc-sub">${segmentReason}</div></div>
           <div class="route-card"><div class="rc-label">New vs Used</div><div class="rc-val">${newVsUsed}</div><div class="rc-sub">${newVsUsedReason}</div></div>
           <div class="route-card"><div class="rc-label">Resale confidence</div><div class="rc-val green">${resaleConf}</div><div class="rc-sub">Expected value at resale in ${city}</div></div>
-          <div class="route-card"><div class="rc-label">Inspection recommendation</div><div class="rc-val">Recommended</div><div class="rc-sub">Inspection improves purchase confidence and reveals hidden condition issues</div></div>
+          <div class="route-card"><div class="rc-label">Inspection recommendation</div><div class="rc-val">Recommended</div><div class="rc-sub">Improves purchase confidence and reveals hidden condition issues</div></div>
         </div>
       </div>
       <div class="report-section"><div class="rs-title">Next Steps</div>
         <div class="rec-match-list">
           <div class="rec-match"><span class="rm-ico">🔍</span><div class="rm-text"><strong>Find verified vehicles</strong>Browse verified ${segment} inventory in ${city}. All vehicles are team-reviewed before being shown.</div></div>
           <div class="rec-match"><span class="rm-ico">🔬</span><div class="rm-text"><strong>Request inspection before purchase</strong>For used vehicles, request a 99EVs certified inspection — our team assigns an inspector and you receive a full readiness report before committing.</div></div>
-          <div class="rec-match"><span class="rm-ico">🏦</span><div class="rm-text"><strong>Finance eligibility</strong>${evSuitable ? 'EV segment qualifies for FAME-II subsidies where applicable. Check with your city RTO and NBFC partner for current eligibility.' : 'Vehicle finance available through partner NBFCs. Confirm RC, insurance, and loan status of any used vehicle before applying.'}</div></div>
+          <div class="rec-match"><span class="rm-ico">🏦</span><div class="rm-text"><strong>Finance eligibility</strong>${evSuitable ? 'EV segment qualifies for FAME-II subsidies where applicable. Check with your city RTO and NBFC partner.' : 'Vehicle finance available through partner NBFCs. Confirm RC, insurance, and loan status before applying.'}</div></div>
         </div>
       </div>
     </div>
@@ -2033,9 +2724,7 @@ async function generateBuyerReport() {
   goBuyerStep(3);
 }
 
-/* ════════════════════════════════════
-   RESALE TIMING ENGINE
-════════════════════════════════════ */
+/* ── RESALE TIMING ENGINE ────────────────────────────────────── */
 function generateResaleOutput() {
   const vtype = document.getElementById('r-vtype').value;
   const city  = document.getElementById('r-city').value;
@@ -2043,8 +2732,7 @@ function generateResaleOutput() {
   const odo   = parseInt(document.getElementById('r-odo').value)  || 30000;
   if (!vtype || !city) { showToast('Please select vehicle type and city'); return; }
 
-  const age = 2026 - year;
-  const marketScore = getCityDemandScore(city, vtype);
+  const age         = 2026 - year;
   const expectedOdo = age * 15000;
   const usageRatio  = odo / Math.max(expectedOdo, 1);
 
@@ -2055,7 +2743,6 @@ function generateResaleOutput() {
   else { window_ = 'List immediately'; reason1 = 'Vehicle approaching end of primary resale lifecycle'; reason2 = 'Delay may reduce buyer interest significantly. Immediate listing advised for best recovery.'; }
 
   const cityDemandStr = getCityDemandStr(city, vtype) || 'Moderate';
-
   const out = document.getElementById('resale-output');
   out.style.display = 'block';
   out.innerHTML = `
@@ -2079,116 +2766,23 @@ function showToast(msg) {
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', () => {
+  GEO_CLOCK.init();
   captureGeoTimestamp();
+  resetInactivityTimer();
+  loadMobileNet(); // pre-load TF silently
+
   const dz = document.getElementById('v3-photo-drop');
   if (dz) {
-    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
     dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
     dz.addEventListener('drop', e => {
       e.preventDefault(); dz.classList.remove('drag-over');
-      if (e.dataTransfer?.files.length) v3HandlePhotos({ files:e.dataTransfer.files, value:'' });
+      if (e.dataTransfer?.files.length) v3HandlePhotos({ files: e.dataTransfer.files, value: '' });
     });
   }
+  updateChecklist();
   v3RenderThumbs();
 });
-</script>
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-getFirestore,
-collection,
-addDoc,
-serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-/* Firebase config (replace if needed) */
-
-const firebaseConfig = {
-apiKey: "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-ZxdA",
-authDomain: "evs-production.firebaseapp.com",
-projectId: "evs-production",
-storageBucket: "evs-production.appspot.com",
-messagingSenderId: "775112664706",
-appId: "1:775112664706:web:2529507e7788d89e7bb69b"
-};
-
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-
-/* GLOBAL FUNCTION FOR BUTTON */
-
-window.submitForFounderQueue = async function () {
-
-try {
-
-const vehicleType =
-document.getElementById("veh-type")?.value || "";
-
-const city =
-document.getElementById("veh-city")?.value || "";
-
-const make =
-document.getElementById("veh-make")?.value || "";
-
-const model =
-document.getElementById("veh-model")?.value || "";
-
-const year =
-document.getElementById("veh-year")?.value || "";
-
-const km =
-document.getElementById("veh-km")?.value || "";
-
-const contact =
-document.getElementById("insp-contact")?.value || "";
-
-
-if (!contact) {
-alert("Please enter contact number");
-return;
-}
-
-
-await addDoc(collection(db, "vehicles"), {
-
-vehicleType,
-city,
-make,
-model,
-year,
-km,
-contact,
-
-founderStatus: "pending",
-
-createdAt: serverTimestamp(),
-
-geo: {
-timestamp: new Date().toISOString()
-}
-
-});
-
-
-alert("Vehicle submitted successfully to 99EVs");
-
-location.reload();
-
-}
-
-catch (error) {
-
-console.error(error);
-
-alert("Submission failed. Check console.");
-
-}
-
-};
 
 </script>
 </body>
