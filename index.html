@@ -26,12 +26,12 @@
 /* Real config is applied inside the engine script below. */
 /* Placeholder kept to avoid parse errors during load.   */
 const firebaseConfig = {
-  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-ZxdA",
+  apiKey:            "Available - replaced",
   authDomain:        "evs-production.firebaseapp.com",
   projectId:         "evs-production",
   storageBucket:     "evs-production.firebasestorage.app",
-  messagingSenderId: "775112664706",
-  appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
+  messagingSenderId: "Available - replaced",
+  appId:             "Available"
 };
 firebase.initializeApp(firebaseConfig);
 /* window.db / window.storage / window.auth are set by the engine below */
@@ -1175,10 +1175,11 @@ console.log("FINAL SUBMISSION PAYLOAD:", {
 await submitForFounderQueue({
   submissionId,
   vehicleType: vtype,
+  flowType: window.selectedFlow,
   city,
   make,
   model,
-  year: year !== '_' ? parseInt(year) : null,
+  year: year !== '—' ? parseInt(year) : null,
   odometer: odo ? parseInt(odo) : null,
   userEmail: window.auth?.currentUser?.email || null,
   documentStatus,
@@ -1186,12 +1187,20 @@ await submitForFounderQueue({
   evidenceMeta,
   photoCount: v3Photos.length,
   inspectionRequested: v3InspectionRequested,
-  confidenceLevel: conf?.key ?? null,
+  confidenceLevel,
   scores,
-  totalScore: total,
-  band,
+  totalScore: totalScoreSafe,
+  band: bandSafe,
+  scoringSnapshot,
+  routingEligibility,
+  routingDecision,
+  completionPercent: completionSafe,
+  progressStage: sellerStep,
   routing,
   geo: geoPayload,
+  status: "intake_submitted",
+  stage: "awaiting_scoring",
+  timestamp: new Date().toISOString(),
   notes,
   contactNumber: phone
 });
@@ -1252,12 +1261,12 @@ const GEO_CLOCK = {
 
 /* ── §1 FIREBASE INIT — expose as window globals ─────────────── */
 const _firebaseConfig = {
-  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-ZxdA",
+  apiKey:            "Available",
   authDomain:        "evs-production.firebaseapp.com",
   projectId:         "evs-production",
   storageBucket:     "evs-production.firebasestorage.app",
-  messagingSenderId: "775112664706",
-  appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
+  messagingSenderId: "Available",
+  appId:             "Available"
 };
 
 /* Re-initialise only if the existing app used placeholder config */
@@ -1435,7 +1444,12 @@ async function submitForFounderQueue(payload) {
 
   const dataCompletenessScore = computeDataCompletenessScore(
     photoCount, documentStatus, inspectionRequested, false
-  );
+  ) ?? null;
+  const scoringSnapshot = {
+  confidenceLevel: confidenceLevel,
+  band: bandSafe,
+  totalScore: totalScoreSafe
+};
 
   /* §2 Required document shape */
   const submissionDoc = {
@@ -1631,11 +1645,15 @@ function openEngine(mode) {
   document.getElementById('homepage').style.display    = 'none';
   document.getElementById('engine-view').style.display = 'block';
   document.getElementById('engine-mode-label').textContent = mode ? '· ' + mode : '';
+  window.selectedFlow = mode || null;
   window.scrollTo({ top:0, behavior:'smooth' });
-  if (mode === 'sell' || mode === 'health') startFlow('sell');
+  if      (mode === 'sell' || mode === 'health') startFlow('sell');
   else if (mode === 'buy')        startFlow('buy');
   else if (mode === 'inspection') startFlow('inspection');
   else if (mode === 'resale')     startFlow('resale');
+  else if (mode === 'condition')  startFlow('condition');
+  else if (mode === 'finance')    startFlow('finance');
+  else if (mode === 'fleet')      startFlow('fleet');
   else showIntentScreen();
 }
 
@@ -1658,6 +1676,8 @@ function hideAllFlows() {
 }
 
 function startFlow(flow) {
+  window.selectedFlow = flow;
+  console.log("Flow initialized:", flow);
   hideAllFlows();
   captureGeoTimestamp();
   const map = {
@@ -1901,30 +1921,7 @@ function applyWatermark(file, label) {
   });
 }
 
-/* ── §7 MULTI-SELECT CONDITION ──────────────────────────────── */
-function toggleCondition(groupId, el) {
-  el.classList.toggle('selected');
-  ownerTrustReport = [];
-  ['starts-group','accident-group','brake-group','tyre-group','lights-group'].forEach(gid => {
-    document.querySelectorAll('#' + gid + ' .toggle-opt.selected').forEach(opt => {
-      ownerTrustReport.push(gid.replace('-group','') + '_' + opt.dataset.val);
-    });
-  });
-  /* §14 audit */
-  writeAuditLog('document_selected', { group: groupId, selections: ownerTrustReport.length });
-}
-
-/* ── §6 SINGLE-SELECT TOGGLE (non-condition) ─────────────────── */
-function selectToggle(groupId, el) {
-  document.querySelectorAll('#' + groupId + ' .toggle-opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  writeAuditLog('document_selected', { group: groupId, value: el.dataset.val });
-}
-
-function selectToggleSimple(onId, offId) {
-  document.getElementById(onId)?.classList.add('selected');
-  document.getElementById(offId)?.classList.remove('selected');
-}
+/* ── §7 toggleCondition — REMOVED (shadow) — production version in Toggle Engine v3 block below ── */
 
 function getToggleVal(groupId) {
   const sel = document.querySelector('#' + groupId + ' .toggle-opt.selected');
@@ -1943,22 +1940,13 @@ function validateContactNumber(phone) {
   return /^[6-9]\d{9}$/.test(cleaned);
 }
 
-/* ── §6 DOCUMENT VALIDATION ──────────────────────────────────── */
-function validateDocuments() {
-  const required = ['rc-group','ins-group','loan-group'];
-  const isEV     = (document.getElementById('s-vtype')?.value || '').toLowerCase().includes('ev');
-  if (isEV) required.push('bwty-group');
-  for (const gid of required) { if (!getToggleVal(gid)) return false; }
-  const fitBlock = document.getElementById('fitness-block');
-  if (fitBlock && fitBlock.style.display !== 'none' && !getToggleVal('fitness-group')) return false;
-  return true;
-}
+/* ── §6 validateDocuments — REMOVED (shadow) — production validateDocumentStep() in Toggle Engine v3 block below ── */
 
 /* ── §6/§8 FINAL SUBMISSION LOCK ─────────────────────────────── */
 function checkSubmissionReady() {
   if (!document.getElementById('s-vtype').value || !document.getElementById('s-city').value)
     return 'Vehicle type and city are required.';
-  if (!validateDocuments())
+  if (!validateDocumentStep())
     return 'Please confirm document availability';
   if (ownerTrustReport.length === 0)
     return 'Please select at least one vehicle condition item in Step 3.';
@@ -1983,12 +1971,12 @@ function goSellerStep(n) {
       writeAuditLog('submission_created', { step: 'vehicle_identity_complete' });
     }
     if (sellerStep === 2 && n === 3) {
-      if (!validateDocuments()) { showToast('Please confirm document availability'); return; }
+      if (!validateDocumentStep()) { showToast('Please confirm document availability'); return; }
       console.log('Documents step complete');
       writeAuditLog('document_selected', { step: 'document_step_complete' });
     }
     if (sellerStep === 3 && n === 4) {
-      if (ownerTrustReport.length === 0) { showToast('Please select at least one vehicle condition item'); return; }
+      if (!validateConditionStep()) { showToast('Please select at least one vehicle condition item'); return; }
       console.log('Condition step complete');
     }
   }
@@ -2481,8 +2469,64 @@ async function _doFirestoreSubmit() {
     batteryWarranty: getToggleVal('bwty-group')
   };
 
+  /* PATCH 6 — safe defaults */
+  const confidenceLevel    = conf?.key ?? null;
+  const totalScoreSafe     = total ?? null;
+  const bandSafe           = band ?? null;
+  const completionSafe     = computeDataCompletenessScore(v3Photos.length, documentStatus, v3InspectionRequested, false) ?? null;
+
+  /* PATCH 3 — routing eligibility flags */
+  const routingEligibility = {
+    inspectionEligible: confidenceLevel !== 'low' && documentStatus !== 'missing',
+    dealerEligible:     confidenceLevel === 'high' || confidenceLevel === 'medium',
+    refinanceEligible:  vtype === 'passenger' && confidenceLevel !== 'low',
+    fleetEligible:      window.selectedFlow === 'fleet'
+  };
+  const routingDecision = {
+  sendToInspectionQueue:
+    routingEligibility.inspectionEligible &&
+    v3InspectionRequested === true,
+  sendToDealerNetwork:
+    routingEligibility.dealerEligible &&
+    !v3InspectionRequested,
+  sendToNBFC:
+    routingEligibility.refinanceEligible &&
+    window.selectedFlow === "finance",
+  sendToFleetPartners:
+    routingEligibility.fleetEligible
+};
+  /* PATCH 2 — scoring snapshot */
+  const scoringSnapshot = {
+    confidenceLevel,
+    band:       bandSafe,
+    totalScore: totalScoreSafe
+  };
+
   try {
     console.log('Submitting to Firestore...');
+
+    /* PATCH 8 — full structured payload debug log */
+    console.log("FINAL SUBMISSION PAYLOAD:", {
+      submissionId,
+      vehicleType:    vtype,
+      city, make, model,
+      year:           year !== '—' ? parseInt(year) : null,
+      odometer:       odo ? parseInt(odo) : null,
+      documentStatus,
+      ownerTrustReport,
+      confidenceLevel,
+      band:           bandSafe,
+      totalScore:     totalScoreSafe,
+      scoringSnapshot,
+      routingEligibility,
+      completionPercent: completionSafe,
+      progressStage:  sellerStep,
+      routing,
+      geo:            geoPayload,
+      status:         'intake_submitted',
+      stage:          'awaiting_scoring',
+      timestamp:      new Date().toISOString()
+    });
 
     /* §2 Primary write → vehicle_submissions */
     await submitForFounderQueue({
@@ -2495,13 +2539,22 @@ async function _doFirestoreSubmit() {
       documentStatus,
       ownerTrustReport,
       evidenceMeta,
-      photoCount:     v3Photos.length,
-      inspectionRequested: v3InspectionRequested,
-      confidenceLevel: conf.key,
-      scores, totalScore: total,
-      band, routing,
+      photoCount:           v3Photos.length,
+      inspectionRequested:  v3InspectionRequested,
+      confidenceLevel,
+      scores,
+      totalScore:     totalScoreSafe,
+      band:           bandSafe,
+      scoringSnapshot,
+      routingEligibility,
+      completionPercent: completionSafe,
+      progressStage:  sellerStep,
+      routing,
       geo:            geoPayload,
-      notes, contactNumber: phone
+      status:         'intake_submitted',
+      stage:          'awaiting_scoring',
+      notes,
+      contactNumber:  phone
     });
 
     console.log('Firestore write success');
@@ -2521,10 +2574,10 @@ async function _doFirestoreSubmit() {
     /* §14 Audit log — submission_created */
     await writeAuditLog('submission_created', {
       submissionId, vehicleType: vtype, city,
-      totalScore: total, confidence: conf.key,
+      totalScore: totalScoreSafe, confidence: confidenceLevel,
       timezone: clock.timezone
     });
-    await writeAuditLog('confidence_updated', { submissionId, confidence: conf.key, totalScore: total });
+    await writeAuditLog('confidence_updated', { submissionId, confidence: confidenceLevel, totalScore: totalScoreSafe });
     await writeAuditLog('status_changed', { submissionId, newStatus: 'pending', previousStatus: null });
 
     /* EmailJS — non-blocking */
@@ -2810,11 +2863,7 @@ function generateResaleOutput() {
   </div>`;
 }
 
-/* ── TOAST ── */
-function showToast(msg) {
-  const t = Object.assign(document.createElement('div'), { textContent:msg, className:'toast-el' });
-  document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 350); }, 3000);}
+/* ── TOAST — REMOVED duplicate; single definition in Toggle Engine v3 block below ── */
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -2871,6 +2920,9 @@ function toggleCondition(groupId, element){
     if(alreadySelected){
         // Deselect — remove from formState
         delete window.formState[groupId];
+        // Mirror: remove from ownerTrustReport
+        const prefix = groupId.replace('-group', '');
+        ownerTrustReport = ownerTrustReport.filter(e => !e.startsWith(prefix + '_'));
         return;
     }
 
@@ -2883,7 +2935,18 @@ function toggleCondition(groupId, element){
     }
 
     // Write to formState
-    window.formState[groupId] = element.dataset.val;
+    const val = element.dataset.val;
+    window.formState[groupId] = val;
+
+    // Mirror to ownerTrustReport[] for scoring engine compatibility
+    const prefix = groupId.replace('-group', '');
+    ownerTrustReport = ownerTrustReport.filter(e => !e.startsWith(prefix + '_'));
+    ownerTrustReport.push(prefix + '_' + val);
+
+    // Audit log (non-blocking)
+    if(typeof writeAuditLog === 'function'){
+        try { writeAuditLog('document_selected', { group: groupId, value: val }); } catch(e){}
+    }
 }
 
 /* Legacy alias — kept for any other calls in the page */
@@ -2987,24 +3050,5 @@ function showToast(msg){
     }, 3000);
 }
 </script>
-   <script>
-function openEngine(mode){
-  const engine = document.getElementById("engine-view");
-
-  if(!engine){
-    alert("Engine container missing");
-    return;
-  }
-
-  engine.style.display = "block";
-
-  window.scrollTo({
-    top: engine.offsetTop - 40,
-    behavior: "smooth"
-  });
-
-  console.log("Engine opened:", mode);
-}
-   </script>
 </body>
 </html>
