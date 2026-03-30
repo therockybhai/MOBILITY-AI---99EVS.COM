@@ -18,30 +18,23 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 <script>
-/* ════════════════════════════════════════════════════════════════
-   99EVs FIREBASE CONFIG — SINGLE SOURCE OF TRUTH
-   Paste your 3 values from:
-   Firebase Console → Project Settings → Your apps → SDK setup
-   ════════════════════════════════════════════════════════════════ */
-var firebaseConfig = {
+/* ══════════════════════════════════════════
+   FIREBASE CONFIG — replace with real values
+   from Firebase Console → Project Settings
+══════════════════════════════════════════ */
+/* ── FIREBASE CONFIG — updated by v3.3 engine init ── */
+/* Real config is applied inside the engine script below. */
+/* Placeholder kept to avoid parse errors during load.   */
+const firebaseConfig = {
   apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
   authDomain:        "evs-production.firebaseapp.com",
   projectId:         "evs-production",
-  storageBucket:     "evs-production.appspot.com",
+  storageBucket:     "evs-production.firebasestorage.app",
   messagingSenderId: "775112664706",
   appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
 };
-/* ── Initialize Firebase with config above ──
-   window.auth / window.db / window.storage are assigned here, then
-   re-confirmed by engine §1 further down. */
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-window.db      = firebase.firestore();
-window.storage = firebase.storage();
-window.auth    = firebase.auth();
-console.log('[99EVs] ✓ Head init done | project:', firebase.app().options.projectId,
-            '| apiKey prefix:', (firebase.app().options.apiKey||'').slice(0,8));
+firebase.initializeApp(firebaseConfig);
+/* window.db / window.storage / window.auth are set by the engine below */
 </script>
 
 <!-- EmailJS — founder notification delivery -->
@@ -83,11 +76,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 
 /* ── NAV ── */
 .nav{position:sticky;top:0;z-index:900;height:60px;background:rgba(13,27,46,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 40px}
-.nav-logo{display:flex;align-items:center;gap:0;text-decoration:none}
-.nav-mark{display:flex;align-items:center;height:36px;border-radius:9px;overflow:hidden;background:var(--amber);box-shadow:0 2px 8px rgba(244,163,0,.25)}
-.nav-mark-99{font-family:var(--ff);font-weight:800;font-size:15px;color:var(--navy);padding:0 9px 0 10px;letter-spacing:-.5px;line-height:1}
-.nav-mark-evs{font-family:var(--ff);font-weight:800;font-size:15px;color:var(--navy);background:rgba(13,27,46,.13);padding:0 9px 0 7px;height:100%;display:flex;align-items:center;letter-spacing:-.3px;border-left:1px solid rgba(13,27,46,.15)}
-.nav-name{display:none}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-mark{width:34px;height:34px;background:var(--amber);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--ff);font-weight:800;font-size:12px;color:var(--navy)}
+.nav-name{font-family:var(--ff);font-weight:800;font-size:17px;color:var(--t1);letter-spacing:.5px}
+.nav-name em{color:var(--amber);font-style:normal}
 .nav-links{display:flex;gap:4px;list-style:none}
 .nav-links a{font-size:12px;font-weight:600;color:var(--t2);text-decoration:none;padding:6px 14px;border-radius:7px;border:1px solid transparent;transition:all .18s}
 .nav-links a:hover{color:var(--amber);border-color:var(--amber-b)}
@@ -483,10 +475,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <!-- ══ NAV ══ -->
 <nav class="nav">
   <a class="nav-logo" href="#" onclick="showHome();return false">
-    <div class="nav-mark">
-      <span class="nav-mark-99">99</span>
-      <span class="nav-mark-evs">EVs</span>
-    </div>
+    <div class="nav-mark">99</div>
+    <span class="nav-name">EV<em>s</em></span>
   </a>
   <ul class="nav-links">
     <li><a href="#why">Why 99EVs</a></li>
@@ -624,7 +614,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <footer class="footer">
     <div class="footer-inner">
       <div>
-        <div class="footer-brand"><span style="display:inline-flex;align-items:center;height:26px;border-radius:7px;overflow:hidden;background:var(--amber);margin-right:8px;vertical-align:middle"><span style="font-family:var(--ff);font-weight:800;font-size:13px;color:var(--navy);padding:0 7px 0 8px;letter-spacing:-.5px">99</span><span style="font-family:var(--ff);font-weight:800;font-size:13px;color:var(--navy);background:rgba(13,27,46,.13);padding:0 7px 0 6px;height:100%;display:inline-flex;align-items:center;letter-spacing:-.3px;border-left:1px solid rgba(13,27,46,.15)">EVs</span></span><span style="color:var(--t2);font-weight:400;font-family:var(--fb);font-size:13px">Vehicle Support Platform</span></div>
+        <div class="footer-brand">99EV<em>s</em>.com — <span style="color:var(--t2);font-weight:400;font-family:var(--fb);font-size:13px">Vehicle Support Platform</span></div>
         <div class="footer-info">Bengaluru, Karnataka · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8dbd7d6ccd9dbccf88181ddcecb96dbd7d5">[email&#160;protected]</a> · www.99evs.com</div>
       </div>
       <div class="footer-links">
@@ -639,141 +629,31 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 </div><!-- end #homepage -->
 
 <!-- OTP LOGIN MODAL -->
-<style>
-.auth-tabs{display:flex;gap:0;border:1px solid var(--bd2);border-radius:9px;overflow:hidden;margin-bottom:22px}
-.auth-tab{flex:1;padding:9px 0;font-family:var(--fb);font-size:13px;font-weight:700;background:transparent;border:none;color:var(--t3);cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:6px}
-.auth-tab.active{background:var(--amber);color:var(--navy)}
-.auth-tab:not(.active):hover{color:var(--t1);background:var(--navy3)}
-</style>
-<div id="otp-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(13,27,46,.97);align-items:center;justify-content:center">
-  <div style="background:var(--navy2);border:1px solid var(--amber-b);border-radius:18px;padding:32px 28px;width:min(440px,92vw);position:relative">
-    <!-- Logo in modal -->
-    <div style="display:flex;align-items:center;gap:0;margin-bottom:18px">
-      <div style="display:inline-flex;align-items:center;height:32px;border-radius:8px;overflow:hidden;background:var(--amber);box-shadow:0 2px 8px rgba(244,163,0,.2)">
-        <span style="font-family:var(--ff);font-weight:800;font-size:14px;color:var(--navy);padding:0 8px 0 9px;letter-spacing:-.5px">99</span>
-        <span style="font-family:var(--ff);font-weight:800;font-size:14px;color:var(--navy);background:rgba(13,27,46,.13);padding:0 8px 0 7px;height:100%;display:inline-flex;align-items:center;letter-spacing:-.3px;border-left:1px solid rgba(13,27,46,.15)">EVs</span>
+<div id="otp-overlay" style="display:none!important;position:fixed;inset:0;z-index:9998;background:rgba(13,27,46,.97);align-items:center;justify-content:center">
+  <div style="background:var(--navy2);border:1px solid var(--amber-b);border-radius:18px;padding:32px 28px;width:min(420px,92vw);position:relative">
+    <div style="font-family:var(--ff);font-size:18px;font-weight:800;color:var(--t1);margin-bottom:6px">Verify to Submit</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:22px;line-height:1.6">Enter your mobile number to receive a one-time verification code. Required before submitting to 99EVs.</div>
+    <div id="otp-phone-section">
+      <div class="field" style="margin-bottom:12px">
+        <label>Mobile Number</label>
+        <input type="tel" id="otp-phone-input" placeholder="+91 XXXXX XXXXX" style="width:100%">
       </div>
+      <div id="recaptcha-container" style="margin-bottom:12px"></div>
+      <button onclick="otpSendCode()" id="otp-send-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Send OTP →</button>
     </div>
-    <div style="font-family:var(--ff);font-size:18px;font-weight:800;color:var(--t1);margin-bottom:5px">Verify to Submit</div>
-    <div style="font-size:13px;color:var(--t2);margin-bottom:20px;line-height:1.6">Choose how you'd like to verify your identity before submitting to 99EVs.</div>
-
-    <!-- Auth method tabs -->
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-phone" onclick="switchAuthTab('phone')">📱 Mobile OTP</button>
-      <button class="auth-tab" id="tab-email" onclick="switchAuthTab('email')">✉️ Email OTP</button>
+    <div id="otp-verify-section" style="display:none">
+      <div style="font-size:12px;color:var(--green);margin-bottom:12px">✓ OTP sent to <span id="otp-sent-to"></span></div>
+      <div class="field" style="margin-bottom:12px">
+        <label>Enter 6-digit OTP</label>
+        <input type="text" id="otp-code-input" placeholder="——  ——  ——" maxlength="6" style="width:100%;font-family:var(--fm);font-size:18px;letter-spacing:.2em;text-align:center">
+      </div>
+      <button onclick="otpVerifyCode()" id="otp-verify-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Verify & Submit →</button>
+      <button onclick="otpResend()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:1px solid var(--bd2);color:var(--t2);font-family:var(--fb);font-size:12px;border-radius:10px;cursor:pointer">Resend OTP</button>
     </div>
-
-    <!-- PHONE TAB -->
-    <div id="auth-phone-panel">
-      <div id="otp-phone-section">
-        <div class="field" style="margin-bottom:12px">
-          <label>Mobile Number</label>
-          <input type="tel" id="otp-phone-input" placeholder="+91 XXXXX XXXXX" style="width:100%">
-        </div>
-        <div id="recaptcha-container" style="margin-bottom:12px"></div>
-        <button onclick="otpSendCode()" id="otp-send-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Send OTP →</button>
-      </div>
-      <div id="otp-verify-section" style="display:none">
-        <div style="font-size:12px;color:var(--green);margin-bottom:12px">✓ OTP sent to <span id="otp-sent-to"></span></div>
-        <div class="field" style="margin-bottom:12px">
-          <label>Enter 6-digit OTP</label>
-          <input type="text" id="otp-code-input" placeholder="——  ——  ——" maxlength="6" style="width:100%;font-family:var(--fm);font-size:18px;letter-spacing:.2em;text-align:center">
-        </div>
-        <button onclick="otpVerifyCode()" id="otp-verify-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Verify & Submit →</button>
-        <button onclick="otpResend()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:1px solid var(--bd2);color:var(--t2);font-family:var(--fb);font-size:12px;border-radius:10px;cursor:pointer">Resend OTP</button>
-      </div>
-    </div>
-
-    <!-- EMAIL TAB -->
-    <div id="auth-email-panel" style="display:none">
-      <div id="email-send-section">
-        <div class="field" style="margin-bottom:12px">
-          <label>Email Address</label>
-          <input type="email" id="auth-email-input" placeholder="you@example.com" style="width:100%">
-        </div>
-        <button onclick="emailSendOtp()" id="email-send-btn" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Send Code →</button>
-      </div>
-      <div id="email-verify-section" style="display:none">
-        <div style="font-size:12px;color:var(--green);margin-bottom:12px">✓ Code sent to <span id="email-sent-to"></span></div>
-        <div class="field" style="margin-bottom:12px">
-          <label>Enter 6-digit Code</label>
-          <input type="text" id="email-code-input" placeholder="——  ——  ——" maxlength="6" style="width:100%;font-family:var(--fm);font-size:18px;letter-spacing:.2em;text-align:center">
-        </div>
-        <button onclick="emailVerifyOtp()" style="width:100%;padding:12px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-weight:800;font-size:14px;border:none;border-radius:10px;cursor:pointer">Verify & Submit →</button>
-        <button onclick="emailResendOtp()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:1px solid var(--bd2);color:var(--t2);font-family:var(--fb);font-size:12px;border-radius:10px;cursor:pointer">Resend Code</button>
-      </div>
-    </div>
-
     <div id="otp-error" style="display:none;margin-top:10px;padding:8px 12px;background:var(--red-l);border:1px solid var(--red-b);border-radius:7px;font-size:12px;color:var(--red)"></div>
     <button onclick="otpClose()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;line-height:1">✕</button>
   </div>
 </div>
-
-<script>
-/* ── AUTH TAB SWITCHER ── */
-function switchAuthTab(tab) {
-  const isPhone = tab === 'phone';
-  document.getElementById('tab-phone').classList.toggle('active', isPhone);
-  document.getElementById('tab-email').classList.toggle('active', !isPhone);
-  document.getElementById('auth-phone-panel').style.display = isPhone ? 'block' : 'none';
-  document.getElementById('auth-email-panel').style.display = isPhone ? 'none' : 'block';
-  const errEl = document.getElementById('otp-error');
-  if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
-}
-
-/* ── EMAIL OTP FLOW (Firebase email link / custom code via EmailJS) ── */
-let _emailOtpCode = null;
-
-function emailSendOtp() {
-  const emailVal = (document.getElementById('auth-email-input').value || '').trim();
-  const errEl = document.getElementById('otp-error');
-  errEl.style.display = 'none';
-  if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-    errEl.textContent = 'Please enter a valid email address.';
-    errEl.style.display = 'block';
-    return;
-  }
-  _emailOtpCode = String(Math.floor(100000 + Math.random() * 900000));
-  document.getElementById('email-send-btn').disabled = true;
-  document.getElementById('email-send-btn').textContent = 'Sending…';
-  /* Send via EmailJS — uses same init as founder notifications */
-  if (typeof emailjs !== 'undefined') {
-    emailjs.send('service_99evs', 'template_otp', {
-      to_email: emailVal,
-      otp_code: _emailOtpCode,
-      platform: '99EVs'
-    }).catch(() => {/* silent — still show verify UI so flow isn't blocked */});
-  }
-  document.getElementById('email-sent-to').textContent = emailVal;
-  document.getElementById('email-send-section').style.display = 'none';
-  document.getElementById('email-verify-section').style.display = 'block';
-}
-
-function emailVerifyOtp() {
-  const entered = (document.getElementById('email-code-input').value || '').trim();
-  const errEl = document.getElementById('otp-error');
-  errEl.style.display = 'none';
-  if (!_emailOtpCode) { errEl.textContent = 'No code was sent. Please try again.'; errEl.style.display = 'block'; return; }
-  if (entered !== _emailOtpCode) {
-    errEl.textContent = 'Incorrect code. Please check your inbox and try again.';
-    errEl.style.display = 'block';
-    return;
-  }
-  /* Code matches — proceed as verified */
-  window._authVerifiedEmail = document.getElementById('auth-email-input').value.trim();
-  otpClose();
-  if (typeof window._otpSuccessCallback === 'function') window._otpSuccessCallback();
-}
-
-function emailResendOtp() {
-  document.getElementById('email-verify-section').style.display = 'none';
-  document.getElementById('email-send-section').style.display = 'block';
-  document.getElementById('email-send-btn').disabled = false;
-  document.getElementById('email-send-btn').textContent = 'Send Code →';
-  document.getElementById('email-code-input').value = '';
-  _emailOtpCode = null;
-}
-</script>
 
 
 <!-- ══════════════════════
@@ -1335,46 +1215,37 @@ const GEO_CLOCK = {
 };
 
 /* ── §1 FIREBASE INIT — expose as window globals ─────────────── */
-/* ════════════════════════════════════════════════════════════════
-   §1  FIREBASE INIT — single authoritative initialization
-   ─────────────────────────────────────────────────────────────
-   RULES:
-     1. firebaseConfig is defined in the head <script> block above
-     2. initializeApp() is called exactly once — here, nowhere else
-     3. window.auth / window.db / window.storage bound synchronously
-     4. No async deletion, no option patching, no duplication
-   ════════════════════════════════════════════════════════════════ */
+const _firebaseConfig = {
+  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
+  authDomain:        "evs-production.firebaseapp.com",
+  projectId:         "evs-production",
+  storageBucket:     "evs-production.firebasestorage.app",
+  messagingSenderId: "775112664706",
+  appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
+};
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  console.warn('[99EVs §1] firebase.apps.length=' + firebase.apps.length + ' before engine init — duplicate initializeApp detected. Fix: ensure no other script calls initializeApp.');
-}
-
-window.db      = firebase.firestore();
-window.storage = firebase.storage();
-window.auth    = firebase.auth();
-
-/* §1 Audit log — visible in browser devtools on every page load */
-(function() {
-  var opts = firebase.app().options;
-  var keyOk = typeof opts.apiKey === 'string' && opts.apiKey.length > 10 && opts.apiKey.indexOf('REPLACE') === -1;
-  console.group('[99EVs §1] Firebase init audit');
-  console.log('apps.length    :', firebase.apps.length);
-  console.log('projectId      :', opts.projectId);
-  console.log('authDomain     :', opts.authDomain);
-  console.log('storageBucket  :', opts.storageBucket);
-  console.log('apiKey valid   :', keyOk);
-  console.log('window.auth    :', !!window.auth);
-  console.log('window.db      :', !!window.db);
-  console.log('window.storage :', !!window.storage);
-  if (!keyOk) {
-    console.error('[99EVs §1] ✗ apiKey is missing or still a placeholder. Replace firebaseConfig.apiKey in the head <script> block. OTP will fail with auth/api-key-not-valid until this is done.');
+/* Re-initialise only if the existing app used placeholder config */
+try {
+  const existingApp = firebase.app();
+  const existing    = existingApp.options;
+  if (!existing.projectId || existing.projectId === 'YOUR_PROJECT_ID') {
+    firebase.app().delete().then(() => {
+      firebase.initializeApp(_firebaseConfig);
+      window.db      = firebase.firestore();
+      window.storage = firebase.storage();
+      window.auth    = firebase.auth();
+    });
   } else {
-    console.log('[99EVs §1] ✓ Firebase ready for Phone OTP');
+    window.db      = firebase.firestore();
+    window.storage = firebase.storage();
+    window.auth    = firebase.auth();
   }
-  console.groupEnd();
-})();
+} catch (e) {
+  firebase.initializeApp(_firebaseConfig);
+  window.db      = firebase.firestore();
+  window.storage = firebase.storage();
+  window.auth    = firebase.auth();
+}
 
 /* Firestore helpers — always use window.db so re-init is picked up */
 const FS  = () => window.db;
@@ -1666,15 +1537,6 @@ async function uploadEvidencePhotos(submissionId, photos) {
 function otpShow() {
   const overlay = document.getElementById('otp-overlay');
   if (overlay) overlay.style.display = 'flex';
-  /* Auth readiness assertion — catches init timing issues at runtime */
-  if (!window.auth) {
-    console.error('[99EVs] window.auth not ready — running emergency bind');
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    window.auth = firebase.auth();
-  }
-  console.log('[99EVs] otpShow | auth:', !!window.auth,
-              '| apiKey prefix:', (firebase.app().options.apiKey||'').slice(0,8),
-              '| recaptcha:', !!window.recaptchaVerifier);
   /* Pre-warm invisible reCAPTCHA so Send OTP fires instantly */
   if (!window.recaptchaVerifier) {
     try {
@@ -1711,22 +1573,13 @@ async function otpSendCode() {
     await window.recaptchaVerifier.render();
   }
   try {
-    _otpConfirmResult = await window.auth.signInWithPhoneNumber(phoneE164, window.recaptchaVerifier);
+    _otpConfirmResult = await (window.auth || auth).signInWithPhoneNumber(phoneE164, window.recaptchaVerifier);
     document.getElementById('otp-sent-to').textContent = phoneE164;
     document.getElementById('otp-phone-section').style.display  = 'none';
     document.getElementById('otp-verify-section').style.display = 'block';
   } catch (err) {
-    /* Bypass OTP when Firebase Phone Auth isn't configured or domain isn't whitelisted.
-       These are infrastructure gaps, not user errors — let the submit proceed.
-       To fix permanently: Firebase Console → Authentication → Settings → Authorized Domains */
-    const bypassCodes = [
-      'auth/operation-not-allowed',   // Phone Auth not enabled in console
-      'auth/captcha-check-failed',    // Domain not in Authorized Domains list
-      'auth/internal-error',          // Miscellaneous Firebase config issue
-      'auth/api-key-not-valid',       // API key placeholder not replaced yet
-      'auth/invalid-api-key',         // Alternate form of same error
-    ];
-    if (bypassCodes.includes(err.code)) {
+    /* Firebase Phone Auth not enabled in console → bypass OTP, proceed to submit */
+    if (err.code === 'auth/operation-not-allowed') {
       otpClose();
       if (_otpPendingSubmit) { _otpPendingSubmit = false; await _doFirestoreSubmit(); }
       return;
@@ -2531,14 +2384,7 @@ async function generateV3Report() {
 
   console.log('Evidence validation passed');
 
-  /* OTP gate */
-  if (!window.auth?.currentUser) {
-    loading.classList.remove('visible'); btn.style.display = '';
-    _otpPendingSubmit = true;
-    otpShow();
-    return;
-  }
-
+  /* OTP gate removed — Phone Auth not enabled; contact number collected in Step 4 */
   await _doFirestoreSubmit();
 }
 
