@@ -1401,10 +1401,10 @@ async function submitForFounderQueue(payload) {
     photoCount, documentStatus, inspectionRequested, false
   ) ?? null;
   const scoringSnapshot = {
-  confidenceLevel: confidenceLevel,
-  band: bandSafe,
-  totalScore: totalScoreSafe
-};
+    confidenceLevel: confidenceLevel,
+    band:            band?.label || band || null,
+    totalScore:      totalScore  || null
+  };
 
   /* §2 Required document shape */
   const submissionDoc = {
@@ -2586,11 +2586,19 @@ async function _doFirestoreSubmit() {
     }, 1500);
 
   } catch (err) {
-    console.error(err);
+    /* Log full error detail for debugging */
+    console.error('[99EVs] Submission failed:', err?.code || err?.message || err);
+    console.error('[99EVs] Full error object:', err);
     stopSubmitTicker();
     loading.classList.remove('visible');
     btn.style.display = '';
-    showToast('Submission failed. Please retry.');
+    /* Show user-friendly message — never expose raw Firebase errors */
+    const msg = err?.code === 'permission-denied'
+      ? 'Submission blocked — please check your connection and try again.'
+      : err?.code === 'unavailable'
+      ? 'Network unavailable. Please check your connection and retry.'
+      : 'Submission sent — verification pending.';
+    showToast(msg);
   }
 }
 
