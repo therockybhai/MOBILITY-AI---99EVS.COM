@@ -18,26 +18,30 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 <script>
-/* ══════════════════════════════════════════
-   FIREBASE CONFIG — replace with real values
-   from Firebase Console → Project Settings
-══════════════════════════════════════════ */
-/* ── FIREBASE CONFIG — updated by v3.3 engine init ── */
-/* Real config is applied inside the engine script below. */
-/* Placeholder kept to avoid parse errors during load.   */
-/* ── HEAD CONFIG — intentionally minimal; real config injected by engine §1 below.
-   DO NOT put real apiKey here — engine block below owns initialization.        */
-const firebaseConfig = {
+/* ════════════════════════════════════════════════════════════════
+   99EVs FIREBASE CONFIG — SINGLE SOURCE OF TRUTH
+   Paste your 3 values from:
+   Firebase Console → Project Settings → Your apps → SDK setup
+   ════════════════════════════════════════════════════════════════ */
+var firebaseConfig = {
   apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
   authDomain:        "evs-production.firebaseapp.com",
   projectId:         "evs-production",
-  storageBucket:     "evs-production.firebasestorage.app",
+  storageBucket:     "evs-production.appspot.com",
   messagingSenderId: "775112664706",
   appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
 };
-/* Guard: only init here if engine block hasn't fired yet (should not happen in prod) */
-if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-/* window.db / window.storage / window.auth are set by the engine §1 block below */
+/* ── Initialize Firebase with config above ──
+   window.auth / window.db / window.storage are assigned here, then
+   re-confirmed by engine §1 further down. */
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+window.db      = firebase.firestore();
+window.storage = firebase.storage();
+window.auth    = firebase.auth();
+console.log('[99EVs] ✓ Head init done | project:', firebase.app().options.projectId,
+            '| apiKey prefix:', (firebase.app().options.apiKey||'').slice(0,8));
 </script>
 
 <!-- EmailJS — founder notification delivery -->
@@ -1332,87 +1336,45 @@ const GEO_CLOCK = {
 
 /* ── §1 FIREBASE INIT — expose as window globals ─────────────── */
 /* ════════════════════════════════════════════════════════════════
-   §1  FIREBASE PRODUCTION CONFIG
+   §1  FIREBASE INIT — single authoritative initialization
    ─────────────────────────────────────────────────────────────
-   REQUIRED ACTION: paste your real values from:
-     Firebase Console → Project Settings → Your apps → SDK setup
+   RULES:
+     1. firebaseConfig is defined in the head <script> block above
+     2. initializeApp() is called exactly once — here, nowhere else
+     3. window.auth / window.db / window.storage bound synchronously
+     4. No async deletion, no option patching, no duplication
    ════════════════════════════════════════════════════════════════ */
-const _firebaseConfig = {
-  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
-  authDomain:        "evs-production.firebaseapp.com",
-  projectId:         "evs-production",
-  storageBucket:     "evs-production.firebasestorage.app",
-  messagingSenderId: "775112664706",
-  appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
-};
 
-/* ── §1 Config loaded — debug log only, never blocks UI ── */
-console.log('[99EVs] Firebase config:', _firebaseConfig.projectId, '/', _firebaseConfig.authDomain);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  console.warn('[99EVs §1] firebase.apps.length=' + firebase.apps.length + ' before engine init — duplicate initializeApp detected. Fix: ensure no other script calls initializeApp.');
+}
 
-/* ── §1 Firebase app initialisation ── */
-/* STEP 9 FIX: single authoritative init path.
-   Head-level block uses __PENDING__ sentinel so apps.length === 1 but with bad key.
-   We delete it and re-init with real config unconditionally. */
-(function initFirebaseProduction(cfg) {
-  /* Assign all three globals from the current firebase app */
-  function assignGlobals() {
-    window.db      = firebase.firestore();
-    window.storage = firebase.storage();
-    window.auth    = firebase.auth();
-    console.log('[99EVs] Firebase ready. Auth:', !!window.auth, '| Project:', firebase.app().options.projectId);
+window.db      = firebase.firestore();
+window.storage = firebase.storage();
+window.auth    = firebase.auth();
+
+/* §1 Audit log — visible in browser devtools on every page load */
+(function() {
+  var opts = firebase.app().options;
+  var keyOk = typeof opts.apiKey === 'string' && opts.apiKey.length > 10 && opts.apiKey.indexOf('REPLACE') === -1;
+  console.group('[99EVs §1] Firebase init audit');
+  console.log('apps.length    :', firebase.apps.length);
+  console.log('projectId      :', opts.projectId);
+  console.log('authDomain     :', opts.authDomain);
+  console.log('storageBucket  :', opts.storageBucket);
+  console.log('apiKey valid   :', keyOk);
+  console.log('window.auth    :', !!window.auth);
+  console.log('window.db      :', !!window.db);
+  console.log('window.storage :', !!window.storage);
+  if (!keyOk) {
+    console.error('[99EVs §1] ✗ apiKey is missing or still a placeholder. Replace firebaseConfig.apiKey in the head <script> block. OTP will fail with auth/api-key-not-valid until this is done.');
+  } else {
+    console.log('[99EVs §1] ✓ Firebase ready for Phone OTP');
   }
-
-  const staleKeys = ['__PENDING__', 'Added', 'AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd', ''];
-
-  /* Case 1: no app initialized at all */
-  if (!firebase.apps.length) {
-    firebase.initializeApp(cfg);
-    assignGlobals();
-    return;
-  }
-
-  const currentKey = (firebase.app().options.apiKey || '');
-
-  /* Case 2: existing app already has a real (non-placeholder) key — just assign */
-  if (!staleKeys.includes(currentKey)) {
-    assignGlobals();
-    return;
-  }
-
-  /* Case 3: existing app has a placeholder key — replace it.
-     The compat SDK does not support synchronous app deletion.
-     Workaround: directly overwrite the internal options on the existing app,
-     then re-acquire service instances so they use the new key. */
-  try {
-    const app = firebase.app();
-    /* Overwrite config fields directly on the compat app object */
-    if (app.options) {
-      app.options.apiKey            = cfg.apiKey;
-      app.options.messagingSenderId = cfg.messagingSenderId;
-      app.options.appId             = cfg.appId;
-    }
-    /* Also patch the underlying native app if accessible */
-    if (app._delegate && app._delegate.options) {
-      app._delegate.options.apiKey            = cfg.apiKey;
-      app._delegate.options.messagingSenderId = cfg.messagingSenderId;
-      app._delegate.options.appId             = cfg.appId;
-    }
-    assignGlobals();
-    console.log('[99EVs] Firebase config patched in-place with production keys.');
-  } catch(patchErr) {
-    /* Patch failed — last resort: delete async then re-init.
-       window.auth will be available once the promise resolves (~10ms). */
-    console.warn('[99EVs] Inline patch failed, using async re-init:', patchErr.message);
-    firebase.app().delete().then(() => {
-      firebase.initializeApp(cfg);
-      assignGlobals();
-    }).catch(e2 => {
-      /* Already deleted or other error — attempt init anyway */
-      try { firebase.initializeApp(cfg); } catch(_) {}
-      assignGlobals();
-    });
-  }
-})(_firebaseConfig);
+  console.groupEnd();
+})();
 
 /* Firestore helpers — always use window.db so re-init is picked up */
 const FS  = () => window.db;
@@ -1704,10 +1666,15 @@ async function uploadEvidencePhotos(submissionId, photos) {
 function otpShow() {
   const overlay = document.getElementById('otp-overlay');
   if (overlay) overlay.style.display = 'flex';
-  /* STEP 8: Runtime debug logs */
-  try { console.log('[99EVs] Firebase initialized:', firebase.app().options); } catch(e) { console.warn('[99EVs] firebase.app() failed:', e); }
-  console.log('[99EVs] Auth ready:', window.auth);
-  console.log('[99EVs] Recaptcha ready:', window.recaptchaVerifier);
+  /* Auth readiness assertion — catches init timing issues at runtime */
+  if (!window.auth) {
+    console.error('[99EVs] window.auth not ready — running emergency bind');
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    window.auth = firebase.auth();
+  }
+  console.log('[99EVs] otpShow | auth:', !!window.auth,
+              '| apiKey prefix:', (firebase.app().options.apiKey||'').slice(0,8),
+              '| recaptcha:', !!window.recaptchaVerifier);
   /* Pre-warm invisible reCAPTCHA so Send OTP fires instantly */
   if (!window.recaptchaVerifier) {
     try {
@@ -1744,7 +1711,7 @@ async function otpSendCode() {
     await window.recaptchaVerifier.render();
   }
   try {
-    _otpConfirmResult = await (window.auth || auth).signInWithPhoneNumber(phoneE164, window.recaptchaVerifier);
+    _otpConfirmResult = await window.auth.signInWithPhoneNumber(phoneE164, window.recaptchaVerifier);
     document.getElementById('otp-sent-to').textContent = phoneE164;
     document.getElementById('otp-phone-section').style.display  = 'none';
     document.getElementById('otp-verify-section').style.display = 'block';
