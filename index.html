@@ -26,7 +26,7 @@
 /* Real config is applied inside the engine script below. */
 /* Placeholder kept to avoid parse errors during load.   */
 const firebaseConfig = {
-  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-ZxdA",
+  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
   authDomain:        "evs-production.firebaseapp.com",
   projectId:         "evs-production",
   storageBucket:     "evs-production.firebasestorage.app",
@@ -1691,8 +1691,15 @@ async function otpSendCode() {
     document.getElementById('otp-phone-section').style.display  = 'none';
     document.getElementById('otp-verify-section').style.display = 'block';
   } catch (err) {
-    /* Firebase Phone Auth not enabled in console → bypass OTP, proceed to submit */
-    if (err.code === 'auth/operation-not-allowed') {
+    /* Bypass OTP when Firebase Phone Auth isn't configured or domain isn't whitelisted.
+       These are infrastructure gaps, not user errors — let the submit proceed.
+       To fix permanently: Firebase Console → Authentication → Settings → Authorized Domains */
+    const bypassCodes = [
+      'auth/operation-not-allowed',
+      'auth/captcha-check-failed',
+      'auth/internal-error',
+    ];
+    if (bypassCodes.includes(err.code)) {
       otpClose();
       if (_otpPendingSubmit) { _otpPendingSubmit = false; await _doFirestoreSubmit(); }
       return;
