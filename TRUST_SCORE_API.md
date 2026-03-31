@@ -125,3 +125,10 @@ Adjusted Valuation Band
 Trust Score adjusted using:
 
 Inspector Reliability Multiplier
+---
+
+## Fraud Risk Adjustment
+
+Final Trust Score adjusted using:
+
+Inspection Fraud Risk Score
