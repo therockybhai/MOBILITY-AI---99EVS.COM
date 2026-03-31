@@ -143,3 +143,14 @@ latest Trust Score
 previous Trust Score
 
 confidence evolution direction
+---
+
+## Predictive Risk Forecast Exposure
+
+Trust Score API returns:
+
+confidence decay projection
+
+service-risk forecast
+
+battery replacement forecast
