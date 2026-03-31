@@ -128,3 +128,8 @@ confidence declining
 ## Predictive Forecast Integration
 
 Lifecycle trend outputs feed directly into PRFL prediction models.
+---
+
+## Machine Identity Integration
+
+Lifecycle intelligence tracked per Machine Lifecycle ID.
