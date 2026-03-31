@@ -202,3 +202,8 @@ Primary Risk Driver
 Recommended Action Signal
 
 Confidence Stability Indicator
+---
+
+## Intelligence Orchestration Reference
+
+Machine Lifecycle ID used as orchestration anchor for unified intelligence computation.
