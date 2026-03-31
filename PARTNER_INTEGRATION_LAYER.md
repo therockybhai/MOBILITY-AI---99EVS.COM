@@ -187,3 +187,18 @@ controller diagnostics
 motor stability signals
 
 severity classification
+---
+
+## Machine Intelligence Endpoint
+
+/api/machine-intelligence?mlil-id={mlil-id}
+
+Returns:
+
+Unified Machine Intelligence Score
+
+Primary Risk Driver
+
+Recommended Action Signal
+
+Confidence Stability Indicator
