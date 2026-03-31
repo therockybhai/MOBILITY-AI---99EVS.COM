@@ -149,3 +149,15 @@ battery replacement forecast window
 mechanical service risk forecast
 
 recommended resale timing
+---
+
+## Orchestration Metadata
+
+Certificates include:
+
+Unified Machine Intelligence Score
+
+Primary Risk Driver
+
+Recommended Action Signal
+
