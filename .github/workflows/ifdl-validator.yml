@@ -1,0 +1,20 @@
+name: Inspection Fraud Detection Layer Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ifdl-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate IFDL presence
+        run: |
+          if [ -f INSPECTION_FRAUD_DETECTION_LAYER.md ]; then
+            echo "IFDL module ready"
+          else
+            echo "Missing IFDL module"
+            exit 1
+          fi
