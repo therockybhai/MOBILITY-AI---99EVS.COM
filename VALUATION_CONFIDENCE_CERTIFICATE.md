@@ -160,4 +160,11 @@ Unified Machine Intelligence Score
 Primary Risk Driver
 
 Recommended Action Signal
+---
 
+## Policy Context Metadata
+
+Certificates include:
+
+policy-adjusted acceptance classification
+partner compatibility indicator
