@@ -121,3 +121,14 @@ recommended resale soon
 hold vehicle
 
 sell immediately
+---
+
+## Event-Based Prediction Signals
+
+Predictive risk models include:
+
+fault frequency
+
+component replacement timeline
+
+service interval variance
