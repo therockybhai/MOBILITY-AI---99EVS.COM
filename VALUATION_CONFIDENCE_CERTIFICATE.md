@@ -127,3 +127,14 @@ Each certificate includes:
 Inspector Reliability Tier
 
 Inspector Trust Score
+---
+
+## Lifecycle Intelligence Metadata
+
+Certificates include:
+
+previous inspection reference
+
+Trust Score trend indicator
+
+battery degradation trend
