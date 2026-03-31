@@ -1,0 +1,20 @@
+name: Inspector Reliability Index Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  iri-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate IRI presence
+        run: |
+          if [ -f INSPECTOR_RELIABILITY_INDEX.md ]; then
+            echo "IRI module ready"
+          else
+            echo "Missing IRI module"
+            exit 1
+          fi
