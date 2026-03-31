@@ -142,3 +142,18 @@ mechanical service forecast
 confidence decay projection
 
 resale timing recommendation
+---
+
+## Machine Identity Endpoint
+
+/api/machine-identity?mlil-id={mlil-id}
+
+Returns:
+
+inspection timeline
+
+certificate chain
+
+Trust Score evolution
+
+risk forecast history
