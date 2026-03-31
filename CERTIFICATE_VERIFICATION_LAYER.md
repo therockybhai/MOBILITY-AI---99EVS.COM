@@ -134,4 +134,8 @@ valuation band
 Certificates flagged with high fraud risk display:
 
 Audit Warning Status
+---
 
+## Machine Identity Verification Reference
+
+Each certificate linked to Machine Lifecycle ID.
