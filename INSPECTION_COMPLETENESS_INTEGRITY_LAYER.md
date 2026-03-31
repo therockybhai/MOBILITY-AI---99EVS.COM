@@ -90,3 +90,10 @@ reduce confidence by 15%
 If completeness < 60%
 
 reduce confidence by 30%
+---
+
+## Inspector Reliability Adjustment
+
+Final inspection integrity score adjusted using:
+
+Inspector Reliability Multiplier
