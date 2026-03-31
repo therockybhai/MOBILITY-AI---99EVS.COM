@@ -65,7 +65,7 @@ voltage stability
 charging response
 age factor
 
-Battery score = average(inputs)
+Battery score = Battery Risk Index normalized value
 
 ---
 
