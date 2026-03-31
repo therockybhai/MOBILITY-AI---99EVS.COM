@@ -132,3 +132,14 @@ Inspector Reliability Multiplier
 Final Trust Score adjusted using:
 
 Inspection Fraud Risk Score
+---
+
+## Lifecycle Trend Integration
+
+Trust Score API returns:
+
+latest Trust Score
+
+previous Trust Score
+
+confidence evolution direction
