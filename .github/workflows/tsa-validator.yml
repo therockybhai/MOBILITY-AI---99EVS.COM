@@ -1,0 +1,20 @@
+name: Trust Score API Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tsa-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate TSA presence
+        run: |
+          if [ -f TRUST_SCORE_API.md ]; then
+            echo "Trust Score API ready"
+          else
+            echo "Missing TSA module"
+            exit 1
+          fi
