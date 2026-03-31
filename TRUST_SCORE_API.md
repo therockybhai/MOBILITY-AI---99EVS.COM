@@ -118,3 +118,10 @@ Mechanical Reliability Category
 Inspection Integrity Level
 
 Adjusted Valuation Band
+---
+
+## Inspector Reliability Integration
+
+Trust Score adjusted using:
+
+Inspector Reliability Multiplier
