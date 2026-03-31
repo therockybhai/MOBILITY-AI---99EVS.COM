@@ -157,3 +157,18 @@ certificate chain
 Trust Score evolution
 
 risk forecast history
+---
+
+## Machine Event Timeline Endpoint
+
+/api/machine-events?mlil-id={mlil-id}
+
+Returns:
+
+event history
+
+component replacements
+
+service timeline
+
+fault registry
