@@ -96,3 +96,16 @@ Inspection Integrity Status
 Adjusted Valuation Range
 
 Certification Band
+---
+
+## Verification Layer Integration
+
+Each VCC certificate includes:
+
+Certificate ID
+
+Verification URL
+
+QR validation reference
+
+Certificate lifecycle status
