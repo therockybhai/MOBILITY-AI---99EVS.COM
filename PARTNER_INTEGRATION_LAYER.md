@@ -105,3 +105,10 @@ Finance tier:
 inspection status API
 
 partner authentication readiness
+---
+
+## Trust Score API Exposure
+
+Partners may retrieve unified vehicle trust signal via:
+
+/api/trust-score endpoint
