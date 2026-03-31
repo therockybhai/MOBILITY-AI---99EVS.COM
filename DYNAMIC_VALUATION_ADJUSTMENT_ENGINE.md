@@ -1,0 +1,167 @@
+# 99EVS Dynamic Valuation Adjustment Engine (DVAE)
+
+Purpose:
+
+Adjust vehicle resale valuation dynamically using inspection confidence,
+battery reliability, mechanical reliability, and market signals.
+
+Outputs:
+
+Adjusted valuation band
+Confidence-weighted price range
+Risk-adjusted pricing multiplier
+---
+
+## Adjustment Inputs
+
+Battery Risk Index (BRI)
+
+Mechanical Reliability Index (MRI)
+
+Inspection Completeness Integrity Layer (ICIL)
+
+Cosmetic Condition Score
+
+Accessory Completeness Score
+---
+
+## Confidence Multiplier Logic
+
+Confidence ≥ 90%
+
+Multiplier = 1.00
+No adjustment required
+
+
+Confidence 75–89%
+
+Multiplier = 0.95
+
+
+Confidence 60–74%
+
+Multiplier = 0.85
+
+
+Confidence < 60%
+
+Multiplier = 0.70
+---
+
+## Battery Risk Adjustment
+
+Very Low Risk
+
+No adjustment
+
+
+Low Risk
+
+Reduce valuation by 3%
+
+
+Moderate Risk
+
+Reduce valuation by 8%
+
+
+High Risk
+
+Reduce valuation by 20%
+---
+
+## Mechanical Reliability Adjustment
+
+Very Low Risk
+
+No adjustment
+
+
+Low Risk
+
+Reduce valuation by 2%
+
+
+Moderate Risk
+
+Reduce valuation by 7%
+
+
+High Risk
+
+Reduce valuation by 18%
+---
+
+## Vehicle Age Adjustment Curve
+
+0–1 years
+
+Multiplier = 1.00
+
+
+1–3 years
+
+Multiplier = 0.92
+
+
+3–5 years
+
+Multiplier = 0.80
+
+
+5–8 years
+
+Multiplier = 0.65
+
+
+Above 8 years
+
+Multiplier = 0.50
+---
+
+## Market Demand Adjustment
+
+High demand city
+
+Increase valuation by 5%
+
+
+Medium demand city
+
+No change
+
+
+Low demand city
+
+Reduce valuation by 6%
+---
+
+## Final Adjusted Valuation Formula
+
+Adjusted Value =
+
+Base Market Value
+
+×
+
+Confidence Multiplier
+
+×
+
+Battery Adjustment Factor
+
+×
+
+Mechanical Adjustment Factor
+
+×
+
+Vehicle Age Factor
+
+×
+
+Market Demand Factor
+
+Market Stability Score
+
+Vehicle Age Factor
