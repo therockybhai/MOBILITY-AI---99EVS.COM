@@ -83,3 +83,10 @@ multiplier = 0.75
 reinspection variance deviation
 
 inspection turnaround time
+---
+
+## Fraud Signal Feedback Loop
+
+Repeated fraud-risk inspections reduce:
+
+Inspector Reliability Score
