@@ -154,3 +154,9 @@ confidence decay projection
 service-risk forecast
 
 battery replacement forecast
+---
+
+## Machine Identity Context
+
+Trust Score retrieved using Machine Lifecycle ID reference.
+
