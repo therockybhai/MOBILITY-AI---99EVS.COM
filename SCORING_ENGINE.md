@@ -79,7 +79,7 @@ braking condition
 suspension condition
 wiring health
 
-Mechanical score = average(all components)
+Mechanical integrity score = Mechanical Reliability Index normalized value
 
 ---
 
