@@ -118,3 +118,12 @@ Each certificate includes:
 99EVS Trust Score
 
 Trust Classification Band
+---
+
+## Inspector Certification Metadata
+
+Each certificate includes:
+
+Inspector Reliability Tier
+
+Inspector Trust Score
