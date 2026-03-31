@@ -138,3 +138,14 @@ previous inspection reference
 Trust Score trend indicator
 
 battery degradation trend
+---
+
+## Predictive Forecast Metadata
+
+Certificates include:
+
+battery replacement forecast window
+
+mechanical service risk forecast
+
+recommended resale timing
