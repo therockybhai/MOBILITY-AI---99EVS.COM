@@ -1,0 +1,20 @@
+name: Vehicle Lifecycle Intelligence Layer Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  vlil-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate VLIL presence
+        run: |
+          if [ -f VEHICLE_LIFECYCLE_INTELLIGENCE_LAYER.md ]; then
+            echo "VLIL module ready"
+          else
+            echo "Missing VLIL module"
+            exit 1
+          fi
