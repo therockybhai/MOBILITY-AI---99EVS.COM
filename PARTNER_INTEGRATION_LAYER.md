@@ -112,3 +112,18 @@ partner authentication readiness
 Partners may retrieve unified vehicle trust signal via:
 
 /api/trust-score endpoint
+---
+
+## Lifecycle Intelligence Endpoint
+
+/api/lifecycle-trend?vehicle-id={vehicle-id}
+
+Returns:
+
+Trust Score trend
+
+BRI trend
+
+MRI trend
+
+confidence evolution status
