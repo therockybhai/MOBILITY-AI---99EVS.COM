@@ -207,3 +207,16 @@ Confidence Stability Indicator
 ## Intelligence Orchestration Reference
 
 Machine Lifecycle ID used as orchestration anchor for unified intelligence computation.
+---
+
+## Policy Intelligence Endpoint
+
+/api/policy-thresholds?partner-type={partner-type}
+
+Returns:
+
+Trust Score threshold
+
+risk tolerance level
+
+valuation adjustment modifiers
