@@ -133,3 +133,8 @@ Lifecycle trend outputs feed directly into PRFL prediction models.
 ## Machine Identity Integration
 
 Lifecycle intelligence tracked per Machine Lifecycle ID.
+---
+
+## Event Timeline Influence
+
+Lifecycle trend calculations include machine event history signals.
