@@ -127,4 +127,11 @@ confidence score
 inspection integrity level
 
 valuation band
+---
+
+## Fraud-Aware Certificate Verification
+
+Certificates flagged with high fraud risk display:
+
+Audit Warning Status
 
