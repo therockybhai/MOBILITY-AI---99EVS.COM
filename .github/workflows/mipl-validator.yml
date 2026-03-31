@@ -1,0 +1,20 @@
+name: Machine Intelligence Policy Layer Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  mipl-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate MIPL presence
+        run: |
+          if [ -f MACHINE_INTELLIGENCE_POLICY_LAYER.md ]; then
+            echo "MIPL module ready"
+          else
+            echo "Missing MIPL module"
+            exit 1
+          fi
