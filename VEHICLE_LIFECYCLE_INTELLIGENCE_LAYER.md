@@ -123,3 +123,8 @@ confidence improving
 confidence stable
 
 confidence declining
+---
+
+## Predictive Forecast Integration
+
+Lifecycle trend outputs feed directly into PRFL prediction models.
