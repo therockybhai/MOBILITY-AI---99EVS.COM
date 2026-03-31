@@ -1,0 +1,20 @@
+name: Machine Lifecycle Identity Layer Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  mlil-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate MLIL presence
+        run: |
+          if [ -f MACHINE_LIFECYCLE_IDENTITY_LAYER.md ]; then
+            echo "MLIL module ready"
+          else
+            echo "Missing MLIL module"
+            exit 1
+          fi
