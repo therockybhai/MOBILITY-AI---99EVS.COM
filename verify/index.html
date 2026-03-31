@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Verify Certificate</title>
+
+</head>
+
+<body>
+
+<h2>Certificate Verification</h2>
+
+<input id="certId" placeholder="Enter Certificate ID"/>
+
+<button onclick="verify()">Verify</button>
+
+<p id="result"></p>
+
+<script>
+
+async function verify() {
+
+const id = document.getElementById("certId").value;
+
+const response = await fetch(`/api/verify-certificate?id=${id}`);
+
+const data = await response.json();
+
+document.getElementById("result").innerText =
+
+JSON.stringify(data, null, 2);
+
+}
+
+</script>
+
+</body>
+
+</html>
