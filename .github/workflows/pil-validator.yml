@@ -1,0 +1,21 @@
+name: Partner Integration Layer Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pil-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate PIL presence
+        run: |
+          if [ -f PARTNER_INTEGRATION_LAYER.md ]; then
+            echo "Partner Integration Layer ready"
+          else
+            echo "Missing PIL module"
+            exit 1
+          fi
+          
