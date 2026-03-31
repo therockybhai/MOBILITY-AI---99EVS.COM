@@ -109,3 +109,12 @@ Verification URL
 QR validation reference
 
 Certificate lifecycle status
+---
+
+## Trust Score Certificate Integration
+
+Each certificate includes:
+
+99EVS Trust Score
+
+Trust Classification Band
