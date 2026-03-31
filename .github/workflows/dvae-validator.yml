@@ -1,0 +1,20 @@
+name: DVAE Engine Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dvae-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate DVAE presence
+        run: |
+          if [ -f DYNAMIC_VALUATION_ADJUSTMENT_ENGINE.md ]; then
+            echo "DVAE module ready"
+          else
+            echo "Missing DVAE module"
+            exit 1
+          fi
