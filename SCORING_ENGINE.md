@@ -141,3 +141,14 @@ Scale:
 high demand = 1
 medium demand = 0.75
 low demand = 0.5
+---
+
+## Inspection Integrity Adjustment Layer
+
+Final confidence % =
+
+base confidence %
+
+×
+
+inspection completeness adjustment factor
