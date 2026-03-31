@@ -172,3 +172,18 @@ component replacements
 service timeline
 
 fault registry
+---
+
+## Telemetry Intelligence Endpoint
+
+/api/telemetry-status?mlil-id={mlil-id}
+
+Returns:
+
+battery telemetry alerts
+
+controller diagnostics
+
+motor stability signals
+
+severity classification
