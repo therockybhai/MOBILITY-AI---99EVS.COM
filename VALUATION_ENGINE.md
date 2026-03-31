@@ -22,3 +22,12 @@ condition_adjustment
 battery_adjustment
 market_adjustment
 confidence_index
+---
+
+## Dynamic Valuation Adjustment Integration
+
+Final resale valuation =
+
+base valuation
+
+adjusted using DVAE multipliers
