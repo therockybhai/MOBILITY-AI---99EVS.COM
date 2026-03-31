@@ -132,3 +132,14 @@ fault frequency
 component replacement timeline
 
 service interval variance
+---
+
+## Telemetry-Based Prediction Signals
+
+Predictive risk models incorporate:
+
+battery telemetry drift
+
+controller diagnostics
+
+motor thermal variance
