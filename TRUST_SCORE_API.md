@@ -164,3 +164,8 @@ Trust Score retrieved using Machine Lifecycle ID reference.
 ## Telemetry Adjustment Signals
 
 Trust Score dynamically adjusted using telemetry anomaly severity levels.
+---
+
+## Orchestration Integration
+
+Trust Score adjusted using MIOL unified intelligence signals.
