@@ -127,3 +127,18 @@ BRI trend
 MRI trend
 
 confidence evolution status
+---
+
+## Predictive Forecast Endpoint
+
+/api/predictive-risk?vehicle-id={vehicle-id}
+
+Returns:
+
+battery replacement forecast
+
+mechanical service forecast
+
+confidence decay projection
+
+resale timing recommendation
