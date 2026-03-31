@@ -110,3 +110,8 @@ stable confidence
 moderate fluctuation
 
 high uncertainty
+---
+
+## Policy Governance Integration
+
+MIOL intelligence outputs adjusted using MIPL policy configuration rules.
