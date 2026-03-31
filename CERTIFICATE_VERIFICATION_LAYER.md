@@ -109,3 +109,22 @@ valuation band
 Example:
 
 99EVS-2026-E2W-AX91K2
+
+---
+
+## Partner Verification Integration
+
+Partner systems may validate certificates via:
+
+/api/verify-certificate endpoint
+
+Verification returns:
+
+certificate status
+
+confidence score
+
+inspection integrity level
+
+valuation band
+
