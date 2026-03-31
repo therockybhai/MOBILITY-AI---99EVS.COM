@@ -1,0 +1,20 @@
+name: Inspection Integrity Layer Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  integrity-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate ICIL presence
+        run: |
+          if [ -f INSPECTION_COMPLETENESS_INTEGRITY_LAYER.md ]; then
+            echo "ICIL module ready"
+          else
+            echo "Missing ICIL module"
+            exit 1
+          fi
