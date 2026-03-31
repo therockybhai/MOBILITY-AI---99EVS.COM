@@ -1,0 +1,20 @@
+name: Inspection Intelligence Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspection-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate inspection pipeline file
+        run: |
+          if [ -f INSPECTION_PIPELINE.md ]; then
+            echo "Inspection pipeline ready"
+          else
+            echo "Inspection pipeline missing"
+            exit 1
+          fi
