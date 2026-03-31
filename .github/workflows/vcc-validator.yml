@@ -1,0 +1,20 @@
+name: Valuation Confidence Certificate Validator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  certificate-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate VCC presence
+        run: |
+          if [ -f VALUATION_CONFIDENCE_CERTIFICATE.md ]; then
+            echo "VCC module ready"
+          else
+            echo "Missing VCC module"
+            exit 1
+          fi
