@@ -82,3 +82,8 @@ dealer custody
 financier custody
 
 private ownership changes
+---
+
+## Event Timeline Integration
+
+Machine Lifecycle ID stores event timeline using MELL registry.
