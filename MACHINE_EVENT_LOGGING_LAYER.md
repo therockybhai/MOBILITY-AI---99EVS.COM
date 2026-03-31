@@ -114,3 +114,8 @@ battery replacement
 Critical Impact
 
 major drivetrain failure
+---
+
+## Telemetry Event Integration
+
+Telemetry anomalies generate automatic machine events inside MELL registry.
