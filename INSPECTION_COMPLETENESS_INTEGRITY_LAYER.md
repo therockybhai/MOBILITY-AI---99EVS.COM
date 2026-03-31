@@ -97,3 +97,10 @@ reduce confidence by 30%
 Final inspection integrity score adjusted using:
 
 Inspector Reliability Multiplier
+---
+
+## Fraud Detection Adjustment Layer
+
+Inspection Integrity Score adjusted using:
+
+Inspection Fraud Risk Score
