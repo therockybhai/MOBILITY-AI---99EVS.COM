@@ -169,3 +169,9 @@ Trust Score dynamically adjusted using telemetry anomaly severity levels.
 ## Orchestration Integration
 
 Trust Score adjusted using MIOL unified intelligence signals.
+---
+
+## Policy-Aware Trust Score Output
+
+Trust Score API returns partner-adjusted Trust Score thresholds based on policy layer.
+
