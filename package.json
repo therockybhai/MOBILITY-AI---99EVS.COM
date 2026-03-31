@@ -1,0 +1,24 @@
+{
+  "name": "mobility-ai",
+  "version": "1.0.0",
+  "main": "ChatComponent.js",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/therockybhai/MOBILITY-AI---99EVS.COM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/therockybhai/MOBILITY-AI---99EVS.COM/issues"
+  },
+  "homepage": "https://github.com/therockybhai/MOBILITY-AI---99EVS.COM#readme",
+  "description": "",
+  "devDependencies": {
+    "@vitest/ui": "^4.1.2",
+    "vitest": "^4.1.2"
+  }
+}

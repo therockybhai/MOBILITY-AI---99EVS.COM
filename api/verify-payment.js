@@ -11,10 +11,11 @@
  *
  * HOW IT WORKS (Phase 1 — Manual Review):
  * - User submits UPI transaction ID + email + plan
- * - API stores it in a log and sends founder an email alert
+ * - API stores it in a log (visible in Vercel logs)
  * - API responds with { verified: true } so user gets Pro access immediately
  * - Founder reviews UPI app to confirm real payment happened
  * - If payment is fraudulent, founder can revoke access manually
+ * - Note: Email alerts are currently disabled; founder reviews logs manually.
  *
  * HOW IT WORKS (Phase 2 — Razorpay):
  * - Integrate Razorpay webhook (see below)
@@ -80,7 +81,7 @@ export default async function handler(req, res) {
     console.log('[PAYMENT LOG]', JSON.stringify(logEntry));
 
     // ── Email notification to founder (optional) ────────────
-    // Uncomment and configure when you add an email service
+    // Currently disabled. Enable when an email service is integrated.
     // await sendFounderAlert(logEntry);
 
     // ── Phase 1: Trust & activate (manual review model) ─────
@@ -135,7 +136,7 @@ export default async function handler(req, res) {
 /*
  * ════════════════════════════════════════════════════════════
  * FOUNDER TOOLS
- * ════════════════════════════════════════════════════════════
+ * ════════════════════════════════════════────────────────────
  *
  * To see all pending transactions in the browser console:
  *   window.viewPendingPayments()

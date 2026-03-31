@@ -46,8 +46,8 @@ export default async function handler(req, res) {
 
 // Simple JWT-like token creator (no external library needed)
 function createToken(payload, secret) {
-  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-  const body = btoa(JSON.stringify({ ...payload, exp: Date.now() + 3600000 })); // 1hr
+  const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
+  const body = Buffer.from(JSON.stringify({ ...payload, exp: Date.now() + 3600000 })).toString('base64url'); // 1hr
   const signature = simpleHash(header + '.' + body + secret);
   return header + '.' + body + '.' + signature;
 }
