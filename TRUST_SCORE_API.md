@@ -159,4 +159,8 @@ battery replacement forecast
 ## Machine Identity Context
 
 Trust Score retrieved using Machine Lifecycle ID reference.
+---
 
+## Telemetry Adjustment Signals
+
+Trust Score dynamically adjusted using telemetry anomaly severity levels.
