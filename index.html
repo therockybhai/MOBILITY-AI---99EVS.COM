@@ -543,57 +543,44 @@ try{
         <div class="mob-tag" onclick="openMobCategory('truck')"><span class="m-ico">🚛</span>Trucks</div>
         <div class="mob-tag" onclick="openMobCategory('bus')"><span class="m-ico">🚌</span>Buses</div>
         <div class="mob-tag" onclick="openMobCategory('tractor')"><span class="m-ico">🚜</span>Tractors</div>
-        <div class="mob-tag" onclick="openMobCategory('train')"><span class="m-ico">🚅</span>Rail</div>
-        <div class="mob-tag" onclick="openMobCategory('ship')"><span class="m-ico">⛴️</span>Marine</div>
-        <div class="mob-tag" onclick="openMobCategory('heli')"><span class="m-ico">🚁</span>Aviation</div>
-        <div class="mob-tag" onclick="openMobCategory('future')"><span class="m-ico">🛸</span>Future</div>
+        <div class="mob-tag" onclicK
       </div>
 
       <!-- ACTION CARDS -->
-      <div class="hero-actions">
-        <div class="action-card" onclick="showPage('engine')">
-          <span class="ac-ico">🚗</span>
-          <div class="ac-label">Onboard Vehicle</div>
-          <div class="ac-sub">Start progressive scoring pipeline immediately on submission.</div>
-          <span class="ac-arrow">Start PVIS →</span>
-        </div>
-        <div class="action-card" onclick="showPage('dashboard')">
-          <span class="ac-ico">📊</span>
-          <div class="ac-label">Live Score Dashboard</div>
-          <div class="ac-sub">View real-time trust scores, phase status, and certificates.</div>
-          <span class="ac-arrow">View Scores →</span>
-        </div>
-        <div class="action-card" onclick="demoInspection()">
-          <span class="ac-ico">🔬</span>
-          <div class="ac-label">Inspection Pipeline</div>
-          <div class="ac-sub">Request inspection — adds 30% weight to trust score automatically.</div>
-          <span class="ac-arrow">Request →</span>
-        </div>
-        <div class="action-card" onclick="demoCertificate()">
-          <span class="ac-ico">🏅</span>
-          <div class="ac-label">Trust Certificate</div>
-          <div class="ac-sub">Auto-generated when trustScore exceeds 60. Scan to verify.</div>
-          <span class="ac-arrow">View Cert →</span>
-        </div>
-      </div>
+      <div class="action-card" onclick="openSegmentDetails('walking')">
+  <span class="ac-ico">🚶</span>
+  <div class="ac-label">Start with Walking</div>
+  <div class="ac-sub">Begin from the first mobility layer.</div>
+  <span class="ac-arrow">Explore →</span>
+</div>
 
-      <div class="hero-trust">
-        <div class="ht-item"><span>✓</span> 15-phase scoring pipeline</div>
-        <div class="ht-item"><span>✓</span> Firestore real-time sync</div>
-        <div class="ht-item"><span>✓</span> Auto-certificate at trust &gt; 60</div>
-        <div class="ht-item"><span>✓</span> Predictive forecast engine</div>
-        <div class="ht-item"><span>✓</span> Zero brokerage</div>
-      </div>
-    </div>
-  </section>
+<div class="action-card" onclick="openSegmentDetails('cycles')">
+  <span class="ac-ico">🚲</span>
+  <div class="ac-label">Move to Cycles</div>
+  <div class="ac-sub">Build balance and independent mobility.</div>
+  <span class="ac-arrow">Explore →</span>
+</div>
 
+<div class="action-card" onclick="openSegmentDetails('cars')">
+  <span class="ac-ico">🚗</span>
+  <div class="ac-label">Explore Cars</div>
+  <div class="ac-sub">Comfortable structured personal travel.</div>
+  <span class="ac-arrow">Explore →</span>
+</div>
+
+<div class="action-card" onclick="openSegmentDetails('garage')">
+  <span class="ac-ico">🛠</span>
+  <div class="ac-label">Setup Garage</div>
+  <div class="ac-sub">Start your mobility infrastructure journey.</div>
+  <span class="ac-arrow">Explore →</span>
+</div>
   <!-- ══════════════════════════════════════════════════════
        MIEI v2 — BLOCK 1: Mobility AI Entry Chat
   ══════════════════════════════════════════════════════ -->
   <section class="miei-block" id="miei-chat-block">
     <div class="miei-inner">
       <div class="miei-eyebrow">Mobility AI Entry Interface</div>
-      <h2 class="miei-headline">Tell me what you're exploring today.</h2>
+      <h2 class="miei-headline">Ask before your next move.</h2>
       <p class="miei-subtext">Vehicles. Value. Safety. Inspection. Ownership. Future mobility.</p>
 
       <!-- Chat input -->
@@ -628,6 +615,40 @@ try{
       </div>
     </div>
   </section>
+  <section class="miei-block" id="miei-chat-block">
+      <section id="segment-details-panel" style="display:none;max-width:820px;margin:40px auto;padding:24px;background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg)">
+
+<h2 id="segment-title">Mobility Layer</h2>
+
+<p id="segment-body">
+Select a mobility segment above to explore its intelligence layer.
+</p>
+
+<div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+
+<button onclick="openMobilityAssistant()" class="btn-primary">
+Continue conversation
+</button>
+
+<select onchange="openSegmentDetails(this.value)" class="input">
+
+<option>Change mobility segment</option>
+
+<option value="walking">Walking</option>
+<option value="cycles">Cycles</option>
+<option value="scooters">Scooters</option>
+<option value="bikes">Bikes</option>
+<option value="auto">Auto</option>
+<option value="cars">Cars</option>
+<option value="garage">Garage setup</option>
+<option value="accessories">Accessories</option>
+<option value="inspection">Inspection support</option>
+
+</select>
+
+</div>
+
+</section>
 
   <!-- ══════════════════════════════════════════════════════
        MIEI v2 — BLOCK 2: Mobility Intelligence Layers Explorer
@@ -2327,7 +2348,89 @@ function mieiRenderNextStep(cards){
   `).join('');
 
 }
+window.selectedMobilitySegment = null;
 
+function openSegmentDetails(segment){
+
+selectedMobilitySegment = segment;
+
+const panel = document.getElementById("segment-details-panel");
+
+if(panel){
+panel.style.display = "block";
+panel.scrollIntoView({behavior:"smooth"});
+}
+
+console.log("Segment selected:", segment);
+
+}
+window.selectedMobilitySegment = null;
+
+function openSegmentDetails(segment){
+
+selectedMobilitySegment = segment;
+
+const title = document.getElementById("segment-title");
+const body = document.getElementById("segment-body");
+
+const segmentInfo = {
+
+walking:{
+title:"Walking — The First Mobility Intelligence Layer",
+body:"Walking improves awareness, stability and health. It builds safer mobility decisions before vehicle usage begins."
+},
+
+cycles:{
+title:"Cycles — The First Personal Mobility Layer",
+body:"Cycles introduce balance, independence and sustainable movement before motor mobility."
+},
+
+cars:{
+title:"Cars — Personal Comfort Mobility Layer",
+body:"Cars provide structured travel, safety coverage and family mobility support."
+},
+
+garage:{
+title:"Garage Setup — Mobility Infrastructure Layer",
+body:"Garage setup supports service readiness, diagnostics and lifecycle vehicle maintenance."
+}
+
+};
+
+if(segmentInfo[segment]){
+
+title.innerText = segmentInfo[segment].title;
+
+body.innerText = segmentInfo[segment].body;
+
+}
+
+const panel = document.getElementById("segment-details-panel");
+
+if(panel){
+
+panel.style.display = "block";
+
+panel.scrollIntoView({behavior:"smooth"});
+
+}
+
+console.log("Segment selected:",segment);
+
+}
+function openMobilityAssistant(){
+
+if(!selectedMobilitySegment){
+
+alert("Select a mobility segment first.");
+
+return;
+
+}
+
+openAssistant(selectedMobilitySegment);
+
+}
 /* ── ANALYTICS PIPELINE ── */
 function mieiLogAnalytics(eventType, value){
   if(!window.db) return;
@@ -2338,6 +2441,37 @@ function mieiLogAnalytics(eventType, value){
       page:'homepage'
     });
   }catch(e){}
+}
+window.selectedMobilitySegment = null;
+
+function openSegmentDetails(segment){
+
+selectedMobilitySegment = segment;
+
+const panel = document.getElementById("segment-details-panel");
+
+if(panel){
+panel.style.display = "block";
+panel.scrollIntoView({behavior:"smooth"});
+}
+
+console.log("Segment selected:", segment);
+
+}
+function openMobilityAssistant(){
+
+if(!selectedMobilitySegment){
+
+alert("Select a mobility segment first to continue.");
+
+return;
+
+}
+
+console.log("Launching assistant for:", selectedMobilitySegment);
+
+openAssistant(selectedMobilitySegment);
+
 }
 </script>
 </body>
