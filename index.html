@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Mulish:wght@300;400;500;600;700&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<!-- Firebase SDK v8 — guaranteed load order -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 <style>
 /* ═══════════════════════════════════════════════════════════
@@ -383,77 +383,79 @@ a{color:inherit;text-decoration:none}
 .wc-desc{font-size:12px;color:var(--t2);line-height:1.6}
 @media(max-width:900px){.why-grid{grid-template-columns:repeat(2,1fr)}}
 
-/* ═══════ MCAE v1 — UNIFIED CHAT INTERFACE ═══════ */
-.chat-shell{position:relative;z-index:1;background:var(--navy);border-top:1px solid var(--bd)}
-.chat-layout{display:grid;grid-template-columns:210px 1fr;height:calc(100vh - 62px);max-height:680px}
-.seg-panel{background:var(--navy2);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
-.seg-panel-hdr{padding:14px 14px 10px;border-bottom:1px solid var(--bd);flex-shrink:0}
-.seg-panel-title{font-family:var(--ff);font-size:13px;font-weight:800;color:var(--t1);display:block}
-.seg-panel-sub{font-family:var(--fm);font-size:9px;letter-spacing:.1em;color:var(--t3);display:block;margin-top:2px}
-.seg-list{flex:1;overflow-y:auto;padding:4px 0;scrollbar-width:thin;scrollbar-color:var(--navy3) transparent}
-.seg-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;transition:all .15s;border-left:3px solid transparent}
-.seg-item:hover{background:var(--amber-l);border-left-color:var(--amber)}
-.seg-item.active{background:var(--amber-l);border-left-color:var(--amber)}
-.seg-future:hover,.seg-future.active{background:rgba(124,58,237,.1);border-left-color:var(--violet)}
-.si-ico{font-size:19px;flex-shrink:0;width:26px;text-align:center;line-height:1}
-.si-name{font-family:var(--ff);font-size:12px;font-weight:700;color:var(--t1);line-height:1.2}
-.si-tag{font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.06em;margin-top:1px}
-.seg-item:hover .si-name,.seg-item.active .si-name{color:var(--amber)}
-.seg-future:hover .si-name,.seg-future.active .si-name{color:var(--violet)}
-.seg-fs-row{padding:9px 14px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:6px;flex-shrink:0}
-.sfs-dot{width:7px;height:7px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:background .3s}
-.sfs-dot.live{background:var(--green);animation:pulse 2s infinite}
-.sfs-dot.warn{background:var(--amber)}
-.sfs-txt{font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.05em}
-.chat-window{display:flex;flex-direction:column;overflow:hidden;background:var(--navy)}
-.chat-msgs{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
-.msg{display:flex;gap:9px;animation:fadeUp .2s both}
-.msg-bot{align-items:flex-start}
-.msg-user{flex-direction:row-reverse;align-items:flex-start}
-.msg-avatar{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px}
-.msg-bot .msg-avatar{background:var(--amber-l);border:1px solid var(--amber-b)}
-.msg-user .msg-avatar{background:var(--navy3);border:1px solid var(--bd)}
-.msg-bubble{max-width:80%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.65}
-.msg-bot .msg-bubble{background:var(--navy2);border:1px solid var(--bd);border-top-left-radius:4px;color:var(--t1)}
-.msg-user .msg-bubble{background:var(--amber);color:var(--navy);border-top-right-radius:4px;font-weight:600}
-.intel-card{margin-top:10px;background:var(--navy);border:1px solid var(--bd2);border-radius:10px;overflow:hidden}
-.ic-header{padding:7px 12px;background:var(--navy3);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px}
-.ic-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulseAmber 2s infinite;flex-shrink:0}
-.ic-label{font-family:var(--fm);font-size:9px;letter-spacing:.12em;color:var(--amber);text-transform:uppercase}
-.ic-body{padding:10px 12px;font-size:12px;color:var(--t2);line-height:1.7}
-.ic-scores{display:flex;flex-direction:column;gap:5px;padding:8px 12px;border-top:1px solid var(--bd)}
-.ic-score-row{display:flex;align-items:center;gap:7px}
-.ics-label{font-family:var(--fm);font-size:9px;color:var(--t3);width:48px;flex-shrink:0}
-.ics-bar{flex:1;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
-.ics-fill{height:100%;border-radius:2px;transition:width 1s ease}
-.ics-val{font-family:var(--fm);font-size:9px;color:var(--t2);width:22px;text-align:right}
-.ic-actions{display:flex;flex-wrap:wrap;gap:6px;padding:9px 12px;border-top:1px solid var(--bd)}
-.ic-btn{padding:5px 12px;border-radius:var(--r-pill);font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--amber-b);background:var(--amber-l);color:var(--amber);font-family:var(--fb);transition:all .15s;white-space:nowrap}
-.ic-btn:hover{background:var(--amber);color:var(--navy)}
-.ic-btn.green{border-color:var(--green-b);background:var(--green-l);color:var(--green)}
-.ic-btn.green:hover{background:var(--green);color:#fff}
-.seg-insight-rows{padding:2px 0}
-.seg-insight-row{padding:8px 0;border-bottom:1px solid var(--bd)}
-.seg-insight-row:last-child{border-bottom:none;padding-bottom:2px}
-.sir-label{font-family:var(--fm);font-size:9px;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
-.sir-text{font-size:12px;color:var(--t2);line-height:1.6}
-.msg-typing .msg-bubble{padding:12px 16px}
-.typing-dots{display:flex;gap:4px;align-items:center}
-.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--t3);animation:blink 1.2s infinite}
-.typing-dots span:nth-child(2){animation-delay:.2s}
-.typing-dots span:nth-child(3){animation-delay:.4s}
-.chat-pills{display:flex;gap:6px;padding:8px 16px 6px;overflow-x:auto;flex-shrink:0;border-top:1px solid var(--bd);scrollbar-width:none}
-.chat-pills::-webkit-scrollbar{display:none}
-.cpill{padding:5px 13px;background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-pill);font-size:11px;font-weight:700;color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
-.cpill:hover,.cpill.active{border-color:var(--amber-b);color:var(--amber);background:var(--amber-l)}
-.chat-input-bar{display:flex;align-items:center;gap:8px;padding:8px 14px 12px;border-top:1px solid var(--bd);flex-shrink:0}
-.chat-input{flex:1;background:var(--navy2);border:1px solid var(--bd2);border-radius:var(--r-pill);padding:9px 16px;font-size:13px;color:var(--t1);transition:border-color .2s}
-.chat-input:focus{border-color:var(--amber-b);outline:none}
-.chat-input::placeholder{color:var(--t3)}
-.chat-send-btn{width:36px;height:36px;background:var(--amber);border:none;border-radius:50%;color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
-.chat-send-btn:hover{background:var(--amber2);transform:scale(1.08)}
-@media(max-width:860px){.chat-layout{grid-template-columns:170px 1fr;max-height:560px}.si-tag{display:none}}
-@media(max-width:600px){.chat-layout{grid-template-columns:1fr;height:auto}.seg-panel{display:none}.chat-window{height:520px}}
+/* ═══════ MIEI v2 — SHARED BLOCKS ═══════ */
+.miei-block{position:relative;z-index:1;padding:64px 40px}
+.miei-block-alt{background:var(--navy2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.miei-inner{max-width:860px;margin:0 auto}
+.miei-eyebrow{font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);opacity:.8;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.miei-eyebrow::before{content:'';width:18px;height:1px;background:var(--amber)}
+.miei-headline{font-family:var(--ff);font-size:clamp(22px,3vw,36px);font-weight:800;color:var(--t1);margin-bottom:8px;line-height:1.12}
+.miei-subtext{font-size:13px;color:var(--t2);margin-bottom:32px;line-height:1.7}
+
+/* BLOCK 1 — Chat */
+.miei-chat-box{background:var(--navy2);border:1px solid var(--bd2);border-radius:var(--r-xl);padding:24px;box-shadow:var(--shadow-md)}
+.mcb-input-wrap{display:flex;gap:10px;margin-bottom:18px}
+.mcb-input{flex:1;background:var(--navy);border:1px solid var(--bd2);border-radius:var(--r-pill);padding:12px 20px;font-size:14px;color:var(--t1);transition:border-color .2s}
+.mcb-input:focus{border-color:var(--amber-b);outline:none}
+.mcb-input::placeholder{color:var(--t3)}
+.mcb-send{width:44px;height:44px;background:var(--amber);border:none;border-radius:50%;color:var(--navy);font-size:18px;font-weight:800;cursor:pointer;flex-shrink:0;transition:all .18s;display:flex;align-items:center;justify-content:center}
+.mcb-send:hover{background:var(--amber2);transform:scale(1.06)}
+.miei-chips{display:flex;flex-wrap:wrap;gap:8px}
+.miei-chip{padding:7px 15px;background:var(--navy);border:1px solid var(--bd);border-radius:var(--r-pill);font-size:12px;color:var(--t2);cursor:pointer;transition:all .18s;white-space:nowrap}
+.miei-chip:hover,.miei-chip.active{border-color:var(--amber-b);color:var(--amber);background:var(--amber-l)}
+/* Response card */
+.miei-response-card{background:var(--navy3);border:1px solid var(--amber-b);border-radius:var(--r-lg);padding:20px 24px;margin-top:18px;animation:fadeUp .3s both}
+.mrc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.mrc-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);animation:pulseAmber 2s infinite;flex-shrink:0}
+.mrc-title{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--amber);letter-spacing:.04em}
+.mrc-body{font-size:13px;color:var(--t2);line-height:1.75;margin-bottom:14px}
+.mrc-actions{display:flex;flex-wrap:wrap;gap:8px}
+.mrc-btn{padding:8px 18px;border-radius:var(--r-pill);font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--amber-b);background:var(--amber-l);color:var(--amber);font-family:var(--fb);transition:all .18s}
+.mrc-btn:hover{background:var(--amber);color:var(--navy)}
+
+/* BLOCK 2 — Segment Grid */
+.miei-segment-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:24px}
+.miei-seg{background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:16px 8px;cursor:pointer;text-align:center;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.miei-seg:hover{border-color:var(--amber-b);background:var(--amber-l);transform:translateY(-3px);box-shadow:0 8px 24px rgba(244,163,0,.12)}
+.miei-seg-future{border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.05)}
+.miei-seg-future:hover{border-color:var(--violet);background:rgba(124,58,237,.12)}
+.ms-ico{font-size:24px;line-height:1}
+.ms-label{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.miei-seg:hover .ms-label{color:var(--amber)}
+/* Insight Panel */
+.miei-insight-panel{background:var(--navy2);border:1px solid var(--amber-b);border-radius:var(--r-xl);overflow:hidden;animation:fadeUp .3s both;box-shadow:var(--shadow-amber)}
+.mip-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--navy3);border-bottom:1px solid var(--bd)}
+.mip-title{font-family:var(--ff);font-size:15px;font-weight:800;color:var(--t1)}
+.mip-close{background:none;border:none;color:var(--t3);font-size:16px;cursor:pointer;padding:2px 6px;border-radius:5px;transition:color .18s}
+.mip-close:hover{color:var(--amber)}
+.mip-rows{padding:4px 0}
+.mip-row{border-bottom:1px solid var(--bd);cursor:pointer;transition:background .18s}
+.mip-row:last-child{border-bottom:none}
+.mip-row:hover{background:var(--navy3)}
+.mip-row.open{background:var(--navy3)}
+.mipr-top{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
+.mipr-label{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t1)}
+.mipr-arrow{font-size:18px;color:var(--t3);transition:transform .22s}
+.mip-row.open .mipr-arrow{transform:rotate(90deg);color:var(--amber)}
+.mipr-body{display:none;padding:0 20px 14px;font-size:12px;color:var(--t2);line-height:1.75}
+.mip-row.open .mipr-body{display:block;animation:fadeUp .22s both}
+.mip-footer{padding:16px 20px;border-top:1px solid var(--bd);background:var(--navy3)}
+
+/* BLOCK 3 — Next Step */
+.miei-nextstep-bar{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:24px;justify-content:center}
+.mns-card{flex:1;min-width:200px;background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:20px 18px;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:14px}
+.mns-card:hover{border-color:var(--amber-b);background:var(--amber-l);transform:translateY(-2px)}
+.mns-ico{font-size:26px;flex-shrink:0}
+.mns-body{}
+.mns-label{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.mns-sub{font-size:11px;color:var(--t2)}
+.miei-fs-status{display:flex;align-items:center;gap:8px;justify-content:center}
+.mfs-dot{width:8px;height:8px;border-radius:50%;background:var(--t3);flex-shrink:0}
+.mfs-dot.live{background:var(--green);animation:pulse 2s infinite}
+.mfs-dot.warn{background:var(--amber)}
+.mfs-text{font-family:var(--fm);font-size:10px;letter-spacing:.1em;color:var(--t3)}
+@media(max-width:900px){.miei-segment-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:560px){.miei-segment-grid{grid-template-columns:repeat(3,1fr)}.miei-block{padding:48px 16px}}
 
 /* Footer */
 .footer{position:relative;z-index:1;padding:36px 40px 24px;border-top:1px solid var(--bd)}
@@ -469,63 +471,23 @@ a{color:inherit;text-decoration:none}
 </head>
 <body>
 
-<!-- ══════════ FIREBASE INIT — PRODUCTION ══════════ -->
+<!-- ══════════ FIREBASE INIT ══════════ -->
 <script>
-/* ── Task 2: Validated config object ── */
 const firebaseConfig = {
-  apiKey:            "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
-  authDomain:        "evs-production.firebaseapp.com",
-  projectId:         "evs-production",
-  storageBucket:     "evs-production.firebasestorage.app",
-  messagingSenderId: "775112664706",
-  appId:             "1:775112664706:web:2529507e7788d89e7bb69b"
+  apiKey:"AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
+  authDomain:"evs-production.firebaseapp.com",
+  projectId:"evs-production",
+  storageBucket:"evs-production.firebasestorage.app",
+  messagingSenderId:"775112664706",
+  appId:"1:775112664706:web:2529507e7788d89e7bb69b"
 };
-
-/* ── Task 2: Single-init guard ── */
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-/* ── Task 3: No demo-mode fallback — production only ── */
-/* ── Task 4: Firestore instance + offline persistence ── */
-window.db      = firebase.firestore();
-window.storage = firebase.storage();
-window.auth    = firebase.auth();
-
-window.db.enablePersistence({ synchronizeTabs: true })
-  .then(() => console.log('[99EVS] Firestore offline persistence enabled'))
-  .catch(err => console.warn('[99EVS] Persistence unavailable:', err.code));
-
-/* ── Task 14: Connection test write ── */
-window.db.collection('connection_test').add({
-  status:    'live',
-  host:      location.hostname,
-  timestamp: firebase.firestore.FieldValue.serverTimestamp()
-}).then(() => console.log('[99EVS] ✅ Firestore connection confirmed — 99evs.com production'))
-  .catch(e  => console.error('[99EVS] Firestore connection failed:', e));
+try{
+  if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  window.db      = firebase.firestore();
+  window.storage = firebase.storage();
+  window.auth    = firebase.auth();
+}catch(e){ console.warn('[Firebase] Not configured — running in demo mode'); window.db=null; }
 </script>
-
-<!-- ══════════ TASK 6: FIRESTORE SECURITY RULES ══════════
-  Deploy these rules via Firebase Console or: firebase deploy --only firestore:rules
-
-  firestore.rules:
-  ─────────────────────────────────────────────
-  rules_version = '2';
-  service cloud.firestore {
-    match /databases/{database}/documents {
-      match /{document=**} {
-        allow read, write: if true;
-      }
-    }
-  }
-  ─────────────────────────────────────────────
-══════════ -->
-
-<!-- ══════════ TASK 5: DOMAIN AUTH NOTE ══════════
-     Ensure Firebase Console → Authentication → Authorized Domains includes:
-       99evs.com  |  www.99evs.com  |  localhost
-     Firebase CLI:  firebase target:apply hosting prod 99evs.com
-══════════ -->
 
 <!-- ══════════ NAV ══════════ -->
 <nav class="nav">
@@ -625,67 +587,119 @@ window.db.collection('connection_test').add({
     </div>
   </section>
 
-  <!-- ══════ MCAE v1 — UNIFIED CHAT INTERFACE ══════ -->
-  <section class="chat-shell" id="miei-chat-block">
-    <div class="chat-layout">
+  <!-- ══════════════════════════════════════════════════════
+       MIEI v2 — BLOCK 1: Mobility AI Entry Chat
+  ══════════════════════════════════════════════════════ -->
+  <section class="miei-block" id="miei-chat-block">
+    <div class="miei-inner">
+      <div class="miei-eyebrow">Mobility AI Entry Interface</div>
+      <h2 class="miei-headline">Tell me what you're exploring today.</h2>
+      <p class="miei-subtext">Vehicles. Value. Safety. Inspection. Ownership. Future mobility.</p>
 
-      <!-- LEFT: Segment Picker -->
-      <aside class="seg-panel">
-        <div class="seg-panel-hdr">
-          <span class="seg-panel-title">Segments</span>
-          <span class="seg-panel-sub">Click to start</span>
+      <!-- Chat input -->
+      <div class="miei-chat-box">
+        <div class="mcb-input-wrap">
+          <input class="mcb-input" id="miei-input" type="text" placeholder="Example: I want to check a scooter before buying" oninput="mieiHandleInput(this.value)" onkeydown="if(event.key==='Enter')mieiSubmit()">
+          <button class="mcb-send" onclick="mieiSubmit()">→</button>
         </div>
-        <div class="seg-list">
-          <div class="seg-item" onclick="chatPickSegment('scooter')"><span class="si-ico">🛵</span><div class="si-info"><div class="si-name">Scooters</div><div class="si-tag">EV · Petrol</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('bike')"><span class="si-ico">🏍</span><div class="si-info"><div class="si-name">Bikes</div><div class="si-tag">2W · Performance</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('auto')"><span class="si-ico">🛺</span><div class="si-info"><div class="si-name">Auto</div><div class="si-tag">EV · CNG</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('car')"><span class="si-ico">🚗</span><div class="si-info"><div class="si-name">Cars</div><div class="si-tag">4W · EV · Petrol</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('suv')"><span class="si-ico">🚙</span><div class="si-info"><div class="si-name">SUVs</div><div class="si-tag">4W · AWD · Fleet</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('truck')"><span class="si-ico">🚛</span><div class="si-info"><div class="si-name">Trucks</div><div class="si-tag">Commercial</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('bus')"><span class="si-ico">🚌</span><div class="si-info"><div class="si-name">Buses</div><div class="si-tag">EV · Fleet</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('tractor')"><span class="si-ico">🚜</span><div class="si-info"><div class="si-name">Tractors</div><div class="si-tag">Agri · Rural</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('cycle')"><span class="si-ico">🚲</span><div class="si-info"><div class="si-name">Cycles</div><div class="si-tag">Urban · e-Cycle</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('marine')"><span class="si-ico">⛴</span><div class="si-info"><div class="si-name">Marine</div><div class="si-tag">Backwaters</div></div></div>
-          <div class="seg-item" onclick="chatPickSegment('aviation')"><span class="si-ico">🚁</span><div class="si-info"><div class="si-name">Aviation</div><div class="si-tag">Air taxi</div></div></div>
-          <div class="seg-item seg-future" onclick="chatPickSegment('future')"><span class="si-ico">🛸</span><div class="si-info"><div class="si-name">Future</div><div class="si-tag">Hyperloop · AV</div></div></div>
-        </div>
-        <div class="seg-fs-row">
-          <span class="sfs-dot" id="mfs-dot"></span>
-          <span class="sfs-txt" id="mfs-text">Connecting…</span>
-        </div>
-      </aside>
-
-      <!-- RIGHT: Chat Window -->
-      <div class="chat-window">
-        <div class="chat-msgs" id="chat-msgs"></div>
-        <div class="chat-pills" id="chat-pills">
-          <button class="cpill" onclick="chatIntent('buying')">🛒 Buy</button>
-          <button class="cpill" onclick="chatIntent('selling')">💰 Sell</button>
-          <button class="cpill" onclick="chatIntent('inspection')">🔬 Inspect</button>
-          <button class="cpill" onclick="chatIntent('battery')">⚡ Battery</button>
-          <button class="cpill" onclick="chatIntent('trust')">📊 Trust Score</button>
-          <button class="cpill" onclick="chatIntent('docs')">📄 Documents</button>
-          <button class="cpill" onclick="chatIntent('vendors')">🏪 Vendors</button>
-          <button class="cpill" onclick="chatIntent('sales')">📈 Sales</button>
-          <button class="cpill" onclick="chatIntent('service')">🔧 Service</button>
-          <button class="cpill" onclick="chatIntent('fleet')">🚛 Fleet</button>
-        </div>
-        <div class="chat-input-bar">
-          <input class="chat-input" id="chat-input" type="text"
-            placeholder="Ask anything — vehicle, vendor, service, docs…"
-            onkeydown="if(event.key==='Enter')chatSend()">
-          <button class="chat-send-btn" onclick="chatSend()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
+        <!-- Suggestion chips -->
+        <div class="miei-chips" id="miei-chips">
+          <div class="miei-chip" onclick="mieiChip('buying')">Buying a vehicle</div>
+          <div class="miei-chip" onclick="mieiChip('selling')">Selling a vehicle</div>
+          <div class="miei-chip" onclick="mieiChip('trust')">Check vehicle trust score</div>
+          <div class="miei-chip" onclick="mieiChip('inspection')">Run inspection</div>
+          <div class="miei-chip" onclick="mieiChip('resale')">Understand resale value</div>
+          <div class="miei-chip" onclick="mieiChip('battery')">Learn EV battery health</div>
+          <div class="miei-chip" onclick="mieiChip('fleet')">Fleet evaluation</div>
+          <div class="miei-chip" onclick="mieiChip('dealer')">Dealer intelligence</div>
+          <div class="miei-chip" onclick="mieiChip('safety')">Mobility safety history</div>
+          <div class="miei-chip" onclick="mieiChip('future')">Future mobility systems</div>
         </div>
       </div>
 
+      <!-- AI Response card -->
+      <div class="miei-response-card hidden" id="miei-response">
+        <div class="mrc-header">
+          <span class="mrc-dot"></span>
+          <span class="mrc-title" id="mrc-title">Intelligence Response</span>
+        </div>
+        <p class="mrc-body" id="mrc-body"></p>
+        <div class="mrc-actions" id="mrc-actions"></div>
+      </div>
     </div>
   </section>
 
-  <!-- anchor stubs for JS scroll refs -->
-  <div id="miei-layers-block" style="display:none"></div>
-  <div id="miei-nextstep-bar" style="display:none"></div>
+  <!-- ══════════════════════════════════════════════════════
+       MIEI v2 — BLOCK 2: Mobility Intelligence Layers Explorer
+  ══════════════════════════════════════════════════════ -->
+  <section class="miei-block miei-block-alt" id="miei-layers-block">
+    <div class="miei-inner">
+      <div class="miei-eyebrow">Intelligence Layers</div>
+      <h2 class="miei-headline">Select your mobility segment.</h2>
+      <p class="miei-subtext">Each segment carries a unique intelligence layer — demand, risk signals, and inspection checkpoints.</p>
+
+      <div class="miei-segment-grid">
+        <div class="miei-seg" onclick="mieiOpenSegment('walk')"><span class="ms-ico">🚶</span><span class="ms-label">Cycles</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('scooter')"><span class="ms-ico">🛵</span><span class="ms-label">Scooters</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('bike')"><span class="ms-ico">🏍</span><span class="ms-label">Bikes</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('auto')"><span class="ms-ico">🛺</span><span class="ms-label">Auto</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('car')"><span class="ms-ico">🚗</span><span class="ms-label">Cars</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('suv')"><span class="ms-ico">🚙</span><span class="ms-label">SUVs</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('truck')"><span class="ms-ico">🚛</span><span class="ms-label">Trucks</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('bus')"><span class="ms-ico">🚌</span><span class="ms-label">Buses</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('tractor')"><span class="ms-ico">🚜</span><span class="ms-label">Tractors</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('rail')"><span class="ms-ico">🚅</span><span class="ms-label">Rail</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('marine')"><span class="ms-ico">⛴</span><span class="ms-label">Marine</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('aviation')"><span class="ms-ico">🚁</span><span class="ms-label">Aviation</span></div>
+        <div class="miei-seg miei-seg-future" onclick="mieiOpenSegment('future')"><span class="ms-ico">🛸</span><span class="ms-label">Future</span></div>
+      </div>
+
+      <!-- Floating Insight Panel -->
+      <div class="miei-insight-panel hidden" id="miei-insight-panel">
+        <div class="mip-header">
+          <span class="mip-title" id="mip-title">Segment Intelligence</span>
+          <button class="mip-close" onclick="mieiClosePanel()">✕</button>
+        </div>
+        <div class="mip-rows">
+          <div class="mip-row" onclick="this.classList.toggle('open')">
+            <div class="mipr-top"><span class="mipr-label">📈 Market Demand Trend</span><span class="mipr-arrow">›</span></div>
+            <div class="mipr-body" id="mip-demand"></div>
+          </div>
+          <div class="mip-row" onclick="this.classList.toggle('open')">
+            <div class="mipr-top"><span class="mipr-label">⚠️ Common Risk Signals</span><span class="mipr-arrow">›</span></div>
+            <div class="mipr-body" id="mip-risk"></div>
+          </div>
+          <div class="mip-row" onclick="this.classList.toggle('open')">
+            <div class="mipr-top"><span class="mipr-label">🔬 Inspection Checkpoints</span><span class="mipr-arrow">›</span></div>
+            <div class="mipr-body" id="mip-inspect"></div>
+          </div>
+        </div>
+        <div class="mip-footer">
+          <button class="btn-primary" id="mip-cta" onclick="mieiExploreSegment()">Explore this segment →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       MIEI v2 — BLOCK 3: Guided Next-Step Engine
+  ══════════════════════════════════════════════════════ -->
+  <section class="miei-block" id="miei-nextstep-block">
+    <div class="miei-inner" style="max-width:760px">
+      <div class="miei-eyebrow">Guided Next-Step Engine</div>
+      <h2 class="miei-headline" style="font-size:clamp(18px,2.4vw,28px)">Where would you like to go next?</h2>
+
+      <div class="miei-nextstep-bar" id="miei-nextstep-bar">
+        <!-- Populated by JS based on Firestore / visitor state -->
+      </div>
+
+      <!-- Firestore status indicator -->
+      <div class="miei-fs-status" id="miei-fs-status">
+        <span class="mfs-dot" id="mfs-dot"></span>
+        <span class="mfs-text" id="mfs-text">Connecting to vehicle intelligence…</span>
+      </div>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -702,8 +716,6 @@ window.db.collection('connection_test').add({
       <div class="footer-copy">© 2026 99EVs Technologies Pvt. Ltd.<br><span style="color:var(--t3);font-style:italic">Peace · Love All · Serve All</span></div>
     </div>
   </footer>
-
-</div>
 
 </div>
 
@@ -1495,7 +1507,17 @@ function _finaliseSubmission(){
   }, 300);
 }
 
-/* computeTrustScore() — defined in production write pipeline above */
+/* ── TRUST SCORE FORMULA (Phase 11) ─────────────────── */
+function computeTrustScore(s){
+  return (
+    s.documentScore   * 0.15 +
+    s.imageScore      * 0.10 +
+    s.confidenceScore * 0.10 +
+    s.marketScore     * 0.10 +
+    s.inspectionScore * 0.30 +
+    s.batteryScore    * 0.25
+  );
+}
 
 function getTrustBand(score){
   if(score>=85) return {label:'VERIFIED — MATCHING READY',  cls:'band-premium', ring:'#10B981'};
@@ -1782,131 +1804,45 @@ function checkForecast(ts){
   }
 }
 
-/* ═══════════════════════════════════════════════════════
-   PVIS PRODUCTION WRITE PIPELINE — Tasks 7–13
-   Writes to: vehicles · health_scores · certificates
-              predictive_forecasts · analytics_pipeline
-═══════════════════════════════════════════════════════ */
-
-/* ── Task 9: Trust score formula (canonical) ── */
-function computeTrustScore(s){
-  return (
-    (s.documentScore   || 0) * 0.15 +
-    (s.imageScore       || 0) * 0.10 +
-    (s.confidenceScore  || 0) * 0.10 +
-    (s.marketScore      || 0) * 0.10 +
-    (s.inspectionScore  || 0) * 0.30 +
-    (s.batteryScore     || 0) * 0.25
-  );
-}
-
-/* ── Task 10: Confidence band engine ── */
-function computeBand(score){
-  if(score >= 85) return 'PLATINUM';
-  if(score >= 70) return 'GOLD';
-  if(score >= 55) return 'SILVER';
-  if(score >= 40) return 'AMBER';
-  return 'RED';
-}
-
-/* ── Tasks 7+8+11+12+13: Full production write pipeline ── */
+/* ── FIRESTORE WRITE ─────────────────────────────────── */
 async function _writeToFirestore(s){
+  if(!window.db) { console.log('[PVIS Demo] Firestore not configured — scores computed client-side only'); return; }
   const meta = s.vehicleMeta || {};
-  const ts   = Math.round(computeTrustScore(s));
-  const band = computeBand(ts);
-  const now  = firebase.firestore.FieldValue.serverTimestamp();
-
-  /* ── Task 8: Full scoring payload with all initial fields ── */
   const payload = {
-    vehicleId:            s.vehicleId,
-    vehicleType:          meta.type    || '—',
-    city:                 meta.city    || '—',
-    make:                 meta.make    || '—',
-    model:                meta.model   || '—',
-    year:                 parseInt(meta.year) || null,
-    ownerName:            s.ownerName  || null,
-    /* ── Task 8: Initialised scoring fields ── */
-    documentScore:        Math.round(s.documentScore   || 0),
-    imageScore:           Math.round(s.imageScore      || 0),
-    confidenceScore:      Math.round(s.confidenceScore || 0),
-    marketScore:          Math.round(s.marketScore     || 0),
-    inspectionScore:      Math.round(s.inspectionScore || 0),
-    batteryScore:         Math.round(s.batteryScore    || 0),
-    trustScore:           ts,
-    confidenceBand:       band,
-    inspectionRequested:  s.inspectionRequested || false,
-    documentStatus: {
-      rc:        formState['rc-group']   || null,
-      insurance: formState['ins-group']  || null,
-      loan:      formState['loan-group'] || null,
-      puc:       formState['puc-group']  || null
-    },
+    vehicleId:       s.vehicleId,
+    vehicleType:     meta.type||'—',
+    city:            meta.city||'—',
+    make:            meta.make||'—',
+    model:           meta.model||'—',
+    year:            parseInt(meta.year)||null,
+    documentScore:   Math.round(s.documentScore),
+    imageScore:      Math.round(s.imageScore),
+    confidenceScore: Math.round(s.confidenceScore),
+    marketScore:     Math.round(s.marketScore),
+    inspectionScore: Math.round(s.inspectionScore),
+    batteryScore:    Math.round(s.batteryScore),
+    trustScore:      Math.round(s.trustScore),
+    inspectionRequested: s.inspectionRequested,
+    documentStatus:  { rc:formState['rc-group'], insurance:formState['ins-group'], loan:formState['loan-group'], puc:formState['puc-group'] },
     linkedUserIdentityEnabled: true,
     marketSignalConnected:     true,
     adaptivePricingEnabled:    true,
     dealerRoutingEnabled:      true,
     autoLifecycleEnabled:      true,
-    status:    'active',
-    createdAt: now,
-    updatedAt: now
+    status:          'active',
+    createdAt:       firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt:       firebase.firestore.FieldValue.serverTimestamp()
   };
-
   try{
-    /* ── Task 7: Primary vehicle write ── */
     await window.db.collection('vehicles').doc(s.vehicleId).set(payload);
-    console.log('[99EVS] ✅ vehicles/' + s.vehicleId + ' written');
-
-    /* ── Task 11: Health mirror sync ── */
     await window.db.collection('health_scores').doc(s.vehicleId).set({
-      documentScore:   Math.round(s.documentScore   || 0),
-      imageScore:      Math.round(s.imageScore      || 0),
-      inspectionScore: Math.round(s.inspectionScore || 0),
-      batteryScore:    Math.round(s.batteryScore    || 0),
-      confidenceScore: Math.round(s.confidenceScore || 0),
-      marketScore:     Math.round(s.marketScore     || 0),
-      trustScore:      ts,
-      confidenceBand:  band,
-      updatedAt:       now
+      documentScore:s.documentScore, imageScore:s.imageScore, inspectionScore:s.inspectionScore,
+      batteryScore:s.batteryScore, confidenceScore:s.confidenceScore, marketScore:s.marketScore,
+      trustScore:s.trustScore, updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     });
-    console.log('[99EVS] ✅ health_scores/' + s.vehicleId + ' synced');
-
-    /* ── Task 12: Predictive forecast trigger (score < 70) ── */
-    if(ts < 70){
-      await window.db.collection('predictive_forecasts').doc(s.vehicleId).set({
-        forecast:    'service_soon',
-        trustScore:  ts,
-        vehicleId:   s.vehicleId,
-        flaggedAt:   now,
-        updatedAt:   now
-      }, { merge: true });
-      console.log('[99EVS] ⚠️ Forecast triggered — score below 70');
-    }
-
-    /* ── Task 13: Certificate auto-generation (score > 60) ── */
-    if(ts > 60){
-      const certId = 'CERT-' + s.vehicleId;
-      await window.db.collection('certificates').doc(certId).set({
-        vehicleId:      s.vehicleId,
-        trustScore:     ts,
-        confidenceBand: band,
-        make:           meta.make  || '—',
-        model:          meta.model || '—',
-        city:           meta.city  || '—',
-        issuedAt:       now
-      }, { merge: true });
-      console.log('[99EVS] 🏅 Certificate written — CERT-' + s.vehicleId);
-    }
-
-    logActivity('green','☁️','Firestore Write Complete',
-      'vehicles · health_scores' +
-      (ts < 70 ? ' · predictive_forecasts' : '') +
-      (ts > 60 ? ' · certificates' : '') +
-      ' — TrustScore: ' + ts + ' · Band: ' + band);
-
-  }catch(e){
-    console.error('[99EVS] Firestore write error:', e);
-    logActivity('red','❌','Firestore Write Failed', e.message || String(e));
-  }
+    console.log('[PVIS] Written to Firestore:', s.vehicleId);
+    logActivity('green','☁️','Firestore Write','Vehicle and health score documents written successfully.');
+  }catch(e){ console.warn('[PVIS] Firestore write error:', e); }
 }
 
 /* ── SCORING DEMO ────────────────────────────────────── */
@@ -2042,7 +1978,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   showPage('home');
   logActivity('blue','🟢','PVIS Engine Ready','Platform initialised. Onboard a vehicle to start progressive scoring.');
   mieiInitNextStep();
-  chatInit();
 });
 
 /* ══════════════════════════════════════════════════════
@@ -2198,351 +2133,226 @@ const mieiSegments = {
   }
 };
 
-/* ══════════════════════════════════════════════════════
-   MCAE v1 — UNIFIED CHAT ACTIVATION ENGINE
-   Source of truth: vehicles/{vehicleId}
-══════════════════════════════════════════════════════ */
+let mieiCurrentSegment = null;
 
-let mcaeActiveListener = null;
-let chatActiveSegment  = null;
-
-/* ── SEGMENT KNOWLEDGE ── */
-const SEG_DATA = {
-  scooter:{ name:'Scooters', ico:'🛵', segId:'EV2W',
-    demand:'High resale stability in urban delivery. EV variants growing 34% YoY in metro cities.',
-    risk:'Battery mismatch if OEM charger missing. Controller failure in monsoon-affected units.',
-    inspect:'Controller health · Motor noise · Frame alignment · Battery cycle count · Tyre condition' },
-  bike:{ name:'Bikes', ico:'🏍', segId:'BIKE',
-    demand:'Strong resale above 150cc. Commuter segment stabilising post-2025.',
-    risk:'Engine oil contamination; clutch plate wear in high-usage commercial bikes.',
-    inspect:'Engine compression · Chain tension · Clutch play · Fork seals · Brake disc wear' },
-  auto:{ name:'Auto-Rickshaw', ico:'🛺', segId:'AUTO3W',
-    demand:'EV auto demand surging in Bengaluru, Delhi, Chennai under state subsidy schemes.',
-    risk:'Permit expiry risk; CNG conversion compliance gaps; battery degradation.',
-    inspect:'Permit validity · Meter calibration · CNG/battery integrity · Chassis rust' },
-  car:{ name:'Cars', ico:'🚗', segId:'CAR4W',
-    demand:'Pre-owned EV car segment growing rapidly. Petrol compact segment stable.',
-    risk:'Hidden flood damage; odometer tampering; incomplete service history.',
-    inspect:'Engine oil condition · Underbody rust · AC compressor · OBD fault scan' },
-  suv:{ name:'SUVs', ico:'🚙', segId:'SUV4W',
-    demand:'Strong Tier 1 demand. 7-seater variants commanding 8–12% premium resale.',
-    risk:'Suspension wear on urban roads; differential oil leaks in AWD models.',
-    inspect:'Differential health · Suspension bushings · Brake pads · ADAS calibration' },
-  truck:{ name:'Trucks', ico:'🚛', segId:'TRUCK',
-    demand:'Fleet renewal driving demand. EV LCV growing in intra-city logistics.',
-    risk:'Engine overhaul gaps; permit non-compliance; tyre blowout risk under overload.',
-    inspect:'Engine timing · Permit status · Load compliance · Axle condition' },
-  bus:{ name:'Buses', ico:'🚌', segId:'BUS',
-    demand:'Electric bus adoption accelerating under PM e-Bus Sewa scheme.',
-    risk:'Driver record gaps; route permit lapses; brake fatigue in high-cycle units.',
-    inspect:'Brake system · Emergency exits · Driver record · Route permit validity' },
-  tractor:{ name:'Tractors', ico:'🚜', segId:'AGRI',
-    demand:'Farm mechanisation driving stable demand. Strong Kharif cycle resale.',
-    risk:'Hydraulic system leaks; PTO shaft wear; seasonal neglect causing seizure risk.',
-    inspect:'Hydraulic lift · PTO engagement · Tyre lug depth · Fuel injector' },
-  cycle:{ name:'Cycles', ico:'🚲', segId:'CYCLE',
-    demand:'Rising urban adoption for last-mile delivery and health commuters.',
-    risk:'Frame stress fractures under commercial load; brake cable wear in monsoon.',
-    inspect:'Frame weld integrity · Brake responsiveness · Gear shift · Tyre depth' },
-  marine:{ name:'Marine', ico:'⛴', segId:'MARINE',
-    demand:'Kerala backwaters and Kochi Water Metro driving structured growth.',
-    risk:'Hull integrity; engine corrosion in saltwater; safety gear compliance.',
-    inspect:'Hull condition · Engine corrosion · Life jacket compliance · Permit validity' },
-  aviation:{ name:'Aviation', ico:'🚁', segId:'AVIATION',
-    demand:'Urban air taxi growing post AAI policy 2025. Drone delivery active.',
-    risk:'Regulatory gaps; battery certification for eVTOL; pilot licence compliance.',
-    inspect:'AAI permit · Battery certification · Pilot licence · Insurance coverage' },
-  future:{ name:'Future Mobility', ico:'🛸', segId:'FUTURE',
-    demand:'Hyperloop, autonomous vehicles, urban air mobility entering India policy 2026.',
-    risk:'Regulatory undefined zones; infrastructure gaps; technology maturity uncertainty.',
-    inspect:'Policy compliance · Technology certification · Infrastructure readiness' }
-};
-
-/* ── INTENT RESPONSES ── */
-const INTENT_DATA = {
-  buying:   { title:'Buying a Vehicle', body:'Before you buy, 99EVs verifies trust score, inspection status, ownership signals, and resale strength — giving you a full intelligence layer on any vehicle.', actions:[['📊 Check Trust Score','trust'],['🔬 Run Inspection','inspection'],['🚗 Onboard Vehicle','onboard']] },
-  selling:  { title:'Selling a Vehicle', body:'Boost your listing with a verified trust score. Inspection certificate + 99EVs badge consistently command 10–18% better resale pricing from buyers.', actions:[['🚗 Onboard Vehicle','onboard'],['🔬 Request Inspection','inspection'],['📊 View Dashboard','dashboard']] },
-  trust:    { title:'Vehicle Trust Score', body:'The PVIS Trust Score is a 0–100 live composite: documents, images, inspection, battery health, and market signals — updated automatically as evidence arrives.', actions:[['📊 View Live Score','dashboard'],['🔬 Run Inspection','inspection'],['🚗 Onboard Vehicle','onboard']] },
-  inspection:{ title:'Inspection Pipeline', body:'Certified inspectors add 30% of total trust weight — the highest single contribution. Physical verification triggers automatic certificate generation when score exceeds 60.', actions:[['🔬 Request Inspection','dashboard'],['🏅 View Certificate','dashboard'],['📊 Full Dashboard','dashboard']] },
-  battery:  { title:'EV Battery Health', body:'Battery scoring evaluates cycle stability, thermal behaviour, and usage signals. State of Health (SOH) verification and warranty status are validated for all EV segments.', actions:[['⚡ Battery Detail','dashboard'],['🔬 Full Inspection','inspection'],['🚗 Onboard EV','onboard']] },
-  docs:     { title:'Document Verification', body:'RC, insurance, fitness certificate, PUC, and loan status are scored automatically. Verified docs add up to 25% of trust score and are cross-referenced with RTO signals.', actions:[['📄 Check Documents','dashboard'],['🚗 Onboard Vehicle','onboard'],['📊 View Score','dashboard']] },
-  vendors:  { title:'Vendor Intelligence', body:'99EVs connects buyers and sellers with verified vendors — spare parts suppliers, EV charging partners, insurance providers, and finance houses — mapped per segment and city.', actions:[['🏪 Find Vendors','dashboard'],['🔍 Browse by Segment','segment'],['🚗 Onboard Vehicle','onboard']] },
-  sales:    { title:'Sales Intelligence', body:'Sales signals include city-level demand data, resale velocity, seasonal trends, and model depreciation curves. Use this to price right and sell faster.', actions:[['📈 Market Signals','dashboard'],['💰 Resale Value','trust'],['🚗 Onboard Vehicle','onboard']] },
-  service:  { title:'Service & Maintenance', body:'Service records, scheduled maintenance alerts, and predictive forecasts are part of the PVIS lifecycle. Vehicles with full service history score up to 15 points higher.', actions:[['🔧 Service Records','dashboard'],['🔬 Run Inspection','inspection'],['📊 View Score','dashboard']] },
-  fleet:    { title:'Fleet Evaluation', body:'Fleet intelligence covers per-vehicle progressive scoring, driver history, permit compliance, maintenance intervals, and aggregate trust score dashboards — all in real-time.', actions:[['🚛 Fleet Dashboard','dashboard'],['🚗 Onboard Fleet','onboard'],['📊 View Scores','dashboard']] },
-  resale:   { title:'Resale Value Intelligence', body:'Resale signals factor city demand, seasonal velocity, model depreciation curves, and condition scoring. Trust score above 70 consistently commands premium resale.', actions:[['📈 Market Signals','dashboard'],['📊 Trust Score','trust'],['🚗 Onboard Vehicle','onboard']] },
-  segment:  { title:'Segment Explorer', body:'Choose a mobility segment from the left panel to see demand trends, risk signals, and inspection checkpoints specific to that vehicle type.', actions:[['🧠 View Segments','segment'],['🚗 Onboard Vehicle','onboard']] }
-};
-
-/* ─────────────────────────────────────────────────────
-   CHAT ENGINE CORE
-───────────────────────────────────────────────────── */
-
-function chatAddMsg(type, html, delay=0){
-  const msgs = document.getElementById('chat-msgs');
-  if(!msgs) return;
-  setTimeout(()=>{
-    const div = document.createElement('div');
-    div.className = 'msg msg-' + type;
-    div.innerHTML = html;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }, delay);
+/* ── BLOCK 1: CHAT ENGINE ── */
+function mieiHandleInput(val){
+  if(!val.trim()) return;
+  // Auto-match intent
+  const lower = val.toLowerCase();
+  if(lower.includes('buy')) mieiChip('buying');
+  else if(lower.includes('sell')) mieiChip('selling');
+  else if(lower.includes('battery') || lower.includes('ev')) mieiChip('battery');
+  else if(lower.includes('inspec')) mieiChip('inspection');
+  else if(lower.includes('resale') || lower.includes('value')) mieiChip('resale');
+  else if(lower.includes('fleet')) mieiChip('fleet');
+  else if(lower.includes('trust') || lower.includes('score')) mieiChip('trust');
+  else if(lower.includes('dealer')) mieiChip('dealer');
+  else if(lower.includes('safety') || lower.includes('history')) mieiChip('safety');
+  else if(lower.includes('future') || lower.includes('hyper')) mieiChip('future');
 }
 
-function chatBotBubble(text, cardHtml=''){
-  return `<div class="msg-avatar">🤖</div><div class="msg-bubble">${text}${cardHtml}</div>`;
+function mieiSubmit(){
+  const val = document.getElementById('miei-input').value.trim();
+  if(!val) return;
+  mieiHandleInput(val);
 }
 
-function chatUserBubble(text){
-  return `<div class="msg-avatar">👤</div><div class="msg-bubble">${text}</div>`;
+function mieiChip(intent){
+  // Mark chip active
+  document.querySelectorAll('.miei-chip').forEach(c=>c.classList.remove('active'));
+  const chips = document.querySelectorAll('.miei-chip');
+  chips.forEach(c=>{ if(c.getAttribute('onclick').includes("'"+intent+"'")) c.classList.add('active'); });
+
+  const data = mieiIntents[intent];
+  if(!data) return;
+
+  document.getElementById('mrc-title').textContent = data.title;
+  document.getElementById('mrc-body').textContent = data.body;
+
+  const actEl = document.getElementById('mrc-actions');
+  actEl.innerHTML = data.actions.map(a=>`<button class="mrc-btn" onclick="mieiActionBtn('${a}')">${a}</button>`).join('');
+
+  const card = document.getElementById('miei-response');
+  card.classList.remove('hidden');
+  card.scrollIntoView({behavior:'smooth',block:'nearest'});
+
+  // Log analytics
+  mieiLogAnalytics('intent_click', intent);
 }
 
-function chatShowTyping(){
-  const msgs = document.getElementById('chat-msgs');
-  if(!msgs) return;
-  const div = document.createElement('div');
-  div.className = 'msg msg-bot msg-typing';
-  div.id = 'chat-typing';
-  div.innerHTML = `<div class="msg-avatar">🤖</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+function mieiActionBtn(action){
+  const lower = action.toLowerCase();
+  if(lower.includes('onboard') || lower.includes('start')) showPage('engine');
+  else if(lower.includes('score') || lower.includes('dashboard') || lower.includes('trust')) showPage('dashboard');
+  else if(lower.includes('inspection')) showPage('dashboard');
+  else showToast('🧭 ' + action + ' — coming soon in next MIEI release.');
 }
 
-function chatHideTyping(){
-  const t = document.getElementById('chat-typing');
-  if(t) t.remove();
-}
-
-function chatActionBtn(label, action){
-  const cls = action === 'onboard' ? 'ic-btn green' : 'ic-btn';
-  const fn = `chatHandleAction('${action}')`;
-  return `<button class="${cls}" onclick="${fn}">${label}</button>`;
-}
-
-function chatHandleAction(action){
-  if(action === 'onboard')    { showPage('engine'); return; }
-  if(action === 'dashboard')  { showPage('dashboard'); return; }
-  if(action === 'inspection') { chatIntent('inspection'); return; }
-  if(action === 'trust')      { chatIntent('trust'); return; }
-  if(action === 'segment')    { chatIntent('segment'); return; }
-  showPage('dashboard');
-}
-
-/* ─────────────────────────────────────────────────────
-   SEGMENT CLICK — from left panel
-───────────────────────────────────────────────────── */
-function chatPickSegment(key){
-  const seg = SEG_DATA[key];
+/* ── BLOCK 2: SEGMENT EXPLORER ── */
+function mieiOpenSegment(segKey){
+  const seg = mieiSegments[segKey];
   if(!seg) return;
 
-  chatActiveSegment = key;
+  mieiCurrentSegment = segKey;
+  document.getElementById('mip-title').textContent = seg.title;
+  document.getElementById('mip-demand').textContent = seg.demand;
+  document.getElementById('mip-risk').textContent = seg.risk;
+  document.getElementById('mip-inspect').textContent = seg.inspect;
 
-  // Highlight active item
-  document.querySelectorAll('.seg-item').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.seg-item').forEach(el => {
-    if(el.getAttribute('onclick') && el.getAttribute('onclick').includes("'"+key+"'")) el.classList.add('active');
-  });
+  // Reset expandable rows
+  document.querySelectorAll('.mip-row').forEach(r=>r.classList.remove('open'));
 
-  // User message
-  chatAddMsg('user', chatUserBubble(seg.ico + ' ' + seg.name));
+  const panel = document.getElementById('miei-insight-panel');
+  panel.classList.remove('hidden');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
 
-  // Typing indicator
-  chatShowTyping();
-
-  // Fetch from Firestore segment_knowledge_base, fall back to local data
-  const deliver = (d) => {
-    chatHideTyping();
-    const card = `<div class="intel-card">
-      <div class="ic-header"><div class="ic-dot"></div><span class="ic-label">${seg.ico} ${seg.name} Intelligence Layer</span></div>
-      <div class="ic-body">
-        <div class="seg-insight-rows">
-          <div class="seg-insight-row"><div class="sir-label">📈 Market Demand</div><div class="sir-text">${d.demand}</div></div>
-          <div class="seg-insight-row"><div class="sir-label">⚠️ Risk Signals</div><div class="sir-text">${d.risk}</div></div>
-          <div class="seg-insight-row"><div class="sir-label">🔬 Inspection Checkpoints</div><div class="sir-text">${d.inspect}</div></div>
-        </div>
-      </div>
-      <div class="ic-actions">
-        <button class="ic-btn" onclick="chatIntent('inspection')">🔬 Run Inspection</button>
-        <button class="ic-btn" onclick="chatIntent('trust')">📊 Trust Score</button>
-        <button class="ic-btn green" onclick="showPage('engine')">🚗 Onboard ${seg.name}</button>
-      </div>
-    </div>`;
-    chatAddMsg('bot', chatBotBubble('Here\'s what I know about <strong>' + seg.name + '</strong>:', card));
-    mieiLogAnalytics('segment_click', key);
-  };
-
+  // Fetch from Firestore if available
   if(window.db){
-    window.db.collection('segment_knowledge_base').doc(seg.segId).get()
-      .then(doc => deliver(doc.exists ? {
-        demand : doc.data().demandTrend    || seg.demand,
-        risk   : doc.data().riskSignals    || seg.risk,
-        inspect: doc.data().inspectionSignals || seg.inspect
-      } : seg))
-      .catch(() => deliver(seg));
-  } else {
-    setTimeout(() => deliver(seg), 600);
-  }
-}
-
-/* ─────────────────────────────────────────────────────
-   INTENT CLICK — from pill bar or text input
-───────────────────────────────────────────────────── */
-async function chatIntent(intent){
-  const data = INTENT_DATA[intent] || INTENT_DATA['trust'];
-
-  // Mark pill
-  document.querySelectorAll('.cpill').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.cpill').forEach(p => {
-    if(p.getAttribute('onclick') && p.getAttribute('onclick').includes("'"+intent+"'")) p.classList.add('active');
-  });
-
-  // User bubble
-  const labelMap = {buying:'🛒 Buying a vehicle',selling:'💰 Selling a vehicle',inspection:'🔬 Run inspection',battery:'⚡ EV battery health',trust:'📊 Check trust score',docs:'📄 Documents',vendors:'🏪 Vendors',sales:'📈 Sales',service:'🔧 Service',fleet:'🚛 Fleet',resale:'📈 Resale value',segment:'🧠 Explore segments'};
-  chatAddMsg('user', chatUserBubble(labelMap[intent] || intent));
-
-  chatShowTyping();
-
-  // Resolve vehicle context
-  let vehicleId = null;
-  let scores = null;
-  try{ vehicleId = await resolveVehicleContext(); }catch(e){}
-
-  if(vehicleId){
-    try{
-      scores = await triggerPVIS(vehicleId, intent);
-      scores._vehicleId = vehicleId;
-      updateTrustSurface(scores);
-      await mcaeHealthMirrorSync(vehicleId, scores);
-      await mcaeForecastTrigger(scores.trustScore, vehicleId);
-      mcaeAttachRealtimeListener(vehicleId);
-    }catch(e){ scores = null; }
+    window.db.collection('segment_knowledge_base').doc(seg.segId).get().then(doc=>{
+      if(doc.exists){
+        const d = doc.data();
+        if(d.demandTrend) document.getElementById('mip-demand').textContent = d.demandTrend;
+        if(d.riskSignals) document.getElementById('mip-risk').textContent = d.riskSignals;
+        if(d.inspectionSignals) document.getElementById('mip-inspect').textContent = d.inspectionSignals;
+      }
+    }).catch(()=>{});
   }
 
-  setTimeout(()=>{
-    chatHideTyping();
-
-    let scoreHtml = '';
-    if(scores){
-      const ts = Math.round(scores.trustScore || 0);
-      const band = getTrustBand(ts);
-      scoreHtml = `<div class="ic-scores">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-          <span style="font-family:var(--ff);font-size:22px;font-weight:800;color:${band.color||'var(--amber)'}">Trust: ${ts}/100</span>
-          <span style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.08em">${band.label}</span>
-        </div>
-        ${chatScoreRow('Docs', scores.documentScore, '#3B82F6')}
-        ${chatScoreRow('Image', scores.imageScore, '#7C3AED')}
-        ${chatScoreRow('Inspect', scores.inspectionScore, '#10B981')}
-        ${chatScoreRow('Battery', scores.batteryScore, '#F4A300')}
-        ${chatScoreRow('Market', scores.marketScore, '#F97316')}
-      </div>`;
-    }
-
-    const btns = data.actions.map(([label, action]) => chatActionBtn(label, action)).join('');
-
-    const card = `<div class="intel-card">
-      <div class="ic-header"><div class="ic-dot"></div><span class="ic-label">${data.title}</span></div>
-      <div class="ic-body">${data.body}${!vehicleId ? ' <em style="color:var(--t3);font-size:11px">— No vehicle found. Onboard one to activate live scoring.</em>' : ''}</div>
-      ${scoreHtml}
-      <div class="ic-actions">${btns}</div>
-    </div>`;
-
-    chatAddMsg('bot', chatBotBubble('', card));
-    mieiLogAnalytics(intent, vehicleId);
-  }, 700);
+  mieiLogAnalytics('segment_click', segKey);
 }
 
-function chatScoreRow(label, val, color){
-  const v = Math.round(val||0);
-  return `<div class="ic-score-row">
-    <span class="ics-label">${label}</span>
-    <div class="ics-bar"><div class="ics-fill" style="width:${v}%;background:${color}"></div></div>
-    <span class="ics-val">${v}</span>
-  </div>`;
+function mieiClosePanel(){
+  document.getElementById('miei-insight-panel').classList.add('hidden');
+  mieiCurrentSegment = null;
 }
 
-/* ─────────────────────────────────────────────────────
-   TEXT INPUT SEND
-───────────────────────────────────────────────────── */
-function chatSend(){
-  const inp = document.getElementById('chat-input');
-  if(!inp) return;
-  const val = inp.value.trim();
-  if(!val) return;
-  inp.value = '';
-
-  const lower = val.toLowerCase();
-  if(lower.includes('buy'))                              chatIntent('buying');
-  else if(lower.includes('sell'))                        chatIntent('selling');
-  else if(lower.includes('battery')||lower.includes('ev'))chatIntent('battery');
-  else if(lower.includes('inspec'))                      chatIntent('inspection');
-  else if(lower.includes('resale')||lower.includes('value'))chatIntent('resale');
-  else if(lower.includes('fleet'))                       chatIntent('fleet');
-  else if(lower.includes('trust')||lower.includes('score'))chatIntent('trust');
-  else if(lower.includes('vendor')||lower.includes('dealer'))chatIntent('vendors');
-  else if(lower.includes('doc')||lower.includes('rc')||lower.includes('insurance'))chatIntent('docs');
-  else if(lower.includes('service')||lower.includes('mainten'))chatIntent('service');
-  else if(lower.includes('sales')||lower.includes('market'))chatIntent('sales');
-  else if(lower.includes('future')||lower.includes('hyper'))chatPickSegment('future');
-  else if(lower.includes('scooter'))chatPickSegment('scooter');
-  else if(lower.includes('bike'))   chatPickSegment('bike');
-  else if(lower.includes('auto'))   chatPickSegment('auto');
-  else if(lower.includes('car')||lower.includes('suv'))  chatPickSegment('car');
-  else if(lower.includes('truck'))  chatPickSegment('truck');
-  else if(lower.includes('bus'))    chatPickSegment('bus');
-  else chatIntent('trust'); // smart fallback
+function mieiExploreSegment(){
+  if(!mieiCurrentSegment) return;
+  const seg = mieiSegments[mieiCurrentSegment];
+  showPage('engine');
+  showToast('🧭 Segment-aware onboarding loaded: ' + (seg ? seg.title : mieiCurrentSegment));
 }
 
-/* ── stub aliases so old onclick refs still work ── */
-function mieiChip(intent){ chatIntent(intent); }
-function mieiSubmit(){ chatSend(); }
-function mieiHandleInput(v){ /* text typed — handled on Enter/Send */ }
-function mieiOpenSegment(key){ chatPickSegment(key); }
-function mieiClosePanel(){} 
-function mieiExploreSegment(){ showPage('engine'); }
+/* ── BLOCK 3: NEXT STEP ENGINE ── */
 function mieiInitNextStep(){
+  const bar = document.getElementById('miei-nextstep-bar');
   const dot = document.getElementById('mfs-dot');
   const txt = document.getElementById('mfs-text');
-  if(!dot||!txt) return;
-  if(!window.db){ dot.className='sfs-dot warn'; txt.textContent='Firestore unavailable'; console.error('[99EVS] Firestore not initialised'); return; }
-  dot.className='sfs-dot';
-  txt.textContent='Connecting…';
-  window.db.collection('vehicles').orderBy('createdAt','desc').limit(1).get()
-    .then(snap=>{
-      if(!snap.empty){
-        const d = snap.docs[0].data();
-        dot.className='sfs-dot live';
-        txt.textContent = (d.make||'') + ' ' + (d.model||'') + ' · active';
-        mcaeAttachRealtimeListener(snap.docs[0].id);
-      } else {
-        dot.className='sfs-dot live';
-        txt.textContent='Ready · No vehicle yet';
-      }
-    }).catch(()=>{ dot.className='sfs-dot warn'; txt.textContent='Offline'; });
+
+  // Default (first-time visitor) state
+mieiRenderNextStep([
+  {ico:'🚀', label:'Start vehicle onboarding', sub:'Begin your progressive intelligence profile', action:()=>showPage('engine')},
+  {ico:'📊', label:'Explore trust scoring', sub:'See how the 15-phase PVIS engine works', action:()=>showPage('dashboard')},
+  {ico:'🔍', label:'Check a vehicle', sub:'Verify ownership, inspection and trust signals', action:()=>mieiChip('trust')}
+]);
+
+if(!window.db){
+  dot.className='mfs-dot warn';
+  console.warn('Firestore not connected');
+  return;
 }
 
-/* ── WELCOME MESSAGE on init ── */
-function chatInit(){
-  const msgs = document.getElementById('chat-msgs');
-  if(!msgs || msgs.children.length > 0) return;
-  chatAddMsg('bot', chatBotBubble(
-    '<strong>Welcome to 99EVs Intelligence.</strong><br>Pick a vehicle segment on the left, or tap any button below — I\'ll pull up trust scores, inspection signals, vendor maps, sales data, and documents instantly.'));
+// Live Firestore check
+dot.className='mfs-dot';
+txt.textContent='Connecting to vehicle intelligence…';
+
+try{
+  window.db.collection('vehicles').limit(1).get().then(snap=>{
+
+    dot.className='mfs-dot live';
+
+    if(!snap.empty){
+
+      txt.textContent='Vehicle profile found — PVIS engine active';
+
+      const vid = snap.docs[0].id;
+
+      mieiRenderNextStep([
+        {ico:'📈', label:'View trust score dashboard', sub:'Your vehicle intelligence is live', action:()=>showPage('dashboard')},
+        {ico:'🔬', label:'Continue inspection', sub:'Physical verification adds 30% to trust score', action:()=>showPage('dashboard')},
+        {ico:'➕', label:'Onboard another vehicle', sub:'Add to your intelligence portfolio', action:()=>showPage('engine')}
+      ]);
+
+      // Real-time listener
+      window.db.collection('vehicles').doc(vid).onSnapshot(doc=>{
+        if(doc.exists){
+          txt.textContent =
+            'Vehicle journey active — ' +
+            (doc.data().make || '') +
+            ' ' +
+            (doc.data().model || '');
+        }
+      });
+
+    } else {
+
+      txt.textContent='No vehicles yet — start your first profile';
+
+      mieiRenderNextStep([
+        {ico:'🚀', label:'Start your first vehicle intelligence profile', sub:'Takes under 3 minutes to onboard', action:()=>showPage('engine')},
+        {ico:'🧠', label:'Explore mobility segments', sub:'Learn what we score in your category', action:()=>document.getElementById('miei-layers-block').scrollIntoView({behavior:'smooth'})},
+        {ico:'🎬', label:'Run a live demo', sub:'Watch PVIS score a vehicle in real-time', action:()=>{ showPage('dashboard'); setTimeout(runScoringDemo,400); }}
+      ]);
+
+    }
+
+  }).catch(()=>{
+
+    dot.className='mfs-dot warn';
+    console.warn('Firestore connection warning');
+
+  });
+
+} catch(e){
+
+  dot.className='mfs-dot warn';
+  console.warn('Firestore fallback triggered');
+
 }
 
-/* ── ANALYTICS ── */
-function mieiLogAnalytics(intent, vehicleId){
-  if(!window.db){ console.warn('[99EVS] Analytics skipped — Firestore unavailable'); return; }
+
+function mieiRenderNextStep(cards){
+
+  const bar = document.getElementById('miei-nextstep-bar');
+
+  bar.innerHTML = cards.map((c,i)=>`
+    <div class="mns-card" onclick="(${c.action.toString()})()">
+      <span class="mns-ico">${c.ico}</span>
+      <div class="mns-body">
+        <div class="mns-label">${c.label}</div>
+        <div class="mns-sub">${c.sub}</div>
+      </div>
+    </div>
+  `).join('');
+
+}
+
+/* ── ANALYTICS PIPELINE ── */
+function mieiLogAnalytics(eventType, value){
+  if(!window.db) return;
   try{
     window.db.collection('analytics_pipeline').add({
-      intent,
-      vehicleId : vehicleId || null,
-      timestamp : firebase.firestore.FieldValue.serverTimestamp(),
-      page      : 'homepage'
+      eventType, value,
+      ts: firebase.firestore.FieldValue.serverTimestamp(),
+      page:'homepage'
     });
   }catch(e){}
 }
 </script>
 </body>
 </html>
-)
+)runScoringDemo,400); }}
+        ]);
+      }
+    }).catch(()=>{
+      dot.className='mfs-dot warn';
+      txt.textContent='Unable to reach Firestore — check connection';
+    });
+  } catch(e){
+    dot.className='mfs-dot warn';
+    txt.textContent='Firestore error — running in demo mode';
+  }
+}
+
+function mieiRe
