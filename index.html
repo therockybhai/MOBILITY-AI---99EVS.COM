@@ -383,6 +383,80 @@ a{color:inherit;text-decoration:none}
 .wc-desc{font-size:12px;color:var(--t2);line-height:1.6}
 @media(max-width:900px){.why-grid{grid-template-columns:repeat(2,1fr)}}
 
+/* ═══════ MIEI v2 — SHARED BLOCKS ═══════ */
+.miei-block{position:relative;z-index:1;padding:64px 40px}
+.miei-block-alt{background:var(--navy2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.miei-inner{max-width:860px;margin:0 auto}
+.miei-eyebrow{font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);opacity:.8;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.miei-eyebrow::before{content:'';width:18px;height:1px;background:var(--amber)}
+.miei-headline{font-family:var(--ff);font-size:clamp(22px,3vw,36px);font-weight:800;color:var(--t1);margin-bottom:8px;line-height:1.12}
+.miei-subtext{font-size:13px;color:var(--t2);margin-bottom:32px;line-height:1.7}
+
+/* BLOCK 1 — Chat */
+.miei-chat-box{background:var(--navy2);border:1px solid var(--bd2);border-radius:var(--r-xl);padding:24px;box-shadow:var(--shadow-md)}
+.mcb-input-wrap{display:flex;gap:10px;margin-bottom:18px}
+.mcb-input{flex:1;background:var(--navy);border:1px solid var(--bd2);border-radius:var(--r-pill);padding:12px 20px;font-size:14px;color:var(--t1);transition:border-color .2s}
+.mcb-input:focus{border-color:var(--amber-b);outline:none}
+.mcb-input::placeholder{color:var(--t3)}
+.mcb-send{width:44px;height:44px;background:var(--amber);border:none;border-radius:50%;color:var(--navy);font-size:18px;font-weight:800;cursor:pointer;flex-shrink:0;transition:all .18s;display:flex;align-items:center;justify-content:center}
+.mcb-send:hover{background:var(--amber2);transform:scale(1.06)}
+.miei-chips{display:flex;flex-wrap:wrap;gap:8px}
+.miei-chip{padding:7px 15px;background:var(--navy);border:1px solid var(--bd);border-radius:var(--r-pill);font-size:12px;color:var(--t2);cursor:pointer;transition:all .18s;white-space:nowrap}
+.miei-chip:hover,.miei-chip.active{border-color:var(--amber-b);color:var(--amber);background:var(--amber-l)}
+/* Response card */
+.miei-response-card{background:var(--navy3);border:1px solid var(--amber-b);border-radius:var(--r-lg);padding:20px 24px;margin-top:18px;animation:fadeUp .3s both}
+.mrc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.mrc-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);animation:pulseAmber 2s infinite;flex-shrink:0}
+.mrc-title{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--amber);letter-spacing:.04em}
+.mrc-body{font-size:13px;color:var(--t2);line-height:1.75;margin-bottom:14px}
+.mrc-actions{display:flex;flex-wrap:wrap;gap:8px}
+.mrc-btn{padding:8px 18px;border-radius:var(--r-pill);font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--amber-b);background:var(--amber-l);color:var(--amber);font-family:var(--fb);transition:all .18s}
+.mrc-btn:hover{background:var(--amber);color:var(--navy)}
+
+/* BLOCK 2 — Segment Grid */
+.miei-segment-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:24px}
+.miei-seg{background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:16px 8px;cursor:pointer;text-align:center;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.miei-seg:hover{border-color:var(--amber-b);background:var(--amber-l);transform:translateY(-3px);box-shadow:0 8px 24px rgba(244,163,0,.12)}
+.miei-seg-future{border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.05)}
+.miei-seg-future:hover{border-color:var(--violet);background:rgba(124,58,237,.12)}
+.ms-ico{font-size:24px;line-height:1}
+.ms-label{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.miei-seg:hover .ms-label{color:var(--amber)}
+/* Insight Panel */
+.miei-insight-panel{background:var(--navy2);border:1px solid var(--amber-b);border-radius:var(--r-xl);overflow:hidden;animation:fadeUp .3s both;box-shadow:var(--shadow-amber)}
+.mip-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--navy3);border-bottom:1px solid var(--bd)}
+.mip-title{font-family:var(--ff);font-size:15px;font-weight:800;color:var(--t1)}
+.mip-close{background:none;border:none;color:var(--t3);font-size:16px;cursor:pointer;padding:2px 6px;border-radius:5px;transition:color .18s}
+.mip-close:hover{color:var(--amber)}
+.mip-rows{padding:4px 0}
+.mip-row{border-bottom:1px solid var(--bd);cursor:pointer;transition:background .18s}
+.mip-row:last-child{border-bottom:none}
+.mip-row:hover{background:var(--navy3)}
+.mip-row.open{background:var(--navy3)}
+.mipr-top{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
+.mipr-label{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t1)}
+.mipr-arrow{font-size:18px;color:var(--t3);transition:transform .22s}
+.mip-row.open .mipr-arrow{transform:rotate(90deg);color:var(--amber)}
+.mipr-body{display:none;padding:0 20px 14px;font-size:12px;color:var(--t2);line-height:1.75}
+.mip-row.open .mipr-body{display:block;animation:fadeUp .22s both}
+.mip-footer{padding:16px 20px;border-top:1px solid var(--bd);background:var(--navy3)}
+
+/* BLOCK 3 — Next Step */
+.miei-nextstep-bar{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:24px;justify-content:center}
+.mns-card{flex:1;min-width:200px;background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:20px 18px;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:14px}
+.mns-card:hover{border-color:var(--amber-b);background:var(--amber-l);transform:translateY(-2px)}
+.mns-ico{font-size:26px;flex-shrink:0}
+.mns-body{}
+.mns-label{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px}
+.mns-sub{font-size:11px;color:var(--t2)}
+.miei-fs-status{display:flex;align-items:center;gap:8px;justify-content:center}
+.mfs-dot{width:8px;height:8px;border-radius:50%;background:var(--t3);flex-shrink:0}
+.mfs-dot.live{background:var(--green);animation:pulse 2s infinite}
+.mfs-dot.warn{background:var(--amber)}
+.mfs-text{font-family:var(--fm);font-size:10px;letter-spacing:.1em;color:var(--t3)}
+@media(max-width:900px){.miei-segment-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:560px){.miei-segment-grid{grid-template-columns:repeat(3,1fr)}.miei-block{padding:48px 16px}}
+
 /* Footer */
 .footer{position:relative;z-index:1;padding:36px 40px 24px;border-top:1px solid var(--bd)}
 .footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
@@ -513,38 +587,116 @@ try{
     </div>
   </section>
 
-  <!-- WHY SECTION -->
-  <section class="section section-alt" id="why">
-    <div class="section-inner">
-      <div class="sec-eyebrow">Intelligence Platform</div>
-      <h2 class="sec-h2">15-Phase Scoring Architecture</h2>
-      <p class="sec-p">Every vehicle onboarded into 99EVs receives a living trust score. It starts at submission and evolves continuously as new evidence — documents, images, inspection, battery, market — arrives.</p>
-      <div class="why-grid">
-        <div class="why-card">
-          <span class="wc-ico">📄</span>
-          <div class="wc-title">Document Score</div>
-          <div class="wc-desc">RC, insurance, fitness, loan status — verified against RTO & VAHAN database signals.</div>
+  <!-- ══════════════════════════════════════════════════════
+       MIEI v2 — BLOCK 1: Mobility AI Entry Chat
+  ══════════════════════════════════════════════════════ -->
+  <section class="miei-block" id="miei-chat-block">
+    <div class="miei-inner">
+      <div class="miei-eyebrow">Mobility AI Entry Interface</div>
+      <h2 class="miei-headline">Tell me what you're exploring today.</h2>
+      <p class="miei-subtext">Vehicles. Value. Safety. Inspection. Ownership. Future mobility.</p>
+
+      <!-- Chat input -->
+      <div class="miei-chat-box">
+        <div class="mcb-input-wrap">
+          <input class="mcb-input" id="miei-input" type="text" placeholder="Example: I want to check a scooter before buying" oninput="mieiHandleInput(this.value)" onkeydown="if(event.key==='Enter')mieiSubmit()">
+          <button class="mcb-send" onclick="mieiSubmit()">→</button>
         </div>
-        <div class="why-card">
-          <span class="wc-ico">📸</span>
-          <div class="wc-title">Image Intelligence</div>
-          <div class="wc-desc">GPS-tagged photo evidence with brightness, blur, and vehicle-type validation via TensorFlow.</div>
+        <!-- Suggestion chips -->
+        <div class="miei-chips" id="miei-chips">
+          <div class="miei-chip" onclick="mieiChip('buying')">Buying a vehicle</div>
+          <div class="miei-chip" onclick="mieiChip('selling')">Selling a vehicle</div>
+          <div class="miei-chip" onclick="mieiChip('trust')">Check vehicle trust score</div>
+          <div class="miei-chip" onclick="mieiChip('inspection')">Run inspection</div>
+          <div class="miei-chip" onclick="mieiChip('resale')">Understand resale value</div>
+          <div class="miei-chip" onclick="mieiChip('battery')">Learn EV battery health</div>
+          <div class="miei-chip" onclick="mieiChip('fleet')">Fleet evaluation</div>
+          <div class="miei-chip" onclick="mieiChip('dealer')">Dealer intelligence</div>
+          <div class="miei-chip" onclick="mieiChip('safety')">Mobility safety history</div>
+          <div class="miei-chip" onclick="mieiChip('future')">Future mobility systems</div>
         </div>
-        <div class="why-card">
-          <span class="wc-ico">🔬</span>
-          <div class="wc-title">Inspection Pipeline</div>
-          <div class="wc-desc">Team-assigned certified inspectors. Physical check adds 30% of total trust weight.</div>
+      </div>
+
+      <!-- AI Response card -->
+      <div class="miei-response-card hidden" id="miei-response">
+        <div class="mrc-header">
+          <span class="mrc-dot"></span>
+          <span class="mrc-title" id="mrc-title">Intelligence Response</span>
         </div>
-        <div class="why-card">
-          <span class="wc-ico">⚡</span>
-          <div class="wc-title">Battery Intelligence</div>
-          <div class="wc-desc">EV-specific battery state scoring — SOH verification and warranty validation included.</div>
+        <p class="mrc-body" id="mrc-body"></p>
+        <div class="mrc-actions" id="mrc-actions"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       MIEI v2 — BLOCK 2: Mobility Intelligence Layers Explorer
+  ══════════════════════════════════════════════════════ -->
+  <section class="miei-block miei-block-alt" id="miei-layers-block">
+    <div class="miei-inner">
+      <div class="miei-eyebrow">Intelligence Layers</div>
+      <h2 class="miei-headline">Select your mobility segment.</h2>
+      <p class="miei-subtext">Each segment carries a unique intelligence layer — demand, risk signals, and inspection checkpoints.</p>
+
+      <div class="miei-segment-grid">
+        <div class="miei-seg" onclick="mieiOpenSegment('walk')"><span class="ms-ico">🚶</span><span class="ms-label">Cycles</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('scooter')"><span class="ms-ico">🛵</span><span class="ms-label">Scooters</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('bike')"><span class="ms-ico">🏍</span><span class="ms-label">Bikes</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('auto')"><span class="ms-ico">🛺</span><span class="ms-label">Auto</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('car')"><span class="ms-ico">🚗</span><span class="ms-label">Cars</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('suv')"><span class="ms-ico">🚙</span><span class="ms-label">SUVs</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('truck')"><span class="ms-ico">🚛</span><span class="ms-label">Trucks</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('bus')"><span class="ms-ico">🚌</span><span class="ms-label">Buses</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('tractor')"><span class="ms-ico">🚜</span><span class="ms-label">Tractors</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('rail')"><span class="ms-ico">🚅</span><span class="ms-label">Rail</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('marine')"><span class="ms-ico">⛴</span><span class="ms-label">Marine</span></div>
+        <div class="miei-seg" onclick="mieiOpenSegment('aviation')"><span class="ms-ico">🚁</span><span class="ms-label">Aviation</span></div>
+        <div class="miei-seg miei-seg-future" onclick="mieiOpenSegment('future')"><span class="ms-ico">🛸</span><span class="ms-label">Future</span></div>
+      </div>
+
+      <!-- Floating Insight Panel -->
+      <div class="miei-insight-panel hidden" id="miei-insight-panel">
+        <div class="mip-header">
+          <span class="mip-title" id="mip-title">Segment Intelligence</span>
+          <button class="mip-close" onclick="mieiClosePanel()">✕</button>
         </div>
-        <div class="why-card">
-          <span class="wc-ico">📈</span>
-          <div class="wc-title">Market Signals</div>
-          <div class="wc-desc">City-level demand data, resale velocity, seasonal trends — connected from market intelligence layer.</div>
+        <div class="mip-rows">
+          <div class="mip-row" onclick="this.classList.toggle('open')">
+            <div class="mipr-top"><span class="mipr-label">📈 Market Demand Trend</span><span class="mipr-arrow">›</span></div>
+            <div class="mipr-body" id="mip-demand"></div>
+          </div>
+          <div class="mip-row" onclick="this.classList.toggle('open')">
+            <div class="mipr-top"><span class="mipr-label">⚠️ Common Risk Signals</span><span class="mipr-arrow">›</span></div>
+            <div class="mipr-body" id="mip-risk"></div>
+          </div>
+          <div class="mip-row" onclick="this.classList.toggle('open')">
+            <div class="mipr-top"><span class="mipr-label">🔬 Inspection Checkpoints</span><span class="mipr-arrow">›</span></div>
+            <div class="mipr-body" id="mip-inspect"></div>
+          </div>
         </div>
+        <div class="mip-footer">
+          <button class="btn-primary" id="mip-cta" onclick="mieiExploreSegment()">Explore this segment →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       MIEI v2 — BLOCK 3: Guided Next-Step Engine
+  ══════════════════════════════════════════════════════ -->
+  <section class="miei-block" id="miei-nextstep-block">
+    <div class="miei-inner" style="max-width:760px">
+      <div class="miei-eyebrow">Guided Next-Step Engine</div>
+      <h2 class="miei-headline" style="font-size:clamp(18px,2.4vw,28px)">Where would you like to go next?</h2>
+
+      <div class="miei-nextstep-bar" id="miei-nextstep-bar">
+        <!-- Populated by JS based on Firestore / visitor state -->
+      </div>
+
+      <!-- Firestore status indicator -->
+      <div class="miei-fs-status" id="miei-fs-status">
+        <span class="mfs-dot" id="mfs-dot"></span>
+        <span class="mfs-text" id="mfs-text">Connecting to vehicle intelligence…</span>
       </div>
     </div>
   </section>
@@ -1824,10 +1976,359 @@ function showToast(msg){
 /* ── INIT ────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded',()=>{
   showPage('home');
-  // Build initial empty activity log
   logActivity('blue','🟢','PVIS Engine Ready','Platform initialised. Onboard a vehicle to start progressive scoring.');
+  mieiInitNextStep();
 });
+
+/* ══════════════════════════════════════════════════════
+   MIEI v2 — MOBILITY AI ENTRY INTERFACE ENGINE
+══════════════════════════════════════════════════════ */
+
+/* ── INTENT KNOWLEDGE BASE ── */
+const mieiIntents = {
+  buying:{
+    title:'Buying a Vehicle',
+    body:'You can verify trust score, inspection status, ownership signals, and resale strength before deciding. 99EVs gives you a structured intelligence layer on any vehicle before you commit.',
+    actions:['Check trust score','Run inspection','Start onboarding']
+  },
+  selling:{
+    title:'Selling a Vehicle',
+    body:'Boost your vehicle\'s trust score before listing. Verified documents, inspection certificate, and a 99EVs trust badge increase buyer confidence and resale value significantly.',
+    actions:['Onboard vehicle','Request inspection','View trust dashboard']
+  },
+  trust:{
+    title:'Vehicle Trust Score',
+    body:'The PVIS Trust Score is a 0–100 composite from document verification, image evidence, inspection, battery health, and market signals. It updates automatically as new evidence arrives.',
+    actions:['View live score','Run inspection','Learn scoring model']
+  },
+  inspection:{
+    title:'Physical Inspection Pipeline',
+    body:'Our certified inspectors cover 30% of the total trust weight. Inspection adds the highest single contribution to trust — and triggers automatic certificate generation when score exceeds 60.',
+    actions:['Request inspection','View inspection criteria','Onboard vehicle']
+  },
+  resale:{
+    title:'Resale Value Intelligence',
+    body:'Resale signals factor city demand, seasonal velocity, model depreciation curves, and condition scoring. Vehicles with higher trust scores consistently command 10–18% better resale pricing.',
+    actions:['Check market signals','View trust score','Onboard vehicle']
+  },
+  battery:{
+    title:'EV Battery Health Scoring',
+    body:'Battery scoring evaluates cycle stability, thermal behaviour, and usage signals. State of Health (SOH) verification and warranty status are validated automatically for all EV segments.',
+    actions:['Start battery check','View scoring model','Onboard EV']
+  },
+  fleet:{
+    title:'Fleet Evaluation',
+    body:'Evaluate entire fleets with progressive scoring per vehicle. Fleet intelligence layers include driver history, permit compliance, maintenance intervals, and aggregate trust scores.',
+    actions:['Start fleet onboarding','View fleet scores','Talk to fleet team']
+  },
+  dealer:{
+    title:'Dealer Intelligence',
+    body:'99EVs aggregates dealer performance signals — inventory churn, trust score averages, inspection pass rates, and customer completion rates — into a structured dealer intelligence layer.',
+    actions:['View dealer signals','Compare dealers','Onboard vehicle']
+  },
+  safety:{
+    title:'Mobility Safety History',
+    body:'Safety history covers RTO records, accident signals, fitness certificate status, and tyre/brake inspection logs. Available for all mobility segments from 2W to commercial vehicles.',
+    actions:['Check safety history','View inspection report','Run PVIS check']
+  },
+  future:{
+    title:'Future Mobility Systems',
+    body:'99EVs is building intelligence layers for hyperloop, autonomous vehicles, and urban air mobility in India. Early segment data covers air taxi regulations and AAI status as of 2026.',
+    actions:['Explore future segments','Join beta programme','View roadmap']
+  }
+};
+
+/* ── SEGMENT KNOWLEDGE BASE ── */
+const mieiSegments = {
+  walk:{
+    title:'Cycles Intelligence Layer',
+    segId:'CYCLE',
+    demand:'Rising urban adoption driven by last-mile delivery and health-conscious commuters.',
+    risk:'Frame stress fractures under commercial load; brake cable wear in monsoon conditions.',
+    inspect:'Frame weld integrity · Brake responsiveness · Gear shift precision · Tyre tread depth'
+  },
+  scooter:{
+    title:'Scooters Intelligence Layer',
+    segId:'EV2W',
+    demand:'High resale stability in urban delivery usage. EV variant demand growing 34% YoY in metro cities.',
+    risk:'Battery mismatch risk if OEM charger is missing. Controller failure in monsoon-affected units.',
+    inspect:'Controller health · Motor noise profile · Frame alignment · Battery cycle count · Tyre condition'
+  },
+  bike:{
+    title:'Bikes Intelligence Layer',
+    segId:'BIKE',
+    demand:'Premium performance segment showing strong resale above 150cc; commuter segment stabilising.',
+    risk:'Engine oil contamination; clutch plate wear in high-usage commercial bikes.',
+    inspect:'Engine compression · Chain tension · Clutch play · Fork seal leaks · Brake disc wear'
+  },
+  auto:{
+    title:'Auto-Rickshaw Intelligence Layer',
+    segId:'AUTO3W',
+    demand:'EV auto demand surging in Bengaluru, Delhi, and Chennai under state subsidy schemes.',
+    risk:'Permit expiry risk; CNG conversion compliance gaps; battery degradation in conversion EVs.',
+    inspect:'Permit validity · Meter calibration · CNG/battery integrity · Tyre condition · Chassis rust'
+  },
+  car:{
+    title:'Cars Intelligence Layer',
+    segId:'CAR4W',
+    demand:'Pre-owned EV car segment growing rapidly. Petrol compact segment showing stable velocity.',
+    risk:'Hidden flood damage; odometer tampering; incomplete service history in private listings.',
+    inspect:'Engine oil condition · Underbody rust · AC compressor · Tyre alignment · OBD fault scan'
+  },
+  suv:{
+    title:'SUVs Intelligence Layer',
+    segId:'SUV4W',
+    demand:'Strong demand in Tier 1 cities. 7-seater variants commanding 8–12% premium resale.',
+    risk:'Suspension wear on rough urban roads; differential oil leaks in AWD models.',
+    inspect:'Differential health · Suspension bushings · Brake pad thickness · Roof integrity · ADAS calibration'
+  },
+  truck:{
+    title:'Commercial Trucks Intelligence Layer',
+    segId:'TRUCK',
+    demand:'Fleet renewal driving structured demand. EV LCV segment growing in intra-city logistics.',
+    risk:'Engine overhaul history gaps; permit non-compliance; tyre blowout risk under overload.',
+    inspect:'Engine timing · Permit status · Load capacity compliance · Tyre pressure rating · Axle condition'
+  },
+  bus:{
+    title:'Buses Intelligence Layer',
+    segId:'BUS',
+    demand:'Electric bus adoption accelerating under PM e-Bus Sewa. School bus segment stable.',
+    risk:'Driver record gaps; route permit lapses; brake system fatigue in high-cycle units.',
+    inspect:'Brake system · Emergency exit compliance · Seat condition · Driver record · Route permit validity'
+  },
+  tractor:{
+    title:'Agricultural Vehicles Intelligence Layer',
+    segId:'AGRI',
+    demand:'Farm mechanisation driving stable demand. Tractor resale strong in Kharif harvest cycles.',
+    risk:'Hydraulic system leaks; PTO shaft wear; seasonal neglect causing engine seizure risk.',
+    inspect:'Hydraulic lift · PTO engagement · Tyre lug depth · Engine coolant level · Fuel injector condition'
+  },
+  rail:{
+    title:'Rail Mobility Intelligence Layer',
+    segId:'RAIL',
+    demand:'Urban metro expansion driving rider growth in Bengaluru, Delhi, Mumbai, Hyderabad, and Kochi.',
+    risk:'N/A for personal ownership; fleet compliance and maintenance schedule tracking for operators.',
+    inspect:'N/A — Intelligence layer covers route mapping, schedule reliability, and accessibility scoring.'
+  },
+  marine:{
+    title:'Marine Intelligence Layer',
+    segId:'MARINE',
+    demand:'Kerala backwaters and Kochi Water Metro driving structured marine mobility growth.',
+    risk:'Hull integrity risk; engine corrosion in saltwater environments; permit and safety gear compliance.',
+    inspect:'Hull condition · Engine corrosion check · Life jacket compliance · Navigation light status · Permit validity'
+  },
+  aviation:{
+    title:'Aviation Intelligence Layer',
+    segId:'AVIATION',
+    demand:'Urban air taxi interest growing post AAI air taxi policy 2025. Drone delivery segment active.',
+    risk:'Regulatory approval gaps; battery certification for eVTOL; pilot licence compliance.',
+    inspect:'AAI permit status · Battery certification · Pilot licence validity · Insurance coverage · Safety protocol compliance'
+  },
+  future:{
+    title:'Future Mobility Intelligence Layer',
+    segId:'FUTURE',
+    demand:'Hyperloop, autonomous vehicles, and urban air mobility entering early policy frameworks in India 2026.',
+    risk:'Regulatory undefined zones; infrastructure gap risk; technology maturity uncertainty.',
+    inspect:'Policy compliance status · Technology certification · Infrastructure readiness scoring · Safety protocol mapping'
+  }
+};
+
+let mieiCurrentSegment = null;
+
+/* ── BLOCK 1: CHAT ENGINE ── */
+function mieiHandleInput(val){
+  if(!val.trim()) return;
+  // Auto-match intent
+  const lower = val.toLowerCase();
+  if(lower.includes('buy')) mieiChip('buying');
+  else if(lower.includes('sell')) mieiChip('selling');
+  else if(lower.includes('battery') || lower.includes('ev')) mieiChip('battery');
+  else if(lower.includes('inspec')) mieiChip('inspection');
+  else if(lower.includes('resale') || lower.includes('value')) mieiChip('resale');
+  else if(lower.includes('fleet')) mieiChip('fleet');
+  else if(lower.includes('trust') || lower.includes('score')) mieiChip('trust');
+  else if(lower.includes('dealer')) mieiChip('dealer');
+  else if(lower.includes('safety') || lower.includes('history')) mieiChip('safety');
+  else if(lower.includes('future') || lower.includes('hyper')) mieiChip('future');
+}
+
+function mieiSubmit(){
+  const val = document.getElementById('miei-input').value.trim();
+  if(!val) return;
+  mieiHandleInput(val);
+}
+
+function mieiChip(intent){
+  // Mark chip active
+  document.querySelectorAll('.miei-chip').forEach(c=>c.classList.remove('active'));
+  const chips = document.querySelectorAll('.miei-chip');
+  chips.forEach(c=>{ if(c.getAttribute('onclick').includes("'"+intent+"'")) c.classList.add('active'); });
+
+  const data = mieiIntents[intent];
+  if(!data) return;
+
+  document.getElementById('mrc-title').textContent = data.title;
+  document.getElementById('mrc-body').textContent = data.body;
+
+  const actEl = document.getElementById('mrc-actions');
+  actEl.innerHTML = data.actions.map(a=>`<button class="mrc-btn" onclick="mieiActionBtn('${a}')">${a}</button>`).join('');
+
+  const card = document.getElementById('miei-response');
+  card.classList.remove('hidden');
+  card.scrollIntoView({behavior:'smooth',block:'nearest'});
+
+  // Log analytics
+  mieiLogAnalytics('intent_click', intent);
+}
+
+function mieiActionBtn(action){
+  const lower = action.toLowerCase();
+  if(lower.includes('onboard') || lower.includes('start')) showPage('engine');
+  else if(lower.includes('score') || lower.includes('dashboard') || lower.includes('trust')) showPage('dashboard');
+  else if(lower.includes('inspection')) showPage('dashboard');
+  else showToast('🧭 ' + action + ' — coming soon in next MIEI release.');
+}
+
+/* ── BLOCK 2: SEGMENT EXPLORER ── */
+function mieiOpenSegment(segKey){
+  const seg = mieiSegments[segKey];
+  if(!seg) return;
+
+  mieiCurrentSegment = segKey;
+  document.getElementById('mip-title').textContent = seg.title;
+  document.getElementById('mip-demand').textContent = seg.demand;
+  document.getElementById('mip-risk').textContent = seg.risk;
+  document.getElementById('mip-inspect').textContent = seg.inspect;
+
+  // Reset expandable rows
+  document.querySelectorAll('.mip-row').forEach(r=>r.classList.remove('open'));
+
+  const panel = document.getElementById('miei-insight-panel');
+  panel.classList.remove('hidden');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+
+  // Fetch from Firestore if available
+  if(window.db){
+    window.db.collection('segment_knowledge_base').doc(seg.segId).get().then(doc=>{
+      if(doc.exists){
+        const d = doc.data();
+        if(d.demandTrend) document.getElementById('mip-demand').textContent = d.demandTrend;
+        if(d.riskSignals) document.getElementById('mip-risk').textContent = d.riskSignals;
+        if(d.inspectionSignals) document.getElementById('mip-inspect').textContent = d.inspectionSignals;
+      }
+    }).catch(()=>{});
+  }
+
+  mieiLogAnalytics('segment_click', segKey);
+}
+
+function mieiClosePanel(){
+  document.getElementById('miei-insight-panel').classList.add('hidden');
+  mieiCurrentSegment = null;
+}
+
+function mieiExploreSegment(){
+  if(!mieiCurrentSegment) return;
+  const seg = mieiSegments[mieiCurrentSegment];
+  showPage('engine');
+  showToast('🧭 Segment-aware onboarding loaded: ' + (seg ? seg.title : mieiCurrentSegment));
+}
+
+/* ── BLOCK 3: NEXT STEP ENGINE ── */
+function mieiInitNextStep(){
+  const bar = document.getElementById('miei-nextstep-bar');
+  const dot = document.getElementById('mfs-dot');
+  const txt = document.getElementById('mfs-text');
+
+  // Default (first-time visitor) state
+  mieiRenderNextStep([
+    {ico:'🚀', label:'Start vehicle onboarding', sub:'Begin your progressive intelligence profile', action:()=>showPage('engine')},
+    {ico:'📊', label:'Explore trust scoring', sub:'See how the 15-phase PVIS engine works', action:()=>showPage('dashboard')},
+    {ico:'🔍', label:'Check a vehicle', sub:'Verify ownership, inspection and trust signals', action:()=>mieiChip('trust')}
+  ]);
+
+  if(!window.db){
+    dot.className='mfs-dot warn';
+    txt.textContent='Demo mode — Firestore not connected';
+    return;
+  }
+
+  // Live Firestore check
+  dot.className='mfs-dot';
+  txt.textContent='Connecting to vehicle intelligence…';
+
+  try{
+    window.db.collection('vehicles').limit(1).get().then(snap=>{
+      dot.className='mfs-dot live';
+      if(!snap.empty){
+        txt.textContent='Vehicle profile found — PVIS engine active';
+        const vid = snap.docs[0].id;
+        mieiRenderNextStep([
+          {ico:'📈', label:'View trust score dashboard', sub:'Your vehicle intelligence is live', action:()=>showPage('dashboard')},
+          {ico:'🔬', label:'Continue inspection', sub:'Physical verification adds 30% to trust score', action:()=>showPage('dashboard')},
+          {ico:'➕', label:'Onboard another vehicle', sub:'Add to your intelligence portfolio', action:()=>showPage('engine')}
+        ]);
+        // Real-time listener
+        window.db.collection('vehicles').doc(vid).onSnapshot(doc=>{
+          if(doc.exists){
+            txt.textContent = 'Vehicle journey active — ' + (doc.data().make||'') + ' ' + (doc.data().model||'');
+          }
+        });
+      } else {
+        txt.textContent='No vehicles yet — start your first profile';
+        mieiRenderNextStep([
+          {ico:'🚀', label:'Start your first vehicle intelligence profile', sub:'Takes under 3 minutes to onboard', action:()=>showPage('engine')},
+          {ico:'🧠', label:'Explore mobility segments', sub:'Learn what we score in your category', action:()=>document.getElementById('miei-layers-block').scrollIntoView({behavior:'smooth'})},
+          {ico:'🎬', label:'Run a live demo', sub:'Watch PVIS score a vehicle in real-time', action:()=>{ showPage('dashboard'); setTimeout(runScoringDemo,400); }}
+        ]);
+      }
+    }).catch(()=>{
+      dot.className='mfs-dot warn';
+      txt.textContent='Unable to reach Firestore — check connection';
+    });
+  } catch(e){
+    dot.className='mfs-dot warn';
+    txt.textContent='Firestore error — running in demo mode';
+  }
+}
+
+function mieiRenderNextStep(cards){
+  const bar = document.getElementById('miei-nextstep-bar');
+  bar.innerHTML = cards.map((c,i)=>`
+    <div class="mns-card" onclick="(${c.action.toString()})()">
+      <span class="mns-ico">${c.ico}</span>
+      <div class="mns-body">
+        <div class="mns-label">${c.label}</div>
+        <div class="mns-sub">${c.sub}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── ANALYTICS PIPELINE ── */
+function mieiLogAnalytics(eventType, value){
+  if(!window.db) return;
+  try{
+    window.db.collection('analytics_pipeline').add({
+      eventType, value,
+      ts: firebase.firestore.FieldValue.serverTimestamp(),
+      page:'homepage'
+    });
+  }catch(e){}
+}
 </script>
 </body>
 </html>
-)
+)runScoringDemo,400); }}
+        ]);
+      }
+    }).catch(()=>{
+      dot.className='mfs-dot warn';
+      txt.textContent='Unable to reach Firestore — check connection';
+    });
+  } catch(e){
+    dot.className='mfs-dot warn';
+    txt.textContent='Firestore error — running in demo mode';
+  }
+}
+
+function mieiRe
