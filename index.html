@@ -1,2492 +1,1448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>99EVS — Progressive Vehicle Intelligence Scoring Engine</title>
-<meta name="description" content="99EVS — India's vehicle intelligence platform. Progressive scoring, real-time trust tracking, inspection pipeline, and dealer routing.">
-<meta name="theme-color" content="#0D1B2E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Mulish:wght@300;400;500;600;700&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
-
-<style>
-/* ═══════════════════════════════════════════════════════════
-   99EVS — PROGRESSIVE VEHICLE INTELLIGENCE SCORING ENGINE
-   Design master: navy + amber trust-first system
-   Version: PVIS 1.0
-═══════════════════════════════════════════════════════════ */
-:root{
-  --navy:#0D1B2E;--navy2:#132540;--navy3:#1C3456;--navy4:#253F68;
-  --amber:#F4A300;--amber2:#D98F00;--amber-l:rgba(244,163,0,.10);--amber-b:rgba(244,163,0,.20);
-  --green:#10B981;--green-l:rgba(16,185,129,.10);--green-b:rgba(16,185,129,.20);
-  --red:#EF4444;--red-l:rgba(239,68,68,.10);--red-b:rgba(239,68,68,.20);
-  --orange:#F97316;--blue:#3B82F6;--violet:#7C3AED;
-  --bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.14);
-  --t1:#F1F5F9;--t2:#94A3B8;--t3:#475569;
-  --ff:'Syne',sans-serif;--fb:'Mulish',sans-serif;--fm:'DM Mono',monospace;
-  --max:1180px;
-  --r-sm:7px;--r-md:12px;--r-lg:16px;--r-xl:20px;--r-pill:100px;
-  --shadow-md:0 8px 28px rgba(0,0,0,.28);
-  --shadow-lg:0 16px 40px rgba(0,0,0,.32);
-  --shadow-amber:0 8px 28px rgba(244,163,0,.25);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:15px;scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--navy);color:var(--t1);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(244,163,0,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(244,163,0,.012) 1px,transparent 1px);
-  background-size:48px 48px}
-button,input,select,textarea{font-family:inherit;outline:none}
-a{color:inherit;text-decoration:none}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--navy)}
-::-webkit-scrollbar-thumb{background:var(--navy3);border-radius:3px}
-.hidden{display:none!important}
-
-/* ── ANIMATIONS ── */
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
-@keyframes pulseAmber{0%,100%{box-shadow:0 0 0 0 rgba(244,163,0,.5)}50%{box-shadow:0 0 0 8px rgba(244,163,0,0)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes barGrow{from{width:0}to{width:var(--w,0%)}}
-@keyframes scoreCount{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-@keyframes ringPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-@keyframes certReveal{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
-/* ── NAV ── */
-.nav{position:sticky;top:0;z-index:900;height:60px;background:rgba(13,27,46,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 40px}
-.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer}
-.nav-mark{width:34px;height:34px;background:var(--amber);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--ff);font-weight:800;font-size:12px;color:var(--navy)}
-.nav-name{font-family:var(--ff);font-weight:800;font-size:17px;color:var(--t1);letter-spacing:.5px}
-.nav-name em{color:var(--amber);font-style:normal}
-.nav-links{display:flex;gap:4px;list-style:none}
-.nav-links a{font-size:12px;font-weight:600;color:var(--t2);padding:6px 14px;border-radius:7px;border:1px solid transparent;transition:all .18s;cursor:pointer}
-.nav-links a:hover,.nav-links a.active{color:var(--amber);border-color:var(--amber-b);background:var(--amber-l)}
-.nav-cta-group{display:flex;align-items:center;gap:8px}
-.nav-ghost{padding:7px 16px;border:1px solid var(--bd2);color:var(--t2);font-size:12px;font-weight:600;border-radius:var(--r-pill);background:transparent;cursor:pointer;transition:all .18s}
-.nav-ghost:hover{border-color:var(--amber);color:var(--amber)}
-.nav-btn{padding:9px 20px;background:var(--amber);color:var(--navy);font-size:12px;font-weight:800;border-radius:var(--r-pill);border:none;cursor:pointer;transition:all .18s;font-family:var(--fb)}
-.nav-btn:hover{background:var(--amber2);transform:translateY(-1px)}
-.nav-pill{font-family:var(--fm);font-size:9px;color:var(--green);background:var(--green-l);border:1px solid var(--green-b);padding:3px 10px;border-radius:var(--r-pill);letter-spacing:.08em;animation:pulse 2.5s infinite}
-@media(max-width:800px){.nav-links{display:none}.nav{padding:0 16px}}
-
-/* ═══════ HOMEPAGE / HERO ═══════ */
-#pg-home{display:block}#pg-engine{display:none}#pg-dashboard{display:none}
-.hero{position:relative;z-index:1;padding:72px 40px 60px;text-align:center;overflow:hidden}
-.hero::after{content:'';position:absolute;top:-20%;left:25%;width:900px;height:700px;background:radial-gradient(ellipse,rgba(244,163,0,.055) 0%,transparent 65%);pointer-events:none;z-index:0}
-.hero-inner{position:relative;z-index:1;max-width:820px;margin:0 auto}
-.hero-live{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);padding:5px 18px;border-radius:var(--r-pill);margin-bottom:28px}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-.live-text{font-family:var(--fm);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
-.hero-title{font-family:var(--ff);font-size:clamp(36px,5.8vw,72px);font-weight:800;line-height:1.04;letter-spacing:-.5px;margin-bottom:20px;animation:fadeUp .5s both}
-.hero-title .hl{color:var(--amber)}.hero-title .dim{color:rgba(241,245,249,.25)}
-.hero-sub{font-size:clamp(14px,1.8vw,17px);color:var(--t2);max-width:580px;margin:0 auto 44px;line-height:1.8;animation:fadeUp .5s .1s both}
-.hero-sub strong{color:var(--t1);font-weight:600}
-
-/* Emoji mobility grid */
-.mobility-orbit{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:740px;margin:0 auto 44px;animation:fadeUp .5s .18s both}
-.mob-tag{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r-pill);border:1px solid var(--bd);background:var(--navy2);font-size:12px;color:var(--t2);cursor:pointer;transition:all .2s}
-.mob-tag:hover{border-color:var(--amber-b);color:var(--amber);background:var(--amber-l);transform:translateY(-2px)}
-.mob-tag .m-ico{font-size:16px}
-
-/* Action cards */
-.hero-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:920px;margin:0 auto 48px;animation:fadeUp .5s .24s both}
-.action-card{background:var(--navy2);border:1.5px solid var(--bd);border-radius:var(--r-lg);padding:22px 18px;cursor:pointer;transition:all .22s;text-align:center;position:relative;overflow:hidden;display:block}
-.action-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber);transform:scaleX(0);transform-origin:left;transition:transform .28s}
-.action-card:hover{border-color:var(--amber);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
-.action-card:hover::before{transform:scaleX(1)}
-.ac-ico{font-size:30px;margin-bottom:12px;display:block}
-.ac-label{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:5px;line-height:1.3}
-.ac-sub{font-size:11px;color:var(--t2);line-height:1.5}
-.ac-arrow{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--amber);margin-top:10px;letter-spacing:.03em}
-.hero-trust{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding-top:32px;border-top:1px solid var(--bd)}
-.ht-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t2)}
-.ht-item span{color:var(--green);font-weight:700}
-@media(max-width:860px){.hero-actions{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:480px){.hero-actions{grid-template-columns:1fr}.hero{padding:52px 16px 44px}}
-
-/* ── SECTION SYSTEM ── */
-.section{position:relative;z-index:1;padding:60px 40px}
-.section-alt{background:var(--navy2);border-top:1px solid var(--bd)}
-.section-inner{max-width:var(--max);margin:0 auto}
-.sec-eyebrow{font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);opacity:.8;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.sec-eyebrow::before{content:'';width:18px;height:1px;background:var(--amber)}
-.sec-h2{font-family:var(--ff);font-size:clamp(22px,3vw,38px);font-weight:800;color:var(--t1);margin-bottom:10px;line-height:1.12}
-.sec-p{font-size:14px;color:var(--t2);max-width:540px;line-height:1.8;margin-bottom:36px}
-
-/* ═══════ PVIS SCORING DASHBOARD ═══════ */
-#pg-dashboard{padding:0}
-.dash-layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 60px)}
-
-/* SIDEBAR */
-.dash-sidebar{background:var(--navy2);border-right:1px solid var(--bd);padding:24px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto}
-.ds-vehicle-card{background:var(--navy3);border:1px solid var(--bd);border-radius:var(--r-lg);padding:16px}
-.ds-vc-type{font-family:var(--fm);font-size:9px;color:var(--amber);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
-.ds-vc-name{font-family:var(--ff);font-size:16px;font-weight:800;color:var(--t1);margin-bottom:3px}
-.ds-vc-city{font-size:11px;color:var(--t2)}
-.ds-trust-ring{display:flex;flex-direction:column;align-items:center;padding:20px 0}
-.trust-ring-wrap{position:relative;width:120px;height:120px}
-.trust-ring-svg{transform:rotate(-90deg)}
-.tr-bg{fill:none;stroke:var(--bd2);stroke-width:8}
-.tr-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dasharray 1.2s cubic-bezier(.4,0,.2,1)}
-.trust-ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.trn-val{font-family:var(--ff);font-size:28px;font-weight:800;color:var(--t1);line-height:1;animation:scoreCount .5s both}
-.trn-label{font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.1em;margin-top:2px}
-.ds-band{margin-top:10px;padding:6px 14px;border-radius:var(--r-pill);font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-align:center}
-.band-premium{background:var(--green-l);border:1px solid var(--green-b);color:var(--green)}
-.band-verified{background:var(--amber-l);border:1px solid var(--amber-b);color:var(--amber)}
-.band-inspect{background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);color:var(--orange)}
-.band-repair{background:var(--red-l);border:1px solid var(--red-b);color:var(--red)}
-
-/* Sidebar score breakdown */
-.ds-scores{display:flex;flex-direction:column;gap:6px}
-.ds-score-row{display:flex;align-items:center;gap:10px}
-.dsr-label{font-size:11px;color:var(--t2);width:80px;flex-shrink:0}
-.dsr-bar-wrap{flex:1;height:6px;background:var(--bd);border-radius:3px;overflow:hidden}
-.dsr-bar{height:100%;border-radius:3px;transition:width 1s ease;animation:barGrow 1s ease forwards}
-.dsr-val{font-family:var(--fm);font-size:10px;color:var(--t2);width:28px;text-align:right;flex-shrink:0}
-
-/* Phase pipeline */
-.phase-pipeline{display:flex;flex-direction:column;gap:4px}
-.phase-step{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r-sm);border:1px solid transparent;transition:all .2s;cursor:default}
-.phase-step.active{background:var(--amber-l);border-color:var(--amber-b)}
-.phase-step.done{background:var(--green-l);border-color:var(--green-b)}
-.phase-step.pending{background:var(--navy3);border-color:var(--bd)}
-.ps-ico{font-size:14px;width:20px;text-align:center;flex-shrink:0}
-.ps-label{font-family:var(--fm);font-size:10px;color:var(--t2);letter-spacing:.05em;flex:1}
-.phase-step.active .ps-label{color:var(--amber)}
-.phase-step.done  .ps-label{color:var(--green)}
-.ps-status{font-family:var(--fm);font-size:9px;letter-spacing:.08em}
-.phase-step.done  .ps-status{color:var(--green)}
-.phase-step.active .ps-status{color:var(--amber)}
-.phase-step.pending .ps-status{color:var(--t3)}
-
-@media(max-width:900px){.dash-layout{grid-template-columns:1fr}.dash-sidebar{display:none}}
-
-/* ── MAIN SCORE PANEL ── */
-.dash-main{padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
-.dash-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.dt-title{font-family:var(--ff);font-size:18px;font-weight:800;color:var(--t1)}
-.dt-sub{font-size:12px;color:var(--t3);margin-top:2px;font-family:var(--fm);letter-spacing:.05em}
-.dt-actions{display:flex;gap:8px}
-
-/* Score cards grid */
-.score-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.score-card{background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:18px;transition:all .2s;position:relative;overflow:hidden}
-.score-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0}
-.score-card.c-doc::after{background:var(--blue)}
-.score-card.c-img::after{background:var(--violet)}
-.score-card.c-insp::after{background:var(--green)}
-.score-card.c-bat::after{background:var(--amber)}
-.score-card.c-mkt::after{background:var(--orange)}
-.score-card.c-conf::after{background:var(--red)}
-.sc-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sc-name{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t1);letter-spacing:.03em}
-.sc-phase{font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.08em;background:var(--navy3);padding:2px 7px;border-radius:4px}
-.sc-big{font-family:var(--ff);font-size:42px;font-weight:800;color:var(--t1);line-height:1;margin-bottom:10px;transition:all .4s}
-.sc-big.up{color:var(--green)}.sc-big.mid{color:var(--amber)}.sc-big.low{color:var(--red)}
-.sc-bar-wrap{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-bottom:8px}
-.sc-bar{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
-.sc-detail{font-size:11px;color:var(--t3);line-height:1.5}
-.sc-state{display:inline-flex;align-items:center;gap:5px;font-family:var(--fm);font-size:9px;letter-spacing:.08em;padding:2px 8px;border-radius:4px}
-.state-verified{background:var(--green-l);border:1px solid var(--green-b);color:var(--green)}
-.state-pending{background:var(--amber-l);border:1px solid var(--amber-b);color:var(--amber)}
-.state-missing{background:var(--red-l);border:1px solid var(--red-b);color:var(--red)}
-.sc-weight{font-family:var(--fm);font-size:9px;color:var(--t3);margin-top:6px;letter-spacing:.06em}
-@media(max-width:800px){.score-cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:480px){.score-cards{grid-template-columns:1fr}}
-
-/* Trust equation */
-.trust-equation{background:var(--navy2);border:1px solid var(--amber-b);border-radius:var(--r-lg);padding:20px 24px}
-.te-title{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.te-formula{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:var(--fm);font-size:12px;color:var(--t2)}
-.te-term{display:flex;flex-direction:column;align-items:center;gap:2px}
-.te-score{font-family:var(--ff);font-size:18px;font-weight:800;color:var(--t1)}
-.te-wt{font-size:10px;color:var(--t3);letter-spacing:.06em}
-.te-op{font-size:18px;color:var(--t3);align-self:center}
-.te-result{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--amber-l);border:1px solid var(--amber-b);border-radius:var(--r-md);margin-top:14px}
-.te-result-val{font-family:var(--ff);font-size:32px;font-weight:800;color:var(--amber)}
-.te-result-label{font-size:12px;color:var(--t2);line-height:1.6}
-.te-result-label strong{color:var(--t1);display:block;font-family:var(--ff);font-size:13px}
-
-/* Activity log */
-.activity-log{background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden}
-.al-hdr{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
-.al-title{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t1)}
-.al-stream{max-height:240px;overflow-y:auto;display:flex;flex-direction:column}
-.al-entry{display:flex;align-items:flex-start;gap:10px;padding:10px 18px;border-bottom:1px solid var(--bd);transition:background .18s}
-.al-entry:hover{background:var(--navy3)}
-.al-entry:last-child{border-bottom:none}
-.al-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
-.al-dot.green{background:var(--green);box-shadow:0 0 8px rgba(16,185,129,.4)}
-.al-dot.amber{background:var(--amber);box-shadow:0 0 8px rgba(244,163,0,.4)}
-.al-dot.red{background:var(--red);box-shadow:0 0 8px rgba(239,68,68,.4)}
-.al-dot.blue{background:var(--blue);box-shadow:0 0 8px rgba(59,130,246,.4)}
-.al-text{flex:1;font-size:12px;color:var(--t2);line-height:1.5}
-.al-text strong{color:var(--t1);font-family:var(--ff);font-size:12px}
-.al-time{font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.06em;flex-shrink:0;margin-top:2px}
-
-/* Certificate card */
-.cert-card{background:linear-gradient(135deg,var(--navy3),var(--navy4));border:1px solid var(--amber-b);border-radius:var(--r-xl);padding:28px;position:relative;overflow:hidden;animation:certReveal .4s ease}
-.cert-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(244,163,0,.06),transparent 60%);pointer-events:none}
-.cert-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.cert-badge-ico{font-size:40px;animation:pulseAmber 3s infinite}
-.cert-id{font-family:var(--fm);font-size:10px;color:var(--t3);letter-spacing:.1em;text-align:right}
-.cert-id span{display:block;font-size:13px;color:var(--amber);font-weight:700;letter-spacing:.04em}
-.cert-title{font-family:var(--ff);font-size:22px;font-weight:800;color:var(--t1);margin-bottom:4px}
-.cert-sub{font-size:13px;color:var(--t2);margin-bottom:20px;line-height:1.6}
-.cert-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.cert-stat{background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:var(--r-md);padding:12px 10px;text-align:center}
-.cst-val{font-family:var(--ff);font-size:20px;font-weight:800;color:var(--amber)}
-.cst-label{font-size:10px;color:var(--t3);margin-top:2px;letter-spacing:.06em}
-.cert-seal{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(16,185,129,.06);border:1px solid var(--green-b);border-radius:var(--r-md)}
-.cs-ico{font-size:24px}
-.cs-text{font-family:var(--fm);font-size:11px;color:var(--green);letter-spacing:.06em;font-weight:700}
-.cs-sub{font-size:10px;color:var(--t3);margin-top:2px}
-@media(max-width:600px){.cert-grid{grid-template-columns:repeat(2,1fr)}}
-
-/* Forecast alert */
-.forecast-alert{background:var(--amber-l);border:1px solid var(--amber-b);border-radius:var(--r-lg);padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
-.fa-ico{font-size:24px;flex-shrink:0}
-.fa-title{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--amber);margin-bottom:4px}
-.fa-text{font-size:12px;color:var(--t2);line-height:1.6}
-
-/* ═══════ ONBOARDING ENGINE ═══════ */
-#pg-engine{position:relative;z-index:1}
-.engine-back{display:flex;align-items:center;gap:8px;padding:14px 40px;background:var(--navy2);border-bottom:1px solid var(--bd);cursor:pointer;font-size:13px;color:var(--t2);transition:color .18s;font-weight:600}
-.engine-back:hover{color:var(--amber)}
-
-/* Progress */
-.flow-progress{display:flex;align-items:center;gap:0;margin-bottom:28px}
-.fp-step{display:flex;align-items:center;gap:8px;flex:1}
-.fp-step:last-child{flex:0 0 auto}
-.fp-dot{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd2);background:var(--navy2);color:var(--t3);font-family:var(--fm);font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .22s}
-.fp-dot.active{border-color:var(--amber);background:var(--amber-l);color:var(--amber)}
-.fp-dot.done{border-color:var(--green);background:var(--green-l);color:var(--green)}
-.fp-label{font-size:11px;color:var(--t3);font-weight:600;transition:color .22s}
-.fp-label.active{color:var(--amber)}.fp-label.done{color:var(--green)}
-.fp-line{flex:1;height:1px;background:var(--bd);margin:0 6px;transition:background .22s}
-.fp-line.done{background:var(--green-b)}
-
-/* Flow card */
-.flow-outer{padding:28px 20px 60px}
-.flow-inner{max-width:700px;margin:0 auto}
-.flow-card{background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-xl);overflow:hidden;margin-bottom:18px}
-.flow-card-hdr{background:var(--navy3);padding:20px 24px;border-bottom:1px solid var(--bd)}
-.fch-eyebrow{font-family:var(--fm);font-size:10px;color:var(--amber);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
-.fch-title{font-family:var(--ff);font-size:18px;font-weight:800;color:var(--t1);margin-bottom:4px}
-.fch-sub{font-size:12px;color:var(--t2);line-height:1.6}
-.flow-card-body{padding:22px 24px}
-.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.field label{font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
-.field input,.field select,.field textarea{background:var(--navy);border:1px solid var(--bd2);border-radius:var(--r-sm);padding:10px 13px;font-size:13px;color:var(--t1);transition:border-color .18s}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber-b)}
-.field select{appearance:none;cursor:pointer}
-.field select option{background:var(--navy2)}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:480px){.field-row{grid-template-columns:1fr}}
-
-/* Toggle options */
-.toggle-group{display:flex;flex-direction:column;gap:8px}
-.toggle-group.inline{flex-direction:row;flex-wrap:wrap;gap:10px}
-.toggle-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--navy);border:1px solid var(--bd);border-radius:var(--r-sm);cursor:pointer;transition:all .18s}
-.toggle-opt:hover{border-color:var(--amber-b)}
-.toggle-opt.selected{border-color:var(--amber);background:var(--amber-l)}
-.toggle-opt.sel-green{border-color:var(--green-b);background:var(--green-l)}
-.toggle-opt.sel-red{border-color:var(--red-b);background:var(--red-l)}
-.to-marker{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--bd2);flex-shrink:0;transition:all .18s}
-.toggle-opt.selected .to-marker{border-color:var(--amber);background:var(--amber)}
-.toggle-opt.sel-green .to-marker{border-color:var(--green);background:var(--green)}
-.toggle-opt.sel-red .to-marker{border-color:var(--red);background:var(--red)}
-.to-label{font-size:13px;color:var(--t1);font-weight:500}
-.to-note{font-size:10px;color:var(--t3);margin-top:1px}
-
-/* Flow nav */
-.flow-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px}
-.btn-next{padding:12px 28px;background:var(--amber);color:var(--navy);font-family:var(--ff);font-size:14px;font-weight:800;border:none;border-radius:var(--r-pill);cursor:pointer;transition:all .2s;letter-spacing:.04em}
-.btn-next:hover{background:var(--amber2);transform:translateY(-1px)}
-.btn-back-sm{padding:10px 20px;background:transparent;border:1px solid var(--bd2);color:var(--t2);font-family:var(--fb);font-size:13px;border-radius:var(--r-pill);cursor:pointer;transition:all .2s}
-.btn-back-sm:hover{border-color:var(--amber);color:var(--amber)}
-
-/* Submit loading */
-.submit-loading{display:none;flex-direction:column;align-items:center;gap:14px;padding:32px;text-align:center}
-.submit-loading.visible{display:flex}
-.sl-spinner{width:44px;height:44px;border:3px solid var(--bd2);border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite}
-.sl-stage{font-family:var(--fm);font-size:11px;color:var(--amber);letter-spacing:.1em;min-height:16px;transition:opacity .3s}
-
-/* ── LIVE SCORE PREVIEW (in onboarding) ── */
-.live-score-preview{background:var(--navy3);border:1px solid var(--bd);border-radius:var(--r-lg);padding:16px;margin-top:16px}
-.lsp-title{font-family:var(--fm);font-size:10px;color:var(--amber);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.lsp-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulseAmber 2s infinite}
-.lsp-bars{display:flex;flex-direction:column;gap:7px}
-.lsp-row{display:flex;align-items:center;gap:10px}
-.lsp-label{font-size:11px;color:var(--t3);width:90px;flex-shrink:0}
-.lsp-bar-wrap{flex:1;height:5px;background:var(--bd);border-radius:3px;overflow:hidden}
-.lsp-bar{height:100%;border-radius:3px;transition:width .8s ease}
-.lsp-val{font-family:var(--fm);font-size:10px;color:var(--t2);width:24px;text-align:right}
-
-/* ── PHASE STATUS TICKER ── */
-.phase-ticker{background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden}
-.pt-hdr{padding:12px 16px;border-bottom:1px solid var(--bd);font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:8px}
-.pt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
-.pt-cell{padding:12px 14px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);transition:background .2s}
-.pt-cell:nth-child(3n){border-right:none}
-.pt-cell:nth-last-child(-n+3){border-bottom:none}
-.pt-cell.active-phase{background:var(--amber-l)}
-.pt-cell.done-phase{background:var(--green-l)}
-.pt-ico{font-size:18px;margin-bottom:4px}
-.pt-name{font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
-.pt-cell.active-phase .pt-name{color:var(--amber)}
-.pt-cell.done-phase .pt-name{color:var(--green)}
-.pt-val{font-family:var(--ff);font-size:14px;font-weight:800;color:var(--t2)}
-.pt-cell.active-phase .pt-val,.pt-cell.done-phase .pt-val{color:var(--t1)}
-@media(max-width:600px){.pt-grid{grid-template-columns:repeat(2,1fr)}.pt-cell:nth-child(3n){border-right:1px solid var(--bd)}.pt-cell:nth-child(2n){border-right:none}}
-
-/* ── HEALTH MIRROR ── */
-.health-mirror{background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:20px}
-.hm-title{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t1);margin-bottom:14px;display:flex;align-items:center;gap:7px}
-.hm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.hm-stat{background:var(--navy3);border:1px solid var(--bd);border-radius:var(--r-md);padding:12px;text-align:center}
-.hm-val{font-family:var(--ff);font-size:22px;font-weight:800;color:var(--t1)}
-.hm-label{font-size:10px;color:var(--t3);margin-top:2px;letter-spacing:.06em}
-@media(max-width:600px){.hm-grid{grid-template-columns:repeat(2,1fr)}}
-
-/* ── BUTTONS ── */
-.btn-primary{padding:9px 22px;background:var(--amber);color:var(--navy);font-size:12px;font-weight:800;border-radius:var(--r-pill);border:none;cursor:pointer;transition:all .18s;font-family:var(--fb);display:inline-flex;align-items:center;gap:7px}
-.btn-primary:hover{background:var(--amber2);transform:translateY(-1px)}
-.btn-ghost{padding:8px 18px;border:1px solid var(--bd2);color:var(--t2);font-size:12px;font-weight:600;border-radius:var(--r-pill);background:transparent;cursor:pointer;transition:all .18s;font-family:var(--fb)}
-.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
-.btn-sm{padding:6px 14px;font-size:11px;font-weight:700;border-radius:var(--r-sm);border:none;cursor:pointer;transition:all .18s;font-family:var(--ff);letter-spacing:.04em}
-.btn-sm-amber{background:var(--amber-l);border:1px solid var(--amber-b);color:var(--amber)}
-.btn-sm-amber:hover{background:var(--amber);color:var(--navy)}
-.btn-sm-green{background:var(--green-l);border:1px solid var(--green-b);color:var(--green)}
-.btn-sm-green:hover{background:var(--green);color:white}
-
-/* ── TOAST ── */
-.toast-el{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--navy4);border:1px solid var(--bd2);border-radius:var(--r-pill);padding:10px 22px;font-size:12px;color:var(--t1);z-index:9999;box-shadow:var(--shadow-lg);transition:opacity .35s;font-family:var(--fb);white-space:nowrap;pointer-events:none}
-
-/* Why section */
-.why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.why-card{background:var(--navy2);border:1px solid var(--bd);border-radius:14px;padding:22px 18px;transition:all .2s}
-.why-card:hover{border-color:var(--amber-b);background:var(--navy3);transform:translateY(-3px)}
-.wc-ico{font-size:26px;margin-bottom:12px;display:block}
-.wc-title{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:6px;line-height:1.3}
-.wc-desc{font-size:12px;color:var(--t2);line-height:1.6}
-@media(max-width:900px){.why-grid{grid-template-columns:repeat(2,1fr)}}
-
-/* ═══════ MIEI v2 — SHARED BLOCKS ═══════ */
-.miei-block{position:relative;z-index:1;padding:64px 40px}
-.miei-block-alt{background:var(--navy2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
-.miei-inner{max-width:860px;margin:0 auto}
-.miei-eyebrow{font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);opacity:.8;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.miei-eyebrow::before{content:'';width:18px;height:1px;background:var(--amber)}
-.miei-headline{font-family:var(--ff);font-size:clamp(22px,3vw,36px);font-weight:800;color:var(--t1);margin-bottom:8px;line-height:1.12}
-.miei-subtext{font-size:13px;color:var(--t2);margin-bottom:32px;line-height:1.7}
-
-/* BLOCK 1 — Chat */
-.miei-chat-box{background:var(--navy2);border:1px solid var(--bd2);border-radius:var(--r-xl);padding:24px;box-shadow:var(--shadow-md)}
-.mcb-input-wrap{display:flex;gap:10px;margin-bottom:18px}
-.mcb-input{flex:1;background:var(--navy);border:1px solid var(--bd2);border-radius:var(--r-pill);padding:12px 20px;font-size:14px;color:var(--t1);transition:border-color .2s}
-.mcb-input:focus{border-color:var(--amber-b);outline:none}
-.mcb-input::placeholder{color:var(--t3)}
-.mcb-send{width:44px;height:44px;background:var(--amber);border:none;border-radius:50%;color:var(--navy);font-size:18px;font-weight:800;cursor:pointer;flex-shrink:0;transition:all .18s;display:flex;align-items:center;justify-content:center}
-.mcb-send:hover{background:var(--amber2);transform:scale(1.06)}
-.miei-chips{display:flex;flex-wrap:wrap;gap:8px}
-.miei-chip{padding:7px 15px;background:var(--navy);border:1px solid var(--bd);border-radius:var(--r-pill);font-size:12px;color:var(--t2);cursor:pointer;transition:all .18s;white-space:nowrap}
-.miei-chip:hover,.miei-chip.active{border-color:var(--amber-b);color:var(--amber);background:var(--amber-l)}
-/* Response card */
-.miei-response-card{background:var(--navy3);border:1px solid var(--amber-b);border-radius:var(--r-lg);padding:20px 24px;margin-top:18px;animation:fadeUp .3s both}
-.mrc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.mrc-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);animation:pulseAmber 2s infinite;flex-shrink:0}
-.mrc-title{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--amber);letter-spacing:.04em}
-.mrc-body{font-size:13px;color:var(--t2);line-height:1.75;margin-bottom:14px}
-.mrc-actions{display:flex;flex-wrap:wrap;gap:8px}
-.mrc-btn{padding:8px 18px;border-radius:var(--r-pill);font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--amber-b);background:var(--amber-l);color:var(--amber);font-family:var(--fb);transition:all .18s}
-.mrc-btn:hover{background:var(--amber);color:var(--navy)}
-
-/* BLOCK 2 — Segment Grid */
-.miei-segment-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:24px}
-.miei-seg{background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:16px 8px;cursor:pointer;text-align:center;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:6px}
-.miei-seg:hover{border-color:var(--amber-b);background:var(--amber-l);transform:translateY(-3px);box-shadow:0 8px 24px rgba(244,163,0,.12)}
-.miei-seg-future{border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.05)}
-.miei-seg-future:hover{border-color:var(--violet);background:rgba(124,58,237,.12)}
-.ms-ico{font-size:24px;line-height:1}
-.ms-label{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
-.miei-seg:hover .ms-label{color:var(--amber)}
-/* Insight Panel */
-.miei-insight-panel{background:var(--navy2);border:1px solid var(--amber-b);border-radius:var(--r-xl);overflow:hidden;animation:fadeUp .3s both;box-shadow:var(--shadow-amber)}
-.mip-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--navy3);border-bottom:1px solid var(--bd)}
-.mip-title{font-family:var(--ff);font-size:15px;font-weight:800;color:var(--t1)}
-.mip-close{background:none;border:none;color:var(--t3);font-size:16px;cursor:pointer;padding:2px 6px;border-radius:5px;transition:color .18s}
-.mip-close:hover{color:var(--amber)}
-.mip-rows{padding:4px 0}
-.mip-row{border-bottom:1px solid var(--bd);cursor:pointer;transition:background .18s}
-.mip-row:last-child{border-bottom:none}
-.mip-row:hover{background:var(--navy3)}
-.mip-row.open{background:var(--navy3)}
-.mipr-top{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
-.mipr-label{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t1)}
-.mipr-arrow{font-size:18px;color:var(--t3);transition:transform .22s}
-.mip-row.open .mipr-arrow{transform:rotate(90deg);color:var(--amber)}
-.mipr-body{display:none;padding:0 20px 14px;font-size:12px;color:var(--t2);line-height:1.75}
-.mip-row.open .mipr-body{display:block;animation:fadeUp .22s both}
-.mip-footer{padding:16px 20px;border-top:1px solid var(--bd);background:var(--navy3)}
-
-/* BLOCK 3 — Next Step */
-.miei-nextstep-bar{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:24px;justify-content:center}
-.mns-card{flex:1;min-width:200px;background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:20px 18px;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:14px}
-.mns-card:hover{border-color:var(--amber-b);background:var(--amber-l);transform:translateY(-2px)}
-.mns-ico{font-size:26px;flex-shrink:0}
-.mns-body{}
-.mns-label{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px}
-.mns-sub{font-size:11px;color:var(--t2)}
-.miei-fs-status{display:flex;align-items:center;gap:8px;justify-content:center}
-.mfs-dot{width:8px;height:8px;border-radius:50%;background:var(--t3);flex-shrink:0}
-.mfs-dot.live{background:var(--green);animation:pulse 2s infinite}
-.mfs-dot.warn{background:var(--amber)}
-.mfs-text{font-family:var(--fm);font-size:10px;letter-spacing:.1em;color:var(--t3)}
-@media(max-width:900px){.miei-segment-grid{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:560px){.miei-segment-grid{grid-template-columns:repeat(3,1fr)}.miei-block{padding:48px 16px}}
-
-/* Footer */
-.footer{position:relative;z-index:1;padding:36px 40px 24px;border-top:1px solid var(--bd)}
-.footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.footer-brand{font-family:var(--ff);font-size:15px;font-weight:700;color:var(--t1)}
-.footer-brand em{color:var(--amber);font-style:normal}
-.footer-links{display:flex;gap:20px}
-.footer-links a{font-size:12px;color:var(--t2);cursor:pointer;transition:color .18s}
-.footer-links a:hover{color:var(--amber)}
-.footer-copy{font-size:11px;color:var(--t3);text-align:right}
-@media(max-width:600px){.footer{padding:28px 16px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>99EVs - EV Incident Documentation & Garage Services</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            color: #3b82f6;
+        }
+        
+        .tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .category-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+            transform: translateY(-4px);
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .category-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+        
+        .category-card p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        /* Partner Grid */
+        .partner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .partner-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .partner-card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .partner-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .partner-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .partner-info h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-verified {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge-featured {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .rating {
+            color: #f59e0b;
+            font-size: 0.875rem;
+        }
+        
+        .distance {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+        }
+        
+        .modal-close:hover {
+            color: #111827;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        /* Loading Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .toast.show {
+            display: flex;
+        }
+        
+        .toast-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .toast-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .toast-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        /* Incident Form */
+        .incident-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .photo-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .photo-upload-area:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .photo-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .photo-preview {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-preview-remove {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+            }
+            
+            .category-grid,
+            .partner-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Loader */
+        .loader {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-
-<!-- ══════════ FIREBASE INIT ══════════ -->
-<script>
-const firebaseConfig = {
-  apiKey:"AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
-  authDomain:"evs-production.firebaseapp.com",
-  projectId:"evs-production",
-  storageBucket:"evs-production.firebasestorage.app",
-  messagingSenderId:"775112664706",
-  appId:"1:775112664706:web:2529507e7788d89e7bb69b"
-};
-try{
-  if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-  window.db      = firebase.firestore();
-  window.storage = firebase.storage();
-  window.auth    = firebase.auth();
-}catch(e){ console.warn('[Firebase] Not configured — running in demo mode'); window.db=null; }
-</script>
-
-<!-- ══════════ NAV ══════════ -->
-<nav class="nav">
-  <div class="nav-logo" onclick="showPage('home')">
-    <div class="nav-mark">99E</div>
-    <div>
-      <div class="nav-name">99EV<em>s</em></div>
-    </div>
-  </div>
-  <ul class="nav-links">
-    <li><a onclick="showPage('home')" id="nav-home">Home</a></li>
-    <li><a onclick="showPage('dashboard')" id="nav-dash">Score Dashboard</a></li>
-    <li><a onclick="showPage('engine')" id="nav-eng">Onboard Vehicle</a></li>
-  </ul>
-  <div class="nav-cta-group">
-    <span class="nav-pill" id="nav-live">● PVIS LIVE</span>
-    <button class="nav-ghost" onclick="showPage('dashboard')">View Scores</button>
-    <button class="nav-btn" onclick="showPage('engine')">Onboard Vehicle →</button>
-  </div>
-</nav>
-
-<!-- ══════════ HOMEPAGE ══════════ -->
-<div id="pg-home">
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-live">
-        <span class="live-dot"></span>
-        <span class="live-text">Active · Bengaluru · PVIS Engine Live</span>
-      </div>
-
-      <h1 class="hero-title">
-        Your Next Move<br>
-        <span class="hl">Starts Here</span>
-      </h1>
-
-      <p class="hero-sub">
-        India's first <strong>Progressive Vehicle Intelligence Scoring Engine</strong>.
-        Every vehicle earns a live trust score — updated automatically as evidence arrives.
-        From walking to aircraft. Safety first. Always.
-      </p>
-
-      <!-- MOBILITY EMOJI ORBIT -->
-      <div class="mobility-orbit">
-        <div class="mob-tag" onclick="openMobCategory('walk')"><span class="m-ico">🚶</span>Walk</div>
-        <div class="mob-tag" onclick="openMobCategory('cycle')"><span class="m-ico">🚲</span>Cycles</div>
-        <div class="mob-tag" onclick="openMobCategory('scooter')"><span class="m-ico">🛵</span>Scooters</div>
-        <div class="mob-tag" onclick="openMobCategory('bike')"><span class="m-ico">🏍️</span>Bikes</div>
-        <div class="mob-tag" onclick="openMobCategory('auto')"><span class="m-ico">🛺</span>Auto</div>
-        <div class="mob-tag" onclick="openMobCategory('car')"><span class="m-ico">🚗</span>Cars</div>
-        <div class="mob-tag" onclick="openMobCategory('suv')"><span class="m-ico">🚙</span>SUVs</div>
-        <div class="mob-tag" onclick="openMobCategory('truck')"><span class="m-ico">🚛</span>Trucks</div>
-        <div class="mob-tag" onclick="openMobCategory('bus')"><span class="m-ico">🚌</span>Buses</div>
-        <div class="mob-tag" onclick="openMobCategory('tractor')"><span class="m-ico">🚜</span>Tractors</div>
-        <div class="mob-tag" onclicK
-      </div>
-
-      <!-- ACTION CARDS -->
-      <div class="action-card" onclick="openSegmentDetails('walking')">
-  <span class="ac-ico">🚶</span>
-  <div class="ac-label">Start with Walking</div>
-  <div class="ac-sub">Begin from the first mobility layer.</div>
-  <span class="ac-arrow">Explore →</span>
-</div>
-
-<div class="action-card" onclick="openSegmentDetails('cycles')">
-  <span class="ac-ico">🚲</span>
-  <div class="ac-label">Move to Cycles</div>
-  <div class="ac-sub">Build balance and independent mobility.</div>
-  <span class="ac-arrow">Explore →</span>
-</div>
-
-<div class="action-card" onclick="openSegmentDetails('cars')">
-  <span class="ac-ico">🚗</span>
-  <div class="ac-label">Explore Cars</div>
-  <div class="ac-sub">Comfortable structured personal travel.</div>
-  <span class="ac-arrow">Explore →</span>
-</div>
-
-<div class="action-card" onclick="openSegmentDetails('garage')">
-  <span class="ac-ico">🛠</span>
-  <div class="ac-label">Setup Garage</div>
-  <div class="ac-sub">Start your mobility infrastructure journey.</div>
-  <span class="ac-arrow">Explore →</span>
-</div>
-  <!-- ══════════════════════════════════════════════════════
-       MIEI v2 — BLOCK 1: Mobility AI Entry Chat
-  ══════════════════════════════════════════════════════ -->
-  <section class="miei-block" id="miei-chat-block">
-    <div class="miei-inner">
-      <div class="miei-eyebrow">Mobility AI Entry Interface</div>
-      <h2 class="miei-headline">Ask before your next move.</h2>
-      <p class="miei-subtext">Vehicles. Value. Safety. Inspection. Ownership. Future mobility.</p>
-
-      <!-- Chat input -->
-      <div class="miei-chat-box">
-        <div class="mcb-input-wrap">
-          <input class="mcb-input" id="miei-input" type="text" placeholder="Example: I want to check a scooter before buying" oninput="mieiHandleInput(this.value)" onkeydown="if(event.key==='Enter')mieiSubmit()">
-          <button class="mcb-send" onclick="mieiSubmit()">→</button>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">🚗 99EVs</div>
+            <ul class="nav-links">
+                <li><a href="#" data-tab="incidents">Incidents</a></li>
+                <li><a href="#" data-tab="garage">Garage Services</a></li>
+                <li><a href="#" data-tab="profile">Profile</a></li>
+            </ul>
         </div>
-        <!-- Suggestion chips -->
-        <div class="miei-chips" id="miei-chips">
-          <div class="miei-chip" onclick="mieiChip('buying')">Buying a vehicle</div>
-          <div class="miei-chip" onclick="mieiChip('selling')">Selling a vehicle</div>
-          <div class="miei-chip" onclick="mieiChip('trust')">Check vehicle trust score</div>
-          <div class="miei-chip" onclick="mieiChip('inspection')">Run inspection</div>
-          <div class="miei-chip" onclick="mieiChip('resale')">Understand resale value</div>
-          <div class="miei-chip" onclick="mieiChip('battery')">Learn EV battery health</div>
-          <div class="miei-chip" onclick="mieiChip('fleet')">Fleet evaluation</div>
-          <div class="miei-chip" onclick="mieiChip('dealer')">Dealer intelligence</div>
-          <div class="miei-chip" onclick="mieiChip('safety')">Mobility safety history</div>
-          <div class="miei-chip" onclick="mieiChip('future')">Future mobility systems</div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" data-tab="incidents">📋 My Incidents</button>
+            <button class="tab" data-tab="new-incident">➕ New Incident</button>
+            <button class="tab" data-tab="garage">🔧 Garage Services</button>
         </div>
-      </div>
 
-      <!-- AI Response card -->
-      <div class="miei-response-card hidden" id="miei-response">
-        <div class="mrc-header">
-          <span class="mrc-dot"></span>
-          <span class="mrc-title" id="mrc-title">Intelligence Response</span>
+        <!-- Incidents Tab -->
+        <div id="incidents-tab" class="tab-content active">
+            <div class="card">
+                <h2 style="margin-bottom: 1rem;">Your Incidents</h2>
+                <div id="incidents-list">
+                    <p style="color: #6b7280;">Loading incidents...</p>
+                </div>
+            </div>
         </div>
-        <p class="mrc-body" id="mrc-body"></p>
-        <div class="mrc-actions" id="mrc-actions"></div>
-      </div>
-    </div>
-  </section>
-  <section class="miei-block" id="miei-chat-block">
-      <section id="segment-details-panel" style="display:none;max-width:820px;margin:40px auto;padding:24px;background:var(--navy2);border:1px solid var(--bd);border-radius:var(--r-lg)">
 
-<h2 id="segment-title">Mobility Layer</h2>
-
-<p id="segment-body">
-Select a mobility segment above to explore its intelligence layer.
-</p>
-
-<div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
-
-<button onclick="openMobilityAssistant()" class="btn-primary">
-Continue conversation
-</button>
-
-<select onchange="openSegmentDetails(this.value)" class="input">
-
-<option>Change mobility segment</option>
-
-<option value="walking">Walking</option>
-<option value="cycles">Cycles</option>
-<option value="scooters">Scooters</option>
-<option value="bikes">Bikes</option>
-<option value="auto">Auto</option>
-<option value="cars">Cars</option>
-<option value="garage">Garage setup</option>
-<option value="accessories">Accessories</option>
-<option value="inspection">Inspection support</option>
-
-</select>
-
-</div>
-
-</section>
-
-  <!-- ══════════════════════════════════════════════════════
-       MIEI v2 — BLOCK 2: Mobility Intelligence Layers Explorer
-  ══════════════════════════════════════════════════════ -->
-  <section class="miei-block miei-block-alt" id="miei-layers-block">
-    <div class="miei-inner">
-      <div class="miei-eyebrow">Intelligence Layers</div>
-      <h2 class="miei-headline">Select your mobility segment.</h2>
-      <p class="miei-subtext">Each segment carries a unique intelligence layer — demand, risk signals, and inspection checkpoints.</p>
-
-      <div class="miei-segment-grid">
-        <div class="miei-seg" onclick="mieiOpenSegment('walk')"><span class="ms-ico">🚶</span><span class="ms-label">Cycles</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('scooter')"><span class="ms-ico">🛵</span><span class="ms-label">Scooters</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('bike')"><span class="ms-ico">🏍</span><span class="ms-label">Bikes</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('auto')"><span class="ms-ico">🛺</span><span class="ms-label">Auto</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('car')"><span class="ms-ico">🚗</span><span class="ms-label">Cars</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('suv')"><span class="ms-ico">🚙</span><span class="ms-label">SUVs</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('truck')"><span class="ms-ico">🚛</span><span class="ms-label">Trucks</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('bus')"><span class="ms-ico">🚌</span><span class="ms-label">Buses</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('tractor')"><span class="ms-ico">🚜</span><span class="ms-label">Tractors</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('rail')"><span class="ms-ico">🚅</span><span class="ms-label">Rail</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('marine')"><span class="ms-ico">⛴</span><span class="ms-label">Marine</span></div>
-        <div class="miei-seg" onclick="mieiOpenSegment('aviation')"><span class="ms-ico">🚁</span><span class="ms-label">Aviation</span></div>
-        <div class="miei-seg miei-seg-future" onclick="mieiOpenSegment('future')"><span class="ms-ico">🛸</span><span class="ms-label">Future</span></div>
-      </div>
-
-      <!-- Floating Insight Panel -->
-      <div class="miei-insight-panel hidden" id="miei-insight-panel">
-        <div class="mip-header">
-          <span class="mip-title" id="mip-title">Segment Intelligence</span>
-          <button class="mip-close" onclick="mieiClosePanel()">✕</button>
+        <!-- New Incident Tab -->
+        <div id="new-incident-tab" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 1.5rem;">Report New Incident</h2>
+                <form id="incident-form" class="incident-form">
+                    <div class="form-group">
+                        <label>Incident Title</label>
+                        <input type="text" name="title" placeholder="Brief description" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" rows="5" placeholder="Describe what happened..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Vehicle Make</label>
+                        <input type="text" name="vehicleMake" placeholder="e.g., Tesla" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Vehicle Model</label>
+                        <input type="text" name="vehicleModel" placeholder="e.g., Model 3" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Vehicle Year</label>
+                        <input type="number" name="vehicleYear" placeholder="e.g., 2023" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Photos (up to 10)</label>
+                        <div class="photo-upload-area" id="photo-upload-area">
+                            <p>📸 Click to upload photos</p>
+                            <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">or drag and drop</p>
+                        </div>
+                        <input type="file" id="photo-input" accept="image/*" multiple style="display: none;">
+                        <div id="photo-preview-grid" class="photo-preview-grid"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Submit Incident Report
+                    </button>
+                </form>
+            </div>
         </div>
-        <div class="mip-rows">
-          <div class="mip-row" onclick="this.classList.toggle('open')">
-            <div class="mipr-top"><span class="mipr-label">📈 Market Demand Trend</span><span class="mipr-arrow">›</span></div>
-            <div class="mipr-body" id="mip-demand"></div>
-          </div>
-          <div class="mip-row" onclick="this.classList.toggle('open')">
-            <div class="mipr-top"><span class="mipr-label">⚠️ Common Risk Signals</span><span class="mipr-arrow">›</span></div>
-            <div class="mipr-body" id="mip-risk"></div>
-          </div>
-          <div class="mip-row" onclick="this.classList.toggle('open')">
-            <div class="mipr-top"><span class="mipr-label">🔬 Inspection Checkpoints</span><span class="mipr-arrow">›</span></div>
-            <div class="mipr-body" id="mip-inspect"></div>
-          </div>
+
+        <!-- Garage Services Tab -->
+        <div id="garage-tab" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 1.5rem;">Find Services Near You</h2>
+                <div id="category-selector" class="category-grid">
+                    <!-- Categories populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div id="partner-list-container" style="display: none;">
+                <div class="card">
+                    <h2 id="partner-list-title" style="margin-bottom: 1.5rem;">Service Providers</h2>
+                    <div id="partner-list" class="partner-grid">
+                        <!-- Partners populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="mip-footer">
-          <button class="btn-primary" id="mip-cta" onclick="mieiExploreSegment()">Explore this segment →</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════
-       MIEI v2 — BLOCK 3: Guided Next-Step Engine
-  ══════════════════════════════════════════════════════ -->
-  <section class="miei-block" id="miei-nextstep-block">
-    <div class="miei-inner" style="max-width:760px">
-      <div class="miei-eyebrow">Guided Next-Step Engine</div>
-      <h2 class="miei-headline" style="font-size:clamp(18px,2.4vw,28px)">Where would you like to go next?</h2>
-
-      <div class="miei-nextstep-bar" id="miei-nextstep-bar">
-        <!-- Populated by JS based on Firestore / visitor state -->
-      </div>
-
-      <!-- Firestore status indicator -->
-      <div class="miei-fs-status" id="miei-fs-status">
-        <span class="mfs-dot" id="mfs-dot"></span>
-        <span class="mfs-text" id="mfs-text">Connecting to vehicle intelligence…</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div>
-        <div class="footer-brand">99EV<em>s</em> — Progressive Vehicle Intelligence</div>
-        <div style="font-size:11px;color:var(--t3);margin-top:3px">Bengaluru, India · Safety First · Trust That Moves</div>
-      </div>
-      <div class="footer-links">
-        <a onclick="showPage('home')">Home</a>
-        <a onclick="showPage('engine')">Onboard</a>
-        <a onclick="showPage('dashboard')">Dashboard</a>
-      </div>
-      <div class="footer-copy">© 2026 99EVs Technologies Pvt. Ltd.<br><span style="color:var(--t3);font-style:italic">Peace · Love All · Serve All</span></div>
-    </div>
-  </footer>
-
-</div>
-
-<!-- ══════════ ONBOARDING ENGINE ══════════ -->
-<div id="pg-engine">
-  <div class="engine-back" onclick="showPage('home')">← Back to Home <span style="margin-left:6px;font-family:var(--fm);font-size:10px;letter-spacing:.1em;color:var(--amber)">VEHICLE ONBOARDING</span></div>
-
-  <div class="flow-outer">
-    <div class="flow-inner">
-
-      <!-- PROGRESS BAR -->
-      <div class="flow-progress" id="eng-progress">
-        <div class="fp-step"><div class="fp-dot active" id="ep1">1</div><span class="fp-label active" id="epl1">Identity</span></div>
-        <div class="fp-line" id="el1"></div>
-        <div class="fp-step"><div class="fp-dot" id="ep2">2</div><span class="fp-label" id="epl2">Documents</span></div>
-        <div class="fp-line" id="el2"></div>
-        <div class="fp-step"><div class="fp-dot" id="ep3">3</div><span class="fp-label" id="epl3">Condition</span></div>
-        <div class="fp-line" id="el3"></div>
-        <div class="fp-step"><div class="fp-dot" id="ep4">4</div><span class="fp-label" id="epl4">Evidence</span></div>
-        <div class="fp-line" id="el4"></div>
-        <div class="fp-step"><div class="fp-dot" id="ep5">5</div><span class="fp-label" id="epl5">Submit</span></div>
-      </div>
-
-      <!-- STEP 1: Vehicle Identity -->
-      <div id="eng-s1">
-        <div class="flow-card">
-          <div class="flow-card-hdr">
-            <div class="fch-eyebrow">Phase 1 · Vehicle Onboarding</div>
-            <div class="fch-title">🚗 Vehicle Identity</div>
-            <div class="fch-sub">Provide vehicle details — PVIS scoring begins immediately.</div>
-          </div>
-          <div class="flow-card-body">
-            <div class="field-row">
-              <div class="field"><label>Vehicle Type</label>
-                <select id="v-type" onchange="onTypeChange()">
-                  <option value="">Select type</option>
-                  <option value="EV — 2 Wheeler">EV — 2 Wheeler</option>
-                  <option value="EV — 3W Cargo">EV — 3W Cargo</option>
-                  <option value="EV — 3W Passenger">EV — 3W Passenger</option>
-                  <option value="EV — 4 Wheeler">EV — 4 Wheeler</option>
-                  <option value="Petrol — 2 Wheeler">Petrol — 2 Wheeler</option>
-                  <option value="Petrol — 3 Wheeler">Petrol — 3 Wheeler</option>
-                  <option value="Petrol — 4 Wheeler">Petrol — 4 Wheeler</option>
-                  <option value="Diesel — Commercial">Diesel — Commercial</option>
-                  <option value="CNG Vehicle">CNG Vehicle</option>
-                  <option value="Hybrid Vehicle">Hybrid Vehicle</option>
-                  <option value="Electric Bus">Electric Bus</option>
-                </select>
-              </div>
-              <div class="field"><label>City</label>
-                <select id="v-city" onchange="onCityChange()">
-                  <option value="">Select city</option>
-                  <option>Bengaluru</option><option>Delhi NCR</option><option>Mumbai</option>
-                  <option>Pune</option><option>Hyderabad</option><option>Chennai</option>
-                  <option>Kolkata</option><option>Ahmedabad</option><option>Jaipur</option>
-                  <option>Lucknow</option>
-                </select>
-              </div>
-            </div>
-            <div class="field-row">
-              <div class="field"><label>Make</label><input type="text" id="v-make" placeholder="e.g. Ather, Mahindra, Tata" oninput="liveScoreUpdate()"></div>
-              <div class="field"><label>Model</label><input type="text" id="v-model" placeholder="e.g. 450X, Treo Zor, Nexon EV" oninput="liveScoreUpdate()"></div>
-            </div>
-            <div class="field-row">
-              <div class="field"><label>Year</label><input type="number" id="v-year" placeholder="2023" min="2010" max="2026" oninput="liveScoreUpdate()"></div>
-              <div class="field"><label>Odometer (km)</label><input type="number" id="v-odo" placeholder="18000" oninput="liveScoreUpdate()"></div>
-            </div>
-            <div class="field"><label>Usage Type</label>
-              <div class="toggle-group inline" id="usage-group">
-                <div class="toggle-opt" data-val="personal" onclick="selToggle('usage-group',this)"><span class="to-marker"></span><span class="to-label">Personal</span></div>
-                <div class="toggle-opt" data-val="commercial" onclick="selToggle('usage-group',this)"><span class="to-marker"></span><span class="to-label">Commercial</span></div>
-                <div class="toggle-opt" data-val="fleet" onclick="selToggle('usage-group',this)"><span class="to-marker"></span><span class="to-label">Fleet</span></div>
-                <div class="toggle-opt" data-val="shared" onclick="selToggle('usage-group',this)"><span class="to-marker"></span><span class="to-label">Shared</span></div>
-              </div>
-            </div>
-
-            <!-- LIVE SCORE PREVIEW -->
-            <div class="live-score-preview">
-              <div class="lsp-title"><div class="lsp-dot"></div>Live Scoring Preview — Phase 1 Active</div>
-              <div class="lsp-bars">
-                <div class="lsp-row"><div class="lsp-label">Identity</div><div class="lsp-bar-wrap"><div class="lsp-bar" id="lsp-identity" style="width:0%;background:var(--amber)"></div></div><div class="lsp-val" id="lspv-identity">0</div></div>
-                <div class="lsp-row"><div class="lsp-label">Documents</div><div class="lsp-bar-wrap"><div class="lsp-bar" id="lsp-docs" style="width:0%;background:var(--blue)"></div></div><div class="lsp-val" id="lspv-docs">0</div></div>
-                <div class="lsp-row"><div class="lsp-label">Images</div><div class="lsp-bar-wrap"><div class="lsp-bar" id="lsp-imgs" style="width:0%;background:var(--violet)"></div></div><div class="lsp-val" id="lspv-imgs">0</div></div>
-                <div class="lsp-row"><div class="lsp-label">Market</div><div class="lsp-bar-wrap"><div class="lsp-bar" id="lsp-mkt" style="width:0%;background:var(--orange)"></div></div><div class="lsp-val" id="lspv-mkt">0</div></div>
-              </div>
-            </div>
-
-            <div class="flow-nav">
-              <div></div>
-              <button class="btn-next" onclick="engNextStep(2)">Next: Documents →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 2: Documents -->
-      <div id="eng-s2" class="hidden">
-        <div class="flow-card">
-          <div class="flow-card-hdr">
-            <div class="fch-eyebrow">Phase 2 · Document Score Engine</div>
-            <div class="fch-title">📄 Document Status</div>
-            <div class="fch-sub">Document score: Verified = 80 · Pending = 40 · Missing = 10</div>
-          </div>
-          <div class="flow-card-body">
-            <div class="field"><label>RC (Registration Certificate)</label>
-              <div class="toggle-group inline" id="rc-group">
-                <div class="toggle-opt sel-green" data-val="verified" data-color="green" onclick="selToggle('rc-group',this)"><span class="to-marker"></span><span class="to-label">Verified</span></div>
-                <div class="toggle-opt" data-val="pending" data-color="amber" onclick="selToggle('rc-group',this)"><span class="to-marker"></span><span class="to-label">Pending</span></div>
-                <div class="toggle-opt" data-val="missing" data-color="red" onclick="selToggle('rc-group',this)"><span class="to-marker"></span><span class="to-label">Missing</span></div>
-              </div>
-            </div>
-            <div class="field"><label>Insurance</label>
-              <div class="toggle-group inline" id="ins-group">
-                <div class="toggle-opt sel-green" data-val="verified" data-color="green" onclick="selToggle('ins-group',this)"><span class="to-marker"></span><span class="to-label">Active & Verified</span></div>
-                <div class="toggle-opt" data-val="pending" data-color="amber" onclick="selToggle('ins-group',this)"><span class="to-marker"></span><span class="to-label">Pending</span></div>
-                <div class="toggle-opt" data-val="missing" data-color="red" onclick="selToggle('ins-group',this)"><span class="to-marker"></span><span class="to-label">Expired/Missing</span></div>
-              </div>
-            </div>
-            <div class="field"><label>Loan / Hypothecation</label>
-              <div class="toggle-group inline" id="loan-group">
-                <div class="toggle-opt sel-green" data-val="clear" data-color="green" onclick="selToggle('loan-group',this)"><span class="to-marker"></span><span class="to-label">Clear / No Loan</span></div>
-                <div class="toggle-opt" data-val="active" data-color="amber" onclick="selToggle('loan-group',this)"><span class="to-marker"></span><span class="to-label">Active Loan</span></div>
-                <div class="toggle-opt" data-val="unknown" data-color="red" onclick="selToggle('loan-group',this)"><span class="to-marker"></span><span class="to-label">Unknown</span></div>
-              </div>
-            </div>
-            <div class="field"><label>PUC / Emission Certificate</label>
-              <div class="toggle-group inline" id="puc-group">
-                <div class="toggle-opt sel-green" data-val="valid" data-color="green" onclick="selToggle('puc-group',this)"><span class="to-marker"></span><span class="to-label">Valid</span></div>
-                <div class="toggle-opt" data-val="expired" data-color="amber" onclick="selToggle('puc-group',this)"><span class="to-marker"></span><span class="to-label">Expired</span></div>
-                <div class="toggle-opt" data-val="na" onclick="selToggle('puc-group',this)"><span class="to-marker"></span><span class="to-label">Not Applicable</span></div>
-              </div>
-            </div>
-            <div class="field" id="battery-warranty-block" style="display:none"><label>Battery Warranty (EV)</label>
-              <div class="toggle-group inline" id="bwty-group">
-                <div class="toggle-opt sel-green" data-val="valid" data-color="green" onclick="selToggle('bwty-group',this)"><span class="to-marker"></span><span class="to-label">Under Warranty</span></div>
-                <div class="toggle-opt" data-val="expired" data-color="amber" onclick="selToggle('bwty-group',this)"><span class="to-marker"></span><span class="to-label">Expired</span></div>
-                <div class="toggle-opt" data-val="unknown" data-color="red" onclick="selToggle('bwty-group',this)"><span class="to-marker"></span><span class="to-label">Unknown</span></div>
-              </div>
-            </div>
-            <div class="flow-nav">
-              <button class="btn-back-sm" onclick="engNextStep(1)">← Back</button>
-              <button class="btn-next" onclick="engNextStep(3)">Next: Condition →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 3: Condition -->
-      <div id="eng-s3" class="hidden">
-        <div class="flow-card">
-          <div class="flow-card-hdr">
-            <div class="fch-eyebrow">Phase 3 · Condition + Inspection Score</div>
-            <div class="fch-title">🔧 Vehicle Condition</div>
-            <div class="fch-sub">Condition signals feed into the inspection and confidence score engines.</div>
-          </div>
-          <div class="flow-card-body">
-            <div class="field"><label>Engine / Motor Starts</label>
-              <div class="toggle-group inline" id="starts-group">
-                <div class="toggle-opt sel-green" data-val="good" data-color="green" onclick="selToggle('starts-group',this)"><span class="to-marker"></span><span class="to-label">✓ Good — Starts Well</span></div>
-                <div class="toggle-opt" data-val="issue" data-color="amber" onclick="selToggle('starts-group',this)"><span class="to-marker"></span><span class="to-label">⚠ Some Issues</span></div>
-                <div class="toggle-opt" data-val="problem" data-color="red" onclick="selToggle('starts-group',this)"><span class="to-marker"></span><span class="to-label">✗ Major Problem</span></div>
-              </div>
-            </div>
-            <div class="field"><label>Accident History</label>
-              <div class="toggle-group inline" id="accident-group">
-                <div class="toggle-opt sel-green" data-val="none" data-color="green" onclick="selToggle('accident-group',this)"><span class="to-marker"></span><span class="to-label">No Accidents</span></div>
-                <div class="toggle-opt" data-val="minor" data-color="amber" onclick="selToggle('accident-group',this)"><span class="to-marker"></span><span class="to-label">Minor Repair</span></div>
-                <div class="toggle-opt" data-val="major" data-color="red" onclick="selToggle('accident-group',this)"><span class="to-marker"></span><span class="to-label">Major Accident</span></div>
-              </div>
-            </div>
-            <div class="field"><label>Tyres</label>
-              <div class="toggle-group inline" id="tyre-group">
-                <div class="toggle-opt sel-green" data-val="good" data-color="green" onclick="selToggle('tyre-group',this)"><span class="to-marker"></span><span class="to-label">Good (60%+)</span></div>
-                <div class="toggle-opt" data-val="worn" data-color="amber" onclick="selToggle('tyre-group',this)"><span class="to-marker"></span><span class="to-label">Worn (30–60%)</span></div>
-                <div class="toggle-opt" data-val="replace" data-color="red" onclick="selToggle('tyre-group',this)"><span class="to-marker"></span><span class="to-label">Needs Replace</span></div>
-              </div>
-            </div>
-            <div class="field"><label>Inspection Requested?</label>
-              <div class="toggle-group inline" id="insp-request-group">
-                <div class="toggle-opt" data-val="yes" onclick="selToggle('insp-request-group',this)"><span class="to-marker"></span><span class="to-label">🔬 Yes — Request Inspection</span><div class="to-note">Adds 30% weight to trust score</div></div>
-                <div class="toggle-opt" data-val="no" onclick="selToggle('insp-request-group',this)"><span class="to-marker"></span><span class="to-label">Not Now</span></div>
-              </div>
-            </div>
-            <div class="flow-nav">
-              <button class="btn-back-sm" onclick="engNextStep(2)">← Back</button>
-              <button class="btn-next" onclick="engNextStep(4)">Next: Evidence →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 4: Evidence -->
-      <div id="eng-s4" class="hidden">
-        <div class="flow-card">
-          <div class="flow-card-hdr">
-            <div class="fch-eyebrow">Phase 3 · Image Score Engine</div>
-            <div class="fch-title">📸 Evidence Upload</div>
-            <div class="fch-sub">Image score: Verified = 75+ · Pending = 40 · Missing = 10</div>
-          </div>
-          <div class="flow-card-body">
-            <div style="border:2px dashed var(--bd2);border-radius:var(--r-lg);padding:32px 20px;text-align:center;cursor:pointer;transition:all .2s" id="photo-zone" onclick="document.getElementById('photo-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--amber)'" ondragleave="this.style.borderColor='var(--bd2)'">
-              <div style="font-size:36px;margin-bottom:10px">📷</div>
-              <div style="font-family:var(--ff);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:6px">Drop photos or tap to upload</div>
-              <div style="font-size:12px;color:var(--t3)">Front · Rear · Interior · Dashboard · Odometer · Documents</div>
-              <input type="file" id="photo-input" multiple accept="image/*" style="display:none" onchange="handlePhotos(this)">
-            </div>
-            <div id="photo-thumbs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px"></div>
-            <div style="font-size:11px;color:var(--t3);margin-top:8px" id="photo-count">0 photos uploaded</div>
-
-            <div class="field" style="margin-top:16px"><label>Phone Number (for report delivery)</label>
-              <input type="tel" id="v-phone" placeholder="+91 XXXXX XXXXX">
-            </div>
-            <div class="field"><label>Notes (Optional)</label>
-              <textarea id="v-notes" rows="3" placeholder="Any additional information about the vehicle..." style="background:var(--navy);border:1px solid var(--bd2);border-radius:var(--r-sm);padding:10px 13px;font-size:13px;color:var(--t1);resize:vertical"></textarea>
-            </div>
-
-            <div class="flow-nav">
-              <button class="btn-back-sm" onclick="engNextStep(3)">← Back</button>
-              <button class="btn-next" onclick="engNextStep(5)">Review & Submit →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 5: Review + Submit -->
-      <div id="eng-s5" class="hidden">
-        <div class="flow-card">
-          <div class="flow-card-hdr">
-            <div class="fch-eyebrow">Phase 11 · Trust Score Computation</div>
-            <div class="fch-title">🧠 Review & Launch PVIS</div>
-            <div class="fch-sub">Review your submission. Launching PVIS will compute your initial trust score across all 15 phases.</div>
-          </div>
-          <div class="flow-card-body">
-
-            <!-- REVIEW SUMMARY -->
-            <div style="background:var(--navy3);border:1px solid var(--bd);border-radius:var(--r-lg);padding:16px;margin-bottom:16px" id="review-summary"></div>
-
-            <!-- PRE-COMPUTE SCORE PREVIEW -->
-            <div class="phase-ticker">
-              <div class="pt-hdr">⚡ Phase Readiness Preview</div>
-              <div class="pt-grid" id="phase-preview-grid"></div>
-            </div>
-
-            <div class="submit-loading" id="submit-loading">
-              <div class="sl-spinner"></div>
-              <div style="font-family:var(--ff);font-size:15px;font-weight:700;color:var(--t1)">Launching PVIS Pipeline</div>
-              <div class="sl-stage" id="sl-stage">Initialising scoring engine...</div>
-            </div>
-
-            <div class="flow-nav" id="submit-nav">
-              <button class="btn-back-sm" onclick="engNextStep(4)">← Back</button>
-              <button class="btn-next" onclick="submitVehicle()" style="background:var(--green);padding:13px 32px;font-size:15px">🚀 Launch PVIS Engine</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /flow-inner -->
-  </div><!-- /flow-outer -->
-</div>
-
-<!-- ══════════ SCORE DASHBOARD ══════════ -->
-<div id="pg-dashboard">
-  <div class="engine-back" onclick="showPage('home')">← Back to Home <span style="margin-left:6px;font-family:var(--fm);font-size:10px;letter-spacing:.1em;color:var(--amber)">PVIS DASHBOARD</span></div>
-
-  <div class="dash-layout">
-
-    <!-- SIDEBAR -->
-    <div class="dash-sidebar">
-      <!-- Vehicle card -->
-      <div class="ds-vehicle-card">
-        <div class="ds-vc-type" id="ds-type">EV — 2 Wheeler</div>
-        <div class="ds-vc-name" id="ds-name">Ather 450X · 2023</div>
-        <div class="ds-vc-city" id="ds-city">📍 Bengaluru · Personal</div>
-      </div>
-
-      <!-- Trust ring -->
-      <div class="ds-trust-ring">
-        <div class="trust-ring-wrap">
-          <svg class="trust-ring-svg" width="120" height="120" viewBox="0 0 120 120">
-            <circle class="tr-bg" cx="60" cy="60" r="52"/>
-            <circle class="tr-fill" id="tr-circle" cx="60" cy="60" r="52"
-              stroke="var(--amber)"
-              stroke-dasharray="0 326"
-              stroke-dashoffset="0"/>
-          </svg>
-          <div class="trust-ring-num">
-            <div class="trn-val" id="trust-val">0</div>
-            <div class="trn-label">TRUST</div>
-          </div>
-        </div>
-        <div class="ds-band" id="trust-band">—</div>
-      </div>
-
-      <!-- Score breakdown bars -->
-      <div>
-        <div style="font-family:var(--fm);font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Score Breakdown</div>
-        <div class="ds-scores">
-          <div class="ds-score-row"><div class="dsr-label">Document</div><div class="dsr-bar-wrap"><div class="dsr-bar" id="bar-doc" style="--w:0%;width:0%;background:var(--blue)"></div></div><div class="dsr-val" id="val-doc">0</div></div>
-          <div class="ds-score-row"><div class="dsr-label">Image</div><div class="dsr-bar-wrap"><div class="dsr-bar" id="bar-img" style="--w:0%;width:0%;background:var(--violet)"></div></div><div class="dsr-val" id="val-img">0</div></div>
-          <div class="ds-score-row"><div class="dsr-label">Inspection</div><div class="dsr-bar-wrap"><div class="dsr-bar" id="bar-insp" style="--w:0%;width:0%;background:var(--green)"></div></div><div class="dsr-val" id="val-insp">0</div></div>
-          <div class="ds-score-row"><div class="dsr-label">Battery</div><div class="dsr-bar-wrap"><div class="dsr-bar" id="bar-bat" style="--w:0%;width:0%;background:var(--amber)"></div></div><div class="dsr-val" id="val-bat">0</div></div>
-          <div class="ds-score-row"><div class="dsr-label">Market</div><div class="dsr-bar-wrap"><div class="dsr-bar" id="bar-mkt" style="--w:0%;width:0%;background:var(--orange)"></div></div><div class="dsr-val" id="val-mkt">0</div></div>
-          <div class="ds-score-row"><div class="dsr-label">Confidence</div><div class="dsr-bar-wrap"><div class="dsr-bar" id="bar-conf" style="--w:0%;width:0%;background:var(--red)"></div></div><div class="dsr-val" id="val-conf">0</div></div>
-        </div>
-      </div>
-
-      <!-- Phase pipeline -->
-      <div>
-        <div style="font-family:var(--fm);font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Phase Pipeline</div>
-        <div class="phase-pipeline" id="phase-pipeline">
-          <!-- populated by JS -->
-        </div>
-      </div>
-
-      <button class="btn-primary" style="width:100%;justify-content:center" onclick="showPage('engine')">+ Onboard New Vehicle</button>
     </div>
 
-    <!-- MAIN PANEL -->
-    <div class="dash-main" id="dash-main">
-
-      <!-- Toolbar -->
-      <div class="dash-toolbar">
-        <div>
-          <div class="dt-title">Progressive Intelligence Dashboard</div>
-          <div class="dt-sub" id="dt-sub">ID: Loading... · Last updated: —</div>
-        </div>
-        <div class="dt-actions">
-          <button class="btn-sm btn-sm-amber" onclick="runScoringDemo()">▶ Run Scoring Demo</button>
-          <button class="btn-ghost" onclick="simulateInspectionComplete()">🔬 Simulate Inspection</button>
-        </div>
-      </div>
-
-      <!-- Score cards -->
-      <div class="score-cards">
-        <div class="score-card c-doc">
-          <div class="sc-hdr"><div class="sc-name">📄 Document Score</div><div class="sc-phase">PHASE 2</div></div>
-          <div class="sc-big mid" id="sc-doc">10</div>
-          <div class="sc-bar-wrap"><div class="sc-bar" id="scbar-doc" style="width:10%;background:var(--blue)"></div></div>
-          <div class="sc-detail">RC · Insurance · Loan · PUC · Battery Warranty<br><span class="sc-state state-pending" id="sc-doc-state">PENDING</span></div>
-          <div class="sc-weight">Weight: 15% of Trust Score</div>
-        </div>
-        <div class="score-card c-img">
-          <div class="sc-hdr"><div class="sc-name">📸 Image Score</div><div class="sc-phase">PHASE 3</div></div>
-          <div class="sc-big low" id="sc-img">10</div>
-          <div class="sc-bar-wrap"><div class="sc-bar" id="scbar-img" style="width:10%;background:var(--violet)"></div></div>
-          <div class="sc-detail">GPS-tagged evidence · Blur check · Type match<br><span class="sc-state state-missing" id="sc-img-state">AWAITING</span></div>
-          <div class="sc-weight">Weight: 10% of Trust Score</div>
-        </div>
-        <div class="score-card c-conf">
-          <div class="sc-hdr"><div class="sc-name">🔐 Confidence Score</div><div class="sc-phase">PHASE 4</div></div>
-          <div class="sc-big low" id="sc-conf">0</div>
-          <div class="sc-bar-wrap"><div class="sc-bar" id="scbar-conf" style="width:0%;background:var(--red)"></div></div>
-          <div class="sc-detail">Identity linkage · Phone verified · Geo consent<br><span class="sc-state state-missing" id="sc-conf-state">UNLINKED</span></div>
-          <div class="sc-weight">Weight: 10% of Trust Score</div>
-        </div>
-        <div class="score-card c-mkt">
-          <div class="sc-hdr"><div class="sc-name">📈 Market Score</div><div class="sc-phase">PHASE 5</div></div>
-          <div class="sc-big low" id="sc-mkt">30</div>
-          <div class="sc-bar-wrap"><div class="sc-bar" id="scbar-mkt" style="width:30%;background:var(--orange)"></div></div>
-          <div class="sc-detail">City demand · Resale velocity · Segment trend<br><span class="sc-state state-pending" id="sc-mkt-state">CONNECTING</span></div>
-          <div class="sc-weight">Weight: 10% of Trust Score</div>
-        </div>
-        <div class="score-card c-insp">
-          <div class="sc-hdr"><div class="sc-name">🔬 Inspection Score</div><div class="sc-phase">PHASE 6</div></div>
-          <div class="sc-big low" id="sc-insp">0</div>
-          <div class="sc-bar-wrap"><div class="sc-bar" id="scbar-insp" style="width:0%;background:var(--green)"></div></div>
-          <div class="sc-detail">Assigned · In-progress · Physical verification<br><span class="sc-state state-missing" id="sc-insp-state">NOT REQUESTED</span></div>
-          <div class="sc-weight">Weight: 30% of Trust Score ← Highest</div>
-        </div>
-        <div class="score-card c-bat">
-          <div class="sc-hdr"><div class="sc-name">⚡ Battery Score</div><div class="sc-phase">PHASE 7</div></div>
-          <div class="sc-big low" id="sc-bat">40</div>
-          <div class="sc-bar-wrap"><div class="sc-bar" id="scbar-bat" style="width:40%;background:var(--amber)"></div></div>
-          <div class="sc-detail">SOH verified · Warranty status · Cycle count<br><span class="sc-state state-pending" id="sc-bat-state">PENDING</span></div>
-          <div class="sc-weight">Weight: 25% of Trust Score</div>
-        </div>
-      </div>
-
-      <!-- Trust equation -->
-      <div class="trust-equation">
-        <div class="te-title">🧮 Global Trust Score Formula — Phase 11</div>
-        <div class="te-formula">
-          <div class="te-term"><div class="te-score" id="teq-doc">10</div><div class="te-wt">Doc ×0.15</div></div>
-          <div class="te-op">+</div>
-          <div class="te-term"><div class="te-score" id="teq-img">10</div><div class="te-wt">Img ×0.10</div></div>
-          <div class="te-op">+</div>
-          <div class="te-term"><div class="te-score" id="teq-conf">0</div><div class="te-wt">Conf ×0.10</div></div>
-          <div class="te-op">+</div>
-          <div class="te-term"><div class="te-score" id="teq-mkt">30</div><div class="te-wt">Mkt ×0.10</div></div>
-          <div class="te-op">+</div>
-          <div class="te-term"><div class="te-score" id="teq-insp">0</div><div class="te-wt">Insp ×0.30</div></div>
-          <div class="te-op">+</div>
-          <div class="te-term"><div class="te-score" id="teq-bat">40</div><div class="te-wt">Bat ×0.25</div></div>
-          <div class="te-op">=</div>
-          <div class="te-result">
-            <div class="te-result-val" id="teq-total">14.5</div>
-            <div>
-              <div class="te-result-label"><strong id="teq-band">READINESS SUPPORT ADVISED</strong></div>
-              <div style="font-size:11px;color:var(--t3)">Updates automatically as signals arrive</div>
+    <!-- Modal for Partner Details -->
+    <div id="partner-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Partner Details</h2>
+                <button class="modal-close" onclick="closeModal('partner-modal')">&times;</button>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Phase ticker grid -->
-      <div class="phase-ticker">
-        <div class="pt-hdr">⚙️ All 15 Phases — Live Status</div>
-        <div class="pt-grid" id="all-phases-grid"></div>
-      </div>
-
-      <!-- Health mirror -->
-      <div class="health-mirror">
-        <div class="hm-title">🩺 Health Score Mirror — Phase 14 <span style="font-family:var(--fm);font-size:9px;color:var(--t3);font-weight:400">health_scores/{vehicleId}</span></div>
-        <div class="hm-grid">
-          <div class="hm-stat"><div class="hm-val" id="hm-doc">10</div><div class="hm-label">Document</div></div>
-          <div class="hm-stat"><div class="hm-val" id="hm-img">10</div><div class="hm-label">Image</div></div>
-          <div class="hm-stat"><div class="hm-val" id="hm-insp">0</div><div class="hm-label">Inspection</div></div>
-          <div class="hm-stat"><div class="hm-val" id="hm-bat">40</div><div class="hm-label">Battery</div></div>
-          <div class="hm-stat"><div class="hm-val" id="hm-conf">0</div><div class="hm-label">Confidence</div></div>
-          <div class="hm-stat"><div class="hm-val" id="hm-mkt">30</div><div class="hm-label">Market</div></div>
-          <div class="hm-stat"><div class="hm-val" id="hm-trust">14</div><div class="hm-label">Trust Score</div></div>
-          <div class="hm-stat"><div class="hm-val" id="hm-phase" style="color:var(--amber)">P1</div><div class="hm-label">Active Phase</div></div>
-        </div>
-      </div>
-
-      <!-- Certificate (initially hidden) -->
-      <div id="cert-section" class="hidden">
-        <div class="cert-card">
-          <div class="cert-top">
-            <div class="cert-badge-ico">🏅</div>
-            <div class="cert-id">
-              <div>CERTIFICATE ID</div>
-              <span id="cert-id-val">CERT-—</span>
+            <div class="modal-body" id="partner-modal-body">
+                <!-- Partner details populated by JavaScript -->
             </div>
-          </div>
-          <div class="cert-title">99EVS Trust Certificate</div>
-          <div class="cert-sub" id="cert-sub">Vehicle has passed the 99EVS Progressive Intelligence Scoring threshold. This certificate is auto-generated and stored in Firestore <code>certificates/{id}</code>.</div>
-          <div class="cert-grid">
-            <div class="cert-stat"><div class="cst-val" id="cert-trust">—</div><div class="cst-label">Trust Score</div></div>
-            <div class="cert-stat"><div class="cst-val" id="cert-band">—</div><div class="cst-label">Band</div></div>
-            <div class="cert-stat"><div class="cst-val" id="cert-issued">—</div><div class="cst-label">Issued At</div></div>
-            <div class="cert-stat"><div class="cst-val" id="cert-vehicle">—</div><div class="cst-label">Vehicle</div></div>
-          </div>
-          <div class="cert-seal">
-            <div class="cs-ico">✅</div>
-            <div>
-              <div class="cs-text">99EVS VERIFIED — TRUST THRESHOLD PASSED</div>
-              <div class="cs-sub">Stored in Firestore · Scannable · Auto-updated</div>
+        </div>
+    </div>
+
+    <!-- Modal for Booking -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Book Service</h2>
+                <button class="modal-close" onclick="closeModal('booking-modal')">&times;</button>
             </div>
-          </div>
+            <div class="modal-body">
+                <form id="booking-form">
+                    <div class="form-group">
+                        <label>Vehicle Make</label>
+                        <input type="text" name="vehicleMake" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Model</label>
+                        <input type="text" name="vehicleModel" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Registration Number</label>
+                        <input type="text" name="registrationNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Date</label>
+                        <input type="date" name="scheduledDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Time</label>
+                        <select name="scheduledTime" required>
+                            <option value="">Select time</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Special Instructions (optional)</label>
+                        <textarea name="customerNotes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Confirm Booking
+                    </button>
+                </form>
+            </div>
         </div>
-      </div>
-
-      <!-- Forecast alert (initially hidden) -->
-      <div id="forecast-section" class="hidden">
-        <div class="forecast-alert">
-          <div class="fa-ico">⚠️</div>
-          <div>
-            <div class="fa-title">Predictive Forecast Alert — Phase 15</div>
-            <div class="fa-text" id="forecast-text">Trust score has dropped below threshold. Predictive forecast triggered and stored in <code>predictive_forecasts/{vehicleId}</code>.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Activity log -->
-      <div class="activity-log">
-        <div class="al-hdr">
-          <div class="al-title">📋 Scoring Activity Log</div>
-          <span style="font-family:var(--fm);font-size:9px;color:var(--green);letter-spacing:.08em;animation:blink 2s infinite">● LIVE</span>
-        </div>
-        <div class="al-stream" id="activity-log"></div>
-      </div>
-
-    </div><!-- /dash-main -->
-  </div><!-- /dash-layout -->
-</div>
-
-<!-- ══════════ TOAST ══════════ -->
-
-<script>
-/* ════════════════════════════════════════════════════════════
-   99EVS PROGRESSIVE VEHICLE INTELLIGENCE SCORING ENGINE
-   PVIS v1.0 — Complete scoring pipeline (Phases 1–15)
-   Firebase Firestore-ready with demo simulation mode
-════════════════════════════════════════════════════════════ */
-
-/* ── PAGE ROUTER ─────────────────────────────────────── */
-function showPage(pg){
-  ['home','engine','dashboard'].forEach(p=>{
-    document.getElementById('pg-'+p).style.display = p===pg?'block':'none';
-  });
-  ['nav-home','nav-dash','nav-eng'].forEach(id=>{
-    document.getElementById(id)?.classList.remove('active');
-  });
-  const m={'home':'nav-home','engine':'nav-eng','dashboard':'nav-dash'};
-  if(m[pg]) document.getElementById(m[pg])?.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-/* ── GLOBAL STATE ────────────────────────────────────── */
-window.formState = {};
-let vehicleId = null;
-let scoringState = {
-  documentScore:   10,
-  imageScore:      10,
-  confidenceScore: 0,
-  marketScore:     30,
-  inspectionScore: 0,
-  batteryScore:    40,
-  trustScore:      0,
-  activePhase:     1,
-  band:            'band-repair',
-  inspectionRequested: false,
-  isEV:            false
-};
-let activityLog = [];
-let demoInterval = null;
-let photosUploaded = [];
-
-/* ── TOGGLE ENGINE ───────────────────────────────────── */
-function selToggle(groupId, el){
-  const grp = document.getElementById(groupId);
-  if(!grp) return;
-  grp.querySelectorAll('.toggle-opt').forEach(o=>{
-    o.classList.remove('selected','sel-green','sel-red','sel-amber');
-  });
-  el.classList.add('selected');
-  if(el.dataset.color) el.classList.add('sel-'+el.dataset.color);
-  window.formState[groupId] = el.dataset.val;
-  liveScoreUpdate();
-}
-
-/* ── ENGINE STEP NAVIGATION ──────────────────────────── */
-let currentEngStep = 1;
-function engNextStep(n){
-  for(let i=1;i<=5;i++){
-    const s = document.getElementById('eng-s'+i);
-    if(s) s.classList.toggle('hidden', i!==n);
-    const dot = document.getElementById('ep'+i);
-    const lbl = document.getElementById('epl'+i);
-    const line = document.getElementById('el'+i);
-    if(dot){
-      dot.classList.toggle('done',   i<n);
-      dot.classList.toggle('active', i===n);
-      dot.classList.remove('done'); if(i<n) dot.classList.add('done');
-      dot.classList.remove('active'); if(i===n) dot.classList.add('active');
-    }
-    if(lbl){
-      lbl.classList.toggle('done',   i<n);
-      lbl.classList.toggle('active', i===n);
-    }
-    if(line) line.classList.toggle('done', i<n);
-  }
-  currentEngStep = n;
-  if(n===5) buildReviewSummary();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-/* ── TYPE CHANGE ─────────────────────────────────────── */
-function onTypeChange(){
-  const t = document.getElementById('v-type').value;
-  scoringState.isEV = t.toLowerCase().includes('ev') || t.toLowerCase().includes('electric');
-  const bwb = document.getElementById('battery-warranty-block');
-  if(bwb) bwb.style.display = scoringState.isEV ? 'block' : 'none';
-  liveScoreUpdate();
-}
-function onCityChange(){ liveScoreUpdate(); }
-
-/* ── PHOTO HANDLER ───────────────────────────────────── */
-function handlePhotos(input){
-  photosUploaded = Array.from(input.files||[]);
-  const thumbs = document.getElementById('photo-thumbs');
-  const count  = document.getElementById('photo-count');
-  if(thumbs){
-    thumbs.innerHTML = '';
-    photosUploaded.forEach(f=>{
-      const div = document.createElement('div');
-      div.style.cssText='width:64px;height:64px;border-radius:8px;overflow:hidden;border:1px solid var(--bd)';
-      const img = document.createElement('img');
-      img.src = URL.createObjectURL(f);
-      img.style.cssText='width:100%;height:100%;object-fit:cover';
-      div.appendChild(img);
-      thumbs.appendChild(div);
-    });
-  }
-  if(count) count.textContent = photosUploaded.length + ' photo' + (photosUploaded.length!==1?'s':'') + ' uploaded';
-  liveScoreUpdate();
-}
-
-/* ── LIVE SCORE UPDATE (during onboarding) ───────────── */
-function liveScoreUpdate(){
-  const type  = document.getElementById('v-type')?.value  || '';
-  const city  = document.getElementById('v-city')?.value  || '';
-  const make  = document.getElementById('v-make')?.value  || '';
-  const model = document.getElementById('v-model')?.value || '';
-  const year  = document.getElementById('v-year')?.value  || '';
-
-  // Identity completeness
-  let idFields = [type,city,make,model,year].filter(Boolean).length;
-  const idScore = Math.min(100, idFields * 20);
-
-  // Document score
-  const docScore = computeDocumentScore();
-
-  // Image score
-  const imgScore = photosUploaded.length >= 4 ? 75
-                 : photosUploaded.length >= 2 ? 50
-                 : photosUploaded.length >= 1 ? 35 : 10;
-
-  // Market score
-  const mktScore = city ? 65 : 30;
-
-  // Update live bars
-  setLspBar('identity', idScore);
-  setLspBar('docs',     docScore);
-  setLspBar('imgs',     imgScore);
-  setLspBar('mkt',      mktScore);
-}
-
-function setLspBar(key, val){
-  const bar = document.getElementById('lsp-'+key);
-  const num = document.getElementById('lspv-'+key);
-  if(bar) bar.style.width = Math.min(100,val)+'%';
-  if(num) num.textContent = Math.round(val);
-}
-
-/* ── DOCUMENT SCORE COMPUTATION ──────────────────────── */
-function computeDocumentScore(){
-  const rc   = window.formState['rc-group'];
-  const ins  = window.formState['ins-group'];
-  const loan = window.formState['loan-group'];
-  const puc  = window.formState['puc-group'];
-  const bwty = window.formState['bwty-group'];
-
-  const scoreMap = { verified:80, valid:80, clear:80, good:80,
-                     pending:40, active:40, expired:40,
-                     missing:10, unknown:10, na:50 };
-
-  const scores = [rc,ins,loan,puc].map(v=>scoreMap[v]||10);
-  if(scoringState.isEV && bwty) scores.push(scoreMap[bwty]||40);
-
-  return scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : 10;
-}
-
-/* ── BUILD REVIEW SUMMARY ─────────────────────────────── */
-function buildReviewSummary(){
-  const type  = document.getElementById('v-type')?.value  || '—';
-  const city  = document.getElementById('v-city')?.value  || '—';
-  const make  = document.getElementById('v-make')?.value  || '—';
-  const model = document.getElementById('v-model')?.value || '—';
-  const year  = document.getElementById('v-year')?.value  || '—';
-  const odo   = document.getElementById('v-odo')?.value   || '—';
-
-  const docScore  = computeDocumentScore();
-  const imgScore  = photosUploaded.length>=4?75:photosUploaded.length>=2?50:photosUploaded.length>=1?35:10;
-  const inspReq   = window.formState['insp-request-group']==='yes';
-  const isEV      = scoringState.isEV;
-
-  const el = document.getElementById('review-summary');
-  if(el) el.innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div><div style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.1em;margin-bottom:3px">VEHICLE</div>
-        <div style="font-family:var(--ff);font-size:15px;font-weight:800;color:var(--t1)">${make} ${model}</div>
-        <div style="font-size:12px;color:var(--t2)">${type} · ${year} · ${parseInt(odo||0).toLocaleString('en-IN')} km</div>
-      </div>
-      <div><div style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.1em;margin-bottom:3px">LOCATION</div>
-        <div style="font-family:var(--ff);font-size:15px;font-weight:800;color:var(--t1)">${city}</div>
-        <div style="font-size:12px;color:var(--t2)">${window.formState['usage-group']||'—'} use</div>
-      </div>
-      <div><div style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.1em;margin-bottom:3px">INITIAL SCORES</div>
-        <div style="font-size:12px;color:var(--t2)">Docs: <strong style="color:var(--amber)">${docScore}</strong> · Images: <strong style="color:var(--amber)">${imgScore}</strong> · Market: <strong style="color:var(--amber)">65</strong></div>
-      </div>
-      <div><div style="font-family:var(--fm);font-size:9px;color:var(--t3);letter-spacing:.1em;margin-bottom:3px">PIPELINE</div>
-        <div style="font-size:12px;color:var(--t2)">${inspReq?'🔬 Inspection Requested':'No Inspection'} · ${isEV?'⚡ EV Battery Engine ON':'Petrol Engine'}</div>
-      </div>
-    </div>`;
-
-  // Build phase preview
-  buildPhasePreviewGrid(docScore, imgScore, inspReq);
-}
-
-function buildPhasePreviewGrid(docScore, imgScore, inspReq){
-  const el = document.getElementById('phase-preview-grid');
-  if(!el) return;
-  const phases = [
-    {ico:'🚗',name:'IDENTITY',val:'Active',cls:'active-phase'},
-    {ico:'📄',name:'DOCUMENTS',val:docScore,cls:docScore>50?'done-phase':'active-phase'},
-    {ico:'📸',name:'IMAGES',val:imgScore,cls:imgScore>50?'done-phase':'active-phase'},
-    {ico:'🔐',name:'IDENTITY LINK',val:'Pending',cls:''},
-    {ico:'📈',name:'MARKET',val:'65',cls:'done-phase'},
-    {ico:'🔬',name:'INSPECTION',val:inspReq?'Requested':'—',cls:inspReq?'active-phase':''},
-    {ico:'⚡',name:'BATTERY',val:'40',cls:'active-phase'},
-    {ico:'💰',name:'PRICING',val:'Active',cls:'done-phase'},
-    {ico:'🏪',name:'DEALER',val:'Pending',cls:''},
-  ];
-  el.innerHTML = phases.map(p=>`
-    <div class="pt-cell ${p.cls}">
-      <div class="pt-ico">${p.ico}</div>
-      <div class="pt-name">${p.name}</div>
-      <div class="pt-val">${p.val}</div>
-    </div>`).join('');
-}
-
-/* ── SUBMIT VEHICLE ──────────────────────────────────── */
-let submitTicker = null;
-async function submitVehicle(){
-  document.getElementById('submit-nav').style.display='none';
-  const loading = document.getElementById('submit-loading');
-  loading.classList.add('visible');
-
-  const stages = [
-    'Phase 1 — Initialising vehicle record...',
-    'Phase 2 — Computing document score...',
-    'Phase 3 — Processing image evidence...',
-    'Phase 4 — Linking identity signals...',
-    'Phase 5 — Connecting market data...',
-    'Phase 6 — Registering inspection pipeline...',
-    'Phase 7 — Running battery score engine...',
-    'Phase 8 — Applying pricing modifiers...',
-    'Phase 9 — Activating dealer routing...',
-    'Phase 10 — Starting lifecycle tracking...',
-    'Phase 11 — Computing global trust score...',
-    'Phase 12 — Writing to Firestore...',
-    'Phase 13 — Checking certificate eligibility...',
-    'Phase 14 — Updating health score mirror...',
-    'Phase 15 — Predictive forecast analysis...',
-    '✅ PVIS Pipeline Complete!'
-  ];
-
-  const stageEl = document.getElementById('sl-stage');
-  let i = 0;
-  submitTicker = setInterval(()=>{
-    if(i < stages.length){
-      if(stageEl){ stageEl.style.opacity='0'; setTimeout(()=>{stageEl.textContent=stages[i];stageEl.style.opacity='1';},200); }
-      i++;
-    } else {
-      clearInterval(submitTicker);
-      loading.classList.remove('visible');
-      _finaliseSubmission();
-    }
-  }, 500);
-}
-
-function _finaliseSubmission(){
-  // Build scoring state from form
-  const type  = document.getElementById('v-type')?.value  || 'Petrol — 2 Wheeler';
-  const city  = document.getElementById('v-city')?.value  || 'Bengaluru';
-  const make  = document.getElementById('v-make')?.value  || 'Unknown';
-  const model = document.getElementById('v-model')?.value || 'Model';
-  const year  = document.getElementById('v-year')?.value  || '2022';
-
-  vehicleId = 'VRS-'+Date.now().toString(36).toUpperCase()+'-99EVS';
-
-  // Compute all scores
-  const docScore  = computeDocumentScore();
-  const imgScore  = photosUploaded.length>=4?78:photosUploaded.length>=2?52:photosUploaded.length>=1?38:10;
-  const confScore = 15; // phone provided = +15
-  const mktScore  = city ? 68 : 30;
-  const inspReq   = window.formState['insp-request-group']==='yes';
-  const inspScore = inspReq ? 35 : 0; // requested but not yet assigned
-  const batScore  = scoringState.isEV
-    ? (window.formState['bwty-group']==='valid'?82:window.formState['bwty-group']==='expired'?40:30)
-    : 50; // non-EV gets neutral battery
-
-  // Update global state
-  Object.assign(scoringState, {
-    documentScore:   docScore,
-    imageScore:      imgScore,
-    confidenceScore: confScore,
-    marketScore:     mktScore,
-    inspectionScore: inspScore,
-    batteryScore:    batScore,
-    inspectionRequested: inspReq,
-    vehicleId,
-    vehicleMeta: { type, city, make, model, year }
-  });
-
-  scoringState.trustScore = computeTrustScore(scoringState);
-
-  // Write to Firestore if available
-  _writeToFirestore(scoringState);
-
-  // Switch to dashboard
-  showPage('dashboard');
-  setTimeout(()=>{
-    initDashboard(scoringState);
-    showToast('🚀 PVIS Pipeline launched — Trust Score: '+Math.round(scoringState.trustScore));
-  }, 300);
-}
-
-/* ── TRUST SCORE FORMULA (Phase 11) ─────────────────── */
-function computeTrustScore(s){
-  return (
-    s.documentScore   * 0.15 +
-    s.imageScore      * 0.10 +
-    s.confidenceScore * 0.10 +
-    s.marketScore     * 0.10 +
-    s.inspectionScore * 0.30 +
-    s.batteryScore    * 0.25
-  );
-}
-
-function getTrustBand(score){
-  if(score>=85) return {label:'VERIFIED — MATCHING READY',  cls:'band-premium', ring:'#10B981'};
-  if(score>=70) return {label:'SUPPORTED — BUYER MATCHING', cls:'band-verified', ring:'#F4A300'};
-  if(score>=60) return {label:'INSPECTION RECOMMENDED',      cls:'band-inspect',  ring:'#F97316'};
-  return              {label:'READINESS SUPPORT ADVISED',    cls:'band-repair',   ring:'#EF4444'};
-}
-
-/* ── INIT DASHBOARD ──────────────────────────────────── */
-function initDashboard(s){
-  const ts = Math.round(s.trustScore);
-  const band = getTrustBand(ts);
-
-  // Sidebar metadata
-  const meta = s.vehicleMeta || {};
-  setEl('ds-type',  meta.type || 'Vehicle');
-  setEl('ds-name',  `${meta.make||'Unknown'} ${meta.model||''} · ${meta.year||'—'}`);
-  setEl('ds-city',  `📍 ${meta.city||'—'} · ${window.formState['usage-group']||'—'}`);
-  setEl('dt-sub',   `ID: ${s.vehicleId||'DEMO'} · Active Phase: ${s.activePhase||1}`);
-
-  // Update all score displays
-  animateScore('sc-doc',   s.documentScore);
-  animateScore('sc-img',   s.imageScore);
-  animateScore('sc-conf',  s.confidenceScore);
-  animateScore('sc-mkt',   s.marketScore);
-  animateScore('sc-insp',  s.inspectionScore);
-  animateScore('sc-bat',   s.batteryScore);
-
-  updateBar('scbar-doc',  s.documentScore);
-  updateBar('scbar-img',  s.imageScore);
-  updateBar('scbar-conf', s.confidenceScore);
-  updateBar('scbar-mkt',  s.marketScore);
-  updateBar('scbar-insp', s.inspectionScore);
-  updateBar('scbar-bat',  s.batteryScore);
-
-  updateScoreColour('sc-doc',  s.documentScore);
-  updateScoreColour('sc-img',  s.imageScore);
-  updateScoreColour('sc-conf', s.confidenceScore);
-  updateScoreColour('sc-mkt',  s.marketScore);
-  updateScoreColour('sc-insp', s.inspectionScore);
-  updateScoreColour('sc-bat',  s.batteryScore);
-
-  // State labels
-  setDocState(s.documentScore);
-  setImgState(s.imageScore);
-  setInspState(s.inspectionScore, s.inspectionRequested);
-
-  // Trust ring
-  animateTrustRing(ts, band);
-
-  // Equation
-  setEl('teq-doc',  Math.round(s.documentScore));
-  setEl('teq-img',  Math.round(s.imageScore));
-  setEl('teq-conf', Math.round(s.confidenceScore));
-  setEl('teq-mkt',  Math.round(s.marketScore));
-  setEl('teq-insp', Math.round(s.inspectionScore));
-  setEl('teq-bat',  Math.round(s.batteryScore));
-  setEl('teq-total',ts);
-  setEl('teq-band', band.label);
-
-  // Sidebar bars
-  updateSidebarBars(s);
-
-  // Phase pipeline sidebar
-  buildPhasePipeline(s);
-
-  // All phases grid
-  buildAllPhasesGrid(s);
-
-  // Health mirror
-  updateHealthMirror(s);
-
-  // Certificate
-  checkCertificate(s, band, ts);
-
-  // Forecast
-  checkForecast(ts);
-
-  // Log initial activities
-  logActivity('green','🚀','PVIS Engine Launched',`Vehicle ${s.vehicleId||'DEMO'} onboarded. 15-phase pipeline initialised.`);
-  logActivity('amber','📄','Document Score',`Phase 2 complete — score: ${Math.round(s.documentScore)}/100`);
-  logActivity('blue','📸','Image Evidence',`Phase 3 — ${photosUploaded.length} photo(s) processed`);
-  logActivity('amber','📈','Market Signal',`Phase 5 — ${meta.city||'city'} demand connected, score: ${Math.round(s.marketScore)}`);
-  logActivity('green','⚡','Battery Engine',`Phase 7 — battery score: ${Math.round(s.batteryScore)}`);
-  logActivity('blue','🧮','Trust Computation',`Phase 11 — global trust score: ${ts} (${band.label})`);
-  if(ts>60) logActivity('green','🏅','Certificate Generated',`Phase 13 — CERT-${(s.vehicleId||'DEMO').slice(-6)} issued`);
-  if(ts<70) logActivity('amber','⚠️','Forecast Alert',`Phase 15 — predictive forecast triggered: "service soon"`);
-}
-
-function animateTrustRing(score, band){
-  const circle = document.getElementById('tr-circle');
-  const val    = document.getElementById('trust-val');
-  const bandEl = document.getElementById('trust-band');
-
-  if(circle){
-    const circumference = 2 * Math.PI * 52; // r=52
-    const filled = (score/100)*circumference;
-    circle.style.stroke = band.ring;
-    circle.style.strokeDasharray = `${filled} ${circumference}`;
-  }
-
-  // Animate number
-  let cur = 0;
-  const target = Math.round(score);
-  const step = () => {
-    cur = Math.min(cur+Math.ceil(target/40), target);
-    if(val) val.textContent = cur;
-    if(cur < target) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-
-  if(bandEl){ bandEl.className='ds-band '+band.cls; bandEl.textContent=band.label; }
-}
-
-function animateScore(id, val){
-  const el = document.getElementById(id);
-  if(!el) return;
-  let cur = 0, target = Math.round(val);
-  const step = () => {
-    cur = Math.min(cur+Math.ceil(target/30),target);
-    el.textContent = cur;
-    if(cur<target) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
-
-function updateScoreColour(id, val){
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.classList.remove('up','mid','low');
-  if(val>=70) el.classList.add('up');
-  else if(val>=40) el.classList.add('mid');
-  else el.classList.add('low');
-}
-
-function updateBar(id, val){
-  const el = document.getElementById(id);
-  if(el){ el.style.setProperty('--w', Math.min(100,val)+'%'); el.style.width=Math.min(100,val)+'%'; }
-}
-
-function updateSidebarBars(s){
-  const pairs=[['doc',s.documentScore,'var(--blue)'],['img',s.imageScore,'var(--violet)'],
-               ['insp',s.inspectionScore,'var(--green)'],['bat',s.batteryScore,'var(--amber)'],
-               ['mkt',s.marketScore,'var(--orange)'],['conf',s.confidenceScore,'var(--red)']];
-  pairs.forEach(([k,v,c])=>{
-    const bar=document.getElementById('bar-'+k); const val=document.getElementById('val-'+k);
-    if(bar){bar.style.setProperty('--w',Math.min(100,v)+'%');bar.style.width=Math.min(100,v)+'%';bar.style.background=c;}
-    if(val) val.textContent=Math.round(v);
-  });
-}
-
-function setDocState(score){
-  const el=document.getElementById('sc-doc-state');if(!el)return;
-  if(score>=70){el.className='sc-state state-verified';el.textContent='VERIFIED';}
-  else if(score>=40){el.className='sc-state state-pending';el.textContent='PENDING';}
-  else{el.className='sc-state state-missing';el.textContent='MISSING';}
-}
-function setImgState(score){
-  const el=document.getElementById('sc-img-state');if(!el)return;
-  if(score>=70){el.className='sc-state state-verified';el.textContent='VERIFIED';}
-  else if(score>=30){el.className='sc-state state-pending';el.textContent='UPLOADED';}
-  else{el.className='sc-state state-missing';el.textContent='MISSING';}
-}
-function setInspState(score, requested){
-  const el=document.getElementById('sc-insp-state');if(!el)return;
-  if(score>=80){el.className='sc-state state-verified';el.textContent='COMPLETE';}
-  else if(requested&&score>0){el.className='sc-state state-pending';el.textContent='IN PROGRESS';}
-  else if(requested){el.className='sc-state state-pending';el.textContent='REQUESTED';}
-  else{el.className='sc-state state-missing';el.textContent='NOT REQUESTED';}
-}
-
-function buildPhasePipeline(s){
-  const el=document.getElementById('phase-pipeline');if(!el)return;
-  const phases=[
-    {ico:'🚗',label:'Identity',done:true},
-    {ico:'📄',label:'Documents',done:s.documentScore>10},
-    {ico:'📸',label:'Images',done:s.imageScore>10},
-    {ico:'🔐',label:'Identity Link',active:true},
-    {ico:'📈',label:'Market',done:true},
-    {ico:'🔬',label:'Inspection',active:s.inspectionRequested,done:s.inspectionScore>=80},
-    {ico:'⚡',label:'Battery',done:s.batteryScore>10},
-    {ico:'💰',label:'Pricing',done:true},
-    {ico:'🏪',label:'Dealer',active:true},
-    {ico:'♻️',label:'Lifecycle',active:true},
-    {ico:'🧮',label:'Trust Compute',done:true},
-    {ico:'☁️',label:'Firestore Write',done:true},
-    {ico:'🏅',label:'Certificate',done:s.trustScore>60},
-    {ico:'🩺',label:'Health Mirror',done:true},
-    {ico:'🔮',label:'Forecast',active:s.trustScore<70},
-  ];
-  el.innerHTML=phases.map((p,i)=>{
-    const cls=p.done?'done':p.active?'active':'pending';
-    const status=p.done?'DONE':p.active?'ACTIVE':'PENDING';
-    return`<div class="phase-step ${cls}">
-      <div class="ps-ico">${p.ico}</div>
-      <div class="ps-label">${p.label}</div>
-      <div class="ps-status">${status}</div>
-    </div>`;
-  }).join('');
-}
-
-function buildAllPhasesGrid(s){
-  const el=document.getElementById('all-phases-grid');if(!el)return;
-  const phases=[
-    {ico:'🚗',name:'ONBOARDING',val:'Complete',done:true},
-    {ico:'📄',name:'DOCUMENTS',val:Math.round(s.documentScore),done:s.documentScore>10},
-    {ico:'📸',name:'IMAGES',val:Math.round(s.imageScore),done:s.imageScore>10},
-    {ico:'🔐',name:'IDENTITY',val:s.confidenceScore>0?'+15':'—',active:true},
-    {ico:'📈',name:'MARKET',val:Math.round(s.marketScore),done:true},
-    {ico:'🔬',name:'INSPECTION',val:s.inspectionRequested?Math.round(s.inspectionScore):'—',active:s.inspectionRequested,done:s.inspectionScore>=80},
-    {ico:'⚡',name:'BATTERY',val:Math.round(s.batteryScore),done:s.batteryScore>10},
-    {ico:'💰',name:'PRICING',val:'ON',done:true},
-    {ico:'🏪',name:'DEALER',val:'PENDING',active:true},
-    {ico:'♻️',name:'LIFECYCLE',val:'ACTIVE',active:true},
-    {ico:'🧮',name:'TRUST SCORE',val:Math.round(s.trustScore),done:true},
-    {ico:'☁️',name:'FIRESTORE',val:'WRITTEN',done:true},
-    {ico:'🏅',name:'CERTIFICATE',val:s.trustScore>60?'ISSUED':'—',done:s.trustScore>60},
-    {ico:'🩺',name:'HEALTH MIRROR',val:'SYNCED',done:true},
-    {ico:'🔮',name:'FORECAST',val:s.trustScore<70?'ALERT':'OK',active:s.trustScore<70,done:s.trustScore>=70},
-  ];
-  el.innerHTML=phases.map(p=>{
-    const cls=p.done?'done-phase':p.active?'active-phase':'';
-    return`<div class="pt-cell ${cls}">
-      <div class="pt-ico">${p.ico}</div>
-      <div class="pt-name">${p.name}</div>
-      <div class="pt-val">${p.val}</div>
-    </div>`;
-  }).join('');
-}
-
-function updateHealthMirror(s){
-  ['doc','img','insp','bat','conf','mkt'].forEach(k=>{
-    const map={doc:s.documentScore,img:s.imageScore,insp:s.inspectionScore,bat:s.batteryScore,conf:s.confidenceScore,mkt:s.marketScore};
-    const el=document.getElementById('hm-'+k);
-    if(el) el.textContent=Math.round(map[k]);
-  });
-  setEl('hm-trust', Math.round(s.trustScore));
-  setEl('hm-phase', 'P'+Math.min(15,(s.activePhase||1)));
-}
-
-function checkCertificate(s, band, ts){
-  const sec=document.getElementById('cert-section');
-  if(!sec) return;
-  if(ts>60){
-    sec.classList.remove('hidden');
-    const certId = 'CERT-99EVS-'+(s.vehicleId||'DEMO').slice(-6)+'-'+Date.now().toString(36).toUpperCase();
-    setEl('cert-id-val', certId);
-    setEl('cert-trust',  ts);
-    setEl('cert-band',   band.label.split('—')[0].trim());
-    setEl('cert-issued', new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}));
-    const meta=s.vehicleMeta||{};
-    setEl('cert-vehicle', `${meta.make||'—'} ${meta.model||''}`);
-    setEl('cert-sub', `${meta.make||'Vehicle'} ${meta.model||''} · ${meta.year||'—'} · ${meta.city||'—'} has achieved a trust score of ${ts}/100. Certificate stored in Firestore certificates/${certId}.`);
-    // Write certificate to Firestore
-    if(window.db){
-      window.db.collection('certificates').doc(certId).set({
-        vehicleId:s.vehicleId, trustScore:ts, confidenceBand:band.label,
-        issuedAt:firebase.firestore.FieldValue.serverTimestamp(), vehicleMeta:meta
-      }).catch(()=>{});
-    }
-  } else {
-    sec.classList.add('hidden');
-  }
-}
-
-function checkForecast(ts){
-  const sec=document.getElementById('forecast-section');
-  const txt=document.getElementById('forecast-text');
-  if(!sec) return;
-  if(ts<70){
-    sec.classList.remove('hidden');
-    if(txt) txt.innerHTML=`Trust score (${Math.round(ts)}) has dropped below the 70-point threshold. Predictive forecast triggered:<br>
-      <strong style="color:var(--amber)">Forecast: "Service recommended soon"</strong><br>
-      Stored in Firestore <code>predictive_forecasts/${scoringState.vehicleId||'vehicleId'}</code>. Improve score by: requesting inspection (+30%), verifying documents (+15%), or adding GPS-tagged photos (+10%).`;
-    // Write to Firestore
-    if(window.db && scoringState.vehicleId){
-      window.db.collection('predictive_forecasts').doc(scoringState.vehicleId).set({
-        vehicleId:scoringState.vehicleId, forecast:'service soon', trustScore:ts,
-        createdAt:firebase.firestore.FieldValue.serverTimestamp()
-      }).catch(()=>{});
-    }
-  } else {
-    sec.classList.add('hidden');
-  }
-}
-
-/* ── FIRESTORE WRITE ─────────────────────────────────── */
-async function _writeToFirestore(s){
-  if(!window.db) { console.log('[PVIS Demo] Firestore not configured — scores computed client-side only'); return; }
-  const meta = s.vehicleMeta || {};
-  const payload = {
-    vehicleId:       s.vehicleId,
-    vehicleType:     meta.type||'—',
-    city:            meta.city||'—',
-    make:            meta.make||'—',
-    model:           meta.model||'—',
-    year:            parseInt(meta.year)||null,
-    documentScore:   Math.round(s.documentScore),
-    imageScore:      Math.round(s.imageScore),
-    confidenceScore: Math.round(s.confidenceScore),
-    marketScore:     Math.round(s.marketScore),
-    inspectionScore: Math.round(s.inspectionScore),
-    batteryScore:    Math.round(s.batteryScore),
-    trustScore:      Math.round(s.trustScore),
-    inspectionRequested: s.inspectionRequested,
-    documentStatus:  { rc:formState['rc-group'], insurance:formState['ins-group'], loan:formState['loan-group'], puc:formState['puc-group'] },
-    linkedUserIdentityEnabled: true,
-    marketSignalConnected:     true,
-    adaptivePricingEnabled:    true,
-    dealerRoutingEnabled:      true,
-    autoLifecycleEnabled:      true,
-    status:          'active',
-    createdAt:       firebase.firestore.FieldValue.serverTimestamp(),
-    updatedAt:       firebase.firestore.FieldValue.serverTimestamp()
-  };
-  try{
-    await window.db.collection('vehicles').doc(s.vehicleId).set(payload);
-    await window.db.collection('health_scores').doc(s.vehicleId).set({
-      documentScore:s.documentScore, imageScore:s.imageScore, inspectionScore:s.inspectionScore,
-      batteryScore:s.batteryScore, confidenceScore:s.confidenceScore, marketScore:s.marketScore,
-      trustScore:s.trustScore, updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-    });
-    console.log('[PVIS] Written to Firestore:', s.vehicleId);
-    logActivity('green','☁️','Firestore Write','Vehicle and health score documents written successfully.');
-  }catch(e){ console.warn('[PVIS] Firestore write error:', e); }
-}
-
-/* ── SCORING DEMO ────────────────────────────────────── */
-function runScoringDemo(){
-  // Initialise with demo vehicle
-  vehicleId = 'VRS-DEMO-'+Date.now().toString(36).toUpperCase();
-  const demoState = {
-    vehicleId,
-    vehicleMeta:{type:'EV — 2 Wheeler',city:'Bengaluru',make:'Ather',model:'450X',year:'2023'},
-    documentScore:10, imageScore:10, confidenceScore:0,
-    marketScore:30, inspectionScore:0, batteryScore:40,
-    inspectionRequested:false, isEV:true
-  };
-  demoState.trustScore = computeTrustScore(demoState);
-  Object.assign(scoringState, demoState);
-  initDashboard(demoState);
-
-  showToast('🎬 Running PVIS demo — watch scores update progressively...');
-
-  const updates = [
-    {delay:1200,  fn:()=>_demoUpdate({documentScore:80}, 'Phase 2 — Documents verified','green','📄')},
-    {delay:2800,  fn:()=>_demoUpdate({imageScore:75},    'Phase 3 — 5 images validated','amber','📸')},
-    {delay:4200,  fn:()=>_demoUpdate({confidenceScore:15},'Phase 4 — Identity linked +15','blue','🔐')},
-    {delay:5600,  fn:()=>_demoUpdate({marketScore:68},    'Phase 5 — Market signal connected','green','📈')},
-    {delay:7000,  fn:()=>{ scoringState.inspectionRequested=true; _demoUpdate({inspectionScore:35},'Phase 6 — Inspection requested','amber','🔬'); }},
-    {delay:8800,  fn:()=>_demoUpdate({batteryScore:82},   'Phase 7 — Battery warranty verified','green','⚡')},
-    {delay:10000, fn:()=>_demoUpdate({inspectionScore:92},'Phase 6 → Inspection COMPLETE +92!','green','🔬✅')},
-  ];
-
-  updates.forEach(u=>setTimeout(u.fn, u.delay));
-}
-
-function _demoUpdate(updates, msg, color, ico){
-  Object.assign(scoringState, updates);
-  scoringState.trustScore = computeTrustScore(scoringState);
-  const band = getTrustBand(scoringState.trustScore);
-
-  animateTrustRing(Math.round(scoringState.trustScore), band);
-  updateSidebarBars(scoringState);
-
-  Object.entries(updates).forEach(([k,v])=>{
-    const keyMap={documentScore:'doc',imageScore:'img',confidenceScore:'conf',marketScore:'mkt',inspectionScore:'insp',batteryScore:'bat'};
-    const key=keyMap[k];
-    if(key){
-      animateScore('sc-'+key, v);
-      updateBar('scbar-'+key, v);
-      updateScoreColour('sc-'+key, v);
-    }
-  });
-
-  // Update equation
-  setEl('teq-doc',   Math.round(scoringState.documentScore));
-  setEl('teq-img',   Math.round(scoringState.imageScore));
-  setEl('teq-conf',  Math.round(scoringState.confidenceScore));
-  setEl('teq-mkt',   Math.round(scoringState.marketScore));
-  setEl('teq-insp',  Math.round(scoringState.inspectionScore));
-  setEl('teq-bat',   Math.round(scoringState.batteryScore));
-  setEl('teq-total', Math.round(scoringState.trustScore));
-
-  const bnd = getTrustBand(scoringState.trustScore);
-  setEl('teq-band', bnd.label);
-  animateTrustRing(Math.round(scoringState.trustScore), bnd);
-
-  updateHealthMirror(scoringState);
-  buildPhasePipeline(scoringState);
-  buildAllPhasesGrid(scoringState);
-  checkCertificate(scoringState, bnd, Math.round(scoringState.trustScore));
-  checkForecast(Math.round(scoringState.trustScore));
-
-  logActivity(color, ico, msg, `Trust Score updated → ${Math.round(scoringState.trustScore)}/100`);
-}
-
-function simulateInspectionComplete(){
-  scoringState.inspectionRequested = true;
-  _demoUpdate({inspectionScore:92},'Inspection Complete — Physical verification done','green','🔬');
-  showToast('🔬 Inspection complete! Trust score updated.');
-}
-
-/* ── ACTIVITY LOG ────────────────────────────────────── */
-function logActivity(color, ico, title, text){
-  activityLog.unshift({color,ico,title,text,time:new Date()});
-  if(activityLog.length>50) activityLog.pop();
-  renderActivityLog();
-}
-
-function renderActivityLog(){
-  const el=document.getElementById('activity-log');if(!el)return;
-  el.innerHTML = activityLog.slice(0,20).map(e=>`
-    <div class="al-entry">
-      <div class="al-dot ${e.color}"></div>
-      <div class="al-text"><strong>${e.ico} ${e.title}</strong> — ${e.text}</div>
-      <div class="al-time">${e.time.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div>
-    </div>`).join('');
-}
-
-/* ── MOBILITY CATEGORY ───────────────────────────────── */
-function openMobCategory(cat){
-  const labels={
-    walk:'🚶 Walking & Micro Mobility — Safety guide, urban walkability, footwear.',
-    cycle:'🚲 Cycles — City, mountain, e-cycle comparison and inspection guide.',
-    scooter:'🛵 Scooters — EV vs petrol, tyre guide, insurance, RTO process.',
-    bike:'🏍️ Bikes — Performance, safety gear, helmet guide, maintenance.',
-    auto:'🛺 Auto-Rickshaw — EV vs CNG, permit process, livelihood finance.',
-    car:'🚗 Cars — Petrol vs EV, inspection checklist, finance guide.',
-    suv:'🚙 SUVs — Safety ratings, off-road readiness, cargo capacity.',
-    truck:'🚛 Commercial Trucks — Fleet management, permit, maintenance schedule.',
-    bus:'🚌 Buses — Fleet compliance, driver records, route permits.',
-    tractor:'🚜 Agricultural Vehicles — Farm use, rural roads, PMGSY compliance.',
-    train:'🚅 Rail — IRCTC guide, metro navigation, inter-city planning.',
-    ship:'⛴️ Marine — Kerala backwaters, Kochi water metro, coastal routes.',
-    heli:'🚁 Aviation — Air taxi regulations, AAI status India 2026.',
-    future:'🛸 Future Mobility — Hyperloop, autonomous, urban air mobility India.'
-  };
-  showToast(labels[cat]||'Mobility intelligence loading...');
-}
-
-function demoInspection(){ showPage('dashboard'); setTimeout(()=>{simulateInspectionComplete();},800); }
-function demoCertificate(){ showPage('dashboard'); setTimeout(()=>{runScoringDemo();},400); }
-
-/* ── UTILS ───────────────────────────────────────────── */
-function setEl(id, val){ const el=document.getElementById(id); if(el) el.textContent=val; }
-
-function showToast(msg){
-  document.querySelectorAll('.toast-el').forEach(t=>t.remove());
-  const t=document.createElement('div');
-  t.className='toast-el';t.textContent=msg;
-  document.body.appendChild(t);
-  setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),350);},3500);
-}
-
-/* ── INIT ────────────────────────────────────────────── */
-document.addEventListener('DOMContentLoaded',()=>{
-  showPage('home');
-  logActivity('blue','🟢','PVIS Engine Ready','Platform initialised. Onboard a vehicle to start progressive scoring.');
-  mieiInitNextStep();
-});
-
-/* ══════════════════════════════════════════════════════
-   MIEI v2 — MOBILITY AI ENTRY INTERFACE ENGINE
-══════════════════════════════════════════════════════ */
-
-/* ── INTENT KNOWLEDGE BASE ── */
-const mieiIntents = {
-  buying:{
-    title:'Buying a Vehicle',
-    body:'You can verify trust score, inspection status, ownership signals, and resale strength before deciding. 99EVs gives you a structured intelligence layer on any vehicle before you commit.',
-    actions:['Check trust score','Run inspection','Start onboarding']
-  },
-  selling:{
-    title:'Selling a Vehicle',
-    body:'Boost your vehicle\'s trust score before listing. Verified documents, inspection certificate, and a 99EVs trust badge increase buyer confidence and resale value significantly.',
-    actions:['Onboard vehicle','Request inspection','View trust dashboard']
-  },
-  trust:{
-    title:'Vehicle Trust Score',
-    body:'The PVIS Trust Score is a 0–100 composite from document verification, image evidence, inspection, battery health, and market signals. It updates automatically as new evidence arrives.',
-    actions:['View live score','Run inspection','Learn scoring model']
-  },
-  inspection:{
-    title:'Physical Inspection Pipeline',
-    body:'Our certified inspectors cover 30% of the total trust weight. Inspection adds the highest single contribution to trust — and triggers automatic certificate generation when score exceeds 60.',
-    actions:['Request inspection','View inspection criteria','Onboard vehicle']
-  },
-  resale:{
-    title:'Resale Value Intelligence',
-    body:'Resale signals factor city demand, seasonal velocity, model depreciation curves, and condition scoring. Vehicles with higher trust scores consistently command 10–18% better resale pricing.',
-    actions:['Check market signals','View trust score','Onboard vehicle']
-  },
-  battery:{
-    title:'EV Battery Health Scoring',
-    body:'Battery scoring evaluates cycle stability, thermal behaviour, and usage signals. State of Health (SOH) verification and warranty status are validated automatically for all EV segments.',
-    actions:['Start battery check','View scoring model','Onboard EV']
-  },
-  fleet:{
-    title:'Fleet Evaluation',
-    body:'Evaluate entire fleets with progressive scoring per vehicle. Fleet intelligence layers include driver history, permit compliance, maintenance intervals, and aggregate trust scores.',
-    actions:['Start fleet onboarding','View fleet scores','Talk to fleet team']
-  },
-  dealer:{
-    title:'Dealer Intelligence',
-    body:'99EVs aggregates dealer performance signals — inventory churn, trust score averages, inspection pass rates, and customer completion rates — into a structured dealer intelligence layer.',
-    actions:['View dealer signals','Compare dealers','Onboard vehicle']
-  },
-  safety:{
-    title:'Mobility Safety History',
-    body:'Safety history covers RTO records, accident signals, fitness certificate status, and tyre/brake inspection logs. Available for all mobility segments from 2W to commercial vehicles.',
-    actions:['Check safety history','View inspection report','Run PVIS check']
-  },
-  future:{
-    title:'Future Mobility Systems',
-    body:'99EVs is building intelligence layers for hyperloop, autonomous vehicles, and urban air mobility in India. Early segment data covers air taxi regulations and AAI status as of 2026.',
-    actions:['Explore future segments','Join beta programme','View roadmap']
-  }
-};
-
-/* ── SEGMENT KNOWLEDGE BASE ── */
-const mieiSegments = {
-  walk:{
-    title:'Cycles Intelligence Layer',
-    segId:'CYCLE',
-    demand:'Rising urban adoption driven by last-mile delivery and health-conscious commuters.',
-    risk:'Frame stress fractures under commercial load; brake cable wear in monsoon conditions.',
-    inspect:'Frame weld integrity · Brake responsiveness · Gear shift precision · Tyre tread depth'
-  },
-  scooter:{
-    title:'Scooters Intelligence Layer',
-    segId:'EV2W',
-    demand:'High resale stability in urban delivery usage. EV variant demand growing 34% YoY in metro cities.',
-    risk:'Battery mismatch risk if OEM charger is missing. Controller failure in monsoon-affected units.',
-    inspect:'Controller health · Motor noise profile · Frame alignment · Battery cycle count · Tyre condition'
-  },
-  bike:{
-    title:'Bikes Intelligence Layer',
-    segId:'BIKE',
-    demand:'Premium performance segment showing strong resale above 150cc; commuter segment stabilising.',
-    risk:'Engine oil contamination; clutch plate wear in high-usage commercial bikes.',
-    inspect:'Engine compression · Chain tension · Clutch play · Fork seal leaks · Brake disc wear'
-  },
-  auto:{
-    title:'Auto-Rickshaw Intelligence Layer',
-    segId:'AUTO3W',
-    demand:'EV auto demand surging in Bengaluru, Delhi, and Chennai under state subsidy schemes.',
-    risk:'Permit expiry risk; CNG conversion compliance gaps; battery degradation in conversion EVs.',
-    inspect:'Permit validity · Meter calibration · CNG/battery integrity · Tyre condition · Chassis rust'
-  },
-  car:{
-    title:'Cars Intelligence Layer',
-    segId:'CAR4W',
-    demand:'Pre-owned EV car segment growing rapidly. Petrol compact segment showing stable velocity.',
-    risk:'Hidden flood damage; odometer tampering; incomplete service history in private listings.',
-    inspect:'Engine oil condition · Underbody rust · AC compressor · Tyre alignment · OBD fault scan'
-  },
-  suv:{
-    title:'SUVs Intelligence Layer',
-    segId:'SUV4W',
-    demand:'Strong demand in Tier 1 cities. 7-seater variants commanding 8–12% premium resale.',
-    risk:'Suspension wear on rough urban roads; differential oil leaks in AWD models.',
-    inspect:'Differential health · Suspension bushings · Brake pad thickness · Roof integrity · ADAS calibration'
-  },
-  truck:{
-    title:'Commercial Trucks Intelligence Layer',
-    segId:'TRUCK',
-    demand:'Fleet renewal driving structured demand. EV LCV segment growing in intra-city logistics.',
-    risk:'Engine overhaul history gaps; permit non-compliance; tyre blowout risk under overload.',
-    inspect:'Engine timing · Permit status · Load capacity compliance · Tyre pressure rating · Axle condition'
-  },
-  bus:{
-    title:'Buses Intelligence Layer',
-    segId:'BUS',
-    demand:'Electric bus adoption accelerating under PM e-Bus Sewa. School bus segment stable.',
-    risk:'Driver record gaps; route permit lapses; brake system fatigue in high-cycle units.',
-    inspect:'Brake system · Emergency exit compliance · Seat condition · Driver record · Route permit validity'
-  },
-  tractor:{
-    title:'Agricultural Vehicles Intelligence Layer',
-    segId:'AGRI',
-    demand:'Farm mechanisation driving stable demand. Tractor resale strong in Kharif harvest cycles.',
-    risk:'Hydraulic system leaks; PTO shaft wear; seasonal neglect causing engine seizure risk.',
-    inspect:'Hydraulic lift · PTO engagement · Tyre lug depth · Engine coolant level · Fuel injector condition'
-  },
-  rail:{
-    title:'Rail Mobility Intelligence Layer',
-    segId:'RAIL',
-    demand:'Urban metro expansion driving rider growth in Bengaluru, Delhi, Mumbai, Hyderabad, and Kochi.',
-    risk:'N/A for personal ownership; fleet compliance and maintenance schedule tracking for operators.',
-    inspect:'N/A — Intelligence layer covers route mapping, schedule reliability, and accessibility scoring.'
-  },
-  marine:{
-    title:'Marine Intelligence Layer',
-    segId:'MARINE',
-    demand:'Kerala backwaters and Kochi Water Metro driving structured marine mobility growth.',
-    risk:'Hull integrity risk; engine corrosion in saltwater environments; permit and safety gear compliance.',
-    inspect:'Hull condition · Engine corrosion check · Life jacket compliance · Navigation light status · Permit validity'
-  },
-  aviation:{
-    title:'Aviation Intelligence Layer',
-    segId:'AVIATION',
-    demand:'Urban air taxi interest growing post AAI air taxi policy 2025. Drone delivery segment active.',
-    risk:'Regulatory approval gaps; battery certification for eVTOL; pilot licence compliance.',
-    inspect:'AAI permit status · Battery certification · Pilot licence validity · Insurance coverage · Safety protocol compliance'
-  },
-  future:{
-    title:'Future Mobility Intelligence Layer',
-    segId:'FUTURE',
-    demand:'Hyperloop, autonomous vehicles, and urban air mobility entering early policy frameworks in India 2026.',
-    risk:'Regulatory undefined zones; infrastructure gap risk; technology maturity uncertainty.',
-    inspect:'Policy compliance status · Technology certification · Infrastructure readiness scoring · Safety protocol mapping'
-  }
-};
-
-let mieiCurrentSegment = null;
-
-/* ── BLOCK 1: CHAT ENGINE ── */
-function mieiHandleInput(val){
-  if(!val.trim()) return;
-  // Auto-match intent
-  const lower = val.toLowerCase();
-  if(lower.includes('buy')) mieiChip('buying');
-  else if(lower.includes('sell')) mieiChip('selling');
-  else if(lower.includes('battery') || lower.includes('ev')) mieiChip('battery');
-  else if(lower.includes('inspec')) mieiChip('inspection');
-  else if(lower.includes('resale') || lower.includes('value')) mieiChip('resale');
-  else if(lower.includes('fleet')) mieiChip('fleet');
-  else if(lower.includes('trust') || lower.includes('score')) mieiChip('trust');
-  else if(lower.includes('dealer')) mieiChip('dealer');
-  else if(lower.includes('safety') || lower.includes('history')) mieiChip('safety');
-  else if(lower.includes('future') || lower.includes('hyper')) mieiChip('future');
-}
-
-function mieiSubmit(){
-  const val = document.getElementById('miei-input').value.trim();
-  if(!val) return;
-  mieiHandleInput(val);
-}
-
-function mieiChip(intent){
-  // Mark chip active
-  document.querySelectorAll('.miei-chip').forEach(c=>c.classList.remove('active'));
-  const chips = document.querySelectorAll('.miei-chip');
-  chips.forEach(c=>{ if(c.getAttribute('onclick').includes("'"+intent+"'")) c.classList.add('active'); });
-
-  const data = mieiIntents[intent];
-  if(!data) return;
-
-  document.getElementById('mrc-title').textContent = data.title;
-  document.getElementById('mrc-body').textContent = data.body;
-
-  const actEl = document.getElementById('mrc-actions');
-  actEl.innerHTML = data.actions.map(a=>`<button class="mrc-btn" onclick="mieiActionBtn('${a}')">${a}</button>`).join('');
-
-  const card = document.getElementById('miei-response');
-  card.classList.remove('hidden');
-  card.scrollIntoView({behavior:'smooth',block:'nearest'});
-
-  // Log analytics
-  mieiLogAnalytics('intent_click', intent);
-}
-
-function mieiActionBtn(action){
-  const lower = action.toLowerCase();
-  if(lower.includes('onboard') || lower.includes('start')) showPage('engine');
-  else if(lower.includes('score') || lower.includes('dashboard') || lower.includes('trust')) showPage('dashboard');
-  else if(lower.includes('inspection')) showPage('dashboard');
-  else showToast('🧭 ' + action + ' — coming soon in next MIEI release.');
-}
-
-/* ── BLOCK 2: SEGMENT EXPLORER ── */
-function mieiOpenSegment(segKey){
-  const seg = mieiSegments[segKey];
-  if(!seg) return;
-
-  mieiCurrentSegment = segKey;
-  document.getElementById('mip-title').textContent = seg.title;
-  document.getElementById('mip-demand').textContent = seg.demand;
-  document.getElementById('mip-risk').textContent = seg.risk;
-  document.getElementById('mip-inspect').textContent = seg.inspect;
-
-  // Reset expandable rows
-  document.querySelectorAll('.mip-row').forEach(r=>r.classList.remove('open'));
-
-  const panel = document.getElementById('miei-insight-panel');
-  panel.classList.remove('hidden');
-  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
-
-  // Fetch from Firestore if available
-  if(window.db){
-    window.db.collection('segment_knowledge_base').doc(seg.segId).get().then(doc=>{
-      if(doc.exists){
-        const d = doc.data();
-        if(d.demandTrend) document.getElementById('mip-demand').textContent = d.demandTrend;
-        if(d.riskSignals) document.getElementById('mip-risk').textContent = d.riskSignals;
-        if(d.inspectionSignals) document.getElementById('mip-inspect').textContent = d.inspectionSignals;
-      }
-    }).catch(()=>{});
-  }
-
-  mieiLogAnalytics('segment_click', segKey);
-}
-
-function mieiClosePanel(){
-  document.getElementById('miei-insight-panel').classList.add('hidden');
-  mieiCurrentSegment = null;
-}
-
-function mieiExploreSegment(){
-  if(!mieiCurrentSegment) return;
-  const seg = mieiSegments[mieiCurrentSegment];
-  showPage('engine');
-  showToast('🧭 Segment-aware onboarding loaded: ' + (seg ? seg.title : mieiCurrentSegment));
-}
-
-/* ── BLOCK 3: NEXT STEP ENGINE ── */
-function mieiInitNextStep(){
-  const bar = document.getElementById('miei-nextstep-bar');
-  const dot = document.getElementById('mfs-dot');
-  const txt = document.getElementById('mfs-text');
-
-  // Default (first-time visitor) state
-mieiRenderNextStep([
-  {ico:'🚀', label:'Start vehicle onboarding', sub:'Begin your progressive intelligence profile', action:()=>showPage('engine')},
-  {ico:'📊', label:'Explore trust scoring', sub:'See how the 15-phase PVIS engine works', action:()=>showPage('dashboard')},
-  {ico:'🔍', label:'Check a vehicle', sub:'Verify ownership, inspection and trust signals', action:()=>mieiChip('trust')}
-]);
-
-if(!window.db){
-  dot.className='mfs-dot warn';
-  console.warn('Firestore not connected');
-  return;
-}
-
-// Live Firestore check
-dot.className='mfs-dot';
-txt.textContent='Connecting to vehicle intelligence…';
-
-try{
-  window.db.collection('vehicles').limit(1).get().then(snap=>{
-
-    dot.className='mfs-dot live';
-
-    if(!snap.empty){
-
-      txt.textContent='Vehicle profile found — PVIS engine active';
-
-      const vid = snap.docs[0].id;
-
-      mieiRenderNextStep([
-        {ico:'📈', label:'View trust score dashboard', sub:'Your vehicle intelligence is live', action:()=>showPage('dashboard')},
-        {ico:'🔬', label:'Continue inspection', sub:'Physical verification adds 30% to trust score', action:()=>showPage('dashboard')},
-        {ico:'➕', label:'Onboard another vehicle', sub:'Add to your intelligence portfolio', action:()=>showPage('engine')}
-      ]);
-
-      // Real-time listener
-      window.db.collection('vehicles').doc(vid).onSnapshot(doc=>{
-        if(doc.exists){
-          txt.textContent =
-            'Vehicle journey active — ' +
-            (doc.data().make || '') +
-            ' ' +
-            (doc.data().model || '');
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <script>
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        // TODO: Replace with your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPjKklbHZdBXDcN9zTb_NCiZlxa7-Zxd",
+            authDomain: "evs-production.firebaseapp.com",
+            projectId: "evs-production",
+            storageBucket: "evs-production.firebasestorage.app",
+            messagingSenderId: "775112664706",
+            appId: "1:775112664706:web:2529507e7788d89e7bb69b"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        const auth = firebase.auth();
+
+        // Global variables
+        window.currentUserId = null;
+        window.selectedPhotos = [];
+
+        // ============================================
+        // ERROR RECOVERY & HANDLING
+        // ============================================
+        const ErrorRecovery = {
+            log: function(error, context = {}) {
+                const errorEntry = {
+                    timestamp: new Date().toISOString(),
+                    message: error.message || error,
+                    stack: error.stack || '',
+                    context: context,
+                    url: window.location.href,
+                    userAgent: navigator.userAgent,
+                    userId: window.currentUserId || 'anonymous'
+                };
+                
+                if (window.db && window.currentUserId) {
+                    db.collection('system_errors').add(errorEntry).catch(e => {
+                        const errors = JSON.parse(localStorage.getItem('offline_errors') || '[]');
+                        errors.push(errorEntry);
+                        localStorage.setItem('offline_errors', JSON.stringify(errors.slice(-50)));
+                    });
+                }
+                
+                console.error('[99EVs Error]', error, context);
+                this.showToast(context.userMessage || 'An error occurred. Please try again.', 'error');
+            },
+            
+            showToast: function(message, type = 'info') {
+                const toast = document.getElementById('toast');
+                const messageEl = document.getElementById('toast-message');
+                
+                toast.className = `toast show toast-${type}`;
+                messageEl.textContent = message;
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            },
+            
+            retryOperation: async function(operation, maxRetries = 3, delay = 1000) {
+                for (let i = 0; i < maxRetries; i++) {
+                    try {
+                        return await operation();
+                    } catch (error) {
+                        if (i === maxRetries - 1) throw error;
+                        await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
+                        this.log(error, { attempt: i + 1, maxRetries: maxRetries });
+                    }
+                }
+            },
+            
+            isOnline: navigator.onLine,
+            
+            initNetworkMonitoring: function() {
+                window.addEventListener('online', () => {
+                    this.isOnline = true;
+                    this.syncOfflineData();
+                    this.showToast('Connection restored ✓', 'success');
+                });
+                
+                window.addEventListener('offline', () => {
+                    this.isOnline = false;
+                    this.showToast('You are offline. Changes will sync when connected.', 'info');
+                });
+            },
+            
+            syncOfflineData: async function() {
+                const errors = JSON.parse(localStorage.getItem('offline_errors') || '[]');
+                if (errors.length > 0 && window.currentUserId) {
+                    try {
+                        const batch = db.batch();
+                        errors.forEach(err => {
+                            const ref = db.collection('system_errors').doc();
+                            batch.set(ref, err);
+                        });
+                        await batch.commit();
+                        localStorage.removeItem('offline_errors');
+                    } catch (e) {
+                        console.error('Failed to sync offline errors:', e);
+                    }
+                }
+            }
+        };
+
+        // Initialize error handling
+        ErrorRecovery.initNetworkMonitoring();
+
+        window.addEventListener('error', (event) => {
+            ErrorRecovery.log(event.error, {
+                type: 'uncaught_error',
+                filename: event.filename,
+                lineno: event.lineno
+            });
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            ErrorRecovery.log(event.reason, { type: 'unhandled_promise_rejection' });
+        });
+
+        // ============================================
+        // FIREBASE OPERATIONS
+        // ============================================
+        const FirebaseOps = {
+            writeDocument: async function(collection, data, docId = null) {
+                return await ErrorRecovery.retryOperation(async () => {
+                    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                    const fullData = {
+                        ...data,
+                        createdAt: timestamp,
+                        updatedAt: timestamp,
+                        version: '3.3',
+                        clientTimestamp: new Date().toISOString()
+                    };
+                    
+                    if (docId) {
+                        await db.collection(collection).doc(docId).set(fullData, { merge: true });
+                        return docId;
+                    } else {
+                        const docRef = await db.collection(collection).add(fullData);
+                        return docRef.id;
+                    }
+                }, 3, 1000);
+            },
+            
+            updateDocument: async function(collection, docId, updates) {
+                return await ErrorRecovery.retryOperation(async () => {
+                    const docRef = db.collection(collection).doc(docId);
+                    
+                    return await db.runTransaction(async (transaction) => {
+                        const doc = await transaction.get(docRef);
+                        
+                        if (!doc.exists) {
+                            throw new Error('Document does not exist');
+                        }
+                        
+                        const currentData = doc.data();
+                        const newData = {
+                            ...updates,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            editCount: (currentData.editCount || 0) + 1
+                        };
+                        
+                        transaction.update(docRef, newData);
+                        return docRef.id;
+                    });
+                }, 3, 1000);
+            },
+            
+            uploadFile: async function(file, path) {
+                return new Promise((resolve, reject) => {
+                    const storageRef = storage.ref(path);
+                    const uploadTask = storageRef.put(file);
+                    
+                    uploadTask.on('state_changed',
+                        null,
+                        (error) => {
+                            ErrorRecovery.log(error, { type: 'file_upload_error', path: path });
+                            reject(error);
+                        },
+                        async () => {
+                            const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                            resolve(downloadURL);
+                        }
+                    );
+                });
+            }
+        };
+
+        // ============================================
+        // ANALYTICS
+        // ============================================
+        const Analytics = {
+            sessionId: null,
+            userId: null,
+            sessionStartTime: null,
+            
+            init: function(userId = null) {
+                this.sessionId = this.generateSessionId();
+                this.userId = userId;
+                this.sessionStartTime = Date.now();
+                
+                this.logEvent('session_start', {
+                    referrer: document.referrer,
+                    landingPage: window.location.pathname
+                });
+                
+                window.addEventListener('beforeunload', () => {
+                    this.logEvent('session_end', {
+                        duration: Date.now() - this.sessionStartTime
+                    });
+                });
+            },
+            
+            generateSessionId: function() {
+                return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            },
+            
+            logEvent: function(eventName, properties = {}) {
+                if (!window.currentUserId) return; // Only log for authenticated users
+                
+                const event = {
+                    eventName: eventName,
+                    timestamp: new Date().toISOString(),
+                    sessionId: this.sessionId,
+                    userId: this.userId || 'anonymous',
+                    properties: properties,
+                    page: window.location.pathname,
+                    userAgent: navigator.userAgent
+                };
+                
+                if (window.db && window.currentUserId) {
+                    db.collection('analytics_events').add(event).catch(e => {
+                        const queue = JSON.parse(localStorage.getItem('analytics_queue') || '[]');
+                        queue.push(event);
+                        localStorage.setItem('analytics_queue', JSON.stringify(queue.slice(-100)));
+                    });
+                }
+            },
+            
+            trackAction: function(action, details = {}) {
+                this.logEvent('user_action', { action: action, ...details });
+            }
+        };
+
+        // ============================================
+        // GARAGE SERVICES
+        // ============================================
+        const GarageServices = {
+            categories: [],
+            userLocation: null,
+            
+            init: async function() {
+                this.categories = await this.loadCategories();
+                this.getUserLocation();
+            },
+            
+            loadCategories: async function() {
+                try {
+                    const snapshot = await db.collection('service_categories')
+                        .where('active', '==', true)
+                        .orderBy('order')
+                        .get();
+                    
+                    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                } catch (error) {
+                    // If collection doesn't exist yet, return default categories
+                    return [
+                        {
+                            id: 'washing_centers',
+                            name: 'Washing Centers',
+                            description: 'Professional vehicle washing and detailing',
+                            icon: '🧼',
+                            order: 1,
+                            active: true
+                        },
+                        {
+                            id: 'accessory_vendors',
+                            name: 'Accessory Vendors',
+                            description: 'EV accessories and upgrades',
+                            icon: '🛍️',
+                            order: 2,
+                            active: true
+                        },
+                        {
+                            id: 'inspection_partners',
+                            name: 'Inspection Partners',
+                            description: 'Professional vehicle inspection services',
+                            icon: '🔍',
+                            order: 3,
+                            active: true
+                        }
+                    ];
+                }
+            },
+            
+            getUserLocation: function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            this.userLocation = {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude
+                            };
+                        },
+                        (error) => {
+                            // Fallback: Bengaluru city center
+                            this.userLocation = { latitude: 12.9716, longitude: 77.5946 };
+                        }
+                    );
+                } else {
+                    this.userLocation = { latitude: 12.9716, longitude: 77.5946 };
+                }
+            },
+            
+            searchPartners: async function(filters = {}) {
+                let query = db.collection('service_partners')
+                    .where('status', '==', 'active');
+                
+                if (filters.category) {
+                    query = query.where('category', '==', filters.category);
+                }
+                
+                if (filters.verifiedOnly) {
+                    query = query.where('verified', '==', true);
+                }
+                
+                if (filters.sortBy === 'rating') {
+                    query = query.orderBy('averageRating', 'desc');
+                }
+                
+                query = query.limit(filters.limit || 20);
+                
+                const snapshot = await query.get();
+                let partners = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // If no partners found, return mock data for demo
+                if (partners.length === 0) {
+                    partners = this.getMockPartners(filters.category);
+                }
+                
+                return partners;
+            },
+            
+            getMockPartners: function(category) {
+                const mockData = {
+                    'washing_centers': [
+                        {
+                            id: 'demo1',
+                            businessName: 'CleanEV Pro Detailing',
+                            category: 'washing_centers',
+                            description: 'Premium EV-specific washing and detailing services',
+                            verified: true,
+                            featured: true,
+                            averageRating: 4.8,
+                            totalReviews: 156,
+                            icon: '🧼'
+                        }
+                    ],
+                    'accessory_vendors': [
+                        {
+                            id: 'demo2',
+                            businessName: 'EV Accessories Hub',
+                            category: 'accessory_vendors',
+                            description: 'Wide range of EV accessories and upgrades',
+                            verified: true,
+                            featured: false,
+                            averageRating: 4.5,
+                            totalReviews: 89,
+                            icon: '🛍️'
+                        }
+                    ],
+                    'inspection_partners': [
+                        {
+                            id: 'demo3',
+                            businessName: 'EV Inspector Pro',
+                            category: 'inspection_partners',
+                            description: 'Certified EV inspection services',
+                            verified: true,
+                            featured: true,
+                            averageRating: 4.9,
+                            totalReviews: 234,
+                            icon: '🔍'
+                        }
+                    ]
+                };
+                
+                return mockData[category] || [];
+            },
+            
+            createBooking: async function(bookingData) {
+                const booking = {
+                    userId: window.currentUserId,
+                    ...bookingData,
+                    status: 'pending',
+                    paymentStatus: 'pending',
+                    statusHistory: [{
+                        status: 'pending',
+                        timestamp: new Date().toISOString()
+                    }]
+                };
+                
+                const bookingId = await FirebaseOps.writeDocument('service_bookings', booking);
+                
+                Analytics.trackAction('booking_created', {
+                    bookingId: bookingId,
+                    partnerId: booking.partnerId
+                });
+                
+                return bookingId;
+            }
+        };
+
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+        
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            Analytics.trackAction('tab_switched', { tab: tabName });
         }
-      });
 
-    } else {
+        // Modal functions
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
 
-      txt.textContent='No vehicles yet — start your first profile';
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
 
-      mieiRenderNextStep([
-        {ico:'🚀', label:'Start your first vehicle intelligence profile', sub:'Takes under 3 minutes to onboard', action:()=>showPage('engine')},
-        {ico:'🧠', label:'Explore mobility segments', sub:'Learn what we score in your category', action:()=>document.getElementById('miei-layers-block').scrollIntoView({behavior:'smooth'})},
-        {ico:'🎬', label:'Run a live demo', sub:'Watch PVIS score a vehicle in real-time', action:()=>{ showPage('dashboard'); setTimeout(runScoringDemo,400); }}
-      ]);
+        // Render category selector
+        function renderCategories() {
+            const container = document.getElementById('category-selector');
+            const categories = GarageServices.categories;
+            
+            let html = '';
+            categories.forEach(cat => {
+                html += `
+                    <div class="category-card" onclick="showPartners('${cat.id}', '${cat.name}')">
+                        <div class="category-icon">${cat.icon}</div>
+                        <h3>${cat.name}</h3>
+                        <p>${cat.description}</p>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
 
-    }
+        // Show partners in category
+        async function showPartners(categoryId, categoryName) {
+            const container = document.getElementById('partner-list-container');
+            const title = document.getElementById('partner-list-title');
+            const list = document.getElementById('partner-list');
+            
+            title.textContent = categoryName;
+            list.innerHTML = '<p>Loading...</p>';
+            container.style.display = 'block';
+            
+            const partners = await GarageServices.searchPartners({
+                category: categoryId,
+                verifiedOnly: true,
+                sortBy: 'rating'
+            });
+            
+            if (partners.length === 0) {
+                list.innerHTML = '<p style="color: #6b7280;">No partners found in this category yet.</p>';
+                return;
+            }
+            
+            let html = '';
+            partners.forEach(partner => {
+                html += `
+                    <div class="partner-card" onclick="showPartnerDetail('${partner.id}', '${categoryId}')">
+                        <div class="partner-header">
+                            <div class="partner-logo">${partner.icon || '🏢'}</div>
+                            <div class="partner-info">
+                                <h3>${partner.businessName}</h3>
+                                <div class="badges">
+                                    ${partner.verified ? '<span class="badge badge-verified">✓ Verified</span>' : ''}
+                                    ${partner.featured ? '<span class="badge badge-featured">⭐ Featured</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating">
+                            ${'★'.repeat(Math.round(partner.averageRating))}${'☆'.repeat(5-Math.round(partner.averageRating))}
+                            <span style="color: #6b7280;">${partner.averageRating} (${partner.totalReviews} reviews)</span>
+                        </div>
+                        <p style="color: #6b7280; margin-top: 0.5rem;">${partner.description}</p>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+            
+            Analytics.trackAction('viewed_partners', { category: categoryId });
+        }
 
-  }).catch(()=>{
+        // Show partner detail
+        function showPartnerDetail(partnerId, categoryId) {
+            const modalBody = document.getElementById('partner-modal-body');
+            
+            // For demo, show booking form
+            modalBody.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🔧</div>
+                    <h3 style="margin-bottom: 1rem;">Book Service</h3>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                        This partner is available for bookings. Fill out your details to schedule a service.
+                    </p>
+                    <button class="btn btn-primary" onclick="closeModal('partner-modal'); showBookingForm('${partnerId}')">
+                        Book Now
+                    </button>
+                </div>
+            `;
+            
+            showModal('partner-modal');
+            Analytics.trackAction('viewed_partner_detail', { partnerId: partnerId });
+        }
 
-    dot.className='mfs-dot warn';
-    console.warn('Firestore connection warning');
+        // Show booking form
+        function showBookingForm(partnerId) {
+            window.currentPartnerId = partnerId;
+            showModal('booking-modal');
+        }
 
-  });
+        // Load user incidents
+        async function loadIncidents() {
+            if (!window.currentUserId) return;
+            
+            const container = document.getElementById('incidents-list');
+            
+            try {
+                const snapshot = await db.collection('incidents')
+                    .where('userId', '==', window.currentUserId)
+                    .orderBy('createdAt', 'desc')
+                    .limit(20)
+                    .get();
+                
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="color: #6b7280;">No incidents reported yet. Create your first incident using the "New Incident" tab.</p>';
+                    return;
+                }
+                
+                let html = '';
+                snapshot.docs.forEach(doc => {
+                    const incident = doc.data();
+                    html += `
+                        <div class="card" style="margin-bottom: 1rem;">
+                            <h3>${incident.title}</h3>
+                            <p style="color: #6b7280; margin: 0.5rem 0;">${incident.description}</p>
+                            <p style="font-size: 0.875rem; color: #9ca3af;">
+                                ${incident.vehicleMake} ${incident.vehicleModel} ${incident.vehicleYear} • 
+                                ${new Date(incident.createdAt?.toDate()).toLocaleDateString()}
+                            </p>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+            } catch (error) {
+                ErrorRecovery.log(error, { operation: 'load_incidents' });
+                container.innerHTML = '<p style="color: #ef4444;">Error loading incidents. Please try again.</p>';
+            }
+        }
 
-} catch(e){
+        // ============================================
+        // EVENT HANDLERS
+        // ============================================
+        
+        // Tab click handlers
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                switchTab(tabName);
+            });
+        });
 
-  dot.className='mfs-dot warn';
-  console.warn('Firestore fallback triggered');
+        // Photo upload
+        const photoUploadArea = document.getElementById('photo-upload-area');
+        const photoInput = document.getElementById('photo-input');
+        const photoPreviewGrid = document.getElementById('photo-preview-grid');
 
-}
+        photoUploadArea.addEventListener('click', () => {
+            photoInput.click();
+        });
 
+        photoInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            
+            if (window.selectedPhotos.length + files.length > 10) {
+                ErrorRecovery.showToast('Maximum 10 photos allowed', 'error');
+                return;
+            }
+            
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    window.selectedPhotos.push(file);
+                    
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const preview = document.createElement('div');
+                        preview.className = 'photo-preview';
+                        preview.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <button class="photo-preview-remove" onclick="removePhoto(${window.selectedPhotos.length - 1})">×</button>
+                        `;
+                        photoPreviewGrid.appendChild(preview);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
 
-function mieiRenderNextStep(cards){
+        // Remove photo
+        function removePhoto(index) {
+            window.selectedPhotos.splice(index, 1);
+            photoPreviewGrid.children[index].remove();
+        }
 
-  const bar = document.getElementById('miei-nextstep-bar');
+        // Incident form submission
+        document.getElementById('incident-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!window.currentUserId) {
+                ErrorRecovery.showToast('Please sign in to submit incidents', 'error');
+                return;
+            }
+            
+            const formData = new FormData(e.target);
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            try {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<div class="loader"></div> Submitting...';
+                
+                // Check for emergency keywords
+                const description = formData.get('description').toLowerCase();
+                const emergencyKeywords = ['fire', 'smoke', 'flames', 'burning', 'swelling', 'leak'];
+                const isEmergency = emergencyKeywords.some(kw => description.includes(kw));
+                
+                if (isEmergency) {
+                    if (confirm('⚠️ EMERGENCY DETECTED\n\nYour description contains emergency keywords. Are you in immediate danger?\n\nClick OK to continue submitting, or Cancel to review.')) {
+                        // Continue with submission
+                    } else {
+                        submitButton.disabled = false;
+                        submitButton.textContent = originalText;
+                        return;
+                    }
+                }
+                
+                // Upload photos
+                const photoURLs = [];
+                for (let i = 0; i < window.selectedPhotos.length; i++) {
+                    const file = window.selectedPhotos[i];
+                    const path = `incidents/${window.currentUserId}/${Date.now()}_${i}.jpg`;
+                    const url = await FirebaseOps.uploadFile(file, path);
+                    photoURLs.push(url);
+                }
+                
+                // Create incident
+                const incidentData = {
+                    userId: window.currentUserId,
+                    title: formData.get('title'),
+                    description: formData.get('description'),
+                    vehicleMake: formData.get('vehicleMake'),
+                    vehicleModel: formData.get('vehicleModel'),
+                    vehicleYear: parseInt(formData.get('vehicleYear')),
+                    photos: photoURLs,
+                    status: 'open',
+                    redAlert: isEmergency
+                };
+                
+                const incidentId = await FirebaseOps.writeDocument('incidents', incidentData);
+                
+                Analytics.trackAction('incident_submitted', {
+                    incidentId: incidentId,
+                    photoCount: photoURLs.length,
+                    isEmergency: isEmergency
+                });
+                
+                ErrorRecovery.showToast('✓ Incident submitted successfully!', 'success');
+                
+                // Reset form
+                e.target.reset();
+                window.selectedPhotos = [];
+                photoPreviewGrid.innerHTML = '';
+                
+                // Switch to incidents tab
+                setTimeout(() => {
+                    switchTab('incidents');
+                    loadIncidents();
+                }, 1500);
+                
+            } catch (error) {
+                ErrorRecovery.log(error, {
+                    operation: 'submit_incident',
+                    userMessage: 'Failed to submit incident. Please try again.'
+                });
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        });
 
-  bar.innerHTML = cards.map((c,i)=>`
-    <div class="mns-card" onclick="(${c.action.toString()})()">
-      <span class="mns-ico">${c.ico}</span>
-      <div class="mns-body">
-        <div class="mns-label">${c.label}</div>
-        <div class="mns-sub">${c.sub}</div>
-      </div>
-    </div>
-  `).join('');
+        // Booking form submission
+        document.getElementById('booking-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!window.currentUserId) {
+                ErrorRecovery.showToast('Please sign in to book services', 'error');
+                return;
+            }
+            
+            const formData = new FormData(e.target);
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            try {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<div class="loader"></div> Booking...';
+                
+                const bookingData = {
+                    partnerId: window.currentPartnerId || 'demo',
+                    locationId: 'demo-location',
+                    offeringId: 'demo-offering',
+                    vehicle: {
+                        make: formData.get('vehicleMake'),
+                        model: formData.get('vehicleModel'),
+                        registrationNumber: formData.get('registrationNumber')
+                    },
+                    scheduledDate: formData.get('scheduledDate'),
+                    scheduledTime: formData.get('scheduledTime'),
+                    customerNotes: formData.get('customerNotes'),
+                    quotedPrice: 1200,
+                    estimatedDuration: 60
+                };
+                
+                const bookingId = await GarageServices.createBooking(bookingData);
+                
+                ErrorRecovery.showToast('✓ Booking confirmed! You will receive updates soon.', 'success');
+                
+                closeModal('booking-modal');
+                e.target.reset();
+                
+            } catch (error) {
+                ErrorRecovery.log(error, {
+                    operation: 'create_booking',
+                    userMessage: 'Failed to create booking. Please try again.'
+                });
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        });
 
-}
-window.selectedMobilitySegment = null;
-
-function openSegmentDetails(segment){
-
-selectedMobilitySegment = segment;
-
-const panel = document.getElementById("segment-details-panel");
-
-if(panel){
-panel.style.display = "block";
-panel.scrollIntoView({behavior:"smooth"});
-}
-
-console.log("Segment selected:", segment);
-
-}
-window.selectedMobilitySegment = null;
-
-function openSegmentDetails(segment){
-
-selectedMobilitySegment = segment;
-
-const title = document.getElementById("segment-title");
-const body = document.getElementById("segment-body");
-
-const segmentInfo = {
-
-walking:{
-title:"Walking — The First Mobility Intelligence Layer",
-body:"Walking improves awareness, stability and health. It builds safer mobility decisions before vehicle usage begins."
-},
-
-cycles:{
-title:"Cycles — The First Personal Mobility Layer",
-body:"Cycles introduce balance, independence and sustainable movement before motor mobility."
-},
-
-cars:{
-title:"Cars — Personal Comfort Mobility Layer",
-body:"Cars provide structured travel, safety coverage and family mobility support."
-},
-
-garage:{
-title:"Garage Setup — Mobility Infrastructure Layer",
-body:"Garage setup supports service readiness, diagnostics and lifecycle vehicle maintenance."
-}
-
-};
-
-if(segmentInfo[segment]){
-
-title.innerText = segmentInfo[segment].title;
-
-body.innerText = segmentInfo[segment].body;
-
-}
-
-const panel = document.getElementById("segment-details-panel");
-
-if(panel){
-
-panel.style.display = "block";
-
-panel.scrollIntoView({behavior:"smooth"});
-
-}
-
-console.log("Segment selected:",segment);
-
-}
-function openMobilityAssistant(){
-
-if(!selectedMobilitySegment){
-
-alert("Select a mobility segment first.");
-
-return;
-
-}
-
-openAssistant(selectedMobilitySegment);
-
-}
-/* ── ANALYTICS PIPELINE ── */
-function mieiLogAnalytics(eventType, value){
-  if(!window.db) return;
-  try{
-    window.db.collection('analytics_pipeline').add({
-      eventType, value,
-      ts: firebase.firestore.FieldValue.serverTimestamp(),
-      page:'homepage'
-    });
-  }catch(e){}
-}
-window.selectedMobilitySegment = null;
-
-function openSegmentDetails(segment){
-
-selectedMobilitySegment = segment;
-
-const panel = document.getElementById("segment-details-panel");
-
-if(panel){
-panel.style.display = "block";
-panel.scrollIntoView({behavior:"smooth"});
-}
-
-console.log("Segment selected:", segment);
-
-}
-function openMobilityAssistant(){
-
-if(!selectedMobilitySegment){
-
-alert("Select a mobility segment first to continue.");
-
-return;
-
-}
-
-console.log("Launching assistant for:", selectedMobilitySegment);
-
-openAssistant(selectedMobilitySegment);
-
-}
-</script>
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        // Mock authentication for demo
+        // TODO: Replace with real Firebase Auth
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Mock user ID for demo
+            window.currentUserId = 'demo-user-' + Math.random().toString(36).substr(2, 9);
+            
+            // Initialize systems
+            Analytics.init(window.currentUserId);
+            await GarageServices.init();
+            
+            // Render UI
+            renderCategories();
+            loadIncidents();
+            
+            console.log('✅ 99EVs system initialized');
+            console.log('📊 Analytics tracking active');
+            console.log('🔧 Garage services loaded');
+        });
+    </script>
 </body>
 </html>
-)runScoringDemo,400); }}
-        ]);
-      }
-    }).catch(()=>{
-      dot.className='mfs-dot warn';
-      txt.textContent='Unable to reach Firestore — check connection';
-    });
-  } catch(e){
-    dot.className='mfs-dot warn';
-    txt.textContent='Firestore error — running in demo mode';
-  }
-}
-
-function mieiRe
